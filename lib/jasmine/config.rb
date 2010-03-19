@@ -113,6 +113,10 @@ module Jasmine
       src_files.collect {|f| "/" + f } + spec_files.collect {|f| File.join(spec_path, f) }
     end
 
+    def focused_files(spec_filter)
+      src_files.collect {|f| "/" + f } + match_files(spec_dir, spec_filter).collect {|f| File.join(spec_path, f) }
+    end
+
     def css_files
       stylesheets.collect {|f| "/" + f }
     end

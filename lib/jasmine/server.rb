@@ -13,24 +13,23 @@ module Jasmine
 
     def call(env)
       return not_found if env["PATH_INFO"] != "/"
-      return [200,{ 'Content-Type' => 'text/html' }, ''] if (env['REQUEST_METHOD'] == 'HEAD')
+      return [200, { 'Content-Type' => 'text/html' }, ''] if (env['REQUEST_METHOD'] == 'HEAD')
       run if env['REQUEST_METHOD'] == 'GET'
     end
 
     def not_found
       body = "File not found: #{@path_info}\n"
       [404, {"Content-Type" => "text/plain",
-         "Content-Length" => body.size.to_s,
-         "X-Cascade" => "pass"},
+             "Content-Length" => body.size.to_s,
+             "X-Cascade" => "pass"},
        [body]]
     end
 
     #noinspection RubyUnusedLocalVariable
-    def run
+    def run(focused_suite = nil)
       jasmine_files = @jasmine_files
       css_files = @jasmine_stylesheets + (@config.css_files || [])
-      js_files = @config.js_files
-
+      js_files = focused_suite.nil? ? @config.js_files : @config.focused_files(focused_suite)
       body = ERB.new(File.read(File.join(File.dirname(__FILE__), "run.html.erb"))).result(binding)
       [
         200,
@@ -72,18 +71,8 @@ module Jasmine
     end
 
     def call(env)
-      spec_files = @config.spec_files_or_proc
-      matching_specs = spec_files.select {|spec_file| spec_file =~ /#{Regexp.escape(env["PATH_INFO"])}/ }.compact
-      if !matching_specs.empty?
-        run_adapter = Jasmine::RunAdapter.new(matching_specs, @options)
-        run_adapter.run
-      else
-        [
-          200,
-          { 'Content-Type' => 'application/javascript' },
-          "document.write('<p>Couldn\\'t find any specs matching #{env["PATH_INFO"]}!</p>');"
-        ]
-      end
+      run_adapter = Jasmine::RunAdapter.new(@config)
+      run_adapter.run(env["PATH_INFO"])
     end
 
   end
@@ -97,7 +86,7 @@ module Jasmine
 
       require 'thin'
       thin_config = {
-        '/__suite__' => Jasmine::FocusedSuite.new(@config),
+        '/__suite__/' => Jasmine::FocusedSuite.new(@config),
         '/run.html' => Jasmine::Redirect.new('/'),
         '/' => Jasmine::RunAdapter.new(@config)
       }

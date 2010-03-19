@@ -44,6 +44,7 @@ describe Jasmine::Config do
         @config.src_files.should == []
         @config.stylesheets.should == []
         @config.spec_files.should == ['javascripts/ExampleSpec.js', 'javascripts/SpecHelper.js']
+        @config.focused_files("javascripts/ExampleSpec.js").should == ['/__spec__/javascripts/ExampleSpec.js']
         @config.mappings.should == {
           '/__root__' => @config.project_root,
           '/__spec__' => @config.spec_dir
@@ -56,6 +57,7 @@ describe Jasmine::Config do
         @config.src_files.should == []
         @config.stylesheets.should == []
         @config.spec_files.should == ['javascripts/ExampleSpec.js', 'javascripts/SpecHelper.js']
+        @config.focused_files("javascripts/ExampleSpec.js").should == ['/__spec__/javascripts/ExampleSpec.js']
         @config.mappings.should == {
           '/__root__' => @config.project_root,
           '/__spec__' => @config.spec_dir
@@ -66,9 +68,10 @@ describe Jasmine::Config do
         @config.stub!(:simple_config_file).and_return(File.join(@template_dir, 'spec/javascripts/support/jasmine.yml'))
         @config.src_files.should == []
         @config.spec_files.should == ['javascripts/ExampleSpec.js', 'javascripts/SpecHelper.js']
+        @config.focused_files("javascripts/ExampleSpec.js").should == ['/__spec__/javascripts/ExampleSpec.js']
         @config.mappings.should == {
-          '/__root__' => @config.project_root,
-          '/__spec__' => @config.spec_dir
+        '/__root__' => @config.project_root,
+        '/__spec__' => @config.spec_dir
         }
       end
 
@@ -106,6 +109,15 @@ describe Jasmine::Config do
           '/__spec__/javascripts/ExampleSpec.js',
           '/__spec__/javascripts/SpecHelper.js',
         ]
+        @config.focused_files("javascripts/ExampleSpec.js").should == [
+          '/javascripts/prototype.js',
+          '/javascripts/effects.js',
+          '/javascripts/controls.js',
+          '/javascripts/dragdrop.js',
+          '/javascripts/application.js',
+          '/__spec__/javascripts/ExampleSpec.js'
+        ]
+
       end
 
       it "should provide a list of all spec files with full paths" do
