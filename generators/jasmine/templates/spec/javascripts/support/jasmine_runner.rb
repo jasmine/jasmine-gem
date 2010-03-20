@@ -1,6 +1,6 @@
 require 'rubygems'
 require 'jasmine'
-jasmine_config_overrides = File.expand_path(File.join(File.dirname(__FILE__), 'jasmine_config'))
+jasmine_config_overrides = File.expand_path(File.join(File.dirname(__FILE__), 'jasmine_config.rb'))
 require jasmine_config_overrides if File.exists?(jasmine_config_overrides)
 
 jasmine_config = Jasmine::Config.new
