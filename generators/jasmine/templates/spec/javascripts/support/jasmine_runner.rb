@@ -1,5 +1,7 @@
 require 'rubygems'
-require File.expand_path(File.join(File.dirname(__FILE__), 'jasmine_config'))
+require 'jasmine'
+jasmine_config_overrides = File.expand_path(File.join(File.dirname(__FILE__), 'jasmine_config'))
+require jasmine_config_overrides if File.exists?(jasmine_config_overrides)
 
 jasmine_config = Jasmine::Config.new
 spec_builder = Jasmine::SpecBuilder.new(jasmine_config)

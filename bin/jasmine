@@ -28,10 +28,10 @@ if ARGV[0] == 'init'
   require 'ftools'
   File.makedirs('spec/javascripts')
   File.makedirs('spec/javascripts/support')
+  File.makedirs('spec/javascripts/helpers')
 
-  copy_unless_exists('spec/javascripts/SpecHelper.js')
+  copy_unless_exists('spec/javascripts/helpers/SpecHelper.js')
   copy_unless_exists('spec/javascripts/ExampleSpec.js')
-  copy_unless_exists('spec/javascripts/support/jasmine_config.rb')
   copy_unless_exists('spec/javascripts/support/jasmine_runner.rb')
 
   rails_tasks_dir = dest_path('lib/tasks')

@@ -10,7 +10,8 @@ namespace :jasmine do
     t.spec_files = ['spec/javascripts/support/jasmine_runner.rb']
   end
     task :server do
-      require 'spec/javascripts/support/jasmine_config'
+      jasmine_config_overrides = 'spec/javascripts/support/jasmine_config'
+      require jasmine_config_overrides if File.exists?(jasmine_config_overrides)
       
       puts "your tests are here:"
       puts "  http://localhost:8888/run.html"

@@ -10,8 +10,12 @@
 #  - stylesheets/*.css
 
 #  Return an array of filepaths relative to spec_dir to include before jasmine specs.
+#helpers:
+#  - helpers/**/*.js
+
+#  Return an array of filepaths relative to spec_dir to include.
 #spec_files:
-#  - **/*.js
+#  - **/*[sS]pec.js
 
 #  Source directory path. Your src_files must be returned relative to this path. Will use root if left blank.
 #src_dir:

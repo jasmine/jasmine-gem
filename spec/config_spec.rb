@@ -35,45 +35,58 @@ describe Jasmine::Config do
 
     describe "simple_config" do
       before(:each) do
-        @config.stub!(:src_dir).and_return(File.join(@template_dir, "public"))
-        @config.stub!(:spec_dir).and_return(File.join(@template_dir, "spec"))
+        @config.stub!(:src_dir).and_return(File.join(@template_dir))
+        @config.stub!(:spec_dir).and_return(File.join(@template_dir, "spec/javascripts"))
       end
 
-      it "if sources.yaml not found" do
-        File.stub!(:exist?).and_return(false)
-        @config.src_files.should == []
-        @config.stylesheets.should == []
-        @config.spec_files.should == ['javascripts/ExampleSpec.js', 'javascripts/SpecHelper.js']
-        @config.focused_files("javascripts/ExampleSpec.js").should == ['/__spec__/javascripts/ExampleSpec.js']
-        @config.mappings.should == {
-          '/__root__' => @config.project_root,
-          '/__spec__' => @config.spec_dir
-        }
+      shared_examples_for "simple_config defaults" do
+        it "should return the correct files and mappings" do
+          @config.src_files.should == []
+          @config.stylesheets.should == []
+          @config.spec_files.should == ['ExampleSpec.js']
+          @config.helpers.should == ['helpers/SpecHelper.js']
+          @config.js_files.should == [
+                   '/__spec__/helpers/SpecHelper.js',
+                   '/__spec__/ExampleSpec.js',
+                 ]
+          @config.js_files("ExampleSpec.js").should ==
+            ['/__spec__/helpers/SpecHelper.js',
+             '/__spec__/ExampleSpec.js']
+          @config.mappings.should == {
+            '/__root__' => @config.project_root,
+            '/__spec__' => @config.spec_dir
+          }
+          @config.spec_files_full_paths.should == [
+            File.join(@template_dir, 'spec/javascripts/ExampleSpec.js'),
+          ]
+        end
       end
 
-      it "if jasmine.yml is empty" do
-        @config.stub!(:simple_config_file).and_return(File.join(@template_dir, 'spec/javascripts/support/jasmine.yml'))
-        YAML.stub!(:load).and_return(false)
-        @config.src_files.should == []
-        @config.stylesheets.should == []
-        @config.spec_files.should == ['javascripts/ExampleSpec.js', 'javascripts/SpecHelper.js']
-        @config.focused_files("javascripts/ExampleSpec.js").should == ['/__spec__/javascripts/ExampleSpec.js']
-        @config.mappings.should == {
-          '/__root__' => @config.project_root,
-          '/__spec__' => @config.spec_dir
-        }
+
+      describe "if sources.yaml not found" do
+        before(:each) do
+          File.stub!(:exist?).and_return(false)
+        end
+        it_should_behave_like "simple_config defaults"
       end
 
-      it "using default jasmine.yml" do
-        @config.stub!(:simple_config_file).and_return(File.join(@template_dir, 'spec/javascripts/support/jasmine.yml'))
-        @config.src_files.should == []
-        @config.spec_files.should == ['javascripts/ExampleSpec.js', 'javascripts/SpecHelper.js']
-        @config.focused_files("javascripts/ExampleSpec.js").should == ['/__spec__/javascripts/ExampleSpec.js']
-        @config.mappings.should == {
-        '/__root__' => @config.project_root,
-        '/__spec__' => @config.spec_dir
-        }
+      describe "if jasmine.yml is empty" do
+        before(:each) do
+          @config.stub!(:simple_config_file).and_return(File.join(@template_dir, 'spec/javascripts/support/jasmine.yml'))
+          YAML.stub!(:load).and_return(false)
+        end
+        it_should_behave_like "simple_config defaults"
+
       end
+
+      describe "using default jasmine.yml" do
+        before(:each) do
+          @config.stub!(:simple_config_file).and_return(File.join(@template_dir, 'spec/javascripts/support/jasmine.yml'))
+        end
+        it_should_behave_like "simple_config defaults"
+
+      end
+
 
       it "simple_config stylesheets" do
         @config.stub!(:simple_config_file).and_return(File.join(@template_dir, 'spec/javascripts/support/jasmine.yml'))
@@ -84,7 +97,9 @@ describe Jasmine::Config do
         @config.stylesheets.should == ['foo.css', 'bar.css']
       end
 
+
       it "using rails jasmine.yml" do
+
         original_glob = Dir.method(:glob)
         Dir.stub!(:glob).and_return do |glob_string|
           if glob_string =~ /public/
@@ -94,37 +109,32 @@ describe Jasmine::Config do
           end
         end
         @config.stub!(:simple_config_file).and_return(File.join(@template_dir, 'spec/javascripts/support/jasmine-rails.yml'))
-        @config.spec_files.should == ['javascripts/ExampleSpec.js', 'javascripts/SpecHelper.js']
-        @config.src_files.should == ['javascripts/prototype.js',
-                                     'javascripts/effects.js',
-                                     'javascripts/controls.js',
-                                     'javascripts/dragdrop.js',
-                                     'javascripts/application.js']
+        @config.spec_files.should == ['ExampleSpec.js']
+        @config.helpers.should == ['helpers/SpecHelper.js']
+        @config.src_files.should == ['public/javascripts/prototype.js',
+                                     'public/javascripts/effects.js',
+                                     'public/javascripts/controls.js',
+                                     'public/javascripts/dragdrop.js',
+                                     'public/javascripts/application.js']
         @config.js_files.should == [
-          '/javascripts/prototype.js',
-          '/javascripts/effects.js',
-          '/javascripts/controls.js',
-          '/javascripts/dragdrop.js',
-          '/javascripts/application.js',
-          '/__spec__/javascripts/ExampleSpec.js',
-          '/__spec__/javascripts/SpecHelper.js',
+          '/public/javascripts/prototype.js',
+          '/public/javascripts/effects.js',
+          '/public/javascripts/controls.js',
+          '/public/javascripts/dragdrop.js',
+          '/public/javascripts/application.js',
+          '/__spec__/helpers/SpecHelper.js',
+          '/__spec__/ExampleSpec.js',
         ]
-        @config.focused_files("javascripts/ExampleSpec.js").should == [
-          '/javascripts/prototype.js',
-          '/javascripts/effects.js',
-          '/javascripts/controls.js',
-          '/javascripts/dragdrop.js',
-          '/javascripts/application.js',
-          '/__spec__/javascripts/ExampleSpec.js'
+        @config.js_files("ExampleSpec.js").should == [
+          '/public/javascripts/prototype.js',
+          '/public/javascripts/effects.js',
+          '/public/javascripts/controls.js',
+          '/public/javascripts/dragdrop.js',
+          '/public/javascripts/application.js',
+          '/__spec__/helpers/SpecHelper.js',
+          '/__spec__/ExampleSpec.js'
         ]
 
-      end
-
-      it "should provide a list of all spec files with full paths" do
-        @config.spec_files_full_paths.should == [
-          File.join(@template_dir, 'spec/javascripts/ExampleSpec.js'),
-          File.join(@template_dir, 'spec/javascripts/SpecHelper.js')
-        ]
       end
 
     end
@@ -154,7 +164,7 @@ describe Jasmine::Config do
   end
 
   describe "#start_selenium_server" do
-   it "should use an existing selenium server if SELENIUM_SERVER_PORT is set" do
+    it "should use an existing selenium server if SELENIUM_SERVER_PORT is set" do
       config = Jasmine::Config.new
       ENV.stub!(:[], "SELENIUM_SERVER_PORT").and_return(1234)
       Jasmine.should_receive(:wait_for_listener).with(1234, "selenium server")
