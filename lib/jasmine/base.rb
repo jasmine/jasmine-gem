@@ -4,7 +4,7 @@ require 'json'
 
 module Jasmine
   def self.root
-    File.expand_path(File.join(File.dirname(__FILE__), '../../jasmine'))
+    ENV["JASMINE_ROOT"] || File.expand_path(File.join(File.dirname(__FILE__), '../../jasmine'))
   end
 
   # this seemingly-over-complex method is necessary to get an open port on at least some of our Macs

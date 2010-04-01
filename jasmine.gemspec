@@ -45,7 +45,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://github.com/pivotal/jasmine-ruby}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.5}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{Jasmine Ruby Runner}
   s.test_files = [
     "spec/config_spec.rb",
