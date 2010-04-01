@@ -46,7 +46,7 @@ describe Jasmine::Server do
 
   it "should serve focused suites when prefixing spec files with /__suite__/" do
     Dir.stub!(:glob).and_return do |glob_string|
-      glob_string
+      [glob_string]
     end
     code, headers, body = @thin_app.call("PATH_INFO" => "/__suite__/file2.js", "SCRIPT_NAME" => "xxx")
     code.should == 200
@@ -82,7 +82,5 @@ describe Jasmine::Server do
       headers.should == { 'Content-Type' => 'text/html' }
       body.should == ''
     end
-
   end
-
 end

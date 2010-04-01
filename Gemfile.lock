@@ -7,9 +7,9 @@ specs:
 - eventmachine: 
     version: 0.12.10
 - json_pure: 
-    version: 1.2.3
+    version: 1.2.0
 - gemcutter: 
-    version: 0.2.1
+    version: 0.5.0
 - git: 
     version: 1.2.5
 - rubyforge: 
@@ -17,7 +17,7 @@ specs:
 - jeweler: 
     version: 1.4.0
 - rack: 
-    version: 1.1.0
+    version: 1.0.0
 - rspec: 
     version: 1.3.0
 - selenium-client: 
@@ -25,40 +25,44 @@ specs:
 - selenium-rc: 
     version: 2.2.1
 - thin: 
-    version: 1.2.7
-hash: 62e024e96af978e9eeb6f3d375057b3b8f1c5649
+    version: 1.2.4
+hash: 8eff28678f47820ef44f3fd86ec0ed3577dd0927
 sources: 
 - Rubygems: 
     uri: http://gemcutter.org
 dependencies: 
   rspec: 
-    version: ">= 1.1.5"
+    version: = 1.3.0
     group: 
-    - :testing
+    - :test
   rake: 
     version: = 0.8.7
     group: 
     - :default
   thin: 
-    version: ">= 1.2.4"
+    version: = 1.2.4
     group: 
-    - :testing
+    - :test
   gemcutter: 
-    version: = 0.2.1
+    version: = 0.5.0
     group: 
     - :default
   selenium-rc: 
-    version: ">= 2.1.0"
+    version: = 2.2.1
     group: 
-    - :testing
+    - :test
   rack: 
-    version: ">= 1.0.0"
+    version: = 1.0.0
     group: 
-    - :testing
+    - :test
   selenium-client: 
-    version: ">= 1.2.17"
+    version: = 1.2.18
     group: 
-    - :testing
+    - :test
+  json_pure: 
+    version: = 1.2.0
+    group: 
+    - :test
   jeweler: 
     version: = 1.4.0
     group: 
