@@ -3,3 +3,4 @@ pkg
 vendor
 bin
 !bin/jasmine
+.bundle

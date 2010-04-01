@@ -1,5 +1,5 @@
-require "#{File.dirname(__FILE__)}/vendor/gems/environment"
-Bundler.require_env :rake
+require File.expand_path('../.bundle/environment', __FILE__)
+Bundler.require(:default, :rake)
 
 $LOAD_PATH.unshift File.expand_path("#{File.dirname(__FILE__)}/lib")
 
