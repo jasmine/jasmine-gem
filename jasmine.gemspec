@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{jasmine}
-  s.version = "0.10.2.4"
+  s.version = "0.10.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Rajan Agaskar", "Christian Williams"]
@@ -26,12 +26,9 @@ Gem::Specification.new do |s|
      "generators/jasmine/templates/spec/javascripts/support/jasmine-rails.yml",
      "generators/jasmine/templates/spec/javascripts/support/jasmine.yml",
      "generators/jasmine/templates/spec/javascripts/support/jasmine_runner.rb",
-     "jasmine/contrib/ruby/jasmine_runner.rb",
-     "jasmine/contrib/ruby/jasmine_spec_builder.rb",
-     "jasmine/contrib/ruby/run.html",
      "jasmine/lib/TrivialReporter.js",
      "jasmine/lib/consolex.js",
-     "jasmine/lib/jasmine-0.10.2.js",
+     "jasmine/lib/jasmine-0.10.3.js",
      "jasmine/lib/jasmine.css",
      "jasmine/lib/json2.js",
      "lib/jasmine.rb",
