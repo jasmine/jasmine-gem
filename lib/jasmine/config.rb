@@ -17,13 +17,17 @@ module Jasmine
 
     def start
       start_servers
-      @client = Jasmine::SeleniumDriver.new("localhost", @selenium_server_port, "*#{@browser}", "http://localhost:#{@jasmine_server_port}/")
+      @client = Jasmine::SeleniumDriver.new("localhost", @selenium_server_port, "*#{@browser}", "#{jasmine_host}:#{@jasmine_server_port}/")
       @client.connect
     end
 
     def stop
       @client.disconnect
       stop_servers
+    end
+
+    def jasmine_host
+      ENV["JASMINE_HOST"] || 'http://localhost'
     end
 
     def start_jasmine_server

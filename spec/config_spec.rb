@@ -46,9 +46,9 @@ describe Jasmine::Config do
           @config.spec_files.should == ['ExampleSpec.js']
           @config.helpers.should == ['helpers/SpecHelper.js']
           @config.js_files.should == [
-                   '/__spec__/helpers/SpecHelper.js',
-                   '/__spec__/ExampleSpec.js',
-                 ]
+            '/__spec__/helpers/SpecHelper.js',
+            '/__spec__/ExampleSpec.js',
+          ]
           @config.js_files("ExampleSpec.js").should ==
             ['/__spec__/helpers/SpecHelper.js',
              '/__spec__/ExampleSpec.js']
@@ -141,9 +141,9 @@ describe Jasmine::Config do
 
   end
 
-  describe "browsers" do
+  describe "browser configuration" do
     it "should use firefox by default" do
-      ENV.should_receive(:[], "JASMINE_BROWSER").and_return(nil)
+      ENV.stub!(:[], "JASMINE_BROWSER").and_return(nil)
       config = Jasmine::Config.new
       config.stub!(:start_servers)
       Jasmine::SeleniumDriver.should_receive(:new).
@@ -153,11 +153,36 @@ describe Jasmine::Config do
     end
 
     it "should use ENV['JASMINE_BROWSER'] if set" do
-      ENV.should_receive(:[], "JASMINE_BROWSER").and_return("mosaic")
+      ENV.stub!(:[], "JASMINE_BROWSER").and_return("mosaic")
       config = Jasmine::Config.new
       config.stub!(:start_servers)
       Jasmine::SeleniumDriver.should_receive(:new).
         with(anything(), anything(), "*mosaic", anything()).
+        and_return(mock(Jasmine::SeleniumDriver, :connect => true))
+      config.start
+    end
+    end
+
+  describe "jasmine host" do
+    it "should use http://localhost by default" do
+      config = Jasmine::Config.new
+      config.instance_variable_set(:@jasmine_server_port, '1234')
+      config.stub!(:start_servers)
+
+      Jasmine::SeleniumDriver.should_receive(:new).
+        with(anything(), anything(), anything(), "http://localhost:1234/").
+        and_return(mock(Jasmine::SeleniumDriver, :connect => true))
+      config.start
+    end
+
+    it "should use ENV['JASMINE_HOST'] if set" do
+      ENV.stub!(:[], "JASMINE_HOST").and_return("http://some_host")
+      config = Jasmine::Config.new
+      config.instance_variable_set(:@jasmine_server_port, '1234')
+      config.stub!(:start_servers)
+
+      Jasmine::SeleniumDriver.should_receive(:new).
+        with(anything(), anything(), anything(), "http://some_host:1234/").
         and_return(mock(Jasmine::SeleniumDriver, :connect => true))
       config.start
     end
@@ -171,5 +196,6 @@ describe Jasmine::Config do
       config.start_selenium_server
     end
   end
+
 
 end
