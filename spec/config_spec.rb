@@ -122,8 +122,8 @@ describe Jasmine::Config do
         end
 
         it "spec_files_full_paths" do
-          @config.spec_files_full_paths.should == ["/Users/ragaskar/workspace/jasmine-ruby/generators/jasmine/templates/spec/javascripts/file1.ext",
-                                                   "/Users/ragaskar/workspace/jasmine-ruby/generators/jasmine/templates/spec/javascripts/file2.ext"]
+          @config.spec_files_full_paths.should == [File.expand_path("../../generators/jasmine/templates/spec/javascripts/file1.ext", __FILE__),
+                                                   File.expand_path("../../generators/jasmine/templates/spec/javascripts/file2.ext", __FILE__)]
         end
 
       end
