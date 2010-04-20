@@ -15,8 +15,7 @@ module Jasmine
 
     def call(env)
       return not_found if env["PATH_INFO"] != "/"
-      return [200, { 'Content-Type' => 'text/html' }, ''] if (env['REQUEST_METHOD'] == 'HEAD')
-      run if env['REQUEST_METHOD'] == 'GET'
+      run
     end
 
     def not_found
@@ -76,35 +75,23 @@ module Jasmine
     end
   end
 
-  class Server < Rack::Server
-    def initialize(config, options = {})
-      @config = config
-      super(options)
-    end
+  def self.app(config)
+    Rack::Builder.app do
+      use Rack::Head
 
-    def app
-      @app ||= begin
-        thin_config = {
-          '/__suite__/' => Jasmine::FocusedSuite.new(@config),
-          '/run.html' => Jasmine::Redirect.new('/'),
-          '/' => Jasmine::RunAdapter.new(@config)
-        }
+      map('/run.html')         { run Jasmine::Redirect.new('/') }
+      map('/__suite__')        { run Jasmine::FocusedSuite.new(config) }
 
-        @config.mappings.each do |from, to|
-          thin_config[from] = Rack::File.new(to)
-        end
+      map('/__JASMINE_ROOT__') { run Rack::File.new(Jasmine.root) }
+      map(config.spec_path)    { run Rack::File.new(config.spec_dir) }
+      map(config.root_path)    { run Rack::File.new(config.project_root) }
 
-        thin_config["/__JASMINE_ROOT__"] = Rack::File.new(Jasmine.root)
-
-        Rack::Cascade.new([
-          Rack::URLMap.new({'/' => Rack::File.new(@config.src_dir)}),
-          Rack::URLMap.new(thin_config)
+      map('/') do
+        run Rack::Cascade.new([
+          Rack::URLMap.new('/' => Rack::File.new(config.src_dir)),
+          Jasmine::RunAdapter.new(config)
         ])
       end
-    end
-
-    def stop
-      server.stop
     end
   end
 end

@@ -1,6 +1,6 @@
 require File.expand_path(File.join(File.dirname(__FILE__), "spec_helper"))
 
-describe Jasmine::Server do
+describe "Jasmine.app" do
   include Rack::Test::Methods
 
   def app
@@ -10,7 +10,7 @@ describe Jasmine::Server do
     config.stub!(:src_dir).and_return(File.join(Jasmine.root, "src"))
     config.stub!(:src_files).and_return(["file1.js"])
     config.stub!(:spec_files).and_return(["file2.js"])
-    Jasmine::Server.new(config).app
+    Jasmine.app(config)
   end
 
   it "should serve static files from spec dir under __spec__" do

@@ -12,7 +12,8 @@ module Jasmine
     end
 
     def start_server(port = 8888)
-      Jasmine::Server.new(self, :Port => port).start
+      handler = Rack::Handler.default
+      handler.run Jasmine.app(self), :Port => port
     end
 
     def start
@@ -32,10 +33,9 @@ module Jasmine
 
     def start_jasmine_server
       @jasmine_server_port = Jasmine::find_unused_port
-      server = Jasmine::Server.new(@jasmine_server_port, self)
       @jasmine_server_pid = fork do
         Process.setpgrp
-        server.start
+        start_server(@jasmine_server_port)
         exit! 0
       end
       puts "jasmine server started.  pid is #{@jasmine_server_pid}"
@@ -104,13 +104,6 @@ module Jasmine
 
     def root_path
       "/__root__"
-    end
-
-    def mappings
-      {
-        spec_path => spec_dir,
-        root_path => project_root
-      }
     end
 
     def js_files(spec_filter = nil)

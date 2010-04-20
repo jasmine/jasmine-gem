@@ -23,13 +23,6 @@ describe Jasmine::Config do
         @config.simple_config_file.should == (File.join('some_project_root', 'spec/javascripts/support/jasmine.yml'))
       end
 
-
-      it "should provide dir mappings" do
-        @config.mappings.should == {
-          '/__root__' => @config.project_root,
-          '/__spec__' => @config.spec_dir
-        }
-      end
     end
 
 
@@ -52,10 +45,6 @@ describe Jasmine::Config do
           @config.js_files("ExampleSpec.js").should ==
             ['/__spec__/helpers/SpecHelper.js',
              '/__spec__/ExampleSpec.js']
-          @config.mappings.should == {
-            '/__root__' => @config.project_root,
-            '/__spec__' => @config.spec_dir
-          }
           @config.spec_files_full_paths.should == [
             File.join(@template_dir, 'spec/javascripts/ExampleSpec.js'),
           ]
