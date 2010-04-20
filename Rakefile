@@ -1,6 +1,3 @@
-require File.expand_path('../.bundle/environment', __FILE__)
-Bundler.require(:default, :rake)
-
 $LOAD_PATH.unshift File.expand_path("#{File.dirname(__FILE__)}/lib")
 
 require 'spec'
@@ -44,7 +41,6 @@ namespace :jeweler do
 
   begin
     require 'jeweler'
-    require 'rake'
     Jeweler::Tasks.new do |gemspec|
       gemspec.name = "jasmine"
       gemspec.summary = "Jasmine Ruby Runner"
