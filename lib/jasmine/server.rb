@@ -77,7 +77,7 @@ module Jasmine
   end
 
   class Server < Rack::Server
-    def initialize(config, options)
+    def initialize(config, options = {})
       @config = config
       super(options)
     end

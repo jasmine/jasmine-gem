@@ -9,6 +9,7 @@ group :test do
   gem "json_pure", "1.2.0"
   gem "rspec", "1.3.0"
   gem "rack", "1.1.0"
+  gem "rack-test", :require => "rack/test"
   gem "selenium-rc", "2.2.1"
   gem "selenium-client", "1.2.18"
 end
