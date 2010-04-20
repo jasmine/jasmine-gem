@@ -21,7 +21,7 @@ namespace :jasmine do
     require jasmine_config_overrides if File.exists?(jasmine_config_overrides)
 
     puts "your tests are here:"
-    puts "  http://localhost:8888/run.html"
+    puts "  http://localhost:8888/"
 
     Jasmine::Config.new.start_server
   end

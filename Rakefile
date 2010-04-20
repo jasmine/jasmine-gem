@@ -26,7 +26,7 @@ namespace :jasmine do
 
   task :server do
     puts "your tests are here:"
-    puts "  http://localhost:8888/run.html"
+    puts "  http://localhost:8888/"
 
     JasmineSelfTestConfig.new.start_server
   end
