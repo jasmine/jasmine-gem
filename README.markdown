@@ -31,7 +31,7 @@ which will run your Jasmine suites using selenium and rspec. This task is suitab
 
 Simple Configuration:
 
-Customize `spec/javascripts/support/jasmine.yaml` to enumerate the source files, stylesheets, and spec files you would like the Jasmine runner to include.
+Customize `spec/javascripts/support/jasmine.yml` to enumerate the source files, stylesheets, and spec files you would like the Jasmine runner to include.
 You may use dir glob strings.
 
 It is also possible to add overrides into the `spec/javascripts/support/jasmine_config.rb` file directly if you require further customization.
