@@ -89,7 +89,7 @@ module Jasmine
       dir = File.expand_path(dir)
       patterns.collect do |pattern|
         Dir.glob(File.join(dir, pattern)).collect {|f| f.sub("#{dir}/", "")}.sort
-      end.flatten
+      end.flatten.uniq
     end
 
     def simple_config

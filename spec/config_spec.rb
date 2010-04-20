@@ -87,6 +87,46 @@ describe Jasmine::Config do
 
       end
 
+      describe "should use the first appearance of duplicate filenames" do
+        before(:each) do
+          Dir.stub!(:glob).and_return do |glob_string|
+            glob_string
+          end
+          fake_config = Hash.new.stub!(:[]).and_return(["file1.ext", "file2.ext", "file1.ext"])
+          @config.stub!(:simple_config).and_return(fake_config)
+        end
+
+        it "src_files" do
+          @config.src_files.should == ['file1.ext', 'file2.ext']
+        end
+
+        it "stylesheets" do
+          @config.stylesheets.should == ['file1.ext', 'file2.ext']
+        end
+
+        it "spec_files" do
+          @config.spec_files.should == ['file1.ext', 'file2.ext']
+        end
+
+        it "helpers" do
+          @config.spec_files.should == ['file1.ext', 'file2.ext']
+        end
+
+        it "js_files" do
+          @config.js_files.should == ["/file1.ext",
+                                      "/file2.ext",
+                                      "/__spec__/file1.ext",
+                                      "/__spec__/file2.ext",
+                                      "/__spec__/file1.ext",
+                                      "/__spec__/file2.ext"]
+        end
+
+        it "spec_files_full_paths" do
+          @config.spec_files_full_paths.should == ["/Users/ragaskar/workspace/jasmine-ruby/generators/jasmine/templates/spec/javascripts/file1.ext",
+                                                   "/Users/ragaskar/workspace/jasmine-ruby/generators/jasmine/templates/spec/javascripts/file2.ext"]
+        end
+
+      end
 
       it "simple_config stylesheets" do
         @config.stub!(:simple_config_file).and_return(File.join(@template_dir, 'spec/javascripts/support/jasmine.yml'))
@@ -161,7 +201,7 @@ describe Jasmine::Config do
         and_return(mock(Jasmine::SeleniumDriver, :connect => true))
       config.start
     end
-    end
+  end
 
   describe "jasmine host" do
     it "should use http://localhost by default" do
