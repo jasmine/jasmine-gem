@@ -51,9 +51,7 @@ namespace :jeweler do
       gemspec.executables = ["jasmine"]
       gemspec.files = FileList.new('generators/**/**', 'lib/**/**', 'jasmine/lib/**', 'jasmine/contrib/ruby/**', 'tasks/**', 'templates/**')
       gemspec.add_dependency('rspec', '>= 1.1.5')
-      gemspec.add_dependency('json', '>= 1.1.9')
       gemspec.add_dependency('rack', '>= 1.0.0')
-      gemspec.add_dependency('thin', '>= 1.2.4')
       gemspec.add_dependency('selenium-rc', '>=2.1.0')
       gemspec.add_dependency('selenium-client', '>=1.2.17')
     end

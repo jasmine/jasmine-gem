@@ -12,7 +12,7 @@ module Jasmine
     end
 
     def start_server(port = 8888)
-      Jasmine::Server.new(port, self).start
+      Jasmine::Server.new(self, :Port => port).start
     end
 
     def start

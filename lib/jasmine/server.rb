@@ -1,3 +1,5 @@
+require 'rack'
+
 module Jasmine
   class RunAdapter
     def initialize(config)
@@ -37,8 +39,6 @@ module Jasmine
         body
       ]
     end
-
-
   end
 
   class Redirect
@@ -74,49 +74,37 @@ module Jasmine
       run_adapter = Jasmine::RunAdapter.new(@config)
       run_adapter.run(env["PATH_INFO"])
     end
-
   end
 
-  class Server
-    attr_reader :thin
-
-    def initialize(port, config)
-      @port = port
+  class Server < Rack::Server
+    def initialize(config, options)
       @config = config
-
-      require 'thin'
-      thin_config = {
-        '/__suite__/' => Jasmine::FocusedSuite.new(@config),
-        '/run.html' => Jasmine::Redirect.new('/'),
-        '/' => Jasmine::RunAdapter.new(@config)
-      }
-
-      @config.mappings.each do |from, to|
-        thin_config[from] = Rack::File.new(to)
-      end
-
-      thin_config["/__JASMINE_ROOT__"] = Rack::File.new(Jasmine.root)
-
-      app = Rack::Cascade.new([
-        Rack::URLMap.new({'/' => Rack::File.new(@config.src_dir)}),
-        Rack::URLMap.new(thin_config)
-#        JsAlert.new
-      ])
-#      Thin::Logging.trace = true
-      @thin = Thin::Server.new('0.0.0.0', @port, app)
+      super(options)
     end
 
-    def start
-      begin
-        thin.start
-      rescue RuntimeError => e
-        raise e unless e.message == 'no acceptor'
-        raise RuntimeError.new("A server is already running on port #{@port}")
+    def app
+      @app ||= begin
+        thin_config = {
+          '/__suite__/' => Jasmine::FocusedSuite.new(@config),
+          '/run.html' => Jasmine::Redirect.new('/'),
+          '/' => Jasmine::RunAdapter.new(@config)
+        }
+
+        @config.mappings.each do |from, to|
+          thin_config[from] = Rack::File.new(to)
+        end
+
+        thin_config["/__JASMINE_ROOT__"] = Rack::File.new(Jasmine.root)
+
+        Rack::Cascade.new([
+          Rack::URLMap.new({'/' => Rack::File.new(@config.src_dir)}),
+          Rack::URLMap.new(thin_config)
+        ])
       end
     end
 
     def stop
-      thin.stop
+      server.stop
     end
   end
 end
