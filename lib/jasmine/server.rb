@@ -1,5 +1,29 @@
 require 'rack'
 
+# Backport Rack::Handler.default from Rack 1.1.0 for Rails 2.3.x compatibility.
+unless Rack::Handler.respond_to?(:default)
+  module Rack::Handler
+    def self.default(options = {})
+      # Guess.
+      if ENV.include?("PHP_FCGI_CHILDREN")
+        # We already speak FastCGI
+        options.delete :File
+        options.delete :Port
+
+        Rack::Handler::FastCGI
+      elsif ENV.include?("REQUEST_METHOD")
+        Rack::Handler::CGI
+      else
+        begin
+          Rack::Handler::Mongrel
+        rescue LoadError => e
+          Rack::Handler::WEBrick
+        end
+      end
+    end
+  end
+end
+
 module Jasmine
   class RunAdapter
     def initialize(config)
