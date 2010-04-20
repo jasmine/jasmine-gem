@@ -5,6 +5,7 @@ describe Jasmine::Server do
 
   def app
     config = Jasmine::Config.new
+    config.stub!(:project_root).and_return(Jasmine.root)
     config.stub!(:spec_dir).and_return(File.join(Jasmine.root, "spec"))
     config.stub!(:src_dir).and_return(File.join(Jasmine.root, "src"))
     config.stub!(:src_files).and_return(["file1.js"])
@@ -19,7 +20,14 @@ describe Jasmine::Server do
     last_response.body.should == File.read(File.join(Jasmine.root, "spec/suites/EnvSpec.js"))
     end
 
-  it "should serve static files from root dir under /" do
+  it "should serve static files from root dir under __root__" do
+    get "/__root__/src/base.js"
+    last_response.status.should == 200
+    last_response.content_type.should == "application/javascript"
+    last_response.body.should == File.read(File.join(Jasmine.root, "src/base.js"))
+  end
+
+  it "should serve static files from src dir under /" do
     get "/base.js"
     last_response.status.should == 200
     last_response.content_type.should == "application/javascript"
