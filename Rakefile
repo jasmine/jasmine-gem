@@ -1,4 +1,6 @@
 $LOAD_PATH.unshift File.expand_path("#{File.dirname(__FILE__)}/lib")
+require "bundler"
+Bundler.setup
 
 require 'spec'
 require 'spec/rake/spectask'
@@ -9,18 +11,7 @@ Spec::Rake::SpecTask.new('spec') do |t|
 end
 
 namespace :jasmine do
-#  require 'jasmine'
   require 'spec/jasmine_self_test_config'
-
-#  desc "Run continuous integration tests"
-#  require "spec"
-#  require 'spec/rake/spectask'
-#  Spec::Rake::SpecTask.new(:ci) do |t|
-#    t.spec_opts = ["--color", "--format", "specdoc"]
-#    t.verbose = true
-#    t.spec_files = [JasmineHelper.meta_spec_path]
-#  end
-
   task :server do
     puts "your tests are here:"
     puts "  http://localhost:8888/"
@@ -40,7 +31,7 @@ namespace :jeweler do
   end
 
   begin
-    require 'jeweler'
+    require "jeweler"
     Jeweler::Tasks.new do |gemspec|
       gemspec.name = "jasmine"
       gemspec.summary = "Jasmine Ruby Runner"
