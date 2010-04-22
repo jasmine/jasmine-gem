@@ -1,6 +1,7 @@
 module Jasmine
   class Config
     require 'yaml'
+    require 'erb'
 
     def initialize(options = {})
       require 'selenium_rc'
@@ -93,7 +94,7 @@ module Jasmine
     end
 
     def simple_config
-      config = File.exist?(simple_config_file) ? File.open(simple_config_file) { |yf| YAML::load( yf ) } : false
+      config = File.exist?(simple_config_file) ? YAML::load(ERB.new(File.read(simple_config_file)).result(binding)) : false
       config || {}
     end
 
