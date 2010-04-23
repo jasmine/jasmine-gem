@@ -3,13 +3,16 @@ module Jasmine
     require 'yaml'
     require 'erb'
 
-    def initialize(options = {})
-      require 'selenium_rc'
-      @selenium_jar_path = SeleniumRC::Server.allocate.jar_path
+    def browser
+      ENV["JASMINE_BROWSER"] || 'firefox'
+    end
 
-      @browser = ENV["JASMINE_BROWSER"] || 'firefox'
-      @selenium_pid = nil
-      @jasmine_server_pid = nil
+    def jasmine_host
+      ENV["JASMINE_HOST"] || 'http://localhost'
+    end
+
+    def external_selenium_server_port
+      ENV['SELENIUM_SERVER_PORT'] && ENV['SELENIUM_SERVER_PORT'].to_i > 0 ? ENV['SELENIUM_SERVER_PORT'].to_i : nil
     end
 
     def start_server(port = 8888)
@@ -19,62 +22,37 @@ module Jasmine
 
     def start
       start_servers
-      @client = Jasmine::SeleniumDriver.new("localhost", @selenium_server_port, "*#{@browser}", "#{jasmine_host}:#{@jasmine_server_port}/")
+      @client = Jasmine::SeleniumDriver.new("localhost", @selenium_server_port, "*#{browser}", "#{jasmine_host}:#{@jasmine_server_port}/")
       @client.connect
     end
 
     def stop
       @client.disconnect
-      stop_servers
-    end
-
-    def jasmine_host
-      ENV["JASMINE_HOST"] || 'http://localhost'
     end
 
     def start_jasmine_server
       @jasmine_server_port = Jasmine::find_unused_port
-      @jasmine_server_pid = fork do
-        Process.setpgrp
+      Thread.new do
         start_server(@jasmine_server_port)
-        exit! 0
       end
-      puts "jasmine server started.  pid is #{@jasmine_server_pid}"
+      puts "jasmine server started."
       Jasmine::wait_for_listener(@jasmine_server_port, "jasmine server")
-    end
-
-    def external_selenium_server_port
-      ENV['SELENIUM_SERVER_PORT'] && ENV['SELENIUM_SERVER_PORT'].to_i > 0 ? ENV['SELENIUM_SERVER_PORT'].to_i : nil
     end
 
     def start_selenium_server
       @selenium_server_port = external_selenium_server_port
       if @selenium_server_port.nil?
         @selenium_server_port = Jasmine::find_unused_port
-        @selenium_pid = fork do
-          Process.setpgrp
-          exec "java -jar #{@selenium_jar_path} -port #{@selenium_server_port} > /dev/null 2>&1"
-        end
-        puts "selenium started.  pid is #{@selenium_pid}"
+        require 'selenium_rc'
+        SeleniumRC::Server.boot("localhost", @selenium_server_port, :args => ["> /dev/null 2>&1"])
+      else
+        Jasmine::wait_for_listener(@selenium_server_port, "selenium server")
       end
-      Jasmine::wait_for_listener(@selenium_server_port, "selenium server")
     end
 
     def start_servers
       start_jasmine_server
       start_selenium_server
-    end
-
-    def stop_servers
-      puts "shutting down the servers..."
-      Jasmine::kill_process_group(@selenium_pid) if @selenium_pid
-      if @jasmine_server_pid
-        if Rack::Handler.default == Rack::Handler::WEBrick
-          Jasmine::kill_process_group(@jasmine_server_pid, "INT")
-        else
-          Jasmine::kill_process_group(@jasmine_server_pid)
-        end
-      end
     end
 
     def run

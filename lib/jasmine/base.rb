@@ -44,10 +44,6 @@ module Jasmine
     end
   end
 
-  def self.kill_process_group(process_group_id, signal="TERM")
-    Process.kill signal, -process_group_id # negative pid means kill process group. (see man 2 kill)
-  end
-
   def self.cachebust(files, root_dir="", replace=nil, replace_with=nil)
     require 'digest/md5'
     files.collect do |file_name|

@@ -256,24 +256,4 @@ describe Jasmine::Config do
       config.start_selenium_server
     end
   end
-
-  describe "#stop_servers" do
-    it "should kill Selenium and Rack servers" do
-      Rack::Handler.stub!(:default).and_return("Not WEBrick")
-      config = Jasmine::Config.new
-      config.instance_variable_set(:@selenium_pid, 100)
-      config.instance_variable_set(:@jasmine_server_pid, 200)
-      Jasmine.should_receive(:kill_process_group).with(100)
-      Jasmine.should_receive(:kill_process_group).with(200)
-      config.stop_servers
-    end
-    
-    it "should send kill with SIGINT to WEBrick" do
-      Rack::Handler.stub!(:default).and_return(Rack::Handler::WEBrick)
-      config = Jasmine::Config.new
-      config.instance_variable_set(:@jasmine_server_pid, 100)
-      Jasmine.should_receive(:kill_process_group).with(100, "INT")
-      config.stop_servers
-    end
-  end
 end
