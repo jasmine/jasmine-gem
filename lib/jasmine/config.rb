@@ -14,7 +14,7 @@ module Jasmine
 
     def start_server(port = 8888)
       handler = Rack::Handler.default
-      handler.run Jasmine.app(self), :Port => port
+      handler.run Jasmine.app(self), :Port => port, :AccessLog => []
     end
 
     def start
