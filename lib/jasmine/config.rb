@@ -68,7 +68,13 @@ module Jasmine
     def stop_servers
       puts "shutting down the servers..."
       Jasmine::kill_process_group(@selenium_pid) if @selenium_pid
-      Jasmine::kill_process_group(@jasmine_server_pid) if @jasmine_server_pid
+      if @jasmine_server_pid
+        if Rack::Handler.default == Rack::Handler::WEBrick
+          Jasmine::kill_process_group(@jasmine_server_pid, "INT")
+        else
+          Jasmine::kill_process_group(@jasmine_server_pid)
+        end
+      end
     end
 
     def run
