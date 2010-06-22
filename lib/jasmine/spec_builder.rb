@@ -119,7 +119,7 @@ module Jasmine
       out = ""
       messages = spec_results['messages'].each do |message|
         case
-          when message["type"] == "MessageResult"
+          when message["type"] == "log"
             puts message["text"]
             puts "\n"
           else
