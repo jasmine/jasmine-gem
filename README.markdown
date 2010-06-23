@@ -1,7 +1,7 @@
-jasmine-ruby
+jasmine-gem
 ============
 
-Jasmine Ruby dynamically serves HTML suites for [Jasmine](http://github.com/pivotal/jasmine)
+Jasmine Gem dynamically serves HTML suites for [Jasmine](http://github.com/pivotal/jasmine)
 
 To use:
 
