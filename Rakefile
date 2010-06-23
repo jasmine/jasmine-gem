@@ -40,7 +40,17 @@ namespace :jeweler do
       gemspec.homepage = "http://github.com/pivotal/jasmine-ruby"
       gemspec.authors = ["Rajan Agaskar", "Christian Williams"]
       gemspec.executables = ["jasmine"]
-      gemspec.files = FileList.new('generators/**/**', 'lib/**/**', 'jasmine/lib/**', 'jasmine/contrib/ruby/**', 'tasks/**', 'templates/**')
+      gemspec.files = FileList.new(
+          'generators/**/**',
+          'lib/**/**',
+          'jasmine/lib/consolex.js',
+          'jasmine/lib/jasmine.css',
+          'jasmine/lib/jasmine.js',
+          'jasmine/lib/json2.js',
+          'jasmine/lib/TrivialReporter.js',
+          'tasks/**',
+          'templates/**'
+      )
       gemspec.add_dependency('rspec', '>= 1.1.5')
       gemspec.add_dependency('rack', '>= 1.0.0')
       gemspec.add_dependency('selenium-rc', '>=2.1.0')
