@@ -1,5 +1,8 @@
 Releasing Jasmine
 
+Add release notes here:
+  http://wiki.github.com/pivotal/jasmine/release-notes
+
 Jasmine core
 
 * update version.json with new version
