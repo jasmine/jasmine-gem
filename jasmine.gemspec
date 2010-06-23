@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
      "generators/jasmine/templates/spec/javascripts/support/jasmine_runner.rb",
      "jasmine/lib/TrivialReporter.js",
      "jasmine/lib/consolex.js",
-     "jasmine/lib/jasmine-0.10.4.js",
+     "jasmine/lib/jasmine.js",
      "jasmine/lib/jasmine.css",
      "jasmine/lib/json2.js",
      "lib/jasmine.rb",
