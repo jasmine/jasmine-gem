@@ -23,12 +23,15 @@ end
 desc "Run specs via server"
 task :jasmine => ['jasmine:server']
 
-
 namespace :jeweler do
 
   unless File.exists?('jasmine/lib')
     raise "Jasmine submodule isn't present.  Run git submodule update --init"
   end
+
+  # copy jasmine's example tree into our generator templates dir
+  FileUtils.rm_r('generators/jasmine/templates/jasmine-example')
+  FileUtils.cp_r('jasmine/example', 'generators/jasmine/templates/jasmine-example')
 
   begin
     require "jeweler"
@@ -43,11 +46,12 @@ namespace :jeweler do
       gemspec.files = FileList.new(
           'generators/**/**',
           'lib/**/**',
-          'jasmine/lib/consolex.js',
           'jasmine/lib/jasmine.css',
           'jasmine/lib/jasmine.js',
-          'jasmine/lib/json2.js',
-          'jasmine/lib/TrivialReporter.js',
+          'jasmine/lib/jasmine-html.js',
+          'jasmine/lib/consolex.js', # try to get rid of this
+          'jasmine/lib/json2.js',    # try to get rid of this
+          'jasmine/example/**',
           'tasks/**',
           'templates/**'
       )

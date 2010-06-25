@@ -36,17 +36,17 @@ describe Jasmine::Config do
         it "should return the correct files and mappings" do
           @config.src_files.should == []
           @config.stylesheets.should == []
-          @config.spec_files.should == ['ExampleSpec.js']
+          @config.spec_files.should == ['PlayerSpec.js']
           @config.helpers.should == ['helpers/SpecHelper.js']
           @config.js_files.should == [
             '/__spec__/helpers/SpecHelper.js',
-            '/__spec__/ExampleSpec.js',
+            '/__spec__/PlayerSpec.js',
           ]
-          @config.js_files("ExampleSpec.js").should ==
+          @config.js_files("PlayerSpec.js").should ==
             ['/__spec__/helpers/SpecHelper.js',
-             '/__spec__/ExampleSpec.js']
+             '/__spec__/PlayerSpec.js']
           @config.spec_files_full_paths.should == [
-            File.join(@template_dir, 'spec/javascripts/ExampleSpec.js'),
+            File.join(@template_dir, 'spec/javascripts/PlayerSpec.js'),
           ]
         end
       end
@@ -150,7 +150,7 @@ describe Jasmine::Config do
           end
         end
         @config.stub!(:simple_config_file).and_return(File.join(@template_dir, 'spec/javascripts/support/jasmine-rails.yml'))
-        @config.spec_files.should == ['ExampleSpec.js']
+        @config.spec_files.should == ['PlayerSpec.js']
         @config.helpers.should == ['helpers/SpecHelper.js']
         @config.src_files.should == ['public/javascripts/prototype.js',
                                      'public/javascripts/effects.js',
@@ -164,16 +164,16 @@ describe Jasmine::Config do
           '/public/javascripts/dragdrop.js',
           '/public/javascripts/application.js',
           '/__spec__/helpers/SpecHelper.js',
-          '/__spec__/ExampleSpec.js',
+          '/__spec__/PlayerSpec.js',
         ]
-        @config.js_files("ExampleSpec.js").should == [
+        @config.js_files("PlayerSpec.js").should == [
           '/public/javascripts/prototype.js',
           '/public/javascripts/effects.js',
           '/public/javascripts/controls.js',
           '/public/javascripts/dragdrop.js',
           '/public/javascripts/application.js',
           '/__spec__/helpers/SpecHelper.js',
-          '/__spec__/ExampleSpec.js'
+          '/__spec__/PlayerSpec.js'
         ]
 
       end

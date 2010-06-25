@@ -2,11 +2,15 @@ class JasmineGenerator < Rails::Generator::Base
   def manifest
     record do |m|
 
+      m.directory "public/javascripts"
+      m.file "jasmine-example/src/Player.js", "public/javascripts/Player.js"
+      m.file "jasmine-example/src/Song.js", "public/javascripts/Song.js"
+
       m.directory "spec/javascripts"
-      m.file "spec/javascripts/ExampleSpec.js", "spec/javascripts/ExampleSpec.js"
+      m.file "jasmine-example/spec/PlayerSpec.js", "spec/javascripts/PlayerSpec.js"
 
       m.directory "spec/javascripts/helpers"
-      m.file "spec/javascripts/helpers/SpecHelper.js", "spec/javascripts/helpers/SpecHelper.js"
+      m.file "jasmine-example/spec/SpecHelper.js", "spec/javascripts/helpers/SpecHelper.js"
 
       m.directory "spec/javascripts/support"
       m.file "spec/javascripts/support/jasmine_runner.rb", "spec/javascripts/support/jasmine_runner.rb"

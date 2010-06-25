@@ -16,6 +16,7 @@ src_files:
   - public/javascripts/controls.js
   - public/javascripts/dragdrop.js
   - public/javascripts/application.js
+  - public/javascripts/**/*.js
 
 # stylesheets
 #

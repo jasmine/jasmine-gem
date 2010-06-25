@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Rajan Agaskar", "Christian Williams"]
-  s.date = %q{2010-06-23}
+  s.date = %q{2010-06-25}
   s.default_executable = %q{jasmine}
   s.description = %q{Javascript BDD test framework}
   s.email = %q{ragaskar@gmail.com}
@@ -20,14 +20,18 @@ Gem::Specification.new do |s|
   s.files = [
     "generators/jasmine/jasmine_generator.rb",
      "generators/jasmine/templates/INSTALL",
+     "generators/jasmine/templates/jasmine-example/SpecRunner.html",
+     "generators/jasmine/templates/jasmine-example/spec/PlayerSpec.js",
+     "generators/jasmine/templates/jasmine-example/spec/SpecHelper.js",
+     "generators/jasmine/templates/jasmine-example/src/Player.js",
+     "generators/jasmine/templates/jasmine-example/src/Song.js",
      "generators/jasmine/templates/lib/tasks/jasmine.rake",
-     "generators/jasmine/templates/spec/javascripts/ExampleSpec.js",
-     "generators/jasmine/templates/spec/javascripts/helpers/SpecHelper.js",
      "generators/jasmine/templates/spec/javascripts/support/jasmine-rails.yml",
      "generators/jasmine/templates/spec/javascripts/support/jasmine.yml",
      "generators/jasmine/templates/spec/javascripts/support/jasmine_runner.rb",
-     "jasmine/lib/TrivialReporter.js",
+     "jasmine/example/SpecRunner.html",
      "jasmine/lib/consolex.js",
+     "jasmine/lib/jasmine-html.js",
      "jasmine/lib/jasmine.css",
      "jasmine/lib/jasmine.js",
      "jasmine/lib/json2.js",

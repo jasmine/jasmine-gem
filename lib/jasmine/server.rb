@@ -29,8 +29,8 @@ module Jasmine
     def initialize(config)
       @config = config
       @jasmine_files = [
-        "/__JASMINE_ROOT__/lib/" + File.basename(Dir.glob("#{Jasmine.root}/lib/jasmine*.js").first),
-        "/__JASMINE_ROOT__/lib/TrivialReporter.js",
+        "/__JASMINE_ROOT__/lib/jasmine.js",
+        "/__JASMINE_ROOT__/lib/jasmine-html.js",
         "/__JASMINE_ROOT__/lib/json2.js",
         "/__JASMINE_ROOT__/lib/consolex.js",
       ]
