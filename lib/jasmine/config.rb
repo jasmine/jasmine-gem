@@ -95,7 +95,8 @@ module Jasmine
     def match_files(dir, patterns)
       dir = File.expand_path(dir)
       patterns.collect do |pattern|
-        Dir.glob(File.join(dir, pattern)).collect {|f| f.sub("#{dir}/", "")}.sort
+        matches = Dir.glob(File.join(dir, pattern))
+        matches.collect {|f| f.sub("#{dir}/", "")}.sort
       end.flatten.uniq
     end
 
@@ -114,7 +115,7 @@ module Jasmine
     end
 
     def js_files(spec_filter = nil)
-      spec_files_to_include = spec_filter.nil? ? spec_files : match_files(spec_dir, spec_filter)
+      spec_files_to_include = spec_filter.nil? ? spec_files : match_files(spec_dir, [spec_filter])
       src_files.collect {|f| "/" + f } + helpers.collect {|f| File.join(spec_path, f) } + spec_files_to_include.collect {|f| File.join(spec_path, f) }
     end
 
@@ -151,35 +152,35 @@ module Jasmine
     end
 
     def helpers
-      files = match_files(spec_dir, "helpers/**/*.js")
       if simple_config['helpers']
-        files = match_files(spec_dir, simple_config['helpers'])
+        match_files(spec_dir, simple_config['helpers'])
+      else
+        match_files(spec_dir, ["helpers/**/*.js"])
       end
-      files
     end
 
     def src_files
-      files = []
       if simple_config['src_files']
-        files = match_files(src_dir, simple_config['src_files'])
+        match_files(src_dir, simple_config['src_files'])
+      else
+        []
       end
-      files
     end
 
     def spec_files
-      files = match_files(spec_dir, "**/*[sS]pec.js")
       if simple_config['spec_files']
-        files = match_files(spec_dir, simple_config['spec_files'])
+        match_files(spec_dir, simple_config['spec_files'])
+      else
+        match_files(spec_dir, ["**/*[sS]pec.js"])
       end
-      files
     end
 
     def stylesheets
-      files = []
       if simple_config['stylesheets']
-        files = match_files(src_dir, simple_config['stylesheets'])
+        match_files(src_dir, simple_config['stylesheets'])
+      else
+        []
       end
-      files
     end
 
   end
