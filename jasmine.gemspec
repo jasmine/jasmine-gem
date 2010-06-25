@@ -37,11 +37,13 @@ Gem::Specification.new do |s|
      "jasmine/lib/json2.js",
      "lib/jasmine.rb",
      "lib/jasmine/base.rb",
+     "lib/jasmine/command_line_tool.rb",
      "lib/jasmine/config.rb",
      "lib/jasmine/run.html.erb",
      "lib/jasmine/selenium_driver.rb",
      "lib/jasmine/server.rb",
-     "lib/jasmine/spec_builder.rb"
+     "lib/jasmine/spec_builder.rb",
+     "lib/jasmine/tasks/jasmine.rake"
   ]
   s.homepage = %q{http://github.com/pivotal/jasmine-ruby}
   s.rdoc_options = ["--charset=UTF-8"]
@@ -50,8 +52,10 @@ Gem::Specification.new do |s|
   s.summary = %q{Jasmine Ruby Runner}
   s.test_files = [
     "spec/config_spec.rb",
+     "spec/jasmine_command_line_tool_spec.rb",
      "spec/jasmine_self_test_config.rb",
      "spec/jasmine_self_test_spec.rb",
+     "spec/rails_generator_spec.rb",
      "spec/server_spec.rb",
      "spec/spec_helper.rb"
   ]
