@@ -32,7 +32,6 @@ module Jasmine
         "/__JASMINE_ROOT__/lib/jasmine.js",
         "/__JASMINE_ROOT__/lib/jasmine-html.js",
         "/__JASMINE_ROOT__/lib/json2.js",
-        "/__JASMINE_ROOT__/lib/consolex.js",
       ]
       @jasmine_stylesheets = ["/__JASMINE_ROOT__/lib/jasmine.css"]
     end

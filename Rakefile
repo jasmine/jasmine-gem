@@ -49,7 +49,6 @@ namespace :jeweler do
           'jasmine/lib/jasmine.css',
           'jasmine/lib/jasmine.js',
           'jasmine/lib/jasmine-html.js',
-          'jasmine/lib/consolex.js', # try to get rid of this
           'jasmine/lib/json2.js',    # try to get rid of this
           'jasmine/example/**',
           'tasks/**',

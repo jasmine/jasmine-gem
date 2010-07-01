@@ -30,7 +30,6 @@ Gem::Specification.new do |s|
      "generators/jasmine/templates/spec/javascripts/support/jasmine.yml",
      "generators/jasmine/templates/spec/javascripts/support/jasmine_runner.rb",
      "jasmine/example/SpecRunner.html",
-     "jasmine/lib/consolex.js",
      "jasmine/lib/jasmine-html.js",
      "jasmine/lib/jasmine.css",
      "jasmine/lib/jasmine.js",
