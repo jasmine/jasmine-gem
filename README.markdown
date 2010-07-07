@@ -9,11 +9,15 @@ To use:
 
 Post-installation:
 
-For Rails support, use
+For Rails2 support, use
 
 `script/generate jasmine`
 
-For other projects, use
+For Rails3 support, use
+
+`bundle exec jasmine init`
+
+For other Ruby projects (including Merb), use
 
 `jasmine init`
 
@@ -27,7 +31,7 @@ You may also
 
 `rake jasmine:ci`
 
-which will run your Jasmine suites using selenium and rspec. This task is suitable for running in continuous integration environments.
+which will run your Jasmine suites using selenium and rspec. This task is suitable for running in continuous integration environments.  There is currently a known issue using this rake task with RSpec2 beta.
 
 Simple Configuration:
 
