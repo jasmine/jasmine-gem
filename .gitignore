@@ -6,3 +6,4 @@ bin
 .bundle
 .DS_Store
 jasmine-example/
+.rvmrc
