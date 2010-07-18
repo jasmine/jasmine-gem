@@ -58,7 +58,7 @@ namespace :jeweler do
       gemspec.add_dependency('rack', '>= 1.0.0')
       gemspec.add_dependency('selenium-rc', '>=2.1.0')
       gemspec.add_dependency('selenium-client', '>=1.2.17')
-      gemspec.add_dependency('json', '>=1.4.3')
+      gemspec.add_dependency('json_pure', '>=1.4.3')
     end
     Jeweler::GemcutterTasks.new
   end
