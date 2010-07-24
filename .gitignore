@@ -7,3 +7,4 @@ bin
 .DS_Store
 jasmine-example/
 .rvmrc
+.pairs
