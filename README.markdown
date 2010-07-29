@@ -1,11 +1,11 @@
 jasmine-gem
 ============
 
-Jasmine Gem dynamically serves HTML suites for [Jasmine](http://github.com/pivotal/jasmine)
+Jasmine Gem dynamically serves and runs suites for [Jasmine](http://github.com/pivotal/jasmine).
 
 To use:
 
-`(sudo) gem install jasmine`
+`gem install jasmine`
 
 Post-installation:
 
