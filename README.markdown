@@ -40,4 +40,4 @@ You may use dir glob strings.
 
 It is also possible to add overrides into the `spec/javascripts/support/jasmine_config.rb` file directly if you require further customization.
 
-Copyright (c) 2010 Pivotal Labs. This software is licensed under the MIT License.
+Copyright (c) 2008-2010 Pivotal Labs. This software is licensed under the MIT License.
