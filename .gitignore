@@ -8,3 +8,4 @@ bin
 jasmine-example/
 .rvmrc
 .pairs
+*.swp
