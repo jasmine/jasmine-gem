@@ -1,11 +1,11 @@
 jasmine-gem
 ============
 
-Jasmine Gem dynamically serves HTML suites for [Jasmine](http://github.com/pivotal/jasmine)
+Jasmine Gem dynamically serves and runs suites for [Jasmine](http://github.com/pivotal/jasmine).
 
 To use:
 
-`(sudo) gem install jasmine`
+`gem install jasmine`
 
 Post-installation:
 
@@ -39,3 +39,5 @@ Customize `spec/javascripts/support/jasmine.yml` to enumerate the source files, 
 You may use dir glob strings.
 
 It is also possible to add overrides into the `spec/javascripts/support/jasmine_config.rb` file directly if you require further customization.
+
+Copyright (c) 2008-2010 Pivotal Labs. This software is licensed under the MIT License.
