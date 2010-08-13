@@ -37,10 +37,10 @@ namespace :jeweler do
     require "jeweler"
     Jeweler::Tasks.new do |gemspec|
       gemspec.name = "jasmine"
-      gemspec.summary = "Jasmine Ruby Runner"
+      gemspec.summary = "Jasmine Runner for Ruby"
       gemspec.description = "Javascript BDD test framework"
       gemspec.email = "ragaskar@gmail.com"
-      gemspec.homepage = "http://github.com/pivotal/jasmine-ruby"
+      gemspec.homepage = "http://pivotal.github.com/jasmine"
       gemspec.authors = ["Rajan Agaskar", "Christian Williams"]
       gemspec.executables = ["jasmine"]
       gemspec.files = FileList.new(
