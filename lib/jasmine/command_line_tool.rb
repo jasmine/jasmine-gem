@@ -51,7 +51,7 @@ module Jasmine
           require 'rake'
           unless Rake::Task.task_defined?('jasmine')
             File.open(dest_path('Rakefile'), write_mode) do |f|
-              f.write(File.read(template_path('lib/tasks/jasmine.rake')))
+              f.write("\n" + File.read(template_path('lib/tasks/jasmine.rake')))
             end
           end
         end
