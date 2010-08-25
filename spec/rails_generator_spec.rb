@@ -11,12 +11,13 @@ describe "Jasmine rails generator" do
   end
 
   it "should create files on init" do
-    system 'rails rails-project'
+    `rails rails-project`
     Dir::chdir 'rails-project'
 
     FileUtils.cp_r(File.join(@root, 'generators'), 'vendor')
 
-    system "./script/generate jasmine"
+    output = `./script/generate jasmine`
+    output.should =~ /Jasmine has been installed with example specs./
 
     bootstrap = "$:.unshift('#{@root}/lib')"
     ENV['JASMINE_GEM_PATH'] = "#{@root}/lib"

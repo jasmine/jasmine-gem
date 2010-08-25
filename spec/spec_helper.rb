@@ -1,5 +1,6 @@
 require "rubygems"
 require "bundler"
+require 'stringio'
 
 Bundler.setup(:default, :test)
 
@@ -25,4 +26,15 @@ end
 def temp_dir_after
   Dir::chdir @old_dir
   FileUtils.rm_r @tmp
+end
+
+module Kernel
+  def capture_stdout
+    out = StringIO.new
+    $stdout = out
+    yield
+    return out.string
+  ensure
+    $stdout = STDOUT
+  end
 end
