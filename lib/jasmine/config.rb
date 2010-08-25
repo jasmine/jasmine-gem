@@ -45,7 +45,7 @@ module Jasmine
         @selenium_server_port = Jasmine::find_unused_port
         require 'selenium_rc'
         SeleniumRC::Server.send(:include, SeleniumServerForkHackForRSpec)
-        SeleniumRC::Server.boot("localhost", @selenium_server_port)
+        SeleniumRC::Server.boot("localhost", @selenium_server_port, :args => ["> /dev/null"])
       else
         Jasmine::wait_for_listener(@selenium_server_port, "selenium server")
       end
