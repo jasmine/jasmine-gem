@@ -8,12 +8,12 @@ describe Jasmine::Config do
       temp_dir_before
 
       Dir::chdir @tmp
-      system 'rails rails-project'
+      `rails rails-project`
       Dir::chdir 'rails-project'
 
       FileUtils.cp_r(File.join(@root, 'generators'), 'vendor')
 
-      system "./script/generate jasmine"
+      `./script/generate jasmine`
 
       Dir::chdir @old_dir
 
