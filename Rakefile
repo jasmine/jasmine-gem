@@ -39,7 +39,7 @@ namespace :jeweler do
       gemspec.name = "jasmine"
       gemspec.summary = "Jasmine Runner for Ruby"
       gemspec.description = "Javascript BDD test framework"
-      gemspec.email = "ragaskar@gmail.com"
+      gemspec.email = "jasmine-js@googlegroups.com"
       gemspec.homepage = "http://pivotal.github.com/jasmine"
       gemspec.authors = ["Rajan Agaskar", "Christian Williams"]
       gemspec.executables = ["jasmine"]
