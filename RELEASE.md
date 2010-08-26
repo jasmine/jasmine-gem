@@ -6,20 +6,20 @@ Add release notes here:
 Jasmine core
 
 * update version.json with new version
-* sudo gem install ragaskar-jsdoc_helper
 * rake jasmine:dist
 * commit, tag, and push
-** git push
-** git tag -a x.x.x-release
-** git push --tags
-** upload lib/jasmine-x.x.x.js to github
+* * git push
+* * git tag -a x.x.x-release
+* * git push --tags
 
 Jasmine Gem
-* rake jeweler:version:bump:major/minor/patch
+
+* rake jeweler:version:bump:(major/minor/patch)
 * sudo rake jeweler:install and try stuff out
-** (jasmine init and script/generate jasmine) 
+* * (jasmine init and script/generate jasmine)
 * commit, tag, and push
-** git push
-** git tag -a x.x.x.x-release
-** git push --tags
+* * git push
+* * git tag -a x.x.x.x-release
+* * git push --tags
 * rake jeweler:release
+* rake site
