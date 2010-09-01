@@ -69,14 +69,14 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<rack>, [">= 1.0.0"])
       s.add_runtime_dependency(%q<selenium-rc>, [">= 2.1.0"])
       s.add_runtime_dependency(%q<selenium-client>, [">= 1.2.17"])
-      s.add_runtime_dependency(%q<json_pure>, [">= 1.4.3"])
+      s.add_runtime_dependency(%q<multi_json>, [">= 0.0.4"])
     else
       s.add_dependency(%q<rake>, [">= 0.8.7"])
       s.add_dependency(%q<rspec>, [">= 1.1.5"])
       s.add_dependency(%q<rack>, [">= 1.0.0"])
       s.add_dependency(%q<selenium-rc>, [">= 2.1.0"])
       s.add_dependency(%q<selenium-client>, [">= 1.2.17"])
-      s.add_dependency(%q<json_pure>, [">= 1.4.3"])
+      s.add_dependency(%q<multi_json>, [">= 0.0.4"])
     end
   else
     s.add_dependency(%q<rake>, [">= 0.8.7"])
@@ -84,7 +84,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<rack>, [">= 1.0.0"])
     s.add_dependency(%q<selenium-rc>, [">= 2.1.0"])
     s.add_dependency(%q<selenium-client>, [">= 1.2.17"])
-    s.add_dependency(%q<json_pure>, [">= 1.4.3"])
+    s.add_dependency(%q<multi_json>, [">= 0.0.4"])
   end
 end
 

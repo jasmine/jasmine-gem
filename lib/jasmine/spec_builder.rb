@@ -69,7 +69,7 @@ module Jasmine
     def load_results
       @spec_results = {}
       @spec_ids.each_slice(50) do |slice|
-        @spec_results.merge!(eval_js("var result = jsApiReporter.resultsForSpecs(#{JSON.generate(slice)}); if (window.Prototype && Object.toJSON) { Object.toJSON(result) } else { JSON.stringify(result) }"))
+        @spec_results.merge!(eval_js("var result = jsApiReporter.resultsForSpecs(#{MultiJson.encode(slice)}); if (window.Prototype && Object.toJSON) { Object.toJSON(result) } else { JSON.stringify(result) }"))
       end
       @spec_results
     end

@@ -7,6 +7,8 @@ To use:
 
 `gem install jasmine`
 
+You also need a JSON parser - `json`, `json_pure`, `yajl-ruby` or `ActiveSupport::JSON` (any of them will do).
+
 Post-installation:
 
 For Rails2 support, use

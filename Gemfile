@@ -5,7 +5,7 @@ gem "jeweler", "1.4.0"
 gem "gemcutter", "0.5.0"
 
 group :test do
-  gem "json_pure", "~>1.4.3"
+  gem "multi_json", ">= 0.0.4"
   gem "rspec", "1.3.0"
   gem "rack", "~>1.0.0"
   gem "rack-test", :require => "rack/test"

@@ -1,6 +1,6 @@
 require 'socket'
 require 'erb'
-require 'json/pure'
+require 'multi_json'
 
 module Jasmine
   def self.root

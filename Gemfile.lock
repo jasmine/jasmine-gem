@@ -19,6 +19,7 @@ GEM
       git (>= 1.2.5)
       rubyforge (>= 2.0.0)
     json_pure (1.4.6)
+    multi_json (0.0.4)
     rack (1.0.1)
     rack-test (0.5.4)
       rack (>= 1.0)
@@ -43,7 +44,7 @@ PLATFORMS
 DEPENDENCIES
   gemcutter (= 0.5.0)
   jeweler (= 1.4.0)
-  json_pure (~> 1.4.3)
+  multi_json (>= 0.0.4)
   rack (~> 1.0.0)
   rack-test
   rails (~> 2.3.5)
