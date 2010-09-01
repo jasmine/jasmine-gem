@@ -1,83 +1,53 @@
---- 
-dependencies: 
-  rails: 
-    group: 
-    - :test
-    version: ~> 2.3.5
-  rake: 
-    group: 
-    - :default
-    version: = 0.8.7
-  rspec: 
-    group: 
-    - :test
-    version: = 1.3.0
-  rack: 
-    group: 
-    - :test
-    version: ~> 1.0.0
-  gemcutter: 
-    group: 
-    - :default
-    version: = 0.5.0
-  selenium-rc: 
-    group: 
-    - :test
-    version: = 2.2.1
-  jeweler: 
-    group: 
-    - :default
-    version: = 1.4.0
-  json_pure: 
-    group: 
-    - :test
-    version: ~> 1.4.3
-  rack-test: 
-    group: 
-    - :test
-    version: ">= 0"
-    require: 
-    - rack/test
-  selenium-client: 
-    group: 
-    - :test
-    version: = 1.2.18
-specs: 
-- rake: 
-    version: 0.8.7
-- activesupport: 
-    version: 2.3.5
-- rack: 
-    version: 1.0.1
-- actionpack: 
-    version: 2.3.5
-- actionmailer: 
-    version: 2.3.5
-- activerecord: 
-    version: 2.3.5
-- activeresource: 
-    version: 2.3.5
-- json_pure: 
-    version: 1.4.3
-- gemcutter: 
-    version: 0.5.0
-- git: 
-    version: 1.2.5
-- rubyforge: 
-    version: 2.0.4
-- jeweler: 
-    version: 1.4.0
-- rack-test: 
-    version: 0.5.4
-- rails: 
-    version: 2.3.5
-- rspec: 
-    version: 1.3.0
-- selenium-client: 
-    version: 1.2.18
-- selenium-rc: 
-    version: 2.2.1
-hash: 3e5ea744ddd58bc52e66770b66f0dbdf57a44fee
-sources: 
-- Rubygems: 
-    uri: http://gemcutter.org
+GEM
+  remote: http://rubygems.org/
+  specs:
+    actionmailer (2.3.5)
+      actionpack (= 2.3.5)
+    actionpack (2.3.5)
+      activesupport (= 2.3.5)
+      rack (~> 1.0.0)
+    activerecord (2.3.5)
+      activesupport (= 2.3.5)
+    activeresource (2.3.5)
+      activesupport (= 2.3.5)
+    activesupport (2.3.5)
+    gemcutter (0.5.0)
+      json_pure
+    git (1.2.5)
+    jeweler (1.4.0)
+      gemcutter (>= 0.1.0)
+      git (>= 1.2.5)
+      rubyforge (>= 2.0.0)
+    json_pure (1.4.6)
+    rack (1.0.1)
+    rack-test (0.5.4)
+      rack (>= 1.0)
+    rails (2.3.5)
+      actionmailer (= 2.3.5)
+      actionpack (= 2.3.5)
+      activerecord (= 2.3.5)
+      activeresource (= 2.3.5)
+      activesupport (= 2.3.5)
+      rake (>= 0.8.3)
+    rake (0.8.7)
+    rspec (1.3.0)
+    rubyforge (2.0.4)
+      json_pure (>= 1.1.7)
+    selenium-client (1.2.18)
+    selenium-rc (2.2.1)
+      selenium-client (>= 1.2.18)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  gemcutter (= 0.5.0)
+  jeweler (= 1.4.0)
+  json_pure (~> 1.4.3)
+  rack (~> 1.0.0)
+  rack-test
+  rails (~> 2.3.5)
+  rake (= 0.8.7)
+  rspec (= 1.3.0)
+  selenium-client (= 1.2.18)
+  selenium-rc (= 2.2.1)
