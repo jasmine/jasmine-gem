@@ -6,7 +6,8 @@ Jasmine core
 
 * update version.json with new version
 * rake jasmine:dist
-* commit, tag, and push
+* add pages/downloads/*.zip
+* commit, tag, and push both jasmine/pages and jasmine
 * * git push
 * * git tag -a x.x.x-release
 * * git push --tags
