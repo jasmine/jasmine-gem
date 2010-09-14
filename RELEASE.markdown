@@ -1,7 +1,6 @@
 Releasing Jasmine
 
-Add release notes here:
-  http://wiki.github.com/pivotal/jasmine/release-notes
+Add release notes to gh-pages branch /release-notes.html.markdown
 
 Jasmine core
 
