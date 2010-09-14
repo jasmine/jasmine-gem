@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{jasmine}
-  s.version = "1.0.0.rc1"
+  s.version = "1.0.0"
 
-  s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
+  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Rajan Agaskar", "Christian Williams"]
-  s.date = %q{2010-08-26}
+  s.date = %q{2010-09-14}
   s.default_executable = %q{jasmine}
   s.description = %q{Javascript BDD test framework}
   s.email = %q{jasmine-js@googlegroups.com}
@@ -47,7 +47,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://pivotal.github.com/jasmine}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
-  s.rubygems_version = %q{1.3.7}
+  s.rubygems_version = %q{1.3.6}
   s.summary = %q{Jasmine Runner for Ruby}
   s.test_files = [
     "spec/config_spec.rb",
@@ -63,7 +63,7 @@ Gem::Specification.new do |s|
     current_version = Gem::Specification::CURRENT_SPECIFICATION_VERSION
     s.specification_version = 3
 
-    if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
+    if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<rake>, [">= 0.8.7"])
       s.add_runtime_dependency(%q<rspec>, [">= 1.1.5"])
       s.add_runtime_dependency(%q<rack>, [">= 1.0.0"])

@@ -15,7 +15,7 @@ Jasmine core
 Jasmine Gem
 
 * rake jeweler:version:bump:(major/minor/patch)
-* sudo rake jeweler:install and try stuff out
+* rake jeweler:install and try stuff out
 * * (jasmine init and script/generate jasmine)
 * commit, tag, and push
 * * git push
