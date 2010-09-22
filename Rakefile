@@ -18,21 +18,23 @@ namespace :jasmine do
 
     JasmineSelfTestConfig.new.start_server
   end
+
+  desc "Copy examples from Jasmine JS to the gem"
+  task :copy_examples_to_gem do
+    unless File.exists?('jasmine/lib')
+      raise "Jasmine submodule isn't present.  Run git submodule update --init"
+    end
+
+    # copy jasmine's example tree into our generator templates dir
+    FileUtils.rm_r('generators/jasmine/templates/jasmine-example', :force => true)
+    FileUtils.cp_r('jasmine/example', 'generators/jasmine/templates/jasmine-example', :preserve => true)
+  end
 end
 
 desc "Run specs via server"
 task :jasmine => ['jasmine:server']
 
 namespace :jeweler do
-
-  unless File.exists?('jasmine/lib')
-    raise "Jasmine submodule isn't present.  Run git submodule update --init"
-  end
-
-  # copy jasmine's example tree into our generator templates dir
-  FileUtils.rm_r('generators/jasmine/templates/jasmine-example', :force => true)
-  FileUtils.cp_r('jasmine/example', 'generators/jasmine/templates/jasmine-example', :preserve => true)
-
   begin
     require "jeweler"
     Jeweler::Tasks.new do |gemspec|
@@ -43,7 +45,18 @@ namespace :jeweler do
       gemspec.homepage = "http://pivotal.github.com/jasmine"
       gemspec.authors = ["Rajan Agaskar", "Christian Williams"]
       gemspec.executables = ["jasmine"]
-      gemspec.files = FileList.new(
+      gemspec.add_dependency('rake', '>= 0.8.7')
+      gemspec.add_dependency('rspec', '>= 1.1.5')
+      gemspec.add_dependency('rack', '>= 1.0.0')
+      gemspec.add_dependency('selenium-rc', '>=2.1.0')
+      gemspec.add_dependency('selenium-client', '>=1.2.17')
+      gemspec.add_dependency('json_pure', '>=1.4.3')
+    end
+    Jeweler::GemcutterTasks.new
+  end
+
+  task :setup_filelist do
+    Rake.application.jeweler_tasks.gemspec.files = FileList.new(
           'generators/**/**',
           'lib/**/**',
           'jasmine/lib/jasmine.css',
@@ -54,13 +67,7 @@ namespace :jeweler do
           'tasks/**',
           'templates/**'
       )
-      gemspec.add_dependency('rake', '>= 0.8.7')
-      gemspec.add_dependency('rspec', '>= 1.1.5')
-      gemspec.add_dependency('rack', '>= 1.0.0')
-      gemspec.add_dependency('selenium-rc', '>=2.1.0')
-      gemspec.add_dependency('selenium-client', '>=1.2.17')
-      gemspec.add_dependency('json_pure', '>=1.4.3')
-    end
-    Jeweler::GemcutterTasks.new
   end
 end
+
+Rake.application["jeweler:gemspec"].prerequisites.unshift("jeweler:setup_filelist").unshift("jasmine:copy_examples_to_gem")
