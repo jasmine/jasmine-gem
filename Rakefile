@@ -9,6 +9,9 @@ desc "Run all examples"
 Spec::Rake::SpecTask.new('spec') do |t|
   t.spec_files = FileList['spec/**/*.rb']
 end
+task :spec => 'jasmine:copy_examples_to_gem'
+
+task :default => :spec
 
 namespace :jasmine do
   require 'spec/jasmine_self_test_config'
