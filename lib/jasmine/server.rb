@@ -58,7 +58,7 @@ module Jasmine
       [
         200,
         { 'Content-Type' => 'text/html' },
-        body
+        [body]
       ]
     end
   end

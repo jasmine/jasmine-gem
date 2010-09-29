@@ -14,7 +14,7 @@ task :spec => 'jasmine:copy_examples_to_gem'
 task :default => :spec
 
 namespace :jasmine do
-  require 'spec/jasmine_self_test_config'
+  require './spec/jasmine_self_test_config'
   task :server do
     puts "your tests are here:"
     puts "  http://localhost:8888/"
