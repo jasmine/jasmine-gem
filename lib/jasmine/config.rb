@@ -41,7 +41,7 @@ module Jasmine
 
     def windows?
       require 'rbconfig'
-      ::Config::CONFIG['host_os'] =~ /mswin|mingw/
+      ::RbConfig::CONFIG['host_os'] =~ /mswin|mingw/
     end
 
     def start_selenium_server
