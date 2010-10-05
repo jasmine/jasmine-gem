@@ -41,7 +41,7 @@ namespace :jeweler do
       gemspec.description = "Javascript BDD test framework"
       gemspec.email = "jasmine-js@googlegroups.com"
       gemspec.homepage = "http://pivotal.github.com/jasmine"
-      gemspec.authors = ["Rajan Agaskar", "Christian Williams"]
+      gemspec.authors = ["Rajan Agaskar", "Christian Williams", "Davis Frank"]
       gemspec.executables = ["jasmine"]
       gemspec.add_dependency('rake', '>= 0.8.7')
       gemspec.add_dependency('rspec', '>= 1.1.5')
