@@ -2,6 +2,7 @@ module Jasmine
   class SeleniumDriver
     def initialize(selenium_host, selenium_port, selenium_browser_start_command, http_address)
       require 'selenium/client'
+			require 'json/pure'
       @driver = Selenium::Client::Driver.new(
         selenium_host,
         selenium_port,
@@ -39,6 +40,10 @@ module Jasmine
 
       result = @driver.get_eval("try { eval(#{escaped_script}, window); } catch(err) { window.eval(#{escaped_script}); }")
       JSON.parse("{\"result\":#{result}}")["result"]
-    end
+		end
+
+		def json_generate(obj)
+			JSON.generate(obj)
+		end
   end
 end
