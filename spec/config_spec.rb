@@ -74,7 +74,7 @@ describe Jasmine::Config do
       it "should parse ERB" do
         @config.stub!(:simple_config_file).and_return(File.expand_path(File.join(File.dirname(__FILE__), 'fixture/jasmine.erb.yml')))
         Dir.stub!(:glob).and_return do |glob_string|
-          glob_string
+          Array(glob_string)
         end
         @config.src_files.should == [
           'file0.js',
@@ -111,9 +111,9 @@ describe Jasmine::Config do
       describe "should use the first appearance of duplicate filenames" do
         before(:each) do
           Dir.stub!(:glob).and_return do |glob_string|
-            glob_string
+            Array(glob_string)
           end
-          fake_config = Hash.new.stub!(:[]).and_return(["file1.ext", "file2.ext", "file1.ext"])
+          fake_config = Hash.new.stub!(:[]).and_return {|key| ["file1.ext", "file2.ext", "file1.ext"] }
           @config.stub!(:simple_config).and_return(fake_config)
         end
 
@@ -155,7 +155,7 @@ describe Jasmine::Config do
         @config.stub!(:simple_config_file).and_return(File.join(@template_dir, 'spec/javascripts/support/jasmine.yml'))
         YAML.stub!(:load).and_return({'stylesheets' => ['foo.css', 'bar.css']})
         Dir.stub!(:glob).and_return do |glob_string|
-          glob_string
+          Array(glob_string)
         end
         @config.stylesheets.should == ['foo.css', 'bar.css']
       end

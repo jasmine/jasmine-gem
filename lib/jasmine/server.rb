@@ -58,7 +58,7 @@ module Jasmine
       [
         200,
         { 'Content-Type' => 'text/html' },
-        body
+        [body]
       ]
     end
   end
@@ -82,7 +82,7 @@ module Jasmine
       [
         200,
         { 'Content-Type' => 'application/javascript' },
-        "document.write('<p>Couldn\\'t load #{env["PATH_INFO"]}!</p>');"
+        ["document.write('<p>Couldn\\'t load #{env["PATH_INFO"]}!</p>');"]
       ]
     end
   end
