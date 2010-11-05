@@ -41,5 +41,9 @@ module Jasmine
       result = @driver.get_eval("try { eval(#{escaped_script}, window); } catch(err) { window.eval(#{escaped_script}); }")
       JSON.parse("{\"result\":#{result}}")["result"]
     end
+
+    def json_generate(obj)
+      JSON.generate(obj)
+    end
   end
 end

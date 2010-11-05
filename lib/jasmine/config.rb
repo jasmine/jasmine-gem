@@ -76,6 +76,10 @@ module Jasmine
       @client.eval_js(script)
     end
 
+    def json_generate(obj)
+      @client.json_generate(obj)
+    end
+
     def match_files(dir, patterns)
       dir = File.expand_path(dir)
       patterns.collect do |pattern|
