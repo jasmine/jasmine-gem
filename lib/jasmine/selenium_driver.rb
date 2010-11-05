@@ -1,7 +1,7 @@
 module Jasmine
   class SeleniumDriver
     def initialize(selenium_host, selenium_port, selenium_browser_start_command, http_address)
-      require 'json/pure'
+      require 'json/pure' unless defined?(JSON)
       require 'selenium/client'
       @driver = Selenium::Client::Driver.new(
         selenium_host,
