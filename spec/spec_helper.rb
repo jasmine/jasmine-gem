@@ -1,6 +1,7 @@
 require "rubygems"
 require "bundler"
 require 'stringio'
+require 'tmpdir'
 
 Bundler.setup(:default, :test)
 
