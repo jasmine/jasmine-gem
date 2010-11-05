@@ -109,7 +109,7 @@ describe Jasmine::Config do
       describe "should use the first appearance of duplicate filenames" do
         before(:each) do
           Dir.stub!(:glob).and_return { |glob_string| [glob_string] }
-          fake_config = Hash.new.stub!(:[]).and_return(["file1.ext", "file2.ext", "file1.ext"])
+          fake_config = Hash.new.stub!(:[]).and_return {|x| ["file1.ext", "file2.ext", "file1.ext"]}
           @config.stub!(:simple_config).and_return(fake_config)
         end
 

@@ -43,9 +43,7 @@ describe "Jasmine.app" do
   end
 
   it "should serve focused suites when prefixing spec files with /__suite__/" do
-    Dir.stub!(:glob).and_return do |glob_string|
-      [glob_string]
-    end
+    Dir.stub!(:glob).and_return { |glob_string| [glob_string] }
     get "/__suite__/file2.js"
     last_response.status.should == 200
     last_response.content_type.should == "text/html"
