@@ -55,4 +55,12 @@ module Jasmine
       "#{file_name}?cachebust=#{digest}"
     end
   end
+
+  def self.rspec2?
+    Gem.available? "rspec", ">= 2.0"
+  end
+  
+  def self.rails3?
+    Gem.available? "rails", ">= 3.0"
+  end
 end
