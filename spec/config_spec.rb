@@ -8,12 +8,16 @@ describe Jasmine::Config do
       temp_dir_before
 
       Dir::chdir @tmp
-      `rails rails-project`
+      create_rails 'rails-project'
       Dir::chdir 'rails-project'
 
       FileUtils.cp_r(File.join(@root, 'generators'), 'vendor')
 
-      `./script/generate jasmine`
+      if rails3?
+        raise Exception.new('rails 3 generators not yet implemented!')
+      else
+        `./script/generate jasmine`
+      end
 
       Dir::chdir @old_dir
 

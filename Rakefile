@@ -3,12 +3,31 @@ $LOAD_PATH.unshift File.expand_path("#{File.dirname(__FILE__)}/lib")
 require "bundler"
 Bundler.setup
 
-require 'spec'
-require 'spec/rake/spectask'
+def rspec2?
+  Gem.available? "rspec", ">= 2.0"
+end
+
+def rails3?
+  Gem.available? "rails", ">= 3.0"
+end
+
+if rspec2?
+  require 'rspec'
+  require 'rspec/core/rake_task'
+else
+  require 'spec'
+  require 'spec/rake/spectask'
+end
 
 desc "Run all examples"
-Spec::Rake::SpecTask.new('spec') do |t|
-  t.spec_files = FileList['spec/**/*.rb']
+if rspec2?
+  RSpec::Core::RakeTask.new(:spec) do |t|
+    t.pattern = 'spec/**/*.rb'
+  end
+else
+  Spec::Rake::SpecTask.new('spec') do |t|
+    t.spec_files = FileList['spec/**/*.rb']
+  end
 end
 
 namespace :jasmine do
@@ -45,7 +64,7 @@ namespace :jeweler do
       gemspec.authors = ["Rajan Agaskar", "Christian Williams", "Davis Frank"]
       gemspec.executables = ["jasmine"]
       gemspec.add_dependency('rake', '>= 0.8.7')
-      gemspec.add_dependency('rspec', '>= 1.1.5')
+      gemspec.add_dependency('rspec', '~> 1.1.5')
       gemspec.add_dependency('rack', '>= 1.0.0')
       gemspec.add_dependency('selenium-rc', '>=2.1.0')
       gemspec.add_dependency('selenium-client', '>=1.2.17')
