@@ -82,10 +82,14 @@ module Jasmine
 
     def match_files(dir, patterns)
       dir = File.expand_path(dir)
-      patterns.collect do |pattern|
-        matches = Dir.glob(File.join(dir, pattern))
-        matches.collect {|f| f.sub("#{dir}/", "")}.sort
-      end.flatten.uniq
+      negative, positive = patterns.partition {|pattern| /^!/ =~ pattern}
+      chosen, negated = [positive, negative].collect do |patterns|
+        patterns.collect do |pattern|
+          matches = Dir.glob(File.join(dir, pattern.gsub(/^!/,'')))
+          matches.collect {|f| f.sub("#{dir}/", "")}.sort
+        end.flatten.uniq
+      end
+      chosen - negated
     end
 
     def simple_config

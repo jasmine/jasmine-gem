@@ -109,6 +109,8 @@ describe Jasmine::Config do
 #        it_should_behave_like "simple_config defaults"
 #
 #      end
+# 
+
 
       describe "should use the first appearance of duplicate filenames" do
         before(:each) do
