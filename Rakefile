@@ -64,7 +64,7 @@ namespace :jeweler do
       gemspec.authors = ["Rajan Agaskar", "Christian Williams", "Davis Frank"]
       gemspec.executables = ["jasmine"]
       gemspec.add_dependency('rake', '>= 0.8.7')
-      gemspec.add_dependency('rspec', '~> 1.1.5')
+      gemspec.add_dependency('rspec', '>= 1.1.5')
       gemspec.add_dependency('rack', '>= 1.0.0')
       gemspec.add_dependency('selenium-rc', '>=2.1.0')
       gemspec.add_dependency('selenium-client', '>=1.2.17')
