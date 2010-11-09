@@ -73,6 +73,14 @@ namespace :jeweler do
     Jeweler::GemcutterTasks.new
   end
 
+  task :verify_build do
+    [
+        'jasmine/lib/jasmine.css',
+        'jasmine/lib/jasmine.js',
+        'jasmine/lib/jasmine-html.js',
+    ].each {|f| raise "Missing file #{f}" unless File.exist?(f)}
+  end
+
   task :setup_filelist do
     Rake.application.jeweler_tasks.gemspec.files = FileList.new(
           'generators/**/**',
@@ -88,4 +96,7 @@ namespace :jeweler do
   end
 end
 
-Rake.application["jeweler:gemspec"].prerequisites.unshift("jeweler:setup_filelist").unshift("jasmine:copy_examples_to_gem")
+Rake.application["jeweler:gemspec"].prerequisites.
+    unshift("jeweler:verify_build").
+    unshift("jeweler:setup_filelist").
+    unshift("jasmine:copy_examples_to_gem")
