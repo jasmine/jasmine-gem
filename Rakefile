@@ -41,7 +41,7 @@ namespace :jasmine do
 
   desc "Copy examples from Jasmine JS to the gem"
   task :copy_examples_to_gem do
-    unless File.exists?('jasmine/lib')
+    unless File.exist?('jasmine/lib')
       raise "Jasmine submodule isn't present.  Run git submodule update --init"
     end
 
