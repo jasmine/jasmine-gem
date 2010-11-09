@@ -1,9 +1,7 @@
 require File.expand_path(File.join(File.dirname(__FILE__), "spec_helper"))
 
 describe Jasmine::Config do
-
   describe "configuration" do
-
     before(:all) do
       temp_dir_before
 
@@ -34,7 +32,6 @@ describe Jasmine::Config do
     end
 
     describe "defaults" do
-
       it "src_dir uses root when src dir is blank" do
         @config.stub!(:project_root).and_return('some_project_root')
         @config.stub!(:simple_config_file).and_return(File.join(@template_dir, 'spec/javascripts/support/jasmine.yml'))
@@ -46,9 +43,7 @@ describe Jasmine::Config do
         @config.stub!(:project_root).and_return('some_project_root')
         @config.simple_config_file.should == (File.join('some_project_root', 'spec/javascripts/support/jasmine.yml'))
       end
-
     end
-
 
     describe "simple_config" do
       before(:each) do
@@ -87,7 +82,6 @@ describe Jasmine::Config do
           ]
       end
 
-
       describe "if sources.yaml not found" do
         before(:each) do
           File.stub!(:exist?).and_return(false)
@@ -101,7 +95,6 @@ describe Jasmine::Config do
           YAML.stub!(:load).and_return(false)
         end
         it_should_behave_like "simple_config defaults"
-
       end
 
 #      describe "using default jasmine.yml" do
@@ -112,7 +105,6 @@ describe Jasmine::Config do
 #
 #      end
 # 
-
 
       describe "should use the first appearance of duplicate filenames" do
         before(:each) do
@@ -152,7 +144,18 @@ describe Jasmine::Config do
               File.expand_path("spec/javascripts/file2.ext", @rails_dir)
           ]
         end
+      end
 
+      describe "should allow .gitignore style negation (!pattern)" do
+        before(:each) do
+          Dir.stub!(:glob).and_return { |glob_string| [glob_string] }
+          fake_config = Hash.new.stub!(:[]).and_return {|x| ["file1.ext", "!file1.ext", "file2.ext"]}
+          @config.stub!(:simple_config).and_return(fake_config)
+        end
+
+        it "should not contain negated files" do
+          @config.src_files.should == [ "file2.ext"]
+        end
       end
 
       it "simple_config stylesheets" do
@@ -161,7 +164,6 @@ describe Jasmine::Config do
         Dir.stub!(:glob).and_return { |glob_string| [glob_string] }
         @config.stylesheets.should == ['foo.css', 'bar.css']
       end
-
 
       it "using rails jasmine.yml" do
         @config.stub!(:simple_config_file).and_return(File.join(@template_dir, 'spec/javascripts/support/jasmine-rails.yml'))
@@ -196,11 +198,8 @@ describe Jasmine::Config do
           '/__spec__/helpers/SpecHelper.js',
           '/__spec__/PlayerSpec.js'
         ]
-
       end
-
     end
-
   end
 
   describe "browser configuration" do
