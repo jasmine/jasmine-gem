@@ -5,9 +5,9 @@
 
 Gem::Specification.new do |s|
   s.name = %q{jasmine}
-  s.version = "1.0.1.1rc3"
+  s.version = "1.0.1.1"
 
-  s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
+  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Rajan Agaskar", "Christian Williams", "Davis Frank"]
   s.date = %q{2010-11-09}
   s.default_executable = %q{jasmine}
@@ -18,23 +18,25 @@ Gem::Specification.new do |s|
     "README.markdown"
   ]
   s.files = [
-    "MIT.LICENSE",
+    ".gitignore",
+     ".gitmodules",
+     ".idea/dictionaries/pivotal.xml",
+     "Gemfile",
+     "MIT.LICENSE",
+     "README.markdown",
+     "RELEASE.markdown",
+     "Rakefile",
+     "VERSION.yml",
+     "bin/jasmine",
+     "copy_examples.rb",
      "generators/jasmine/jasmine_generator.rb",
      "generators/jasmine/templates/INSTALL",
-     "generators/jasmine/templates/jasmine-example/SpecRunner.html",
-     "generators/jasmine/templates/jasmine-example/spec/PlayerSpec.js",
-     "generators/jasmine/templates/jasmine-example/spec/SpecHelper.js",
-     "generators/jasmine/templates/jasmine-example/src/Player.js",
-     "generators/jasmine/templates/jasmine-example/src/Song.js",
      "generators/jasmine/templates/lib/tasks/jasmine.rake",
      "generators/jasmine/templates/spec/javascripts/support/jasmine-rails.yml",
      "generators/jasmine/templates/spec/javascripts/support/jasmine.yml",
      "generators/jasmine/templates/spec/javascripts/support/jasmine_runner.rb",
-     "jasmine/example/SpecRunner.html",
-     "jasmine/lib/jasmine-html.js",
-     "jasmine/lib/jasmine.css",
-     "jasmine/lib/jasmine.js",
-     "jasmine/lib/json2.js",
+     "install.rb",
+     "jasmine.gemspec",
      "lib/jasmine.rb",
      "lib/jasmine/base.rb",
      "lib/jasmine/command_line_tool.rb",
@@ -43,7 +45,16 @@ Gem::Specification.new do |s|
      "lib/jasmine/selenium_driver.rb",
      "lib/jasmine/server.rb",
      "lib/jasmine/spec_builder.rb",
-     "lib/jasmine/tasks/jasmine.rake"
+     "lib/jasmine/tasks/jasmine.rake",
+     "spec/bug_fixes_spec.rb",
+     "spec/config_spec.rb",
+     "spec/fixture/jasmine.erb.yml",
+     "spec/jasmine_command_line_tool_spec.rb",
+     "spec/jasmine_self_test_config.rb",
+     "spec/jasmine_self_test_spec.rb",
+     "spec/rails_generator_spec.rb",
+     "spec/server_spec.rb",
+     "spec/spec_helper.rb"
   ]
   s.homepage = %q{http://pivotal.github.com/jasmine}
   s.rdoc_options = ["--charset=UTF-8"]
