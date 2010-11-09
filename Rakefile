@@ -91,7 +91,8 @@ namespace :jeweler do
           'jasmine/lib/json2.js',    # try to get rid of this
           'jasmine/example/**',
           'tasks/**',
-          'templates/**'
+          'templates/**',
+          'MIT.LICENSE'
       )
   end
 end

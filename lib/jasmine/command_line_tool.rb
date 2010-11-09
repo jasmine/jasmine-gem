@@ -59,9 +59,12 @@ module Jasmine
         File.open(template_path('INSTALL'), 'r').each_line do |line|
           puts line
         end
+      elsif argv[0] == "license"
+        puts File.new(expand(cwd, "MIT.LICENSE")).read
       else
         puts "unknown command #{argv}"
         puts "Usage: jasmine init"
+        puts "               license"
       end
     end
   end
