@@ -72,14 +72,8 @@ describe Jasmine::Config do
 
       it "should parse ERB" do
         @config.stub!(:simple_config_file).and_return(File.expand_path(File.join(File.dirname(__FILE__), 'fixture/jasmine.erb.yml')))
-        Dir.stub!(:glob).and_return do |glob_string|
-          glob_string
-        end
-        @config.src_files.should == [
-          'file0.js',
-          'file1.js',
-          'file2.js',
-          ]
+        Dir.stub!(:glob).and_return { |glob_string| [glob_string] }
+        @config.src_files.should == ['file0.js', 'file1.js', 'file2.js',]
       end
 
       describe "if sources.yaml not found" do
