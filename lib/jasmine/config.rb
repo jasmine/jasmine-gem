@@ -16,8 +16,20 @@ module Jasmine
     end
 
     def start_server(port = 8888)
-      handler = Rack::Handler.default
-      handler.run Jasmine.app(self), :Port => port, :AccessLog => []
+      if Rack.release >= "1.2"
+        # The code that traps Ctrl-C moved from Rack::Handler to Rack::Server in
+        # Rack 1.2.1, and consequently, so did the syntax to start a server.
+        # See: https://github.com/rack/rack/issues/issue/35
+        # 
+        # Additionally, there is currently a bug in Rack::Server which prevents
+        # us from using :app properly. In order to get around this, we subclass
+        # Rack::Server, and then apply the patch there.
+        # See: https://github.com/rack/rack/commit/c73b474525bace3f059a130b15413abd4d917086
+        PatchedRackServer.start(:app => Jasmine.app(self), :Port => port)
+      else
+        handler = Rack::Handler.default
+        handler.run Jasmine.app(self), :Port => port, :AccessLog => []
+      end
     end
 
     def start
@@ -188,6 +200,13 @@ module Jasmine
           yield
           at_exit { exit! }
         end
+      end
+    end
+    
+    class PatchedRackServer < Rack::Server
+      def initialize(options = nil)
+        @options = options
+        @app = options[:app] if options && options[:app]
       end
     end
   end
