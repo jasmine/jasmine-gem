@@ -1,8 +1,12 @@
-require 'jasmine/base'
-require 'jasmine/config'
-require 'jasmine/server'
-require 'jasmine/selenium_driver'
+jasmine_files = ['base',
+                 'config',
+                 'server',
+                 'selenium_driver',
+                 'spec_builder',
+                 'command_line_tool']
 
-require 'jasmine/spec_builder'
+jasmine_files << 'generator' if Gem.available? "rails", ">= 3.0"
 
-require 'jasmine/command_line_tool'
+jasmine_files.each do |file|
+  require File.join('jasmine', file)
+end

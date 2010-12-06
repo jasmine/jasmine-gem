@@ -29,7 +29,13 @@ else
     t.spec_files = FileList['spec/**/*.rb']
   end
 end
-task :spec => 'jasmine:copy_examples_to_gem'
+
+task :spec => ['jasmine:copy_examples_to_gem', 'bundle_install']
+
+task :spex do
+  `bundle install`
+  Rake::Task["spec"].invoke
+end
 
 task :default => :spec
 
@@ -59,52 +65,11 @@ end
 desc "Run specs via server"
 task :jasmine => ['jasmine:server']
 
-namespace :jeweler do
-  begin
-    require "jeweler"
-    Jeweler::Tasks.new do |gemspec|
-      gemspec.name = "jasmine"
-      gemspec.summary = "Jasmine Runner for Ruby"
-      gemspec.description = "Javascript BDD test framework"
-      gemspec.email = "jasmine-js@googlegroups.com"
-      gemspec.homepage = "http://pivotal.github.com/jasmine"
-      gemspec.authors = ["Rajan Agaskar", "Christian Williams", "Davis Frank"]
-      gemspec.executables = ["jasmine"]
-      gemspec.add_dependency('rake', '>= 0.8.7')
-      gemspec.add_dependency('rspec', '>= 1.1.5')
-      gemspec.add_dependency('rack', '>= 1.0.0')
-      gemspec.add_dependency('selenium-rc', '>=2.1.0')
-      gemspec.add_dependency('selenium-client', '>=1.2.17')
-      gemspec.add_dependency('json_pure', '>=1.4.3')
-    end
-    Jeweler::GemcutterTasks.new
-  end
-
-  task :verify_build do
-    [
-        'jasmine/lib/jasmine.css',
-        'jasmine/lib/jasmine.js',
-        'jasmine/lib/jasmine-html.js',
-    ].each {|f| raise "Missing file #{f}" unless File.exist?(f)}
-  end
-
-  task :setup_filelist do
-    Rake.application.jeweler_tasks.gemspec.files = FileList.new(
-          'generators/**/**',
-          'lib/**/**',
-          'jasmine/lib/jasmine.css',
-          'jasmine/lib/jasmine.js',
-          'jasmine/lib/jasmine-html.js',
-          'jasmine/lib/json2.js',    # try to get rid of this
-          'jasmine/example/**',
-          'tasks/**',
-          'templates/**',
-          'MIT.LICENSE'
-      )
-  end
+desc "Install Bundle"
+task "bundle_install" do
+  `bundle install`
 end
 
-Rake.application["jeweler:gemspec"].prerequisites.
-    unshift("jeweler:verify_build").
-    unshift("jeweler:setup_filelist").
-    unshift("jasmine:copy_examples_to_gem")
+
+require 'bundler'
+Bundler::GemHelper.install_tasks

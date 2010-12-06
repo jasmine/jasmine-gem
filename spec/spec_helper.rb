@@ -3,7 +3,7 @@ require "bundler"
 require 'stringio'
 require 'tmpdir'
 
-Bundler.setup(:default, :test)
+Bundler.setup(:default, :development)
 
 def rspec2?
   Gem.available? "rspec", ">= 2.0"

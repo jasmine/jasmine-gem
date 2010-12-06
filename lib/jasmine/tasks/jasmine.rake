@@ -15,7 +15,7 @@ namespace :jasmine do
 
     if Jasmine::rspec2?
       RSpec::Core::RakeTask.new(:jasmine_continuous_integration_runner) do |t|
-        t.rspec_opts = ["--color", "--format", "progress"]
+        t.rspec_opts = ["--colour", "--format", "progress"]
         t.verbose = true
         t.pattern = ['spec/javascripts/support/jasmine_runner.rb']
       end
