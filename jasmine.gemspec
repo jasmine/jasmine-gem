@@ -26,14 +26,14 @@ Gem::Specification.new do |s|
   s.add_dependency 'selenium-client', '>= 1.2.18'
 
   # for Jasmine development & Rails 2 Generators
-  s.add_development_dependency 'rspec', '1.3.1'
-  s.add_development_dependency 'rails', '2.3.10'
-  s.add_development_dependency 'rack', '1.1'
+#  s.add_development_dependency 'rspec', '1.3.1'
+#  s.add_development_dependency 'rails', '2.3.10'
+#  s.add_development_dependency 'rack', '1.1'
 
   # for Jasmine development for Rails 3 generators
-#  s.add_development_dependency 'rspec', '>= 2.0'
-#  s.add_development_dependency 'rails', '> 3.0.2'
-#  s.add_development_dependency 'rack', '>= 1.2.1'
+  s.add_development_dependency 'rspec', '>= 2.0'
+  s.add_development_dependency 'rails', '> 3.0.2'
+  s.add_development_dependency 'rack', '>= 1.2.1'
 
   s.add_development_dependency 'rack-test'
 end

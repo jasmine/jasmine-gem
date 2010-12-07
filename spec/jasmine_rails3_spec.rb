@@ -8,7 +8,7 @@ if rails3?
       temp_dir_before
       Dir::chdir @tmp
 
-      `rails new rails-example`
+      create_rails 'rails-example'
       Dir::chdir 'rails-example'
       open('Gemfile', 'a') { |f| f.puts "gem \"jasmine\", \"#{Jasmine::VERSION}\"" }
     end

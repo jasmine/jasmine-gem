@@ -7,7 +7,7 @@ unless rails3?
     before :each do
       temp_dir_before
       Dir::chdir @tmp
-      `rails rails-example`
+      create_rails 'rails-example'
       Dir::chdir 'rails-example'
     end
 
