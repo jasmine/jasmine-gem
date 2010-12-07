@@ -41,6 +41,7 @@ GEM
     diff-lcs (1.1.2)
     erubis (2.6.6)
       abstract (>= 1.0.0)
+    gem-release (0.0.15)
     i18n (0.5.0)
     json_pure (1.4.6)
     mail (2.2.12)
@@ -90,6 +91,7 @@ PLATFORMS
 
 DEPENDENCIES
   Jasmine!
+  gem-release
   json_pure (~> 1.4.3)
   rack (>= 1.2.1)
   rack-test

@@ -36,4 +36,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rack', '>= 1.2.1'
 
   s.add_development_dependency 'rack-test'
+  s.add_development_dependency 'gem-release'
 end
