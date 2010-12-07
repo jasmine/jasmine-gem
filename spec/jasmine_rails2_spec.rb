@@ -7,7 +7,7 @@ unless rails3?
     before :each do
       temp_dir_before
       Dir::chdir @tmp
-      `rails _2.3.8_ rails-example`
+      `rails rails-example`
       Dir::chdir 'rails-example'
     end
 
@@ -39,41 +39,55 @@ unless rails3?
 
     end
 
-    context "when Jasmine has been installed" do
+    context "when the Jasmine generators are available" do
       before :each do
-        `mkdir -p lib/generators && cp -R #{@root}/generators/jasmine rails-example/lib/generators`
-        `./script/generate jasmine_rails`
+        `mkdir -p lib/generators && cp -R #{@root}/generators/jasmine lib/generators`
+#        `./script/generate jasmine_rails`
       end
 
-      it "should show the jasmine:install " do
+      it "should show the Jasmine generator" do
         output = `./script/generate --help`
-        output.should include("Lib: jasmine_rails")
+        output.should include("Lib: jasmine")
       end
 
       it "should show jasmine:install help" do
-        output = `./script/generate jasmine_rails --help`
+        output = `./script/generate jasmine --help`
 
-        output.should include("Usage: ./script/generate jasmine_rails")
+        output.should include("Usage: ./script/generate jasmine")
       end
 
-      it "should find the jasmine spec files" do
-        output = `./script/generate jasmine`
+      context "and been run" do
+        before :each do
+          `./script/generate jasmine`
+        end
 
-        File.exists?("spec/javascripts/helpers/.gitkeep").should == true
-        File.exists?("spec/javascripts/support/jasmine.yml").should == true
+        it "should find the Jasmine configuration files" do
+          File.exists?("spec/javascripts/support/jasmine.yml").should == true
+          File.exists?("spec/javascripts/support/jasmine_runner.rb").should == true
+          File.exists?("spec/javascripts/support/jasmine_config.rb").should == true
+        end
 
-        File.exists?("spec/javascripts/support/jasmine_runner.rb").should == true
-        File.exists?("spec/javascripts/support/jasmine_config.rb").should == true
-      end
+        it "should find the Jasmine example files" do
+          File.exists?("public/javascripts/Player.js").should == true
+          File.exists?("public/javascripts/Song.js").should == true
 
-      it "should show jasmine rake task" do
-        output = `rake -T`
-        output.should include("jasmine ")
-      end
+          File.exists?("spec/javascripts/PlayerSpec.js").should == true
+          File.exists?("spec/javascripts/helpers/SpecHelper.js").should == true
 
-      it "should show jasmine:ci rake task" do
-        output = `rake -T`
-        output.should include("jasmine:ci")
+          File.exists?("spec/javascripts/support/jasmine.yml").should == true
+          File.exists?("spec/javascripts/support/jasmine_runner.rb").should == true
+          File.exists?("spec/javascripts/support/jasmine_config.rb").should == true
+        end
+
+        it "should show jasmine rake task" do
+          output = `rake -T`
+          output.should include("jasmine ")
+        end
+
+        it "should show jasmine:ci rake task" do
+          output = `rake -T`
+          output.should include("jasmine:ci")
+        end
       end
     end
   end
