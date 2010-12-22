@@ -34,7 +34,13 @@ Start the Jasmine server:
 
 `rake jasmine`
 
-Point your browser to `localhost:8888`. The suite will run every time this page is re-loaded.
+Point your browser to `localhost:8888`. The suite will run every time this page is re-loaded.  
+
+Start Jasmine on a different port:
+
+`rake jasmine PORT=1337`
+
+Point your browser to `localhost:1337`. 
 
 For Continuous Integration environments, add this task to the project build steps:
 
