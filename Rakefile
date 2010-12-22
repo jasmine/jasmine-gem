@@ -39,11 +39,12 @@ task :default => :spec
 namespace :jasmine do
   require "jasmine-core"
   require './spec/jasmine_self_test_config'
-  task :server do
-    puts "your tests are here:"
-    puts "  http://localhost:8888/"
+  task :server do          
+		port = ENV['PORT'] || 8888
+    JasmineSelfTestConfig.new.start_server(port)
 
-    JasmineSelfTestConfig.new.start_server
+    puts "your tests are here:"
+    puts "  http://localhost:#{port}/"
   end
 
   desc "Copy examples from Jasmine JS to the gem"
