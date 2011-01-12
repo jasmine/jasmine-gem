@@ -276,9 +276,24 @@ describe Jasmine::Config do
   describe "#start_selenium_server" do
     it "should use an existing selenium server if SELENIUM_SERVER_PORT is set" do
       config = Jasmine::Config.new
-      ENV.stub!(:[], "SELENIUM_SERVER_PORT").and_return(1234)
-      Jasmine.should_receive(:wait_for_listener).with(1234, "selenium server")
+      ENV.stub(:[]).with("SELENIUM_SERVER_HOST").and_return(nil)
+      ENV.stub(:[]).with("SELENIUM_SERVER_PORT").and_return(1234)
+      Jasmine.should_receive(:wait_for_listener).with("localhost", 1234, "selenium server")
       config.start_selenium_server
+    end
+    
+    it "should use an existing selenium server if SELENIUM_SERVER_HOST is set" do
+      config = Jasmine::Config.new
+      ENV.stub(:[]).with("SELENIUM_SERVER_HOST").and_return("remote.com")
+      ENV.stub(:[]).with("SELENIUM_SERVER_PORT").and_return(1234)
+      Jasmine.should_receive(:wait_for_listener).with("remote.com", 1234, "selenium server")
+      config.start_selenium_server
+    end
+
+    it "requires SELENIUM_SERVER_PORT if SELENIUM_SERVER_HOST is set" do
+      config = Jasmine::Config.new
+      ENV.stub!(:[], "SELENIUM_SERVER_HOST").and_return("remote.com")
+      expect {config.start_selenium_server}.to raise_error(ArgumentError, "SELENIUM_SERVER_PORT must be defined if SELENIUM_SERVER_HOST is set")
     end
   end
 end

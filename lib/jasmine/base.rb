@@ -34,9 +34,9 @@ module Jasmine
     true
   end
 
-  def self.wait_for_listener(port, name = "required process", seconds_to_wait = 10)
+  def self.wait_for_listener(host, port, name = "required process", seconds_to_wait = 10)
     time_out_at = Time.now + seconds_to_wait
-    until server_is_listening_on "localhost", port
+    until server_is_listening_on host, port
       sleep 0.1
       puts "Waiting for #{name} on #{port}..."
       raise "#{name} didn't show up on port #{port} after #{seconds_to_wait} seconds." if Time.now > time_out_at

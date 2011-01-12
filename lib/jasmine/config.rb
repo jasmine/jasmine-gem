@@ -15,6 +15,10 @@ module Jasmine
       ENV['SELENIUM_SERVER_PORT'] && ENV['SELENIUM_SERVER_PORT'].to_i > 0 ? ENV['SELENIUM_SERVER_PORT'].to_i : nil
     end
 
+    def external_selenium_server_host
+      ENV["SELENIUM_SERVER_HOST"] || "localhost"
+    end
+
     def start_server(port = 8888)
       handler = Rack::Handler.default
       handler.run Jasmine.app(self), :Port => port, :AccessLog => []
@@ -22,7 +26,7 @@ module Jasmine
 
     def start
       start_servers
-      @client = Jasmine::SeleniumDriver.new("localhost", @selenium_server_port, "*#{browser}", "#{jasmine_host}:#{@jasmine_server_port}/")
+      @client = Jasmine::SeleniumDriver.new(@selenium_server_host, @selenium_server_port, "*#{browser}", "#{jasmine_host}:#{@jasmine_server_port}/")
       @client.connect
     end
 
@@ -35,7 +39,7 @@ module Jasmine
       Thread.new do
         start_server(@jasmine_server_port)
       end
-      Jasmine::wait_for_listener(@jasmine_server_port, "jasmine server")
+      Jasmine::wait_for_listener("localhost", @jasmine_server_port, "jasmine server")
       puts "jasmine server started."
     end
 
@@ -45,14 +49,18 @@ module Jasmine
     end
 
     def start_selenium_server
+      @selenium_server_host = external_selenium_server_host
       @selenium_server_port = external_selenium_server_port
+      if @selenium_server_host != "localhost" && @selenium_server_port.nil?
+        raise ArgumentError.new("SELENIUM_SERVER_PORT must be defined if SELENIUM_SERVER_HOST is set")
+      end
       if @selenium_server_port.nil?
         @selenium_server_port = Jasmine::find_unused_port
         require 'selenium_rc'
         SeleniumRC::Server.send(:include, SeleniumServerForkHackForRSpec)
         SeleniumRC::Server.boot("localhost", @selenium_server_port, :args => [windows? ? ">NUL" : "> /dev/null"])
       else
-        Jasmine::wait_for_listener(@selenium_server_port, "selenium server")
+        Jasmine::wait_for_listener(@selenium_server_host, @selenium_server_port, "selenium server")
       end
     end
 
@@ -82,11 +90,11 @@ module Jasmine
 
     def match_files(dir, patterns)
       dir = File.expand_path(dir)
-      negative, positive = patterns.partition {|pattern| /^!/ =~ pattern}
+      negative, positive = patterns.partition { |pattern| /^!/ =~ pattern }
       chosen, negated = [positive, negative].collect do |patterns|
         patterns.collect do |pattern|
-          matches = Dir.glob(File.join(dir, pattern.gsub(/^!/,'')))
-          matches.collect {|f| f.sub("#{dir}/", "")}.sort
+          matches = Dir.glob(File.join(dir, pattern.gsub(/^!/, '')))
+          matches.collect { |f| f.sub("#{dir}/", "") }.sort
         end.flatten.uniq
       end
       chosen - negated
@@ -108,15 +116,15 @@ module Jasmine
 
     def js_files(spec_filter = nil)
       spec_files_to_include = spec_filter.nil? ? spec_files : match_files(spec_dir, [spec_filter])
-      src_files.collect {|f| "/" + f } + helpers.collect {|f| File.join(spec_path, f) } + spec_files_to_include.collect {|f| File.join(spec_path, f) }
+      src_files.collect { |f| "/" + f } + helpers.collect { |f| File.join(spec_path, f) } + spec_files_to_include.collect { |f| File.join(spec_path, f) }
     end
 
     def css_files
-      stylesheets.collect {|f| "/" + f }
+      stylesheets.collect { |f| "/" + f }
     end
 
     def spec_files_full_paths
-      spec_files.collect {|spec_file| File.join(spec_dir, spec_file) }
+      spec_files.collect { |spec_file| File.join(spec_dir, spec_file) }
     end
 
     def project_root
