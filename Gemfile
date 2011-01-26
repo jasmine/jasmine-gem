@@ -1,4 +1,4 @@
 source "http://rubygems.org"
 
-# dependencies are specified in jasmine.gemspec
+# dependencies are specified in jasmine.gemspec.erb
 gemspec

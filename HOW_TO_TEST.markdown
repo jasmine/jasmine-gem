@@ -1,4 +1,4 @@
-At the moment we don't have an automated way to test the Jasmine Gem in both configurations: Rails 2 / RSpec 1.x & Rails 3 / RSpec 2.
+At the moment we don't have an automated way to test the Jasmine Gem in both configurations: Rails 2 / RSpec 1.x & Rails 3 / RSpec 2.  CI will handle a broad matrix, but you need to ensure that your changes work across Rails 2&3.
 
 So here are the manual steps:
 

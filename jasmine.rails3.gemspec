@@ -29,6 +29,7 @@ Gem::Specification.new do |s|
 #  s.add_development_dependency 'rails', '2.3.10'
 #  s.add_development_dependency 'rack', '1.1'
 
+
   # for development & test of Rails 3 Generators
   s.add_development_dependency 'rspec', '>= 2.0'
   s.add_development_dependency 'rails', '> 3.0.2'
