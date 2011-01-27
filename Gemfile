@@ -4,4 +4,4 @@ source "http://rubygems.org"
 
 gemspec_name = Gem.available? "rails", ">= 3.0" ? 'jasmine.rails3' : 'jasmine.rails2'
 
-gemspec :name => gemspec_name
+gemspec :name => "#{gemspec_name}.gemspec"
