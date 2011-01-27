@@ -24,7 +24,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'selenium-rc', '>= 2.2.1'
   s.add_dependency 'selenium-client', '>= 1.2.18'
 
-  if ENV[RAILS_ENV] == 'rails2'
+  if ENV['RAILS_ENV'] == 'rails2'
     # for development & test of Rails 2 Generators
     s.add_development_dependency 'rspec', '1.3.1'
     s.add_development_dependency 'rails', '2.3.10'
