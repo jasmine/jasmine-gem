@@ -36,7 +36,11 @@ namespace :jasmine do
     puts "your tests are here:"
     puts "  http://localhost:8888/"
 
-    Jasmine::Config.new.start_server
+    pid = fork do
+      Jasmine::Config.new.start_server
+    end
+    trap("INT"){ Process.kill("KILL", pid) }
+    Process.wait(pid)
   end
 end
 
