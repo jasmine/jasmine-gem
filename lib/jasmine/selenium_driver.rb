@@ -16,9 +16,11 @@ module Jasmine
       @driver.get_eval("window.jasmine.getEnv().currentRunner.finished") == "true"
     end
 
-    def connect
+    def connect(args={})
+      spec = args[:spec] || ""
+      url = spec.empty? ? "/" : "/?spec=" + spec.gsub(" ", "%20")
       @driver.start
-      @driver.open("/")
+      @driver.open(url)
     end
 
     def disconnect

@@ -11,6 +11,10 @@ module Jasmine
       ENV["JASMINE_HOST"] || 'http://localhost'
     end
 
+    def jasmine_spec
+      ENV['JASMINE_SPEC']
+    end
+
     def external_selenium_server_port
       ENV['SELENIUM_SERVER_PORT'] && ENV['SELENIUM_SERVER_PORT'].to_i > 0 ? ENV['SELENIUM_SERVER_PORT'].to_i : nil
     end
@@ -23,7 +27,7 @@ module Jasmine
     def start
       start_servers
       @client = Jasmine::SeleniumDriver.new("localhost", @selenium_server_port, "*#{browser}", "#{jasmine_host}:#{@jasmine_server_port}/")
-      @client.connect
+      @client.connect(:spec => jasmine_spec)
     end
 
     def stop

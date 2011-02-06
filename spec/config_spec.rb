@@ -273,6 +273,31 @@ describe Jasmine::Config do
     end
   end
 
+  describe "jasmine spec" do
+    it "should use ENV['JASMINE_SPEC'] if set" do
+      ENV.stub!(:[], "JASMINE_SPEC").and_return("spec path to run")
+      config = Jasmine::Config.new
+      config.stub!(:start_servers)
+
+      driver = mock(Jasmine::SeleniumDriver)
+      driver.should_receive(:connect).with(hash_including(:spec => "spec path to run"))
+
+      Jasmine::SeleniumDriver.should_receive(:new).
+        and_return(driver)
+      config.start
+    end
+
+    it "should append specs to the url" do
+      driver = mock(Selenium::Client::Driver, :start => true,  :get_eval => "true")
+      driver.should_receive(:open).with("/?spec=spec%20to%20run")
+      Selenium::Client::Driver.should_receive(:new).
+        and_return(driver)
+
+      Jasmine::SeleniumDriver.new("localhost", 9999, "*chrome", "http://localhost:9999").
+        connect(:spec => "spec to run")
+    end
+  end
+
   describe "#start_selenium_server" do
     it "should use an existing selenium server if SELENIUM_SERVER_PORT is set" do
       config = Jasmine::Config.new
