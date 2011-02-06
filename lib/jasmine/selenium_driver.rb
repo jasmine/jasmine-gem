@@ -25,7 +25,12 @@ module Jasmine
       @driver.stop
     end
 
-    def run
+    def run(args={})
+      puts "RUNNING"
+      if args.key?(:spec)
+        @driver.open("/?spec=#{args[:spec].gsub(" ", "%20")}")
+      end
+
       until tests_have_finished? do
         sleep 0.1
       end

@@ -15,6 +15,10 @@ module Jasmine
       ENV['SELENIUM_SERVER_PORT'] && ENV['SELENIUM_SERVER_PORT'].to_i > 0 ? ENV['SELENIUM_SERVER_PORT'].to_i : nil
     end
 
+    def jasmine_spec
+      ENV['JASMINE_SPEC']
+    end
+
     def start_server(port = 8888)
       handler = Rack::Handler.default
       handler.run Jasmine.app(self), :Port => port, :AccessLog => []
@@ -65,7 +69,7 @@ module Jasmine
       begin
         start
         puts "servers are listening on their ports -- running the test script..."
-        tests_passed = @client.run
+        tests_passed = @client.run(:spec=>jasmine_spec)
       ensure
         stop
       end
