@@ -1,6 +1,6 @@
 class JasmineGenerator < Rails::Generator::Base
   def manifest
-    m = Rails::Generator::Manifest.new
+    m = ::Rails::Generator::Manifest.new
 
     m.directory "public/javascripts"
     m.file "jasmine-example/src/Player.js", "public/javascripts/Player.js"
@@ -18,7 +18,7 @@ class JasmineGenerator < Rails::Generator::Base
     m.file "spec/javascripts/support/jasmine-rails.yml", "spec/javascripts/support/jasmine.yml"
     m.readme "INSTALL"
 
-    unless Gem.available?('rails', '>= 3.0')
+    unless ::Rails::VERSION::STRING[0,1] == "3"
       m.directory "lib/tasks"
       m.file "lib/tasks/jasmine.rake", "lib/tasks/jasmine.rake"
     end

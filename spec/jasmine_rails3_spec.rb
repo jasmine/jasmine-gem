@@ -29,6 +29,16 @@ if rails3?
         output.should include("rails generate jasmine:install")
       end
 
+      it "should have the jasmine rake task" do
+        output = `rake -T`
+        output.should include("jasmine ")
+      end
+
+      it "should have the jasmine:ci rake task" do
+        output = `rake -T`
+        output.should include("jasmine:ci")
+      end
+
       context "and then installed" do
         before :each do
           @output = `rails g jasmine:install`
@@ -41,16 +51,6 @@ if rails3?
           File.exists?("spec/javascripts/support/jasmine.yml").should == true
           File.exists?("spec/javascripts/support/jasmine_runner.rb").should == true
           File.exists?("spec/javascripts/support/jasmine_config.rb").should == true
-        end
-
-        it "should have the jasmine rake task" do
-          output = `rake -T`
-          output.should include("jasmine ")
-        end
-
-        it "should have the jasmine:ci rake task" do
-          output = `rake -T`
-          output.should include("jasmine:ci")
         end
       end
 

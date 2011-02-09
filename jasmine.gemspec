@@ -20,7 +20,7 @@ Gem::Specification.new do |s|
   s.require_paths      = ["lib"]
   s.rdoc_options       = ["--charset=UTF-8"]
 
-  s.add_dependency 'json_pure', '~>1.4.3'
+  s.add_dependency 'json_pure', '>= 1.4.3'
   s.add_dependency 'selenium-rc', '>= 2.2.1'
   s.add_dependency 'selenium-client', '>= 1.2.18'
 
@@ -31,8 +31,8 @@ Gem::Specification.new do |s|
     s.add_development_dependency 'rack', '1.1'
   else
     # for development & test of Rails 3 Generators
-    s.add_development_dependency 'rspec', '>= 2.0'
-    s.add_development_dependency 'rails', '> 3.0.2'
+    s.add_development_dependency 'rspec', '>= 2.5.0'
+    s.add_development_dependency 'rails', '>= 3.0.3 '
     s.add_development_dependency 'rack', '>= 1.2.1'
   end
 

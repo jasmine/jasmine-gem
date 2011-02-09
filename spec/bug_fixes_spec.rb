@@ -15,17 +15,17 @@ describe "Jasmine bug fixes" do
   module Foo end
   describe "require 'json_pure'" do
     it "should not happen until SeleniumDriver is initialized, which is late enough that it won't conflict with Rails" do
-      json_is_defined = `ruby -e "#{@bootstrap}; require 'jasmine'; puts defined?(JSON)"`
-      json_is_defined.chomp.should == "nil"
+      json_is_defined = `ruby -e "#{@bootstrap}; require 'jasmine'; puts defined?(JSON).to_s"`
+      json_is_defined.chomp.should == ""
     end
 
     it "should happen when SeleniumDriver is initialized" do
-      json_is_defined = `ruby -e "#{@bootstrap}; require 'jasmine'; Jasmine::SeleniumDriver.new(nil, nil, nil, nil); puts defined?(JSON)"`
+      json_is_defined = `ruby -e "#{@bootstrap}; require 'jasmine'; Jasmine::SeleniumDriver.new(nil, nil, nil, nil); puts defined?(JSON).to_s"`
       json_is_defined.chomp.should == "constant"
     end
 
     it "should not happen if another json implementation is already loaded" do
-      json_is_defined = `ruby -e "#{@bootstrap}; require 'jasmine'; JSON="123"; Jasmine::SeleniumDriver.new(nil, nil, nil, nil); puts defined?(JSON)"`
+      json_is_defined = `ruby -e "#{@bootstrap}; require 'jasmine'; JSON="123"; Jasmine::SeleniumDriver.new(nil, nil, nil, nil); puts defined?(JSON).to_s"`
       json_is_defined.chomp.should == "constant"
     end
   end
