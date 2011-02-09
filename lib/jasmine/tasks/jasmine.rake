@@ -31,7 +31,10 @@ namespace :jasmine do
 
   task :server => "jasmine:require" do
     jasmine_config_overrides = 'spec/javascripts/support/jasmine_config.rb'
-    require jasmine_config_overrides if File.exist?(jasmine_config_overrides)
+
+    if File.exist?(jasmine_config_overrides)
+      require File.join(Rails.root, jasmine_config_overrides) 
+    end
 
     puts "your tests are here:"
     puts "  http://localhost:8888/"
