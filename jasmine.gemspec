@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.email              = %q{jasmine-js@googlegroups.com}
   s.homepage           = "http://pivotal.github.com/jasmine"
 
-  s.files              = `git ls-files`.split("\n")
+  s.files              = `git ls-files`.split("\n") | Dir.glob('jasmine/**/*')
   s.test_files         = `git ls-files -- {test,spec,features}/*`.split("\n")
   s.executables        = `git ls-files -- bin/*`.split("\n").map { |f| File.basename(f) }
   s.default_executable = %q{jasmine}
