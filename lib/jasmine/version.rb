@@ -1,3 +1,3 @@
 module Jasmine
-  VERSION = "1.0.2.0beta3"
+  VERSION = "1.0.2.0beta4"
 end

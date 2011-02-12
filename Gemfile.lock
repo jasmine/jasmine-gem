@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    jasmine (1.0.2.0beta2)
+    jasmine (1.0.2.0beta4)
       json_pure (>= 1.4.3)
       selenium-client (>= 1.2.18)
       selenium-rc (>= 2.2.1)
