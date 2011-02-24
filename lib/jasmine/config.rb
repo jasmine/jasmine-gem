@@ -49,7 +49,7 @@ module Jasmine
       @selenium_server_port = external_selenium_server_port
       if @selenium_server_port.nil?
         @selenium_server_port = Jasmine::find_unused_port
-        require 'selenium_rc'
+        require 'selenium-rc'
         SeleniumRC::Server.send(:include, SeleniumServerForkHackForRSpec)
         SeleniumRC::Server.boot("localhost", @selenium_server_port, :args => [windows? ? ">NUL" : "> /dev/null"])
       else
