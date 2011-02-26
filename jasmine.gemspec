@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.rdoc_options       = ["--charset=UTF-8"]
 
   s.add_dependency 'json_pure', '~>1.4.3'
-  s.add_dependency 'selenium-rc', '>= 2.2.1'
+  s.add_dependency 'selenium-rc', '>= 2.3.1'
   s.add_dependency 'selenium-client', '>= 1.2.18'
 
   if ENV['RAILS_ENV'] == 'rails2'
