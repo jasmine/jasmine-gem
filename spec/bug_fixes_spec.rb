@@ -15,8 +15,8 @@ describe "Jasmine bug fixes" do
   module Foo end
   describe "require 'json_pure'" do
     it "should not happen until SeleniumDriver is initialized, which is late enough that it won't conflict with Rails" do
-      json_is_defined = `ruby -e "#{@bootstrap}; require 'jasmine'; puts defined?(JSON).to_s"`
-      json_is_defined.chomp.should == ""
+      json_is_defined = `ruby -e "#{@bootstrap}; require 'jasmine'; puts !!defined?(JSON)"`
+      json_is_defined.chomp.to_s.should == "false"
     end
 
     it "should happen when SeleniumDriver is initialized" do
