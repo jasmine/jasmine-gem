@@ -9,7 +9,6 @@ unless rails3?
       Dir::chdir @tmp
       create_rails 'rails-example'
       Dir::chdir 'rails-example'
-      `export RAILS_VERSION="rails2"`
     end
 
     after :each do
