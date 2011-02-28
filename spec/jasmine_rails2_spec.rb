@@ -9,6 +9,7 @@ unless rails3?
       Dir::chdir @tmp
       create_rails 'rails-example'
       Dir::chdir 'rails-example'
+      `export RAILS_VERSION="rails2"`
     end
 
     after :each do
@@ -23,17 +24,17 @@ unless rails3?
       end
 
       it "should not show jasmine:install help" do
-        output = `cd rails-example && rails g`
+        output = `rails g`
         output.should_not include('This will create')
       end
 
       it "should not show jasmine rake task" do
-        output = `cd rails-example && rake -T`
+        output = `rake -T`
         output.should_not include("jasmine ")
       end
 
       it "should not show jasmine:ci rake task" do
-        output = `cd rails-example && rake -T`
+        output = `rake -T`
         output.should_not include("jasmine:ci")
       end
 
@@ -42,7 +43,6 @@ unless rails3?
     context "when the Jasmine generators are available" do
       before :each do
         `mkdir -p lib/generators && cp -R #{@root}/generators/jasmine lib/generators`
-#        `./script/generate jasmine_rails`
       end
 
       it "should show the Jasmine generator" do
