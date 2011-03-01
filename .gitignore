@@ -10,3 +10,4 @@ jasmine-example/
 .pairs
 *.swp
 Gemfile.lock
+spec/reports

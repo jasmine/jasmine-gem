@@ -18,6 +18,7 @@ else
   require 'spec'
   require 'spec/rake/spectask'
 end
+require 'ci/reporter/rake/rspec'
 
 desc "Run all examples"
 if rspec2?
@@ -30,7 +31,7 @@ else
   end
 end
 
-task :spec => ['jasmine:copy_examples_to_gem', 'bundle_install']
+task :spec => ['jasmine:copy_examples_to_gem', 'bundle_install', 'ci:setup:rspec']
 
 task :spex do
   `bundle install`
