@@ -34,7 +34,7 @@ def create_rails(name)
 end
 
 def create_temp_dir
-  tmp = File.join(Dir.tmpdir, 'jasmine-gem-test')
+  tmp = File.join(Dir.tmpdir, "jasmine-gem-test_#{Time.now.to_f}")
   FileUtils.rm_r(tmp, :force => true)
   FileUtils.mkdir(tmp)
   tmp
