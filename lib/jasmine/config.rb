@@ -107,9 +107,13 @@ module Jasmine
       "/__root__"
     end
 
-    def js_files(spec_filter = nil)
+    def js_url_paths(spec_filter = nil)
       spec_files_to_include = spec_filter.nil? ? spec_files : match_files(spec_dir, [spec_filter])
-      src_files.collect {|f| "/" + f } + helpers.collect {|f| File.join(spec_path, f) } + spec_files_to_include.collect {|f| File.join(spec_path, f) }
+      qualified_src_files = Jasmine.cachebust(src_files.collect {|f| "/" + f }, src_dir)
+      helpers_and_specs = helpers.collect {|f| File.join(spec_path, f) } + spec_files_to_include.collect {|f| File.join(spec_path, f) }
+      qualified_helpers_and_specs = Jasmine.cachebust(helpers_and_specs, spec_dir, spec_path, '')
+
+      qualified_src_files + qualified_helpers_and_specs
     end
 
     def css_files
