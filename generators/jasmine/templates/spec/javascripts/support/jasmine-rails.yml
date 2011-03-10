@@ -18,6 +18,16 @@ src_files:
   - public/javascripts/application.js
   - public/javascripts/**/*.js
 
+# External files loading
+# List of external files to include with absolute path
+# 
+# EXAMPLE:
+# 
+# external_src:
+#   - 'http://some.external.file.js'
+external_src:
+
+
 # stylesheets
 #
 # Return an array of stylesheet filepaths relative to src_dir to include before jasmine specs.

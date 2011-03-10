@@ -1,0 +1,7 @@
+external_src:
+  - 'http://some.external.file.js'
+
+src_files:
+<% 3.times do |i| %>
+  - <%= "file#{i}.js" %>
+<% end %>

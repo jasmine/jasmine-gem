@@ -61,6 +61,10 @@ describe Jasmine::Config do
         it "should find any helpers" do
           @config.helpers.should == ['helpers/SpecHelper.js']
         end
+        
+        it "should find external sources empty" do
+          @config.external_files.should == []
+        end
 
         it "should build an array of all the JavaScript files to include, source files then spec files" do
           @config.js_files.should == [
@@ -89,6 +93,12 @@ describe Jasmine::Config do
         @config.stub!(:simple_config_file).and_return(File.expand_path(File.join(@root, 'spec', 'fixture','jasmine.erb.yml')))
         Dir.stub!(:glob).and_return { |glob_string| [glob_string] }
         @config.src_files.should == ['file0.js', 'file1.js', 'file2.js',]
+      end
+      
+      it "should put external files before others" do
+        @config.stub!(:simple_config_file).and_return(File.expand_path(File.join(@root, 'spec', 'fixture','jasmine.externals.yml')))
+        Dir.stub!(:glob).and_return { |glob_string| [glob_string] }
+        @config.js_files[0].should == 'http://some.external.file.js'
       end
 
       describe "if jasmine.yml not found" do
@@ -124,8 +134,12 @@ describe Jasmine::Config do
       describe "should use the first appearance of duplicate filenames" do
         before(:each) do
           Dir.stub!(:glob).and_return { |glob_string| [glob_string] }
-          fake_config = Hash.new.stub!(:[]).and_return { |x| ["file1.ext", "file2.ext", "file1.ext"] }
-          @config.stub!(:simple_config).and_return(fake_config)
+          @config.stub!(:simple_config).and_return({
+            'src_files' => ["file1.ext", "file2.ext", "file1.ext"],
+            'stylesheets' => ["file1.ext", "file2.ext", "file1.ext"],
+            'spec_files' => ["file1.ext", "file2.ext", "file1.ext"],
+            'helpers' => ["file1.ext", "file2.ext", "file1.ext"],
+          })
         end
 
         it "src_files" do
