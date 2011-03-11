@@ -1,28 +1,22 @@
 module Jasmine
   class SeleniumDriver
-    def initialize(selenium_host, selenium_port, selenium_browser_start_command, http_address)
+    def initialize(browser, http_address)
       require 'json/pure' unless defined?(JSON)
-      require 'selenium/client'
-      @driver = Selenium::Client::Driver.new(
-        selenium_host,
-        selenium_port,
-        selenium_browser_start_command,
-        http_address
-      )
+      require 'selenium-webdriver'
+      @driver = Selenium::WebDriver.for browser.to_sym
       @http_address = http_address
     end
 
     def tests_have_finished?
-      @driver.get_eval("window.jasmine.getEnv().currentRunner.finished") == "true"
+      @driver.execute_script("return window.jasmine.getEnv().currentRunner.finished") == "true"
     end
 
     def connect
-      @driver.start
-      @driver.open("/")
+      @driver.navigate.to @http_address
     end
 
     def disconnect
-      @driver.stop
+      @driver.quit
     end
 
     def run
@@ -30,15 +24,13 @@ module Jasmine
         sleep 0.1
       end
 
-      puts @driver.get_eval("window.results()")
-      failed_count = @driver.get_eval("window.jasmine.getEnv().currentRunner.results().failedCount").to_i
+      puts @driver.execute_script("return window.results()")
+      failed_count = @driver.execute_script("return window.jasmine.getEnv().currentRunner.results().failedCount").to_i
       failed_count == 0
     end
 
     def eval_js(script)
-      escaped_script = "'" + script.gsub(/(['\\])/) { '\\' + $1 } + "'"
-
-      result = @driver.get_eval("try { eval(#{escaped_script}, window); } catch(err) { window.eval(#{escaped_script}); }")
+      result = @driver.execute_script(script)
       JSON.parse("{\"result\":#{result}}")["result"]
     end
 

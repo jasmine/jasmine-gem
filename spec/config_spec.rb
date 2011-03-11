@@ -230,9 +230,9 @@ describe Jasmine::Config do
     it "should use firefox by default" do
       ENV.stub!(:[], "JASMINE_BROWSER").and_return(nil)
       config = Jasmine::Config.new
-      config.stub!(:start_servers)
+      config.stub!(:start_jasmine_server)
       Jasmine::SeleniumDriver.should_receive(:new).
-              with(anything(), anything(), "*firefox", anything()).
+              with("firefox", anything).
               and_return(mock(Jasmine::SeleniumDriver, :connect => true))
       config.start
     end
@@ -240,9 +240,9 @@ describe Jasmine::Config do
     it "should use ENV['JASMINE_BROWSER'] if set" do
       ENV.stub!(:[], "JASMINE_BROWSER").and_return("mosaic")
       config = Jasmine::Config.new
-      config.stub!(:start_servers)
+      config.stub!(:start_jasmine_server)
       Jasmine::SeleniumDriver.should_receive(:new).
-              with(anything(), anything(), "*mosaic", anything()).
+              with("mosaic", anything).
               and_return(mock(Jasmine::SeleniumDriver, :connect => true))
       config.start
     end
@@ -252,10 +252,10 @@ describe Jasmine::Config do
     it "should use http://localhost by default" do
       config = Jasmine::Config.new
       config.instance_variable_set(:@jasmine_server_port, '1234')
-      config.stub!(:start_servers)
+      config.stub!(:start_jasmine_server)
 
       Jasmine::SeleniumDriver.should_receive(:new).
-              with(anything(), anything(), anything(), "http://localhost:1234/").
+              with(anything, "http://localhost:1234/").
               and_return(mock(Jasmine::SeleniumDriver, :connect => true))
       config.start
     end
@@ -264,21 +264,12 @@ describe Jasmine::Config do
       ENV.stub!(:[], "JASMINE_HOST").and_return("http://some_host")
       config = Jasmine::Config.new
       config.instance_variable_set(:@jasmine_server_port, '1234')
-      config.stub!(:start_servers)
+      config.stub!(:start_jasmine_server)
 
       Jasmine::SeleniumDriver.should_receive(:new).
-              with(anything(), anything(), anything(), "http://some_host:1234/").
+              with(anything, "http://some_host:1234/").
               and_return(mock(Jasmine::SeleniumDriver, :connect => true))
       config.start
-    end
-  end
-
-  describe "#start_selenium_server" do
-    it "should use an existing selenium server if SELENIUM_SERVER_PORT is set" do
-      config = Jasmine::Config.new
-      ENV.stub!(:[], "SELENIUM_SERVER_PORT").and_return(1234)
-      Jasmine.should_receive(:wait_for_listener).with(1234, "selenium server")
-      config.start_selenium_server
     end
   end
 end

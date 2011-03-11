@@ -53,12 +53,12 @@ module Jasmine
 
     def load_suite_info
       started = Time.now
-      while !eval_js('jsApiReporter && jsApiReporter.started') do
+      while !eval_js('return jsApiReporter && jsApiReporter.started') do
         raise "couldn't connect to Jasmine after 60 seconds" if (started + 60 < Time.now)
         sleep 0.1
       end
 
-      @suites = eval_js("var result = jsApiReporter.suites(); if (window.Prototype && Object.toJSON) { Object.toJSON(result) } else { JSON.stringify(result) }")
+      @suites = eval_js("var result = jsApiReporter.suites(); if (window.Prototype && Object.toJSON) { return Object.toJSON(result) } else { return JSON.stringify(result) }")
     end
 
     def results_for(spec_id)
@@ -69,14 +69,14 @@ module Jasmine
     def load_results
       @spec_results = {}
       @spec_ids.each_slice(50) do |slice|
-        @spec_results.merge!(eval_js("var result = jsApiReporter.resultsForSpecs(#{json_generate(slice)}); if (window.Prototype && Object.toJSON) { Object.toJSON(result) } else { JSON.stringify(result) }"))
+        @spec_results.merge!(eval_js("var result = jsApiReporter.resultsForSpecs(#{json_generate(slice)}); if (window.Prototype && Object.toJSON) { return Object.toJSON(result) } else { return JSON.stringify(result) }"))
       end
       @spec_results
     end
 
     def wait_for_suites_to_finish_running
       puts "Waiting for suite to finish in browser ..."
-      while !eval_js('jsApiReporter.finished') do
+      while !eval_js('return jsApiReporter.finished') do
         sleep 0.1
       end
     end
