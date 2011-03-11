@@ -45,17 +45,6 @@ module Jasmine
       ::RbConfig::CONFIG['host_os'] =~ /mswin|mingw/
     end
 
-#    def start_selenium_server
-#      @selenium_server_port = external_selenium_server_port
-#      if @selenium_server_port.nil?
-#        @selenium_server_port = Jasmine::find_unused_port
-#        require 'selenium-rc'
-#        SeleniumRC::Server.boot("localhost", @selenium_server_port, :args => [windows? ? ">NUL" : "> /dev/null"])
-#      else
-#        Jasmine::wait_for_listener(@selenium_server_port, "selenium server")
-#      end
-#    end
-
     def run
       begin
         start
