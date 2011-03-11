@@ -22,8 +22,8 @@ module Jasmine
     end
 
     def start
-      start_servers
-      @client = Jasmine::SeleniumDriver.new("localhost", @selenium_server_port, "*#{browser}", "#{jasmine_host}:#{@jasmine_server_port}/")
+      start_jasmine_server
+      @client = Jasmine::SeleniumDriver.new(browser, "#{jasmine_host}:#{@jasmine_server_port}/")
       @client.connect
     end
 
@@ -45,22 +45,16 @@ module Jasmine
       ::RbConfig::CONFIG['host_os'] =~ /mswin|mingw/
     end
 
-    def start_selenium_server
-      @selenium_server_port = external_selenium_server_port
-      if @selenium_server_port.nil?
-        @selenium_server_port = Jasmine::find_unused_port
-        require 'selenium-rc'
-        SeleniumRC::Server.send(:include, SeleniumServerForkHackForRSpec)
-        SeleniumRC::Server.boot("localhost", @selenium_server_port, :args => [windows? ? ">NUL" : "> /dev/null"])
-      else
-        Jasmine::wait_for_listener(@selenium_server_port, "selenium server")
-      end
-    end
-
-    def start_servers
-      start_jasmine_server
-      start_selenium_server
-    end
+#    def start_selenium_server
+#      @selenium_server_port = external_selenium_server_port
+#      if @selenium_server_port.nil?
+#        @selenium_server_port = Jasmine::find_unused_port
+#        require 'selenium-rc'
+#        SeleniumRC::Server.boot("localhost", @selenium_server_port, :args => [windows? ? ">NUL" : "> /dev/null"])
+#      else
+#        Jasmine::wait_for_listener(@selenium_server_port, "selenium server")
+#      end
+#    end
 
     def run
       begin
@@ -173,22 +167,6 @@ module Jasmine
         match_files(src_dir, simple_config['stylesheets'])
       else
         []
-      end
-    end
-
-    module SeleniumServerForkHackForRSpec
-      # without this, Selenium's forked process will attempt to run specs a second time at exit;
-      # see http://www.ruby-forum.com/topic/212722
-      def self.included(base)
-        alias_method :fork_without_fix_for_rspec, :fork
-        alias_method :fork, :fork_with_fix_for_rspec
-      end
-
-      def fork_with_fix_for_rspec
-        fork_without_fix_for_rspec do
-          yield
-          at_exit { exit! }
-        end
       end
     end
   end

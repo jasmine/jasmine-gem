@@ -21,8 +21,7 @@ Gem::Specification.new do |s|
   s.rdoc_options       = ["--charset=UTF-8"]
 
   s.add_dependency 'json_pure', '>= 1.4.3'
-  s.add_dependency 'selenium-rc', '>= 2.3.1'
-  s.add_dependency 'selenium-client', '>= 1.2.18'
+  s.add_dependency 'selenium-webdriver', '>= 0.1.3'
 
   if ENV['RAILS_VERSION'] == 'rails2'
     # for development & test of Rails 2 Generators
