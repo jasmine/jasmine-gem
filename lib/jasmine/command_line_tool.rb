@@ -36,6 +36,7 @@ module Jasmine
         copy_unless_exists('jasmine-example/spec/PlayerSpec.js', 'spec/javascripts/PlayerSpec.js')
         copy_unless_exists('jasmine-example/spec/SpecHelper.js', 'spec/javascripts/helpers/SpecHelper.js')
         copy_unless_exists('spec/javascripts/support/jasmine_runner.rb')
+        copy_unless_exists('spec/javascripts/support/jasmine_config.rb')
 
         rails_tasks_dir = dest_path('lib/tasks')
         if File.exist?(rails_tasks_dir)
