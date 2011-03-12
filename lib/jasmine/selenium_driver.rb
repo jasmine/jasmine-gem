@@ -1,9 +1,12 @@
 module Jasmine
   class SeleniumDriver
     def initialize(browser, http_address)
-      require 'json/pure' unless defined?(JSON)
       require 'selenium-webdriver'
-      @driver = Selenium::WebDriver.for browser.to_sym
+      @driver = if ENV['SELENIUM_SERVER'].present?
+        Selenium::WebDriver.for :remote, :url => ENV['SELENIUM_SERVER'], :desired_capabilities => browser.to_sym
+      else
+        Selenium::WebDriver.for browser.to_sym
+      end
       @http_address = http_address
     end
 
