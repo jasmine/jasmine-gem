@@ -20,14 +20,18 @@ Gem::Specification.new do |s|
   s.require_paths      = ["lib"]
   s.rdoc_options       = ["--charset=UTF-8"]
 
-  s.add_dependency 'json_pure', '>= 1.4.3'
-  s.add_dependency 'selenium-rc', '>= 2.3.1'
-  s.add_dependency 'selenium-client', '>= 1.2.18'
-
-  if ENV['RAILS_VERSION'] == 'rails2'
+  if ENV['RAILS_VERSION'] == 'pojs-rspec1'
+    s.add_development_dependency 'rspec', '~> 1.3.1'
+    s.add_development_dependency 'rake-tasks'
+    s.add_development_dependency 'rack', "1.1" if ENV["RUBY_VERSION"] =~ /1\.8\.6/
+  elsif ENV['RAILS_VERSION'] == 'pojs-rspec2'
+    s.add_development_dependency 'rspec', '~> 2.5.0'
+    s.add_development_dependency 'rake-tasks'
+    s.add_development_dependency 'rack', "1.1" if ENV["RUBY_VERSION"] =~ /1\.8\.6/
+  elsif ENV['RAILS_VERSION'] == 'rails2'
     # for development & test of Rails 2 Generators
-    s.add_development_dependency 'rspec', '1.3.1'
-    s.add_development_dependency 'rails', '2.3.10'
+    s.add_development_dependency 'rspec', '~> 1.3.1'
+    s.add_development_dependency 'rails', '~> 2.3.10'
     s.add_development_dependency 'rack', '1.1'
   else
     # for development & test of Rails 3 Generators
@@ -39,4 +43,11 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rack-test'
   s.add_development_dependency 'gem-release', ">= 0.0.16"
   s.add_development_dependency 'ci_reporter'
+
+  s.add_dependency 'rack', '>= 1.1'
+  s.add_dependency 'rspec', '>= 1.3.1'
+  s.add_dependency 'json_pure', '>= 1.4.3'
+  s.add_dependency 'selenium-rc', '>= 2.3.1'
+  s.add_dependency 'selenium-client', '>= 1.2.18'
+
 end

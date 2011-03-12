@@ -11,6 +11,10 @@ def rspec2?
   Gem.available? "rspec", ">= 2.0"
 end
 
+def rails2?
+  Gem.available? "rails", "~> 2.3"
+end
+
 def rails3?
   Gem.available? "rails", ">= 3.0"
 end
