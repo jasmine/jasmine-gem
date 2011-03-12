@@ -30,12 +30,16 @@ module Jasmine
       jasmine_files = @jasmine_files
       css_files = @jasmine_stylesheets + (@config.css_files || [])
       js_files = @config.js_files(focused_suite)
-      body = ERB.new(File.read(File.join(File.dirname(__FILE__), "run.html.erb"))).result(binding)
-      [
-        200,
-        { 'Content-Type' => 'text/html' },
-        [body]
-      ]
+      if File.exist?(@config.run_template)
+        body = ERB.new(File.read(@config.run_template)).result(binding)
+        [
+          200,
+          { 'Content-Type' => 'text/html' },
+          [body]
+        ]
+      else
+        not_found
+      end
     end
   end
 

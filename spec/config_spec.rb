@@ -45,6 +45,14 @@ describe Jasmine::Config do
         before(:each) do
           @config.stub!(:simple_config_file).and_return(File.join(@template_dir, 'spec/javascripts/support/jasmine.yml'))
         end
+        
+        it "should use the run template" do
+          @config.run_template.should == "spec/javascripts/support/run.html.erb"
+        end
+        
+        it "should be an existing run template" do
+          File.should exist(@config.run_template)
+        end
 
         it "should find the source files" do
           @config.src_files.should =~ ['public/javascripts/Player.js', 'public/javascripts/Song.js']
@@ -104,6 +112,13 @@ describe Jasmine::Config do
           @config.stylesheets.should be_empty
         end
 
+        it "should use the default run template" do
+          @config.run_template.should == File.expand_path("lib/jasmine/run.html.erb", @root)
+        end
+
+        it "should be an existing run template" do
+          File.exists?(@config.run_template).should be_true
+        end
       end
 
       describe "if jasmine.yml is empty" do
@@ -119,6 +134,14 @@ describe Jasmine::Config do
         it "should default to loading no stylesheet files" do
           @config.stylesheets.should be_empty
         end
+
+        it "should use the default run template" do
+          @config.run_template.should == File.expand_path("lib/jasmine/run.html.erb", @root)
+        end
+
+        it "should be an existing run template" do
+          File.should exist(@config.run_template)
+        end
       end
 
       describe "should use the first appearance of duplicate filenames" do
@@ -126,6 +149,10 @@ describe Jasmine::Config do
           Dir.stub!(:glob).and_return { |glob_string| [glob_string] }
           fake_config = Hash.new.stub!(:[]).and_return { |x| ["file1.ext", "file2.ext", "file1.ext"] }
           @config.stub!(:simple_config).and_return(fake_config)
+        end
+        
+        it "run_template" do
+          @config.run_template.should == "file1.ext"
         end
 
         it "src_files" do
@@ -190,6 +217,8 @@ describe Jasmine::Config do
          'public/javascripts/application.js'].each { |f| `touch #{f}` }
 
         @config.stub!(:simple_config_file).and_return(File.join(@template_dir, 'spec/javascripts/support/jasmine-rails.yml'))
+        
+        @config.run_template.should == 'spec/javascripts/support/run.html.erb'
 
         @config.spec_files.should == ['PlayerSpec.js']
         @config.helpers.should == ['helpers/SpecHelper.js']

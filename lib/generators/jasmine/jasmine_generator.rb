@@ -16,6 +16,7 @@ class JasmineGenerator < Rails::Generator::Base
     m.file "spec/javascripts/support/jasmine_runner.rb", "spec/javascripts/support/jasmine_runner.rb"
     m.file "spec/javascripts/support/jasmine_config.rb", "spec/javascripts/support/jasmine_config.rb"
     m.file "spec/javascripts/support/jasmine-rails.yml", "spec/javascripts/support/jasmine.yml"
+    m.file "spec/javascripts/support/run.html.erb", "spec/javascripts/support/run.html.erb"
     m.readme "INSTALL"
 
     unless ::Rails::VERSION::STRING[0,1] == "3"

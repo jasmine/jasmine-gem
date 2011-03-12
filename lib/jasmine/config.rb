@@ -175,6 +175,19 @@ module Jasmine
         []
       end
     end
+    
+    def run_template
+      if simple_config['run_template']
+        if simple_config['run_template'].kind_of?(Array)
+          # this shouldn't happen, but might, if the user doesn't pay attention
+          simple_config['run_template'].first
+        else
+          simple_config['run_template']
+        end
+      else
+        File.expand_path("run.html.erb", File.dirname(__FILE__))
+      end
+    end
 
     module SeleniumServerForkHackForRSpec
       # without this, Selenium's forked process will attempt to run specs a second time at exit;

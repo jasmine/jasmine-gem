@@ -71,3 +71,14 @@ src_dir:
 # spec_dir: spec/javascripts
 #
 spec_dir:
+
+# run_template
+#
+# Run template file. This is the primary file that runs the test suite.
+# Default: spec/javascripts/support/run.html.erb
+#
+# EXAMPLE:
+#
+# run_template: spec/javascripts/support/run.html.erb
+#
+run_template: spec/javascripts/support/run.html.erb
