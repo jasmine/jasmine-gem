@@ -1,4 +1,5 @@
 require File.expand_path(File.join(File.dirname(__FILE__), "spec_helper"))
+require 'selenium-webdriver'
 
 describe Jasmine::Config do
   describe "configuration" do
@@ -270,6 +271,15 @@ describe Jasmine::Config do
               with(anything, "http://some_host:1234/").
               and_return(mock(Jasmine::SeleniumDriver, :connect => true))
       config.start
+    end
+  end
+
+  describe "external selenium server" do
+    it "should use an external selenium server if SELENIUM_SERVER is set" do
+      ENV.stub!(:[], "SELENIUM_SERVER").and_return("http://myseleniumserver.com:4441")
+
+      Selenium::WebDriver.should_receive(:for).with(:remote, :url => "http://myseleniumserver.com:4441", :desired_capabilities => :firefox)
+      Jasmine::SeleniumDriver.new('firefox', 'http://localhost:8888')
     end
   end
 end

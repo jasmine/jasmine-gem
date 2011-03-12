@@ -11,10 +11,6 @@ module Jasmine
       ENV["JASMINE_HOST"] || 'http://localhost'
     end
 
-    def external_selenium_server_port
-      ENV['SELENIUM_SERVER_PORT'] && ENV['SELENIUM_SERVER_PORT'].to_i > 0 ? ENV['SELENIUM_SERVER_PORT'].to_i : nil
-    end
-
     def start_server(port = 8888)
       server = Rack::Server.new(:Port => port, :AccessLog => [])
       server.instance_variable_set(:@app, Jasmine.app(self)) # workaround for Rack bug, when Rack > 1.2.1 is released Rack::Server.start(:app => Jasmine.app(self)) will work
