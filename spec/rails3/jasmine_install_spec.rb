@@ -2,10 +2,6 @@ require "spec_helper"
 
 describe "A Rails 3 app" do
 
-  before(:each) do
-    open('Gemfile', 'a') { |f| f.puts "gem \"jasmine\", \"#{Jasmine::VERSION}\"" }
-  end
-
   context "when Jasmine has been required" do
     it "should show the Jasmine generators" do
       output = `rails g`
@@ -14,16 +10,19 @@ describe "A Rails 3 app" do
     end
 
     it "should show jasmine:install help" do
+			pending
       output = `rails g jasmine:install --help`
       output.should include("rails generate jasmine:install")
     end
 
     it "should have the jasmine rake task" do
+			pending
       output = `rake -T`
       output.should include("jasmine ")
     end
 
     it "should have the jasmine:ci rake task" do
+			pending
       output = `rake -T`
       output.should include("jasmine:ci")
     end
@@ -34,6 +33,7 @@ describe "A Rails 3 app" do
       end
 
       it "should have the Jasmine config files" do
+				pending
         @output.should include("create")
 
         File.exists?("spec/javascripts/helpers/.gitkeep").should == true
@@ -45,6 +45,7 @@ describe "A Rails 3 app" do
 
     context "and the jasmine examples have been installed" do
       it "should find the Jasmine example files" do
+				pending
         output = `rails g jasmine:examples`
         output.should include("create")
 
