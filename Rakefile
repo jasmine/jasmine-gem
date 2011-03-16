@@ -31,6 +31,19 @@ else
   end
 end
 
+desc "Run all Rails3 examples"
+task :all_rails3 do
+	require 'rake'
+	require 'rspec/core/rake_task'
+	Dir['spec/rails3/Rakefile'].each do |rakefile|
+		directory_name = File.dirname(rakefile)
+		sh <<-CMD
+			cd #{directory_name}
+			bundle exec rake
+		CMD
+	end
+end
+
 task :spec => ['jasmine:copy_examples_to_gem', 'bundle_install', 'ci:setup:rspec']
 
 task :spex do

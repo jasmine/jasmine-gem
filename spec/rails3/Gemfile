@@ -1,0 +1,11 @@
+source 'http://rubygems.org'
+
+gem 'rails', '3.0.5'
+gem 'rspec'
+gem 'rspec-rails', "~> 2.4"
+gem "jasmine", "1.0.2.0beta4"
+gem "jasmine", "1.0.2.0beta4"
+gem "jasmine", "1.0.2.0beta4"
+gem "jasmine", "1.0.2.0beta4"
+gem "jasmine", "1.0.2.0beta4"
+gem "jasmine", "1.0.2.0beta4"
