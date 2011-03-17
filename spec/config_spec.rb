@@ -277,8 +277,14 @@ describe Jasmine::Config do
   describe "external selenium server" do
     it "should use an external selenium server if SELENIUM_SERVER is set" do
       ENV.stub!(:[], "SELENIUM_SERVER").and_return("http://myseleniumserver.com:4441")
-
       Selenium::WebDriver.should_receive(:for).with(:remote, :url => "http://myseleniumserver.com:4441", :desired_capabilities => :firefox)
+      Jasmine::SeleniumDriver.new('firefox', 'http://localhost:8888')
+    end
+    it "should use an local selenium server with a specific port if SELENIUM_SERVER_PORT is set" do
+      ENV.stub!(:[]) do |arg|
+        arg == "SELENIUM_SERVER_PORT" ? "4441" : nil
+      end
+      Selenium::WebDriver.should_receive(:for).with(:remote, :url => "http://localhost:4441", :desired_capabilities => :firefox)
       Jasmine::SeleniumDriver.new('firefox', 'http://localhost:8888')
     end
   end

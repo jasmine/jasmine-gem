@@ -2,8 +2,13 @@ module Jasmine
   class SeleniumDriver
     def initialize(browser, http_address)
       require 'selenium-webdriver'
-      @driver = if ENV['SELENIUM_SERVER'].present?
-        Selenium::WebDriver.for :remote, :url => ENV['SELENIUM_SERVER'], :desired_capabilities => browser.to_sym
+      selenium_server = if ENV['SELENIUM_SERVER']
+        ENV['SELENIUM_SERVER']
+      elsif ENV['SELENIUM_SERVER_PORT']
+        "http://localhost:#{ENV['SELENIUM_SERVER_PORT']}"
+      end
+      @driver = if selenium_server
+        Selenium::WebDriver.for :remote, :url => selenium_server, :desired_capabilities => browser.to_sym
       else
         Selenium::WebDriver.for browser.to_sym
       end
