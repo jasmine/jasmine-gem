@@ -5,7 +5,7 @@ module Jasmine
       selenium_server = if ENV['SELENIUM_SERVER']
         ENV['SELENIUM_SERVER']
       elsif ENV['SELENIUM_SERVER_PORT']
-        "http://localhost:#{ENV['SELENIUM_SERVER_PORT']}"
+        "http://localhost:#{ENV['SELENIUM_SERVER_PORT']}/wd/hub"
       end
       @driver = if selenium_server
         Selenium::WebDriver.for :remote, :url => selenium_server, :desired_capabilities => browser.to_sym

@@ -11,6 +11,10 @@ module Jasmine
       ENV["JASMINE_HOST"] || 'http://localhost'
     end
 
+    def jasmine_port
+      ENV["JASMINE_PORT"] || Jasmine::find_unused_port
+    end
+
     def start_server(port = 8888)
       server = Rack::Server.new(:Port => port, :AccessLog => [])
       server.instance_variable_set(:@app, Jasmine.app(self)) # workaround for Rack bug, when Rack > 1.2.1 is released Rack::Server.start(:app => Jasmine.app(self)) will work
@@ -28,7 +32,7 @@ module Jasmine
     end
 
     def start_jasmine_server
-      @jasmine_server_port = Jasmine::find_unused_port
+      @jasmine_server_port = jasmine_port
       Thread.new do
         start_server(@jasmine_server_port)
       end
