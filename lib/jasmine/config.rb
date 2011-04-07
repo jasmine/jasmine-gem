@@ -11,8 +11,8 @@ module Jasmine
       ENV["JASMINE_HOST"] || 'http://localhost'
     end
 
-    def external_selenium_server_port
-      ENV['SELENIUM_SERVER_PORT'] && ENV['SELENIUM_SERVER_PORT'].to_i > 0 ? ENV['SELENIUM_SERVER_PORT'].to_i : nil
+    def jasmine_port
+      ENV["JASMINE_PORT"] || Jasmine::find_unused_port
     end
 
     def start_server(port = 8888)
@@ -22,8 +22,8 @@ module Jasmine
     end
 
     def start
-      start_servers
-      @client = Jasmine::SeleniumDriver.new("localhost", @selenium_server_port, "*#{browser}", "#{jasmine_host}:#{@jasmine_server_port}/")
+      start_jasmine_server
+      @client = Jasmine::SeleniumDriver.new(browser, "#{jasmine_host}:#{@jasmine_server_port}/")
       @client.connect
     end
 
@@ -32,7 +32,7 @@ module Jasmine
     end
 
     def start_jasmine_server
-      @jasmine_server_port = Jasmine::find_unused_port
+      @jasmine_server_port = jasmine_port
       Thread.new do
         start_server(@jasmine_server_port)
       end
@@ -43,23 +43,6 @@ module Jasmine
     def windows?
       require 'rbconfig'
       ::RbConfig::CONFIG['host_os'] =~ /mswin|mingw/
-    end
-
-    def start_selenium_server
-      @selenium_server_port = external_selenium_server_port
-      if @selenium_server_port.nil?
-        @selenium_server_port = Jasmine::find_unused_port
-        require 'selenium-rc'
-        SeleniumRC::Server.send(:include, SeleniumServerForkHackForRSpec)
-        SeleniumRC::Server.boot("localhost", @selenium_server_port, :args => [windows? ? ">NUL" : "> /dev/null"])
-      else
-        Jasmine::wait_for_listener(@selenium_server_port, "selenium server")
-      end
-    end
-
-    def start_servers
-      start_jasmine_server
-      start_selenium_server
     end
 
     def run
