@@ -20,17 +20,17 @@ Gem::Specification.new do |s|
   s.rdoc_options       = ["--charset=UTF-8"]
 
   if ENV['RAILS_VERSION'] == 'pojs-rspec1'
-    s.add_development_dependency 'rspec', '~> 1.3.1'
+    s.add_development_dependency 'rspec', '1.3.1'
     s.add_development_dependency 'rake-tasks'
     s.add_development_dependency 'rack', "1.1" if ENV["RUBY_VERSION"] =~ /1\.8\.6/
   elsif ENV['RAILS_VERSION'] == 'pojs-rspec2'
-    s.add_development_dependency 'rspec', '~> 2.5.0'
+    s.add_development_dependency 'rspec', '>= 2.5.0'
     s.add_development_dependency 'rake-tasks'
     s.add_development_dependency 'rack', "1.1" if ENV["RUBY_VERSION"] =~ /1\.8\.6/
   elsif ENV['RAILS_VERSION'] == 'rails2'
     # for development & test of Rails 2 Generators
-    s.add_development_dependency 'rspec', '~> 1.3.1'
-    s.add_development_dependency 'rails', '~> 2.3.10'
+    s.add_development_dependency 'rspec', '1.3.1'
+    s.add_development_dependency 'rails', '2.3.11'
     s.add_development_dependency 'rack', '1.1'
   else
     # for development & test of Rails 3 Generators
