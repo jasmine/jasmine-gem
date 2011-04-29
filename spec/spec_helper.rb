@@ -4,11 +4,13 @@ require 'stringio'
 require 'tmpdir'
 
 Bundler.setup(:default, :development)
-#Using syck because of 1.9.2/bundler incompatibilites -- this will need to change with the next patch release of 1.9.2
-YAML::ENGINE.yamler = 'syck' if defined?(YAML::ENGINE)
 
 def rspec2?
   Gem.available? "rspec", ">= 2.0"
+end
+
+def rails2?
+  Gem.available? "rails", "~> 2.3"
 end
 
 def rails3?
