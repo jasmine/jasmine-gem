@@ -85,9 +85,12 @@ module Jasmine
       map(config.spec_path)    { run Rack::File.new(config.spec_dir) }
       map(config.root_path)    { run Rack::File.new(config.project_root) }
 
-      map('/') do
+      map '/' do
         run Rack::Cascade.new([
-          Rack::URLMap.new('/' => Rack::File.new(config.src_dir)),
+          Rack::URLMap.new(
+            '/' => Rack::File.new(config.root_dir),
+            '/__src__' => Rack::File.new(config.src_dir)
+            ),
           Jasmine::RunAdapter.new(config)
         ])
       end
