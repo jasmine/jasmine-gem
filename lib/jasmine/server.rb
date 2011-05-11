@@ -83,12 +83,16 @@ module Jasmine
       map('/__suite__')        { run Jasmine::FocusedSuite.new(config) }
 
       map('/__JASMINE_ROOT__') { run Rack::File.new(Jasmine.root) }
-      map(config.spec_path)    { run Rack::File.new(config.spec_dir) }
       map(config.root_path)    { run Rack::File.new(config.project_root) }
       map(config.asset_path) do
         assets_server = Sprockets::Environment.new config.asset_dir
         config.asset_paths.each {|p| assets_server.paths << p }
         run assets_server
+      end
+      map(config.spec_path) do
+        server = Sprockets::Environment.new config.spec_dir
+        server.paths << '.'
+        run server
       end
 
       map('/') do
