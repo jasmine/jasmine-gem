@@ -92,7 +92,9 @@ module Jasmine
 
     def js_files(spec_filter = nil)
       spec_files_to_include = spec_filter.nil? ? spec_files : match_files(spec_dir, [spec_filter])
-      src_files.collect {|f| "/" + f } + helpers.collect {|f| File.join(spec_path, f) } + spec_files_to_include.collect {|f| File.join(spec_path, f) }
+      files = []
+      files = src_files.collect {|f| "/" + f } unless require_js
+      files + helpers.collect {|f| File.join(spec_path, f) } + spec_files_to_include.collect {|f| File.join(spec_path, f) }
     end
 
     def css_files
@@ -109,6 +111,14 @@ module Jasmine
 
     def simple_config_file
       File.join(project_root, 'spec/javascripts/support/jasmine.yml')
+    end
+
+    def require_js
+        if simple_config['require_js']
+            simple_config['require_js']
+        else
+            nil
+        end
     end
 
     def src_dir

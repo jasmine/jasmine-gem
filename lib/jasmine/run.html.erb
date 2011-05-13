@@ -11,31 +11,47 @@
   <% jasmine_files.each do |jasmine_file| %>
   <script src="<%= jasmine_file %>" type="text/javascript"></script>
   <% end %>
+  <% if require_js %>
+  <script src="<%= require_js %>" type="text/javascript"></script>
+  <% end %>
 
   <script type="text/javascript">
     var jsApiReporter;
     (function() {
-      var jasmineEnv = jasmine.getEnv();
+        function startJasmine(){
+          var jasmineEnv = jasmine.getEnv();
 
-      jsApiReporter = new jasmine.JsApiReporter();
-      var trivialReporter = new jasmine.TrivialReporter();
+          jsApiReporter = new jasmine.JsApiReporter();
+          var trivialReporter = new jasmine.TrivialReporter();
 
-      jasmineEnv.addReporter(jsApiReporter);
-      jasmineEnv.addReporter(trivialReporter);
+          jasmineEnv.addReporter(jsApiReporter);
+          jasmineEnv.addReporter(trivialReporter);
 
-      jasmineEnv.specFilter = function(spec) {
-        return trivialReporter.specFilter(spec);
-      };
+          jasmineEnv.specFilter = function(spec) {
+            return trivialReporter.specFilter(spec);
+          };
 
-      window.onload = function() {
-        jasmineEnv.execute();
-      };
+          jasmineEnv.execute();
+        }
+
+<% if require_js %>
+        require(['<%= js_files.join("','") %>'],function(){
+            require.ready(function(){
+                startJasmine();
+            })
+        });
+<% else %>
+        window.onload = function() {
+            startJasmine();
+        };
+<% end %>
+
     })();
   </script>
 
   <% js_files.each do |js_file| %>
   <script src="<%= js_file %>" type="text/javascript"></script>
-  <% end %>
+  <% end unless require_js %>
 
 </head>
 <body>
