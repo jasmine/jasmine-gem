@@ -79,3 +79,14 @@ src_dir:
 # spec_dir: spec/javascripts
 #
 spec_dir: spec/javascripts
+
+# root_dir
+#
+# Root directory path. Files in this directory will be mounted in the web server's root ("/") path.
+# Default: project root
+# 
+# EXAMPLE:
+# 
+# root_dir: public
+#
+root_dir:

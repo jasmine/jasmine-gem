@@ -48,7 +48,7 @@ describe Jasmine::Config do
         end
 
         it "should find the source files" do
-          @config.src_files.should =~ ['public/javascripts/Player.js', 'public/javascripts/Song.js']
+          @config.src_files.should =~ ['__src__/public/javascripts/Player.js', '__src__/public/javascripts/Song.js']
         end
 
         it "should find the stylesheet files" do
@@ -65,8 +65,8 @@ describe Jasmine::Config do
 
         it "should build an array of all the JavaScript files to include, source files then spec files" do
           @config.js_files.should == [
-                  '/public/javascripts/Player.js',
-                  '/public/javascripts/Song.js',
+                  '/__src__/public/javascripts/Player.js',
+                  '/__src__/public/javascripts/Song.js',
                   '/__spec__/helpers/SpecHelper.js',
                   '/__spec__/PlayerSpec.js'
           ]
@@ -74,8 +74,8 @@ describe Jasmine::Config do
 
         it "should allow the js_files to be filtered" do
           @config.js_files("PlayerSpec.js").should == [
-                  '/public/javascripts/Player.js',
-                  '/public/javascripts/Song.js',
+                  '/__src__/public/javascripts/Player.js',
+                  '/__src__/public/javascripts/Song.js',
                   '/__spec__/helpers/SpecHelper.js',
                   '/__spec__/PlayerSpec.js'
           ]
@@ -89,7 +89,7 @@ describe Jasmine::Config do
       it "should parse ERB" do
         @config.stub!(:simple_config_file).and_return(File.expand_path(File.join(@root, 'spec', 'fixture','jasmine.erb.yml')))
         Dir.stub!(:glob).and_return { |glob_string| [glob_string] }
-        @config.src_files.should == ['file0.js', 'file1.js', 'file2.js',]
+        @config.src_files.should == ['__src__/file0.js', '__src__/file1.js', '__src__/file2.js',]
       end
 
       describe "if jasmine.yml not found" do
@@ -130,7 +130,7 @@ describe Jasmine::Config do
         end
 
         it "src_files" do
-          @config.src_files.should == ['file1.ext', 'file2.ext']
+          @config.src_files.should == ['__src__/file1.ext', '__src__/file2.ext']
         end
 
         it "stylesheets" do
@@ -146,8 +146,8 @@ describe Jasmine::Config do
         end
 
         it "js_files" do
-          @config.js_files.should == ["/file1.ext",
-                                      "/file2.ext",
+          @config.js_files.should == ["/__src__/file1.ext",
+                                      "/__src__/file2.ext",
                                       "/__spec__/file1.ext",
                                       "/__spec__/file2.ext",
                                       "/__spec__/file1.ext",
@@ -170,7 +170,7 @@ describe Jasmine::Config do
         end
 
         it "should not contain negated files" do
-          @config.src_files.should == ["file2.ext"]
+          @config.src_files.should == ["__src__/file2.ext"]
         end
       end
 
@@ -194,32 +194,32 @@ describe Jasmine::Config do
 
         @config.spec_files.should == ['PlayerSpec.js']
         @config.helpers.should == ['helpers/SpecHelper.js']
-        @config.src_files.should == ['public/javascripts/prototype.js',
-                                     'public/javascripts/effects.js',
-                                     'public/javascripts/controls.js',
-                                     'public/javascripts/dragdrop.js',
-                                     'public/javascripts/application.js',
-                                     'public/javascripts/Player.js',
-                                     'public/javascripts/Song.js']
+        @config.src_files.should == ['__src__/public/javascripts/prototype.js',
+                                     '__src__/public/javascripts/effects.js',
+                                     '__src__/public/javascripts/controls.js',
+                                     '__src__/public/javascripts/dragdrop.js',
+                                     '__src__/public/javascripts/application.js',
+                                     '__src__/public/javascripts/Player.js',
+                                     '__src__/public/javascripts/Song.js']
         @config.js_files.should == [
-                '/public/javascripts/prototype.js',
-                '/public/javascripts/effects.js',
-                '/public/javascripts/controls.js',
-                '/public/javascripts/dragdrop.js',
-                '/public/javascripts/application.js',
-                '/public/javascripts/Player.js',
-                '/public/javascripts/Song.js',
+                '/__src__/public/javascripts/prototype.js',
+                '/__src__/public/javascripts/effects.js',
+                '/__src__/public/javascripts/controls.js',
+                '/__src__/public/javascripts/dragdrop.js',
+                '/__src__/public/javascripts/application.js',
+                '/__src__/public/javascripts/Player.js',
+                '/__src__/public/javascripts/Song.js',
                 '/__spec__/helpers/SpecHelper.js',
                 '/__spec__/PlayerSpec.js',
         ]
         @config.js_files("PlayerSpec.js").should == [
-                '/public/javascripts/prototype.js',
-                '/public/javascripts/effects.js',
-                '/public/javascripts/controls.js',
-                '/public/javascripts/dragdrop.js',
-                '/public/javascripts/application.js',
-                '/public/javascripts/Player.js',
-                '/public/javascripts/Song.js',
+                '/__src__/public/javascripts/prototype.js',
+                '/__src__/public/javascripts/effects.js',
+                '/__src__/public/javascripts/controls.js',
+                '/__src__/public/javascripts/dragdrop.js',
+                '/__src__/public/javascripts/application.js',
+                '/__src__/public/javascripts/Player.js',
+                '/__src__/public/javascripts/Song.js',
                 '/__spec__/helpers/SpecHelper.js',
                 '/__spec__/PlayerSpec.js'
         ]
