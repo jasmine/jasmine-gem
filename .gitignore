@@ -9,3 +9,6 @@ bin
 *.swp
 Gemfile.lock
 spec/reports
+/tmp
+/.autotest
+/.rspec
