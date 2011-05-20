@@ -5,11 +5,11 @@ class JasmineSelfTestConfig < Jasmine::Config
     File.expand_path(File.join(File.dirname(__FILE__), ".."))
   end
 
-  def src_dir
-    File.join(project_root, 'src')
+  def raw_src_dir
+    File.join(project_root, 'spec', 'fixture', 'src')
   end
 
   def spec_dir
-    File.join(project_root, 'jasmine/spec')
+    File.join(project_root, 'jasmine', 'spec')
   end
 end
