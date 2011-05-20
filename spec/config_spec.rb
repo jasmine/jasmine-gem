@@ -34,6 +34,30 @@ describe Jasmine::Config do
         @config.stub!(:project_root).and_return('some_project_root')
         @config.simple_config_file.should == (File.join('some_project_root', 'spec/javascripts/support/jasmine.yml'))
       end
+
+      describe "coverage" do
+        before :each do
+          @config.stub!(:project_root).and_return('some_project_root')
+          @config.stub!(:simple_config_file).and_return(File.join(@template_dir, 'spec/javascripts/support/jasmine.yml'))
+          YAML.stub!(:load).and_return({'src_dir' => nil})
+        end
+
+        it "is disabled" do
+          @config.should_not have_coverage_enabled
+        end
+
+        it "uses tmp" do
+          @config.coverage_temp_dir.should == 'tmp'
+        end
+
+        it "uses public/coverage" do
+          @config.coverage_report_dir.should == File.join('public', 'coverage')
+        end
+
+        it "has utf-8 encoding" do
+          @config.coverage_encoding.should == "utf-8"
+        end
+      end
     end
 
     describe "simple_config" do
@@ -45,6 +69,10 @@ describe Jasmine::Config do
       describe "using default jasmine.yml" do
         before(:each) do
           @config.stub!(:simple_config_file).and_return(File.join(@template_dir, 'spec/javascripts/support/jasmine.yml'))
+        end
+
+        it "should disable coverage support" do
+          @config.should_not have_coverage_enabled
         end
 
         it "should find the source files" do
@@ -127,6 +155,7 @@ describe Jasmine::Config do
           Dir.stub!(:glob).and_return { |glob_string| [glob_string] }
           fake_config = Hash.new.stub!(:[]).and_return { |x| ["file1.ext", "file2.ext", "file1.ext"] }
           @config.stub!(:simple_config).and_return(fake_config)
+          @config.stub!(:coverage_enabled?).and_return(false)
         end
 
         it "src_files" do
@@ -167,6 +196,7 @@ describe Jasmine::Config do
           Dir.stub!(:glob).and_return { |glob_string| [glob_string] }
           fake_config = Hash.new.stub!(:[]).and_return { |x| ["file1.ext", "!file1.ext", "file2.ext"] }
           @config.stub!(:simple_config).and_return(fake_config)
+          @config.stub!(:coverage_enabled?).and_return(false)
         end
 
         it "should not contain negated files" do
@@ -224,6 +254,81 @@ describe Jasmine::Config do
                 '/__spec__/PlayerSpec.js'
         ]
       end
+
+      describe "with coverage enabled"  do
+        before :each do
+          @config.stub!(:coverage_config).and_return({
+            'enabled'     => true,
+            'encoding'    => 'utf-8',
+            'temp_dir'    => 'tmp',
+            'report_dir'  => 'public/coverage',
+          })
+        end
+
+        describe "when jscoverage is not in the PATH" do
+          before :each do
+            @config.stub!(:jscoverage_in_path?).and_return(false)
+          end
+
+          it "warns the user" do
+            output = capture_stdout{ @config.src_files }
+            output.should =~ /warn.*jscoverage/i
+          end
+
+          it "disables coverage" do
+            capture_stdout do
+              @config.should_not have_coverage_enabled
+            end
+          end
+        end
+
+        describe "when jscoverage is in the PATH" do
+          before :each do
+            @config.stub!(:jscoverage_in_path?).and_return(true)
+          end
+
+          it "does not warn the user about jscoverage not being in the PATH" do
+            output = capture_stdout{ @config.src_files }
+            output.should_not =~ /warn.*jscoverage/i
+          end
+
+          describe "src_files" do
+            it "invokes jscoverage on the first, and only the first, invocation" do
+              expected_args = %W{
+                jscoverage
+                --encoding="utf-8"
+                #{File.join 'tmp', 'javascripts', 'uninstrumented'}
+                #{File.join 'tmp', 'javascripts', 'instrumented' }
+              }.join(' ')
+              @config.should_receive(:system).exactly(:once).with(expected_args)
+              3.times{ @config.src_files }
+            end
+
+            it "copies and instruments paths" do
+              instrumented_js_dir = File.join('tmp', 'javascripts', 'instrumented')
+              @config.src_files.each do |src_file|
+                File.join(instrumented_js_dir, src_file).should exist
+              end
+            end
+          end
+
+          describe "src_dir" do
+            before :each do
+              @config.unstub! :src_dir
+            end
+
+            it "returns coverage_instrumented_dir" do
+              @config.src_dir.should == File.join('tmp', 'javascripts', 'instrumented')
+            end
+          end
+
+          describe "raw_src_dir" do
+            it "returns the src directory" do
+              File.absolute_path(@config.src_dir).should == File.absolute_path(@project_dir)
+            end
+          end
+        end
+      end
     end
   end
 
@@ -232,6 +337,7 @@ describe Jasmine::Config do
       ENV.stub!(:[]) do |arg|
         hash[arg]
       end
+      ENV.stub(:has_key?){|k| hash.has_key? k}
     end
     describe "browser configuration" do
       it "should use firefox by default" do
@@ -302,6 +408,15 @@ describe Jasmine::Config do
         stub_env_hash({"SELENIUM_SERVER_PORT" => "4441"})
         Selenium::WebDriver.should_receive(:for).with(:remote, :url => "http://localhost:4441/wd/hub", :desired_capabilities => :firefox)
         Jasmine::SeleniumDriver.new('firefox', 'http://localhost:8888')
+      end
+    end
+
+    describe "coverage support" do
+      it "uses JASMINE_COVERAGE_ENABLED if JASMINE_COVERAGE_ENABLED is set" do
+        stub_env_hash({"JASMINE_COVERAGE_ENABLED" => "true" })
+        config = Jasmine::Config.new
+        config.stub!(:simple_config){ Hash.new }
+        config.should have_coverage_enabled
       end
     end
   end

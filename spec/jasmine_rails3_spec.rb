@@ -44,13 +44,20 @@ if rails3?
           @output = `rails g jasmine:install`
         end
 
-        it "should have the Jasmine config files" do
+        it "should create the Jasmine config files" do
           @output.should include("create")
+        end
 
-          File.exists?("spec/javascripts/helpers/.gitkeep").should == true
-          File.exists?("spec/javascripts/support/jasmine.yml").should == true
-          File.exists?("spec/javascripts/support/jasmine_runner.rb").should == true
-          File.exists?("spec/javascripts/support/jasmine_config.rb").should == true
+        %w(
+          spec/javascripts/helpers/.gitkeep
+          spec/javascripts/helpers/jscoverage.js
+          spec/javascripts/support/jasmine.yml
+          spec/javascripts/support/jasmine_runner.rb
+          spec/javascripts/support/jasmine_config.rb
+        ).each do |file|
+          it "should have the Jasmine config file #{file}" do
+            file.should exist
+          end
         end
       end
 

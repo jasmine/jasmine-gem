@@ -60,22 +60,31 @@ if rails2?
           `./script/generate jasmine`
         end
 
-        it "should find the Jasmine configuration files" do
-          File.exists?("spec/javascripts/support/jasmine.yml").should == true
-          File.exists?("spec/javascripts/support/jasmine_runner.rb").should == true
-          File.exists?("spec/javascripts/support/jasmine_config.rb").should == true
+        %w(
+          spec/javascripts/helpers/jscoverage.js
+          spec/javascripts/support/jasmine.yml
+          spec/javascripts/support/jasmine_runner.rb
+          spec/javascripts/support/jasmine_config.rb
+        ).each do |file|
+          it "should have the Jasmine configuration file #{file}" do
+            file.should exist
+          end
         end
 
-        it "should find the Jasmine example files" do
-          File.exists?("public/javascripts/Player.js").should == true
-          File.exists?("public/javascripts/Song.js").should == true
+        %w(
+          public/javascripts/Player.js
+          public/javascripts/Song.js
 
-          File.exists?("spec/javascripts/PlayerSpec.js").should == true
-          File.exists?("spec/javascripts/helpers/SpecHelper.js").should == true
+          spec/javascripts/PlayerSpec.js
+          spec/javascripts/helpers/SpecHelper.js
 
-          File.exists?("spec/javascripts/support/jasmine.yml").should == true
-          File.exists?("spec/javascripts/support/jasmine_runner.rb").should == true
-          File.exists?("spec/javascripts/support/jasmine_config.rb").should == true
+          spec/javascripts/support/jasmine.yml
+          spec/javascripts/support/jasmine_runner.rb
+          spec/javascripts/support/jasmine_config.rb
+        ).each do |file|
+          it "should have the Jasmine example file #{file}" do
+            file.should exist
+          end
         end
 
         it "should show jasmine rake task" do

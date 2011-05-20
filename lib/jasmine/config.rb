@@ -111,11 +111,58 @@ module Jasmine
       File.join(project_root, 'spec/javascripts/support/jasmine.yml')
     end
 
-    def src_dir
+    def coverage_config
+      simple_config['coverage'] || { 'enabled' => false }
+    end
+
+    def coverage_enabled?
+      coverage_enabled_in_config = ENV.has_key?("JASMINE_COVERAGE_ENABLED") || coverage_config['enabled']
+      if coverage_enabled_in_config && ! jscoverage_in_path?
+        @warned_about_coverage ||= 
+          puts "Warning: jasmine.yml has coverage enabled, but jscoverage was not found using `which jscoverage`."
+        false
+      else
+        coverage_enabled_in_config
+      end
+    end
+
+    def jscoverage_in_path?
+      `which jscoverage` && $?.success?
+    end
+
+    def coverage_encoding
+      coverage_config['encoding'] || 'utf-8'
+    end
+
+    def coverage_temp_dir
+      coverage_config['temp_dir'] || 'tmp'
+    end
+
+    def coverage_instrumented_dir
+      File.join coverage_temp_dir, 'javascripts', 'instrumented'
+    end
+
+    def coverage_uninstrumented_dir
+      File.join coverage_temp_dir, 'javascripts', 'uninstrumented'
+    end
+
+    def coverage_report_dir
+      coverage_config['report_dir'] || File.join('public','coverage')
+    end
+
+    def raw_src_dir
       if simple_config['src_dir']
         File.join(project_root, simple_config['src_dir'])
       else
         project_root
+      end
+    end
+
+    def src_dir
+      if coverage_enabled?
+        coverage_instrumented_dir
+      else
+        raw_src_dir
       end
     end
 
@@ -136,11 +183,27 @@ module Jasmine
     end
 
     def src_files
-      if simple_config['src_files']
-        match_files(src_dir, simple_config['src_files'])
-      else
-        []
-      end
+      files = 
+        if simple_config['src_files']
+          match_files(raw_src_dir, simple_config['src_files'])
+        else
+          []
+        end
+      instrument_files! files if coverage_enabled?
+      files
+    end
+
+    def instrument_files!( files )
+      @src_files_instrumented ||= (
+        FileUtils.mkdir_p coverage_uninstrumented_dir
+        files.each do |file|
+          path = File.dirname(file)
+          FileUtils.mkdir_p(File.join(coverage_uninstrumented_dir, path))
+          FileUtils.cp(File.join(raw_src_dir, file), File.join(coverage_uninstrumented_dir, path))
+        end
+        system %Q{jscoverage --encoding="#{coverage_encoding}" #{coverage_uninstrumented_dir} #{coverage_instrumented_dir}}
+        true
+      )
     end
 
     def spec_files

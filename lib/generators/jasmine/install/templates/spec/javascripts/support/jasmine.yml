@@ -1,3 +1,38 @@
+# coverage
+#
+# Configure support for coverage.  Requires jscoverage to be in your PATH.
+#
+#   enabled
+#
+#     Whether or not coverage is enabled.  Can also be enabled by setting
+#     JASMINE_COVERAGE_ENABLED in your env.
+#
+#   encoding
+#
+#     Passed directly to jscoverage
+#
+#   temp_dir
+#
+#     Where to store instrumented src files.
+#
+#   report_dir
+#
+#     Where to store coverage reports. 
+#
+# EXAMPLE:
+#
+#   coverage:
+#     enabled:    true
+#     encoding:   utf-8
+#     temp_dir:   tmp
+#     report_dir: public/coverage
+#
+coverage:
+  enabled:    false
+  encoding:   utf-8
+  temp_dir:   tmp
+  report_dir: public/coverage
+
 # src_files
 #
 # Return an array of filepaths relative to src_dir to include before jasmine specs.

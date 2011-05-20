@@ -1,4 +1,5 @@
 require 'enumerator'
+require 'fileutils'
 
 module Jasmine
   class SpecBuilder
@@ -20,6 +21,7 @@ module Jasmine
     end
 
     def stop
+      save_coverage_report! if @config.coverage_enabled?
       @runner.stop
     end
 
@@ -72,6 +74,25 @@ module Jasmine
         @spec_results.merge!(eval_js("var result = jsApiReporter.resultsForSpecs(#{json_generate(slice)}); if (window.Prototype && Object.toJSON) { return Object.toJSON(result) } else { return JSON.stringify(result) }"))
       end
       @spec_results
+    end
+
+    def save_coverage_report!
+      FileUtils.mkdir_p @config.coverage_report_dir
+      coverage = eval_js("var result = jasmine.coverageReport(); if (window.Prototype && Object.toJSON) { return Object.toJSON(result) } else { return JSON.stringify(result) }")
+      File.open(File.join(@config.coverage_report_dir, 'jscoverage.json'), 'w') do |file|
+        file.write( json_generate( coverage ))
+      end
+
+      jscoverage_files = %w(
+          jscoverage.css jscoverage-highlight.css jscoverage.html
+          jscoverage-ie.css jscoverage.js jscoverage-throbber.gif).map do |file|
+        File.join(@config.src_dir, file)
+      end
+      FileUtils.cp jscoverage_files, @config.coverage_report_dir
+
+      File.open(File.join(@config.coverage_report_dir, 'jscoverage.js'), 'a') do |jscoverage_js|
+        jscoverage_js.puts "\njscoverage_isReport = true;"
+      end
     end
 
     def wait_for_suites_to_finish_running
@@ -152,7 +173,8 @@ module Jasmine
     private
 
     def eval_js(js)
-      @runner.eval_js(js)
+      result = @runner.eval_js(js)
+      JSON.parse("{\"result\":#{result}}")["result"]
     end
 
     def json_generate(obj)
