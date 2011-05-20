@@ -63,3 +63,14 @@ module Kernel
     $stdout = STDOUT
   end
 end
+
+
+RSpec::Matchers.define :have_coverage_enabled do
+  match{|actual| actual.coverage_enabled? }
+end
+RSpec::Matchers.define :start_with do |prefix|
+  match{|string| string.start_with? prefix }
+end
+RSpec::Matchers.define :exist do
+  match{|path| File.exists? path }
+end
