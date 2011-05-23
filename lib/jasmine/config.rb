@@ -162,5 +162,9 @@ module Jasmine
         []
       end
     end
+
+    def jasmine_xvfb
+      ""
+    end
   end
 end

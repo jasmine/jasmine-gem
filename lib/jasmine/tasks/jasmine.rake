@@ -56,7 +56,7 @@ namespace :jasmine do
 
     jasmine_url = "#{config.jasmine_host}:" + js_port
     puts "Running tests against #{jasmine_url}"
-    sh "phantomjs #{phantomjs_runner} #{jasmine_url}" do |ok, res|
+    sh "#{config.jasmine_xvfb} phantomjs #{phantomjs_runner} #{jasmine_url}" do |ok, res|
       fail "Jasmine specs failed" unless ok
     end
   end
