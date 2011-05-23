@@ -92,7 +92,7 @@ module Jasmine
 
     def js_files(spec_filter = nil)
       spec_files_to_include = spec_filter.nil? ? spec_files : match_files(spec_dir, [spec_filter])
-      src_files.collect {|f| "/" + f } + helpers.collect {|f| File.join(spec_path, f) } + spec_files_to_include.collect {|f| File.join(spec_path, f) }
+      asset_gems.collect { |k, v| v.collect { |f| File.join("/__#{k}__", File.split(f).last) } }.flatten + src_files.collect {|f| "/" + f } + helpers.collect {|f| File.join(spec_path, f) } + spec_files_to_include.collect {|f| File.join(spec_path, f) }
     end
 
     def css_files
@@ -156,6 +156,26 @@ module Jasmine
         match_files(src_dir, simple_config['stylesheets'])
       else
         []
+      end
+    end
+
+    def asset_gems
+      return @vendor_assets if @vendor_assets
+
+      if simple_config['asset_gems']
+        @vendor_assets = {}
+
+        simple_config['asset_gems'].each do |gem|
+          require gem
+          require "#{gem}/jasmine"
+
+          @vendor_assets[gem] = Jasmine.vendored_asset_paths
+          Jasmine.vendored_asset_paths = []
+        end
+
+        @vendor_assets
+      else
+        nil
       end
     end
   end

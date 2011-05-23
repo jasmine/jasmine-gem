@@ -84,6 +84,10 @@ module Jasmine
       map('/__JASMINE_ROOT__') { run Rack::File.new(Jasmine.root) }
       map(config.spec_path)    { run Rack::File.new(config.spec_dir) }
       map(config.root_path)    { run Rack::File.new(config.project_root) }
+      
+      config.asset_gems.each do |gem, files|
+        map("/__#{gem}__") { run Rack::File.new(File.split(files.first).first) }
+      end
 
       map('/') do
         run Rack::Cascade.new([

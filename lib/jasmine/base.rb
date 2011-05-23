@@ -2,6 +2,12 @@ require 'socket'
 require 'erb'
 
 module Jasmine
+  class << self
+    attr_accessor :vendored_asset_paths
+  end
+
+  self.vendored_asset_paths = []
+
   def self.root
     ENV["JASMINE_ROOT"] || File.expand_path(File.join(File.dirname(__FILE__), '../../jasmine'))
   end
