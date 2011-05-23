@@ -22,7 +22,7 @@ module Jasmine
     end
 
     def start
-      start_jasmine_server
+      start_jasmine_server 
       @client = Jasmine::SeleniumDriver.new(browser, "#{jasmine_host}:#{@jasmine_server_port}/")
       @client.connect
     end
@@ -31,8 +31,12 @@ module Jasmine
       @client.disconnect
     end
 
-    def start_jasmine_server
-      @jasmine_server_port = jasmine_port
+    def start_jasmine_server(*port)
+      if port.length > 0 then
+        @jasmine_server_port = port[0]
+      else 
+        @jasmine_server_port = jasmine_port
+      end
       Thread.new do
         start_server(@jasmine_server_port)
       end
