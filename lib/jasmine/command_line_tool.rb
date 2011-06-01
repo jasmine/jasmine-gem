@@ -44,13 +44,13 @@ module Jasmine
           copy_unless_exists('spec/javascripts/support/jasmine-rails.yml', 'spec/javascripts/support/jasmine.yml')
         else
           copy_unless_exists('spec/javascripts/support/jasmine.yml')
+          require 'rake'
           write_mode = 'w'
           if File.exist?(dest_path('Rakefile'))
             load dest_path('Rakefile')
             write_mode = 'a'
           end
 
-          require 'rake'
           unless Rake::Task.task_defined?('jasmine')
             File.open(dest_path('Rakefile'), write_mode) do |f|
               f.write("\n" + File.read(template_path('lib/tasks/jasmine.rake')))
