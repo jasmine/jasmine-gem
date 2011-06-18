@@ -20,22 +20,32 @@ Gem::Specification.new do |s|
   s.rdoc_options       = ["--charset=UTF-8"]
 
   if ENV['RAILS_VERSION'] == 'pojs-rspec1'
-    s.add_development_dependency 'rspec', '1.3.1'
+    if ENV["RUBY_VERSION"] =~ /1\.8\.6/
+      #1.3.2 buffer overflows
+      s.add_development_dependency 'rspec', '= 1.3.1'
+      s.add_development_dependency 'rack', "1.1"
+    else
+      s.add_development_dependency 'rspec', '>= 1.3.1', '< 2'
+    end
     s.add_development_dependency 'rake-tasks'
-    s.add_development_dependency 'rack', "1.1" if ENV["RUBY_VERSION"] =~ /1\.8\.6/
   elsif ENV['RAILS_VERSION'] == 'pojs-rspec2'
     s.add_development_dependency 'rspec', '>= 2.5.0'
     s.add_development_dependency 'rake-tasks'
     s.add_development_dependency 'rack', "1.1" if ENV["RUBY_VERSION"] =~ /1\.8\.6/
   elsif ENV['RAILS_VERSION'] == 'rails2'
+    if ENV["RUBY_VERSION"] =~ /1\.8\.6/
+      #1.3.2 buffer overflows
+      s.add_development_dependency 'rspec', '= 1.3.1'
+    else
+      s.add_development_dependency 'rspec', '>= 1.3.1', '< 2'
+    end
     # for development & test of Rails 2 Generators
-    s.add_development_dependency 'rspec', '1.3.1'
-    s.add_development_dependency 'rails', '2.3.11'
-    s.add_development_dependency 'rack', '1.1'
+    s.add_development_dependency 'rails', '2.3.11', "< 3"
+    s.add_development_dependency 'rack', '>= 1.1', "< 1.2"
   else
     # for development & test of Rails 3 Generators
     s.add_development_dependency 'rspec', '>= 2.5.0'
-    s.add_development_dependency 'rails', '>= 3.0.3 '
+    s.add_development_dependency 'rails', '>= 3.0.0'
     s.add_development_dependency 'rack', '>= 1.2.1'
   end
 
@@ -43,9 +53,9 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'gem-release', ">= 0.0.16"
   s.add_development_dependency 'ci_reporter'
 
+  s.add_dependency 'jasmine-core', ">= 1.1.0.rc1"
   s.add_dependency 'rack', '>= 1.1'
   s.add_dependency 'rspec', '>= 1.3.1'
   s.add_dependency 'json_pure', '>= 1.4.3'
   s.add_dependency 'selenium-webdriver', '>= 0.1.3'
-
 end

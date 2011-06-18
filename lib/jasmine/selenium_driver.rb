@@ -7,10 +7,16 @@ module Jasmine
       elsif ENV['SELENIUM_SERVER_PORT']
         "http://localhost:#{ENV['SELENIUM_SERVER_PORT']}/wd/hub"
       end
+      options = if browser == "firefox" && ENV["JASMINE_FIREBUG"]
+                  require File.join(File.dirname(__FILE__), "firebug/firebug")
+                  profile = Selenium::WebDriver::Firefox::Profile.new
+                  profile.enable_firebug
+                  {:profile => profile}
+                end || {}
       @driver = if selenium_server
         Selenium::WebDriver.for :remote, :url => selenium_server, :desired_capabilities => browser.to_sym
       else
-        Selenium::WebDriver.for browser.to_sym
+        Selenium::WebDriver.for browser.to_sym, options
       end
       @http_address = http_address
     end

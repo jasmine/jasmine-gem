@@ -1,15 +1,12 @@
 require 'rack'
+require 'jasmine-core'
 
 module Jasmine
   class RunAdapter
     def initialize(config)
       @config = config
-      @jasmine_files = [
-        "/__JASMINE_ROOT__/lib/jasmine.js",
-        "/__JASMINE_ROOT__/lib/jasmine-html.js",
-        "/__JASMINE_ROOT__/lib/json2.js",
-      ]
-      @jasmine_stylesheets = ["/__JASMINE_ROOT__/lib/jasmine.css"]
+      @jasmine_files = Jasmine::Core.js_files.map {|f| "/__JASMINE_ROOT__/#{f}"}
+      @jasmine_stylesheets = Jasmine::Core.css_files.map {|f| "/__JASMINE_ROOT__/#{f}"}
     end
 
     def call(env)
@@ -81,7 +78,7 @@ module Jasmine
       map('/run.html')         { run Jasmine::Redirect.new('/') }
       map('/__suite__')        { run Jasmine::FocusedSuite.new(config) }
 
-      map('/__JASMINE_ROOT__') { run Rack::File.new(Jasmine.root) }
+      map('/__JASMINE_ROOT__') { run Rack::File.new(Jasmine::Core.path) }
       map(config.spec_path)    { run Rack::File.new(config.spec_dir) }
       map(config.root_path)    { run Rack::File.new(config.project_root) }
 

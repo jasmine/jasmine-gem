@@ -23,7 +23,7 @@ require 'ci/reporter/rake/rspec'
 desc "Run all examples"
 if rspec2?
   RSpec::Core::RakeTask.new(:spec) do |t|
-    t.pattern = 'spec/**/*.rb'
+    t.pattern = 'spec/**/*_spec.rb'
   end
 else
   Spec::Rake::SpecTask.new('spec') do |t|
@@ -31,16 +31,12 @@ else
   end
 end
 
-task :spec => ['jasmine:copy_examples_to_gem', 'bundle_install', 'ci:setup:rspec']
-
-task :spex do
-  `bundle install`
-  Rake::Task["spec"].invoke
-end
+task :spec => ['jasmine:copy_examples_to_gem', 'ci:setup:rspec']
 
 task :default => :spec
 
 namespace :jasmine do
+  require "jasmine-core"
   require './spec/jasmine_self_test_config'
   task :server do
     puts "your tests are here:"
@@ -51,26 +47,14 @@ namespace :jasmine do
 
   desc "Copy examples from Jasmine JS to the gem"
   task :copy_examples_to_gem do
-    unless File.exist?('jasmine/lib')
-      raise "Jasmine submodule isn't present.  Run git submodule update --init"
-    end
-
     require "fileutils"
 
     # copy jasmine's example tree into our generator templates dir
     FileUtils.rm_r('generators/jasmine/templates/jasmine-example', :force => true)
-    FileUtils.cp_r('jasmine/example', 'generators/jasmine/templates/jasmine-example', :preserve => true)
+    FileUtils.cp_r(File.join(Jasmine::Core.path, 'example'), 'generators/jasmine/templates/jasmine-example', :preserve => true)
   end
 end
 
 desc "Run specs via server"
 task :jasmine => ['jasmine:server']
 
-desc "Install Bundle"
-task "bundle_install" do
-  `bundle install`
-end
-
-
-require 'bundler'
-Bundler::GemHelper.install_tasks

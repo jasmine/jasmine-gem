@@ -6,40 +6,41 @@ describe "Jasmine.app" do
 
   def app
     config = Jasmine::Config.new
-    config.stub!(:project_root).and_return(Jasmine.root)
-    config.stub!(:spec_dir).and_return(File.join(Jasmine.root, "spec"))
-    config.stub!(:src_dir).and_return(File.join(Jasmine.root, "src"))
+    @root = File.join(File.dirname(__FILE__))
+    config.stub!(:project_root).and_return(@root)
+    config.stub!(:spec_dir).and_return(File.join(@root, "fixture", "spec"))
+    config.stub!(:src_dir).and_return(File.join(@root, "fixture", "src"))
     config.stub!(:src_files).and_return(["file1.js"])
     config.stub!(:spec_files).and_return(["file2.js"])
     Jasmine.app(config)
   end
 
   it "should serve static files from spec dir under __spec__" do
-    get "/__spec__/suites/EnvSpec.js"
+    get "/__spec__/example_spec.js"
     last_response.status.should == 200
     last_response.content_type.should == "application/javascript"
-    last_response.body.should == File.read(File.join(Jasmine.root, "spec/suites/EnvSpec.js"))
+    last_response.body.should == File.read(File.join(@root, "fixture/spec/example_spec.js"))
     end
 
   it "should serve static files from root dir under __root__" do
-    get "/__root__/src/base.js"
+    get "/__root__/fixture/src/example.js"
     last_response.status.should == 200
     last_response.content_type.should == "application/javascript"
-    last_response.body.should == File.read(File.join(Jasmine.root, "src/base.js"))
+    last_response.body.should == File.read(File.join(@root, "fixture/src/example.js"))
   end
 
   it "should serve static files from src dir under /" do
-    get "/base.js"
+    get "/example.js"
     last_response.status.should == 200
     last_response.content_type.should == "application/javascript"
-    last_response.body.should == File.read(File.join(Jasmine.root, "src/base.js"))
+    last_response.body.should == File.read(File.join(@root, "fixture/src/example.js"))
   end
 
   it "should serve Jasmine static files under /__JASMINE_ROOT__/" do
-    get "/__JASMINE_ROOT__/lib/jasmine.css"
+    get "/__JASMINE_ROOT__/jasmine.css"
     last_response.status.should == 200
     last_response.content_type.should == "text/css"
-    last_response.body.should == File.read(File.join(Jasmine.root, "lib/jasmine.css"))
+    last_response.body.should == File.read(File.join(Jasmine::Core.path, "jasmine.css"))
   end
 
   it "should serve focused suites when prefixing spec files with /__suite__/" do

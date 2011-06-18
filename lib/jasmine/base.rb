@@ -2,10 +2,6 @@ require 'socket'
 require 'erb'
 
 module Jasmine
-  def self.root
-    ENV["JASMINE_ROOT"] || File.expand_path(File.join(File.dirname(__FILE__), '../../jasmine'))
-  end
-
   # this seemingly-over-complex method is necessary to get an open port on at least some of our Macs
   def self.open_socket_on_unused_port
     infos = Socket::getaddrinfo("localhost", nil, Socket::AF_UNSPEC, Socket::SOCK_STREAM, 0, Socket::AI_PASSIVE)
