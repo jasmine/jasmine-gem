@@ -57,6 +57,7 @@ module Jasmine
   end
   
   def self.rails3?
+    return Rails.version.split(".").first.to_i == 3 if defined? Rails
     Gem.available? "rails", ">= 3.0"
   end
 end
