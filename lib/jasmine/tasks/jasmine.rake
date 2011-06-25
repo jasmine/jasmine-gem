@@ -3,8 +3,17 @@ namespace :jasmine do
     require 'jasmine'
   end
 
+  task :require_json do
+    begin
+      require 'json'
+    rescue LoadError
+      puts "You must have a JSON library installed to run jasmine:ci. Try \"gem install json\""
+      exit
+    end
+  end
+
   desc "Run continuous integration tests"
-  task :ci => "jasmine:require" do
+  task :ci => ["jasmine:require_json", "jasmine:require"] do
     if Jasmine::rspec2?
       require "rspec"
       require "rspec/core/rake_task"
