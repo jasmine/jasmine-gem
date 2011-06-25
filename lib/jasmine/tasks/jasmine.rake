@@ -24,13 +24,13 @@ namespace :jasmine do
 
     if Jasmine::rspec2?
       RSpec::Core::RakeTask.new(:jasmine_continuous_integration_runner) do |t|
-        t.rspec_opts = ["--colour", "--format", "progress"]
+        t.rspec_opts = ["--colour", "--format", ENV['SPEC_FORMAT'] || "progress"]
         t.verbose = true
         t.pattern = ['spec/javascripts/support/jasmine_runner.rb']
       end
     else
       Spec::Rake::SpecTask.new(:jasmine_continuous_integration_runner) do |t|
-        t.spec_opts = ["--color", "--format", "specdoc"]
+        t.spec_opts = ["--color", "--format", ENV['SPEC_FORMAT'] || "specdoc"]
         t.verbose = true
         t.spec_files = ['spec/javascripts/support/jasmine_runner.rb']
       end
