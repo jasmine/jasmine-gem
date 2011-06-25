@@ -38,7 +38,7 @@ Point your browser to `localhost:8888`. The suite will run every time this page 
 
 Start Jasmine on a different port:
 
-`rake jasmine PORT=1337`
+`rake jasmine JASMINE_PORT=1337`
 
 Point your browser to `localhost:1337`. 
 

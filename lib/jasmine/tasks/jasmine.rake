@@ -42,10 +42,10 @@ namespace :jasmine do
     jasmine_config_overrides = './spec/javascripts/support/jasmine_config.rb'
     require jasmine_config_overrides if File.exist?(jasmine_config_overrides)
 
+    port = ENV['JASMINE_PORT'] || 8888
     puts "your tests are here:"
-    puts "  http://localhost:8888/"
-
-    Jasmine::Config.new.start_server
+    puts "  http://localhost:#{port}/"
+    Jasmine::Config.new.start_server(port)
   end
 end
 

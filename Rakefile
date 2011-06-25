@@ -40,7 +40,7 @@ namespace :jasmine do
   require "jasmine-core"
   require './spec/jasmine_self_test_config'
   task :server do          
-		port = ENV['PORT'] || 8888
+    port = ENV['JASMINE_PORT'] || 8888
     JasmineSelfTestConfig.new.start_server(port)
 
     puts "your tests are here:"
