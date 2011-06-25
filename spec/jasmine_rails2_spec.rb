@@ -41,7 +41,7 @@ if rails2?
 
     context "when the Jasmine generators are available" do
       before :each do
-        `mkdir -p lib/generators && cp -R #{@root}/generators/jasmine lib/generators`
+        `mkdir -p lib/generators && ln -s #{@root}/generators/jasmine lib/generators/jasmine`
       end
 
       it "should show the Jasmine generator" do
