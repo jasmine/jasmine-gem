@@ -10,6 +10,10 @@ class JasmineSelfTestConfig < Jasmine::Config
   end
 
   def spec_dir
-    File.join(project_root, 'jasmine/spec')
+    Jasmine::Core.path
+  end
+
+  def spec_files
+    Jasmine::Core.html_spec_files + Jasmine::Core.core_spec_files
   end
 end
