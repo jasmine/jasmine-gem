@@ -27,9 +27,19 @@
         return trivialReporter.specFilter(spec);
       };
 
+      var currentWindowOnload = window.onload;
+
       window.onload = function() {
-        jasmineEnv.execute();
+        if (currentWindowOnload) {
+          currentWindowOnload();
+        }
+        execJasmine();
       };
+
+      function execJasmine() {
+        jasmineEnv.execute();
+      }
+
     })();
   </script>
 
