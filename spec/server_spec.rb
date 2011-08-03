@@ -74,8 +74,15 @@ describe "Jasmine.app" do
     it "should return an empty 200 for HEAD requests to /" do
       head "/"
       last_response.status.should == 200
-      last_response.headers.should == { 'Content-Type' => 'text/html' }
+      last_response.headers['Content-Type'].should == 'text/html'
       last_response.body.should == ''
+    end
+
+    it "should tell the browser not to cache any assets" do
+      head "/"
+      ['Cache-Control', 'Pragma'].each do |key|
+        last_response.headers[key].should == 'no-cache'
+      end
     end
   end
 end
