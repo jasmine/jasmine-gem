@@ -86,6 +86,7 @@ module Jasmine
       suites.each do |suite|
         declare_suite(self, suite)
       end
+      check_syntax_errors!
     end
 
     def declare_suite(parent, suite)
@@ -158,5 +159,22 @@ module Jasmine
     def json_generate(obj)
       @runner.json_generate(obj)
     end
+
+    def check_syntax_errors!
+      spec_count = @config.spec_files_full_paths.collect do |file|
+        File.open(file, 'r').each_line.select {|line| line =~ /^\s*it\(/  }.length
+      end.inject(0) {|sum, count| sum += count}
+
+      unless spec_count == @spec_ids.length
+        stop
+        message = "Probably a syntax error ocurred in your spec files, because of that, was found #{spec_count} spectations but just #{@spec_ids.length} really runs (#{@spec_ids.length} < #{spec_count})"
+
+        use_color = Jasmine::rspec2? ? RSpec.configuration.color_enabled? : Spec::Runner.options.colour
+        message = "\e[31m#{message}\e[0m" if use_color
+        fail "\n\n#{message}\n\n"
+        trap("INT")
+      end
+    end
+
   end
 end
