@@ -172,7 +172,6 @@ module Jasmine
         use_color = Jasmine::rspec2? ? RSpec.configuration.color_enabled? : Spec::Runner.options.colour
         message = "\e[31m#{message}\e[0m" if use_color
         fail "\n\n#{message}\n\n"
-        trap("INT")
       end
     end
 
