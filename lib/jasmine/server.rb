@@ -30,7 +30,7 @@ module Jasmine
       body = ERB.new(File.read(File.join(File.dirname(__FILE__), "run.html.erb"))).result(binding)
       [
         200,
-        { 'Content-Type' => 'text/html' },
+        { 'Content-Type' => 'text/html', 'Cache-Control' => 'no-cache', 'Pragma' => 'no-cache' },
         [body]
       ]
     end
