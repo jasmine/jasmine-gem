@@ -4,8 +4,8 @@ module Jasmine
     require 'erb'
 
     def initialize(options = {})
-      require 'selenium_rc'
-      @selenium_jar_path = SeleniumRC::Server.allocate.jar_path
+      require 'selenium-rc'
+      @selenium_jar_path = SeleniumRC::Server.jar_path
 
       @browser = ENV["JASMINE_BROWSER"] || 'firefox'
       @selenium_pid = nil
