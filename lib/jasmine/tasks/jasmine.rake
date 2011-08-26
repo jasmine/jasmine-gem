@@ -39,7 +39,7 @@ namespace :jasmine do
   end
 
   task :server => "jasmine:require" do
-    jasmine_config_overrides = './spec/javascripts/support/jasmine_config.rb'
+    jasmine_config_overrides = File.join(Jasmine::Config.new.project_root, 'spec', 'javascripts' ,'support' ,'jasmine_config.rb')
     require jasmine_config_overrides if File.exist?(jasmine_config_overrides)
 
     port = ENV['JASMINE_PORT'] || 8888
