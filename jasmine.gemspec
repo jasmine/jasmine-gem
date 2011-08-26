@@ -50,7 +50,6 @@ Gem::Specification.new do |s|
   end
 
   s.add_development_dependency 'rack-test'
-  s.add_development_dependency 'gem-release', ">= 0.0.16"
   s.add_development_dependency 'ci_reporter'
   s.add_development_dependency 'json_pure'
 
