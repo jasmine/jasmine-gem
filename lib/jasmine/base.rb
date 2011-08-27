@@ -39,19 +39,6 @@ module Jasmine
     end
   end
 
-  def self.cachebust(files, root_dir="", replace=nil, replace_with=nil)
-    require 'digest/md5'
-    files.collect do |file_name|
-      real_file_name = replace && replace_with ? file_name.sub(replace, replace_with) : file_name
-      begin
-        digest = Digest::MD5.hexdigest(File.read("#{root_dir}#{real_file_name}"))
-      rescue
-        digest = "MISSING-FILE"
-      end
-      "#{file_name}?cachebust=#{digest}"
-    end
-  end
-
   def self.rspec2?
     Gem::Specification::find_by_name "rspec", ">= 2.0"
   rescue
