@@ -64,7 +64,8 @@ describe Jasmine::Config do
         end
 
         it "should build an array of all the JavaScript files to include, source files then spec files" do
-          @config.js_files.should == [
+          Jasmine.stub!(:cachebust).and_return {|files, root, find, replace| files}
+          @config.js_url_paths.should == [
                   '/public/javascripts/Player.js',
                   '/public/javascripts/Song.js',
                   '/__spec__/helpers/SpecHelper.js',
@@ -73,11 +74,28 @@ describe Jasmine::Config do
         end
 
         it "should allow the js_files to be filtered" do
-          @config.js_files("PlayerSpec.js").should == [
+          Jasmine.stub!(:cachebust).and_return {|files, root, find, replace| files}
+          @config.js_url_paths("PlayerSpec.js").should == [
                   '/public/javascripts/Player.js',
                   '/public/javascripts/Song.js',
                   '/__spec__/helpers/SpecHelper.js',
                   '/__spec__/PlayerSpec.js'
+          ]
+        end
+
+        it "cachebusts javascript files" do
+          Jasmine.should_receive(:cachebust).with(anything, @config.src_dir).and_return do |files, root, find, replace|
+             files.collect { |f| f + "?cachebust" }
+          end
+          Jasmine.should_receive(:cachebust).with(anything, @config.spec_dir, @config.spec_path, '').and_return do |files, root, find, replace|
+             files.collect { |f| f + "?cachebust" }
+          end
+
+          @config.js_url_paths("PlayerSpec.js").should == [
+                  '/public/javascripts/Player.js?cachebust',
+                  '/public/javascripts/Song.js?cachebust',
+                  '/__spec__/helpers/SpecHelper.js?cachebust',
+                  '/__spec__/PlayerSpec.js?cachebust'
           ]
         end
 
@@ -146,7 +164,8 @@ describe Jasmine::Config do
         end
 
         it "js_files" do
-          @config.js_files.should == ["/file1.ext",
+          Jasmine.stub!(:cachebust).and_return {|files, root, find, replace| files}
+          @config.js_url_paths.should == ["/file1.ext",
                                       "/file2.ext",
                                       "/__spec__/file1.ext",
                                       "/__spec__/file2.ext",
@@ -201,7 +220,9 @@ describe Jasmine::Config do
                                      'public/javascripts/application.js',
                                      'public/javascripts/Player.js',
                                      'public/javascripts/Song.js']
-        @config.js_files.should == [
+
+        Jasmine.stub!(:cachebust).and_return {|files, root, find, replace| files}
+        @config.js_url_paths.should == [
                 '/public/javascripts/prototype.js',
                 '/public/javascripts/effects.js',
                 '/public/javascripts/controls.js',
@@ -212,7 +233,7 @@ describe Jasmine::Config do
                 '/__spec__/helpers/SpecHelper.js',
                 '/__spec__/PlayerSpec.js',
         ]
-        @config.js_files("PlayerSpec.js").should == [
+        @config.js_url_paths("PlayerSpec.js").should == [
                 '/public/javascripts/prototype.js',
                 '/public/javascripts/effects.js',
                 '/public/javascripts/controls.js',
