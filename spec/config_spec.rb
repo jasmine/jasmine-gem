@@ -84,6 +84,10 @@ describe Jasmine::Config do
         it "should report the full paths of the spec files" do
           @config.spec_files_full_paths.should == [File.join(@project_dir, 'spec/javascripts/PlayerSpec.js')]
         end
+
+        it "should not be using the asset pipeline" do
+          @config.should_not be_use_asset_pipeline
+        end
       end
 
       it "should parse ERB" do
@@ -119,6 +123,43 @@ describe Jasmine::Config do
 
         it "should default to loading no stylesheet files" do
           @config.stylesheets.should be_empty
+        end
+      end
+
+      describe "asset pipeline" do
+        context "when there are asset_pipeline_paths" do
+          before do
+            fake_config = {"asset_pipeline_paths" => ["some_path"]}
+            @config.stub!(:simple_config).and_return(fake_config)
+          end
+          it "use_asset_pipeline? should be true" do
+            @config.should be_use_asset_pipeline
+          end
+          it "asset_pipeline_paths" do
+            @config.asset_pipeline_paths.should == ["some_path"]
+          end
+        end
+        context "when there are no asset_pipeline_paths" do
+          before do
+            fake_config = {"asset_pipeline_paths" => []}
+            @config.stub!(:simple_config).and_return(fake_config)
+          end
+          it "use_asset_pipeline? should be true" do
+            @config.should_not be_use_asset_pipeline
+          end
+          it "asset_pipeline_paths" do
+            @config.asset_pipeline_paths.should be_empty
+          end
+        end
+        context "asset_pipeline engine_extensions" do
+          before do
+            fake_config = {"src_files" => ["my_file.js.coffee"]}
+            @config.stub!(:simple_config).and_return(fake_config)
+            Dir.stub!(:glob).and_return { |glob_string| [glob_string] }
+          end
+          it "should strip out asset pipeline extensions" do
+            @config.src_files.should == ["my_file.js"]
+          end
         end
       end
 

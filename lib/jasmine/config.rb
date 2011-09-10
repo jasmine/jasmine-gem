@@ -64,16 +64,18 @@ module Jasmine
       @client.json_generate(obj)
     end
 
+    ASSET_PIPELINE_ENGINE_EXTENSIONS = /\.(coffee|jst|eco|ejs|less|sass|scss|erb|str)$/
+
     def match_files(dir, patterns)
       dir = File.expand_path(dir)
       negative, positive = patterns.partition {|pattern| /^!/ =~ pattern}
-      chosen, negated = [positive, negative].collect do |patterns|
-        patterns.collect do |pattern|
+      chosen, negated = [positive, negative].map do |patterns|
+        patterns.map do |pattern|
           matches = Dir.glob(File.join(dir, pattern.gsub(/^!/,'')))
-          matches.collect {|f| f.sub("#{dir}/", "")}.sort
+          matches.map {|f| f.sub("#{dir}/", "")}.sort
         end.flatten.uniq
       end
-      chosen - negated
+      (chosen - negated).map { |filename| filename.gsub(ASSET_PIPELINE_ENGINE_EXTENSIONS, '') }
     end
 
     def simple_config
@@ -109,6 +111,14 @@ module Jasmine
 
     def simple_config_file
       File.join(project_root, 'spec/javascripts/support/jasmine.yml')
+    end
+
+    def use_asset_pipeline?
+      asset_pipeline_paths.any?
+    end
+
+    def asset_pipeline_paths
+      simple_config["asset_pipeline_paths"] || []
     end
 
     def src_dir

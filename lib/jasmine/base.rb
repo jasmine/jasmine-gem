@@ -45,6 +45,12 @@ module Jasmine
     Gem.available? "rspec", ">= 2.0"
   end
 
+  def self.sprockets?
+    Gem::Specification::find_by_name "sprockets"
+  rescue
+    Gem.available? "sprockets"
+  end
+
   def self.rails3?
     return Rails.version.split(".").first.to_i == 3 if defined? Rails
     begin

@@ -1,5 +1,6 @@
 require 'rack'
 require 'jasmine-core'
+require 'sprockets' if Jasmine::sprockets?
 
 module Jasmine
   class RunAdapter
@@ -81,6 +82,18 @@ module Jasmine
       map('/__JASMINE_ROOT__') { run Rack::File.new(Jasmine::Core.path) }
       map(config.spec_path)    { run Rack::File.new(config.spec_dir) }
       map(config.root_path)    { run Rack::File.new(config.project_root) }
+      if config.use_asset_pipeline?
+        config.asset_pipeline_paths.each do |asset_path|
+          path_mapping = (Regexp.new("#{asset_path}$") =~ config.spec_dir) ? config.spec_path.gsub(/^\//, '') : asset_path
+          map "/#{path_mapping}" do
+            environment = Sprockets::Environment.new
+            Dir.glob("#{asset_path}/**/").each do |path|
+              environment.append_path(path)
+            end
+            run environment
+          end
+        end
+      end
 
       map('/') do
         run Rack::Cascade.new([
