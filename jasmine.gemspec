@@ -58,7 +58,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'ci_reporter'
   s.add_development_dependency 'json_pure'
 
-  s.add_dependency 'jasmine-core', ">= 1.1.0"
+  s.add_dependency 'jasmine-core', ">= 1.2.0.rc1"
   s.add_dependency 'rack', '>= 1.1'
   s.add_dependency 'rspec', '>= 1.3.1'
   s.add_dependency 'selenium-webdriver', '>= 0.1.3'

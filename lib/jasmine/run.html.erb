@@ -18,13 +18,13 @@
       var jasmineEnv = jasmine.getEnv();
 
       jsApiReporter = new jasmine.JsApiReporter();
-      var trivialReporter = new jasmine.TrivialReporter();
+      var htmlReporter = new jasmine.HtmlReporter();
 
       jasmineEnv.addReporter(jsApiReporter);
-      jasmineEnv.addReporter(trivialReporter);
+      jasmineEnv.addReporter(htmlReporter);
 
       jasmineEnv.specFilter = function(spec) {
-        return trivialReporter.specFilter(spec);
+        return htmlReporter.specFilter(spec);
       };
 
       var currentWindowOnload = window.onload;
