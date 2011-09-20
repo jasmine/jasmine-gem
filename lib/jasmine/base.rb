@@ -49,7 +49,7 @@ module Jasmine
     return Rails.version.split(".").first.to_i == 3 if defined? Rails
     begin
       Gem::Specification::find_by_name "rails", ">= 3.0"
-    rescue
+    rescue Gem::LoadError
       Gem.available? "rails", ">= 3.0"
     end
   end
