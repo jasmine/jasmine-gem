@@ -45,10 +45,12 @@ module Jasmine
     Gem.available? "rspec", ">= 2.0"
   end
 
-  def self.rails3?
+   def self.rails3?
     return Rails.version.split(".").first.to_i == 3 if defined? Rails
     begin
       Gem::Specification::find_by_name "rails", ">= 3.0"
+    rescue Gem::LoadError
+    	false
     rescue
       Gem.available? "rails", ">= 3.0"
     end
