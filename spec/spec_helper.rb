@@ -8,7 +8,6 @@ Bundler.setup(:default, :development)
 $:.unshift(File.expand_path(File.join(File.dirname(__FILE__), "../lib")))
 
 require "jasmine"
-require 'rails' if defined? Rails
 
 if Jasmine::Dependencies.rspec2?
   require 'rspec'
