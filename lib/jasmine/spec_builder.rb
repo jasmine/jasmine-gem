@@ -109,7 +109,7 @@ module Jasmine
       example_name = spec["name"]
       @spec_ids << spec["id"]
       backtrace = @example_locations[parent.description + " " + example_name]
-      if Jasmine::rspec2?
+      if Jasmine::Dependencies.rspec2?
         parent.it example_name, {} do
           me.report_spec(spec["id"])
         end

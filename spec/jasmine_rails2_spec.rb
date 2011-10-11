@@ -1,6 +1,6 @@
 require File.expand_path(File.join(File.dirname(__FILE__), "spec_helper"))
 
-if rails2?
+if Jasmine::Dependencies.rails2?
 
   describe "A Rails 2 app" do
 
