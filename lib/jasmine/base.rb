@@ -46,7 +46,7 @@ module Jasmine
   end
 
   def self.rails3?
-    return Rails.version.split(".").first.to_i == 3 if defined? Rails
+    return Rails::VERSION::MAJOR.to_i === 3 if defined?(Rails::VERSION)
     begin
       Gem::Specification::find_by_name "rails", ">= 3.0"
     rescue
