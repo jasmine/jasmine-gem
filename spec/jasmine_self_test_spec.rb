@@ -6,7 +6,7 @@ spec_builder = Jasmine::SpecBuilder.new(jasmine_config)
 
 should_stop = false
 
-if rspec2?
+if Jasmine::Dependencies.rspec2?
   RSpec.configuration.after(:suite) do
     spec_builder.stop if should_stop
   end
