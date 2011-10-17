@@ -1,3 +1,5 @@
+require File.join('jasmine', 'version')
+
 jasmine_files = ['base',
                  'config',
                  'server',
