@@ -1,6 +1,6 @@
 require File.expand_path(File.join(File.dirname(__FILE__), "spec_helper"))
 
-if Jasmine::Dependencies.rails3?
+if rails3?
 
   describe "A Rails 3 app" do
 
