@@ -1,4 +1,5 @@
 jasmine_files = ['base',
+                 'dependencies',
                  'config',
                  'server',
                  'selenium_driver',
@@ -9,6 +10,6 @@ jasmine_files.each do |file|
   require File.join('jasmine', file)
 end
 
-require File.join('jasmine', "railtie") if Jasmine.rails3?
+require File.join('jasmine', "railtie") if Jasmine::Dependencies.rails3?
 
 

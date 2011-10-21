@@ -4,15 +4,8 @@ require "bundler"
 Bundler.setup
 Bundler::GemHelper.install_tasks
 
-def rspec2?
-  Gem.available? "rspec", ">= 2.0"
-end
-
-def rails3?
-  Gem.available? "rails", ">= 3.0"
-end
-
-if rspec2?
+require "jasmine"
+if Jasmine::Dependencies.rspec2?
   require 'rspec'
   require 'rspec/core/rake_task'
 else
@@ -22,7 +15,7 @@ end
 require 'ci/reporter/rake/rspec'
 
 desc "Run all examples"
-if rspec2?
+if Jasmine::Dependencies.rspec2?
   RSpec::Core::RakeTask.new(:spec) do |t|
     t.pattern = 'spec/**/*_spec.rb'
   end
