@@ -29,7 +29,12 @@ Gem::Specification.new do |s|
     end
     s.add_development_dependency 'rake-tasks'
   elsif ENV['RAILS_VERSION'] == 'pojs-rspec2'
-    s.add_development_dependency 'rspec', '>= 2.5.0'
+    if ENV["RUBY_VERSION"] =~ /1\.8\.6/
+      #2.7.0 uses reduce vs inject, non 1.8.6 compatible
+      s.add_development_dependency 'rspec', '2.6.0'
+    else
+      s.add_development_dependency 'rspec', '>= 2.5.0'
+    end
     s.add_development_dependency 'rake-tasks'
     s.add_development_dependency 'rack', "1.1" if ENV["RUBY_VERSION"] =~ /1\.8\.6/
   elsif ENV['RAILS_VERSION'] == 'rails2'

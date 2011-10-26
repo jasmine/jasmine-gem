@@ -4,8 +4,7 @@ require "bundler"
 Bundler.setup
 Bundler::GemHelper.install_tasks
 
-require "lib/jasmine"
-
+require "jasmine"
 if Jasmine::Dependencies.rspec2?
   require 'rspec'
   require 'rspec/core/rake_task'

@@ -6,7 +6,6 @@ require 'tmpdir'
 Bundler.setup(:default, :development)
 
 $:.unshift(File.expand_path(File.join(File.dirname(__FILE__), "../lib")))
-
 require "jasmine"
 
 if Jasmine::Dependencies.rspec2?
@@ -14,6 +13,7 @@ if Jasmine::Dependencies.rspec2?
 else
   require 'spec'
 end
+
 
 def create_rails(name)
   if Jasmine::Dependencies.rails3?
