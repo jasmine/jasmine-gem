@@ -14,7 +14,11 @@ module Jasmine
                   {:profile => profile}
                 end || {}
       @driver = if selenium_server
-        Selenium::WebDriver.for :remote, :url => selenium_server, :desired_capabilities => browser.to_sym
+        options = {}
+        options[:url] = selenium_server
+        caps = { :browserName => browser.to_sym, :javascript_enabled => true }
+        options[:desired_capabilities] = caps
+        Selenium::WebDriver.for(:remote, options)
       else
         Selenium::WebDriver.for browser.to_sym, options
       end
