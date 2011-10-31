@@ -14,7 +14,7 @@ module Jasmine
                   {:profile => profile}
                 end || {}
       @driver = if selenium_server
-        if ENV['SELENIUM_SERVER_HTMLUNIT']
+        if browser == "htmlunit"
           Selenium::WebDriver.for :remote, :url => selenium_server, :desired_capabilities => Selenium::WebDriver::Remote::Capabilities.htmlunit(:javascript_enabled => true)
         else
           Selenium::WebDriver.for :remote, :url => selenium_server, :desired_capabilities => browser.to_sym
