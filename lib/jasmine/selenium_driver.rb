@@ -15,9 +15,7 @@ module Jasmine
                 end || {}
       @driver = if selenium_server
         if browser == "htmlunit"
-          client = Selenium::WebDriver::Remote::Http::Default.new
-          client.timeout = 120 # seconds
-          Selenium::WebDriver.for :remote, :http_client => client, :url => selenium_server, :desired_capabilities => Selenium::WebDriver::Remote::Capabilities.htmlunit(:javascript_enabled => true)
+          Selenium::WebDriver.for :remote, :url => selenium_server, :desired_capabilities => Selenium::WebDriver::Remote::Capabilities.htmlunit(:javascript_enabled => true)
         else
           Selenium::WebDriver.for :remote, :url => selenium_server, :desired_capabilities => browser.to_sym
         end
