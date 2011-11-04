@@ -162,6 +162,18 @@ describe Jasmine::Config do
         end
       end
 
+      describe "should permit explicity-declared filenames to pass through regardless of their existence" do
+        before(:each) do
+          Dir.stub!(:glob).and_return { |glob_string| [] }
+          fake_config = Hash.new.stub!(:[]).and_return { |x| ["file1.ext", "!file2.ext", "**/*file3.ext"] }
+          @config.stub!(:simple_config).and_return(fake_config)
+        end
+
+        it "should contain explicitly files" do
+          @config.src_files.should == ["file1.ext"]
+        end
+      end
+
       describe "should allow .gitignore style negation (!pattern)" do
         before(:each) do
           Dir.stub!(:glob).and_return { |glob_string| [glob_string] }
@@ -305,4 +317,5 @@ describe Jasmine::Config do
       end
     end
   end
+
 end

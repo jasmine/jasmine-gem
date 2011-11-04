@@ -70,7 +70,7 @@ module Jasmine
       chosen, negated = [positive, negative].collect do |patterns|
         patterns.collect do |pattern|
           matches = Dir.glob(File.join(dir, pattern.gsub(/^!/,'')))
-          matches.collect {|f| f.sub("#{dir}/", "")}.sort
+          matches.empty? && !(pattern =~ /\*|^\!/) ? pattern : matches.collect {|f| f.sub("#{dir}/", "")}.sort
         end.flatten.uniq
       end
       chosen - negated
