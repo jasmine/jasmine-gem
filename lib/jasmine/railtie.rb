@@ -15,6 +15,7 @@ module Jasmine
 
     rake_tasks do
       load "jasmine/tasks/jasmine.rake"
+      load "jasmine/tasks/jasmine_rails3.rake"
     end
   end
 end

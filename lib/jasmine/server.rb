@@ -75,6 +75,12 @@ module Jasmine
     Rack::Builder.app do
       use Rack::Head
 
+      if Jasmine::Dependencies.rails_3_asset_pipeline?
+        map('/assets') do
+          run Rails.application.assets
+        end
+      end
+
       map('/run.html')         { run Jasmine::Redirect.new('/') }
       map('/__suite__')        { run Jasmine::FocusedSuite.new(config) }
 

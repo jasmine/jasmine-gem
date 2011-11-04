@@ -14,6 +14,10 @@ module Jasmine
         safe_gem_check("rails", ">= 3.0")
       end
 
+      def rails_3_asset_pipeline?
+        rails3? && Rails.respond_to?(:application) && Rails.application.assets
+      end
+
       private
       def safe_gem_check(gem_name, version_string)
         if Gem::Specification.respond_to?(:find_by_name)

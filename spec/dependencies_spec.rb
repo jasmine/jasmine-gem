@@ -3,54 +3,104 @@ require 'spec_helper'
 #rspec 1 fails to stub respond_to
 if Jasmine::Dependencies.rspec2?
   describe Jasmine::Dependencies do
+    module Rails
+    end
 
-    context "with ruby gems > 1.8" do
+    context "with ruby_gems > 1.8" do
       before do
         Gem::Specification.should_receive(:respond_to?).with(:find_by_name).and_return(true)
       end
 
-      context "and rspec 2" do
-        before do
-          Gem::Specification.should_receive(:find_by_name).with("rspec", ">= 2.0").and_raise(Gem::LoadError)
+      describe ".rspec2?" do
+        subject { Jasmine::Dependencies.rspec2? }
+        context "when rspec 2 is present" do
+          before do
+            Gem::Specification.should_receive(:find_by_name).with("rspec", ">= 2.0").and_return(true)
+          end
+          it { should be_true }
         end
-        it "should return the correct results" do
-          Jasmine::Dependencies.rspec2?.should be false
-        end
-
-        it "should not raise an error" do
-          lambda do
-            Jasmine::Dependencies.rspec2?
-          end.should_not raise_error(Gem::LoadError)
-        end
-      end
-
-      context "and rails 2" do
-        before do
-          Gem::Specification.should_receive(:find_by_name).with("rails", "~> 2.3").and_raise(Gem::LoadError)
-        end
-        it "should return the correct results" do
-          Jasmine::Dependencies.rails2?.should be false
-        end
-
-        it "should not raise an error" do
-          lambda do
-            Jasmine::Dependencies.rails2?
-          end.should_not raise_error(Gem::LoadError)
+        context "when rspec 2 is not present" do
+          before do
+            Gem::Specification.should_receive(:find_by_name).with("rspec", ">= 2.0").and_raise(Gem::LoadError)
+          end
+          it { should be_false }
         end
       end
 
-      context "and rails 3" do
-        before do
-          Gem::Specification.should_receive(:find_by_name).with("rails", ">= 3.0").and_raise(Gem::LoadError)
+      describe ".rails2?" do
+        subject { Jasmine::Dependencies.rails2? }
+        context "when rails 2 is present" do
+          before do
+            Gem::Specification.should_receive(:find_by_name).with("rails", "~> 2.3").and_return(true)
+          end
+          it { should be_true }
         end
-        it "should return the correct results" do
-          Jasmine::Dependencies.rails3?.should be false
+        context "when rails 2 is not present" do
+          before do
+            Gem::Specification.should_receive(:find_by_name).with("rails", "~> 2.3").and_raise(Gem::LoadError)
+          end
+          it { should be_false }
         end
+      end
 
-        it "should not raise an error" do
-          lambda do
-            Jasmine::Dependencies.rails3?
-          end.should_not raise_error(Gem::LoadError)
+      describe ".rails3?" do
+        subject { Jasmine::Dependencies.rails3? }
+        context "when rails 3 is present" do
+          before do
+            Gem::Specification.should_receive(:find_by_name).with("rails", ">= 3.0").and_return(true)
+          end
+          it { should be_true }
+        end
+        context "when rails 3 is not present" do
+          before do
+            Gem::Specification.should_receive(:find_by_name).with("rails", ">= 3.0").and_raise(Gem::LoadError)
+          end
+          it { should be_false }
+        end
+      end
+
+      describe ".rails_3_asset_pipeline?" do
+        subject { Jasmine::Dependencies.rails_3_asset_pipeline? }
+        let(:application) { double(:application, :assets => rails_application_assets)}
+        before do
+          Rails.stub(:respond_to?).with(:application).and_return(respond_to_application)
+          Rails.stub(:application).and_return(application)
+        end
+        context "when rails 3 is present and the application pipeline is in use" do
+          before do
+            Gem::Specification.should_receive(:find_by_name).with("rails", ">= 3.0").and_return(true)
+          end
+          let(:rails3_present) { true }
+          let(:respond_to_application) { true }
+          let(:rails_application_assets) { true }
+          it { should be_true }
+        end
+        context "when rails 3 is present and the application pipeline is not in use" do
+          before do
+            Gem::Specification.should_receive(:find_by_name).with("rails", ">= 3.0").and_return(true)
+          end
+          let(:rails3_present) { true }
+          let(:respond_to_application) { true }
+          let(:rails_application_assets) { false }
+          it { should be_false }
+        end
+        context "when rails 3 is present but not loaded" do
+          before do
+            Gem::Specification.should_receive(:find_by_name).with("rails", ">= 3.0").and_return(true)
+          end
+          let(:rails3_present) { true }
+          let(:respond_to_application) { false }
+          let(:rails_application_assets) { false }
+          it { should be_false }
+        end
+        context "when rails 3 is not present" do
+          before do
+            Gem::Specification.should_receive(:find_by_name).with("rails", ">= 3.0").and_raise(Gem::LoadError)
+          end
+          let(:rails3_present) { false }
+          let(:respond_to_application) { false }
+          let(:rails_application_assets) { false }
+          it { should be_false }
         end
       end
     end
@@ -59,28 +109,86 @@ if Jasmine::Dependencies.rspec2?
       before do
         Gem::Specification.should_receive(:respond_to?).with(:find_by_name).and_return(false)
       end
-      context "and rspec 2" do
-        it "should not break when it is not present" do
-          Gem.should_receive(:available?).with("rspec", ">= 2.0").and_return false
-          Jasmine::Dependencies.rspec2?.should be false
+
+      describe ".rspec2?" do
+        subject { Jasmine::Dependencies.rspec2? }
+        before do
+          Gem.should_receive(:available?).with("rspec", ">= 2.0").and_return(rspec2_present)
+        end
+        context "when rspec 2 is present" do
+          let(:rspec2_present) { true }
+          it { should be_true }
+        end
+        context "when rspec 2 is not present" do
+          let(:rspec2_present) { false }
+          it { should be_false }
         end
       end
 
-      context "and rails 2" do
-        it "should not break when it is not present" do
-          Gem.should_receive(:available?).with("rails", "~> 2.3").and_return false
-          Jasmine::Dependencies.rails2?.should be false
+      describe ".rails2?" do
+        subject { Jasmine::Dependencies.rails2? }
+        before do
+          Gem.should_receive(:available?).with("rails", "~> 2.3").and_return(rails2_present)
+        end
+        context "when rails 2 is present" do
+          let(:rails2_present) { true }
+          it { should be_true }
+        end
+        context "when rails 2 is not present" do
+          let(:rails2_present) { false }
+          it { should be_false }
         end
       end
 
-      context "and rails 3" do
-        it "should not break when it is not present" do
-          Gem.should_receive(:available?).with("rails", ">= 3.0").and_return false
-          Jasmine::Dependencies.rails3?.should be false
+      describe ".rails3?" do
+        subject { Jasmine::Dependencies.rails3? }
+        before do
+          Gem.should_receive(:available?).with("rails", ">= 3.0").and_return(rails3_present)
+        end
+        context "when rails 3 is present" do
+          let(:rails3_present) { true }
+          it { should be_true }
+        end
+        context "when rails 3 is not present" do
+          let(:rails3_present) { false }
+          it { should be_false }
+        end
+      end
+
+      describe ".rails_3_asset_pipeline?" do
+        subject { Jasmine::Dependencies.rails_3_asset_pipeline? }
+        let(:application) { double(:application, :assets => rails_application_assets)}
+        before do
+          Gem.should_receive(:available?).with("rails", ">= 3.0").and_return(rails3_present)
+          Rails.stub(:respond_to?).with(:application).and_return(respond_to_application)
+          Rails.stub(:application).and_return(application)
+        end
+        context "when rails 3 is present and the application pipeline is in use" do
+          let(:rails3_present) { true }
+          let(:respond_to_application) { true }
+          let(:rails_application_assets) { true }
+          it { should be_true }
+        end
+        context "when rails 3 is present and the application pipeline is not in use" do
+          let(:rails3_present) { true }
+          let(:respond_to_application) { true }
+          let(:rails_application_assets) { false }
+          it { should be_false }
+        end
+        context "when rails 3 is present but not loaded" do
+          let(:rails3_present) { true }
+          let(:respond_to_application) { false }
+          let(:rails_application_assets) { false }
+          it { should be_false }
+        end
+        context "when rails 3 is not present" do
+          let(:rails3_present) { false }
+          let(:respond_to_application) { false }
+          let(:rails_application_assets) { false }
+          it { should be_false }
         end
       end
     end
 
   end
-
 end
