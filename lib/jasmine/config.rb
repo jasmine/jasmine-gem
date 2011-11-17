@@ -108,7 +108,19 @@ module Jasmine
     end
 
     def simple_config_file
-      File.join(project_root, 'spec/javascripts/support/jasmine.yml')
+      envConfig = ENV["CONFIG_YML"]
+      defaultConfigFile = File.join(project_root, 'spec/javascripts/support/jasmine.yml')
+      if envConfig
+        if File.exist?(File.join(project_root, envConfig ))
+          File.join(project_root, envConfig)
+        elsif File.exist?(File.join(project_root, 'spec/javascripts/support', envConfig))
+          File.join(project_root, 'spec/javascripts/support', envConfig)
+        else
+          defaultConfigFile
+        end
+      else
+        defaultConfigFile
+      end
     end
 
     def src_dir
