@@ -47,5 +47,33 @@ describe "POJS jasmine install" do
       output = `rake jasmine:ci`
     end
 
+    context "and running with jasmine:ci" do
+
+      before :each do
+        @fixture = File.expand_path(File.join(File.dirname(__FILE__), 'fixture'))
+        FileUtils.cp File.join(@fixture, 'spec', 'example_spec.js'), "spec/javascripts"
+        FileUtils.cp File.join(@fixture, 'spec', 'example_with_syntax_error_spec.js'), "spec/javascripts"
+        FileUtils.cp File.join(@fixture, 'src', 'example.js'), "public/javascripts"
+
+        File.exists?("public/javascripts/example.js").should == true
+        File.exists?("spec/javascripts/example_spec.js").should == true
+        File.exists?("spec/javascripts/example_with_syntax_error_spec.js").should == true
+      end
+
+      it "should point a syntax error even with all tests passing" do
+        system "rake jasmine:ci &> out.txt"
+        File.read("out.txt").should include("Probably a syntax error ocurred in your spec files")
+      end
+
+      it "should point a syntax error even with failures" do
+        FileUtils.cp File.join(@fixture, 'spec', 'example_with_failure_spec.js'), "spec/javascripts"
+        File.exists?("spec/javascripts/example_with_failure_spec.js").should == true
+
+        system "rake jasmine:ci &> out.txt"
+        File.read("out.txt").should include("Probably a syntax error ocurred in your spec files")
+      end
+
+    end
+
   end
 end
