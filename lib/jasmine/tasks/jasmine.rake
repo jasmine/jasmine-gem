@@ -47,6 +47,29 @@ namespace :jasmine do
     puts "  http://localhost:#{port}/"
     Jasmine::Config.new.start_server(port)
   end
+
+  task :require_phantomjs do
+    sh "which phantomjs" do |ok, res|
+      fail 'Can not find phantomjs on $PATH' unless ok
+    end
+  end
+
+  task :phantomjsci => ["jasmine:require","jasmine:require_phantomjs"] do
+    jasmine_config_overrides = './spec/javascripts/support/jasmine_config.rb'
+    require jasmine_config_overrides if File.exist?(jasmine_config_overrides)
+    phantomjs_runner = File.join(File.dirname(__FILE__), "../../ext/phantomjs-jasmine-runner.js")
+
+    config = Jasmine::Config.new
+    js_port = "#{config.jasmine_port}"
+    config.start_jasmine_server(js_port)
+
+    jasmine_url = "#{config.jasmine_host}:" + js_port
+    puts "Running tests against #{jasmine_url}"
+    sh "#{config.jasmine_xvfb} phantomjs #{phantomjs_runner} #{jasmine_url}" do |ok, res|
+      fail "Jasmine specs failed" unless ok
+    end
+  end
+
 end
 
 desc "Run specs via server"
