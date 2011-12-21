@@ -16,6 +16,12 @@ module Jasmine
       @driver = if selenium_server
         if browser == "htmlunit"
           Selenium::WebDriver.for :remote, :url => selenium_server, :desired_capabilities => Selenium::WebDriver::Remote::Capabilities.htmlunit(:javascript_enabled => true)
+        elsif browser == "saucelabs"
+          caps = { :platform => ENV['SAUCE_PLATFORM'],
+            :browserName => ENV['SAUCE_BROWSER'],
+            'browser-version' => ENV['SAUCE_BROWSER_VERSION'],
+            :name => "Jasmine" }
+          Selenium::WebDriver.for :remote, :url => selenium_server, :desired_capabilities => caps
         else
           Selenium::WebDriver.for :remote, :url => selenium_server, :desired_capabilities => browser.to_sym
         end
