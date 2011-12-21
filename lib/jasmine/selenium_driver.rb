@@ -20,6 +20,7 @@ module Jasmine
           caps = { :platform => ENV['SAUCE_PLATFORM'],
             :browserName => ENV['SAUCE_BROWSER'],
             'browser-version' => ENV['SAUCE_BROWSER_VERSION'],
+            'record-screenshots' => ENV['SAUCE_SCREENSHOTS'],
             :name => "Jasmine" }
           Selenium::WebDriver.for :remote, :url => selenium_server, :desired_capabilities => caps
         else
