@@ -14,8 +14,18 @@ module Jasmine
                   {:profile => profile}
                 end || {}
       @driver = if selenium_server
+        timeout = if ENV['SELENIUM_CLIENT_TIMEOUT']
+            ENV['SELENIUM_CLIENT_TIMEOUT']
+        else
+          120
+        end
         if browser == "htmlunit"
-          Selenium::WebDriver.for :remote, :url => selenium_server, :desired_capabilities => Selenium::WebDriver::Remote::Capabilities.htmlunit(:javascript_enabled => true)
+          client = Selenium::WebDriver::Remote::Http::Default.new
+          client.timeout = timeout
+          options[:http_client] = client
+          options[:url] = selenium_server
+          options[:desired_capabilities] = Selenium::WebDriver::Remote::Capabilities.htmlunit(:javascript_enabled => true)
+          Selenium::WebDriver.for :remote, options
         elsif browser == "saucelabs"
           caps = { :platform => ENV['SAUCE_PLATFORM'],
             :browserName => ENV['SAUCE_BROWSER'],
@@ -23,7 +33,14 @@ module Jasmine
             'record-screenshots' => ENV['SAUCE_SCREENSHOTS'],
             'record-video' => ENV['SAUCE_VIDEO'],
             :name => "Jasmine" }
-          Selenium::WebDriver.for :remote, :url => selenium_server, :desired_capabilities => caps
+
+          client = Selenium::WebDriver::Remote::Http::Default.new
+          client.timeout = timeout
+          options[:http_client] = client
+          options[:url] = selenium_server
+          options[:desired_capabilities] = caps.browserName.to_sym
+          Selenium::WebDriver.for(browser.to_sym, options)
+          Selenium::WebDriver.for :remote, options
         else
           Selenium::WebDriver.for :remote, :url => selenium_server, :desired_capabilities => browser.to_sym
         end
