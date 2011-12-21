@@ -39,7 +39,6 @@ module Jasmine
           options[:http_client] = client
           options[:url] = selenium_server
           options[:desired_capabilities] = caps.browserName.to_sym
-          Selenium::WebDriver.for(browser.to_sym, options)
           Selenium::WebDriver.for :remote, options
         else
           Selenium::WebDriver.for :remote, :url => selenium_server, :desired_capabilities => browser.to_sym
