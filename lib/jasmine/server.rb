@@ -71,9 +71,43 @@ module Jasmine
     end
   end
 
+  class JasmineLoadFlag
+    def initialize(app)
+      @app = app
+    end
+
+    def call(env)
+      code, headers, body = @app.call(env)
+
+      if code == 200 && (headers['Content-Type'] && headers['Content-Type'].include?('javascript'))
+        body = JsFileFlagAppender.new(body)
+        headers.delete('Content-Length')
+      end
+
+      [code, headers, body]
+    end
+  end
+
+  class JsFileFlagAppender
+    def initialize(body)
+      @body = body
+    end
+
+    def each(&block)
+      @body.each(&block)
+      block.call("\n\njasmine._runner_.fileLoaded();")
+    end
+
+    def close
+      @body.close if @body.respond_to?(:close)
+    end
+  end
+
   def self.app(config)
     Rack::Builder.app do
       use Rack::Head
+      use JasmineLoadFlag
+
       if Jasmine::Dependencies.rails_3_asset_pipeline?
         map('/assets') do
           run Rails.application.assets
