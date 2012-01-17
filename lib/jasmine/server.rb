@@ -95,7 +95,7 @@ module Jasmine
 
     def each(&block)
       @body.each(&block)
-      block.call("\n\njasmine._runner_.fileLoaded();")
+      block.call("\n\njasmineEnv.finishedLoading();")
     end
 
     def close

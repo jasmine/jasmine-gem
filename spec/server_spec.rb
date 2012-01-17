@@ -2,7 +2,7 @@ require File.expand_path(File.join(File.dirname(__FILE__), "spec_helper"))
 require 'rack/test'
 
 describe "Jasmine.app" do
-  LOADED_FLAG = "\n\njasmine._runner_.fileLoaded();"
+  LOADED_FLAG = "\n\njasmineEnv.finishedLoading();"
 
   include Rack::Test::Methods
 

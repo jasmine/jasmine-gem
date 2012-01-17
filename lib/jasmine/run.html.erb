@@ -39,65 +39,16 @@
       function execJasmine() {
         jasmineEnv.execute();
       }
-
     })();
-
-    jasmine._runner_ = {
-      expectedFiles: [<%= js_files.map {|file| file.inspect }.join(', ') %>],
-      loadedFiles: {},
-      errors: {},
-      addError: function(error) {
-        var errors = this.errors[this.currentFile] || (this.errors[this.currentFile] = []);
-        errors.push(error);
-      },
-      fileLoaded: function() {
-        this.loadedFiles[this.currentFile] = true;
-      },
-      onError: function(message, file, line) {
-        jasmine._runner_.addError({
-          message: message,
-          file: file,
-          line: line
-        });
-      },
-      oldOnError: window.onerror
-    };
-
-    window.onerror = jasmine._runner_.onError;
   </script>
 
   <% js_files.each do |js_file| %>
-    <script type="text/javascript">jasmine._runner_.currentFile = <%= js_file.inspect %>;</script>
+    <script type="text/javascript">jasmineEnv.aboutToLoad(<%= js_file.inspect %>, function(onError) { var old = window.onerror; window.onerror = onError; return old; });</script>
     <script src="<%= js_file %>" type="text/javascript"></script>
+    <script type="text/javascript">jasmineEnv.generateFileLoadErrors();</script>
   <% end %>
 
   <script type="text/javascript">
-    describe("JS file loading", function() {
-      var runner = jasmine._runner_;
-      for (var i = 0, length = runner.expectedFiles.length; i < length; i++) {
-        var expectedFile = runner.expectedFiles[i],
-            errors = runner.errors[expectedFile],
-            loaded = runner.loadedFiles[expectedFile];
-
-        if (!loaded || (errors && errors.length)) {
-          (function(loaded, errors, expectedFile) {
-            it("succeeds for "+expectedFile, function() {
-              if (!loaded) {
-                this.fail(expectedFile + " failed to load");
-              }
-
-              if (errors && errors.length) {
-                for (var j = 0; j < errors.length; j++) {
-                  var error = errors[j];
-                  this.fail(expectedFile + ": " + error.message + " at " + error.file+":"+error.line);
-                }
-              }
-            });
-          })(loaded, errors, expectedFile);
-        }
-      }
-    });
-
     if (window.onerror == jasmine._runner_.onError) {
       window.onerror = jasmine._runner_.oldOnError;
     }
