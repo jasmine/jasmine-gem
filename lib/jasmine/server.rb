@@ -78,13 +78,15 @@ module Jasmine
         map('/assets') do
           run Rails.application.assets
         end
+        map(config.spec_path)    { run Rails.application.assets }
+      else
+        map(config.spec_path)    { run Rack::File.new(config.spec_dir) }
       end
 
       map('/run.html')         { run Jasmine::Redirect.new('/') }
       map('/__suite__')        { run Jasmine::FocusedSuite.new(config) }
 
       map('/__JASMINE_ROOT__') { run Rack::File.new(Jasmine::Core.path) }
-      map(config.spec_path)    { run Rack::File.new(config.spec_dir) }
       map(config.root_path)    { run Rack::File.new(config.project_root) }
 
       map('/') do
