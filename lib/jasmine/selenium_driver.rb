@@ -30,8 +30,9 @@ module Jasmine
           caps = { :platform => ENV['SAUCE_PLATFORM'],
             :browserName => ENV['SAUCE_BROWSER'],
             'browser-version' => ENV['SAUCE_BROWSER_VERSION'],
-            'record-screenshots' => ENV['SAUCE_SCREENSHOTS'],
-            'record-video' => ENV['SAUCE_VIDEO'],
+            'record-screenshots' => ENV['SAUCE_SCREENSHOTS'] == "" ? false : ENV['SAUCE_SCREENSHOTS'],
+            'record-video' => ENV['SAUCE_VIDEO'] == "" ? false : ENV['SAUCE_VIDEO'],
+            'idle-timeout' => ENV['SAUCE_IDLE_TIMEOUT'] == "" ? 10 : ENV['SAUCE_IDLE_TIMEOUT'],
             :name => "Jasmine" }
 
           client = Selenium::WebDriver::Remote::Http::Default.new
@@ -39,7 +40,6 @@ module Jasmine
           options[:http_client] = client
           options[:url] = selenium_server
           options[:desired_capabilities] = caps.browserName.to_sym
-          Selenium::WebDriver.for(browser.to_sym, options)
           Selenium::WebDriver.for :remote, options
         else
           Selenium::WebDriver.for :remote, :url => selenium_server, :desired_capabilities => browser.to_sym
@@ -55,7 +55,14 @@ module Jasmine
     end
 
     def connect
-      @driver.navigate.to @http_address
+      1.upto(3) do
+        begin
+          @driver.navigate.to @http_address
+          break
+        rescue
+          puts "Retry..."
+        end
+      end
     end
 
     def disconnect
