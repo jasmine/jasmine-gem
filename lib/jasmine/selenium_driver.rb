@@ -35,7 +35,8 @@ module Jasmine
           client.timeout = timeout
           options[:http_client] = client
           options[:url] = selenium_server
-          options[:desired_capabilities] = caps.browserName.to_sym
+          options[:desired_capabilities] = caps
+
           Selenium::WebDriver.for :remote, options
         else
           Selenium::WebDriver.for :remote, :url => selenium_server, :desired_capabilities => browser.to_sym
