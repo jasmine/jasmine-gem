@@ -23,7 +23,7 @@ module Jasmine
           options[:desired_capabilities] = Selenium::WebDriver::Remote::Capabilities.htmlunit(:javascript_enabled => true)
           Selenium::WebDriver.for :remote, options
         elsif browser == "saucelabs"
-          caps = { :platform => ENV['SAUCE_PLATFORM'] == nil ? :VISTA : ENV['SAUCE_PLATFORM'],
+          caps = { :platform => ENV['SAUCE_PLATFORM'] == nil ? :VISTA : ENV['SAUCE_PLATFORM'].to_s.upcase.to_sym,
             :browserName => ENV['SAUCE_BROWSER'],
             'browser-version' => ENV['SAUCE_BROWSER_VERSION'],
             'record-screenshots' => ENV['SAUCE_SCREENSHOTS'] == nil ? false : ENV['SAUCE_SCREENSHOTS'],
@@ -70,8 +70,13 @@ module Jasmine
     end
 
     def eval_js(script)
-      result = @driver.execute_script(script)
-      JSON.parse("{\"result\":#{result}}", :max_nesting => false)["result"]
+      begin
+        result = @driver.execute_script(script)
+        JSON.parse("{\"result\":#{result}}", :max_nesting => false)["result"]
+      rescue Exception => e
+         puts "Caught exception in eval_js #{e.backtrace}"
+      end
+
     end
 
     def json_generate(obj)
