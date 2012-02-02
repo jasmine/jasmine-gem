@@ -14,7 +14,7 @@ module Jasmine
                   {:profile => profile}
                 end || {}
       @driver = if selenium_server
-        timeout = ENV['SELENIUM_CLIENT_TIMEOUT'] == "" ? ENV['SELENIUM_CLIENT_TIMEOUT'] : 120
+        timeout = ENV['SELENIUM_CLIENT_TIMEOUT'] == nil ? ENV['SELENIUM_CLIENT_TIMEOUT'] : 120
         if browser == "htmlunit"
           client = Selenium::WebDriver::Remote::Http::Default.new
           client.timeout = timeout
@@ -26,9 +26,9 @@ module Jasmine
           caps = { :platform => ENV['SAUCE_PLATFORM'],
             :browserName => ENV['SAUCE_BROWSER'],
             'browser-version' => ENV['SAUCE_BROWSER_VERSION'],
-            'record-screenshots' => ENV['SAUCE_SCREENSHOTS'] == "" ? false : ENV['SAUCE_SCREENSHOTS'],
-            'record-video' => ENV['SAUCE_VIDEO'] == "" ? false : ENV['SAUCE_VIDEO'],
-            'idle-timeout' => ENV['SAUCE_IDLE_TIMEOUT'] == "" ? 10 : ENV['SAUCE_IDLE_TIMEOUT'],
+            'record-screenshots' => ENV['SAUCE_SCREENSHOTS'] == nil ? false : ENV['SAUCE_SCREENSHOTS'],
+            'record-video' => ENV['SAUCE_VIDEO'] == nil ? false : ENV['SAUCE_VIDEO'],
+            'idle-timeout' => ENV['SAUCE_IDLE_TIMEOUT'] == nil ? 10 : ENV['SAUCE_IDLE_TIMEOUT'],
             :name => "Jasmine" }
 
           client = Selenium::WebDriver::Remote::Http::Default.new
