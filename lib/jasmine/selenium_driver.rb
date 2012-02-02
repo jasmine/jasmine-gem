@@ -14,7 +14,7 @@ module Jasmine
                   {:profile => profile}
                 end || {}
       @driver = if selenium_server
-        timeout = ENV['SELENIUM_CLIENT_TIMEOUT'] == nil ? ENV['SELENIUM_CLIENT_TIMEOUT'] : 120
+        timeout = ENV['SELENIUM_CLIENT_TIMEOUT'] == nil ? 120 : ENV['SELENIUM_CLIENT_TIMEOUT']
         if browser == "htmlunit"
           client = Selenium::WebDriver::Remote::Http::Default.new
           client.timeout = timeout
