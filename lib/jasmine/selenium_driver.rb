@@ -29,6 +29,7 @@ module Jasmine
             'record-screenshots' => ENV['SAUCE_SCREENSHOTS'] == nil ? false : ENV['SAUCE_SCREENSHOTS'],
             'record-video' => ENV['SAUCE_VIDEO'] == nil ? false : ENV['SAUCE_VIDEO'],
             'idle-timeout' => ENV['SAUCE_IDLE_TIMEOUT'] == nil ? 10 : ENV['SAUCE_IDLE_TIMEOUT'],
+            'max-duration' => ENV['SAUCE_MAX_DURATION'] == nil ? 60 : ENV['SAUCE_MAX_DURATION'],
             :name => "Jasmine" }
 
           client = Selenium::WebDriver::Remote::Http::Default.new
