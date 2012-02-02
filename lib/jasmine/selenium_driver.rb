@@ -52,14 +52,7 @@ module Jasmine
     end
 
     def connect
-      1.upto(3) do
-        begin
-          @driver.navigate.to @http_address
-          break
-        rescue
-          puts "Retry..."
-        end
-      end
+      @driver.navigate.to @http_address
     end
 
     def disconnect
