@@ -48,7 +48,7 @@ module Jasmine
     end
 
     def tests_have_finished?
-      @driver.execute_script("return window.jasmine.getEnv().currentRunner.finished") == "true"
+      @driver.execute_script('return jsApiReporter.finished')
     end
 
     def connect
@@ -64,7 +64,7 @@ module Jasmine
         sleep 0.1
       end
 
-      puts @driver.execute_script("return window.results()")
+      puts @driver.execute_script("return jsApiReporter.results()")
       failed_count = @driver.execute_script("return window.jasmine.getEnv().currentRunner.results().failedCount").to_i
       failed_count == 0
     end
