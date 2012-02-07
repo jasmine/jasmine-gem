@@ -71,12 +71,15 @@ module Jasmine
     end
 
     def eval_js(script)
-      begin
-        result = @driver.execute_script(script)
-        JSON.parse("{\"result\":#{result}}", :max_nesting => false)["result"]
-      rescue Exception => e
-        puts "Caught exception in eval_js #{e.backtrace}"
-        true
+      1.upto(3) do
+        begin
+          result = @driver.execute_script(script)
+          JSON.parse("{\"result\":#{result}}", :max_nesting => false)["result"]
+          break
+        rescue Exception => e
+          puts "Caught exception in eval_js #{ex.message}\n#{e.backtrace}"
+          sleep 1
+        end
       end
     end
 
