@@ -77,7 +77,7 @@ module Jasmine
           JSON.parse("{\"result\":#{result}}", :max_nesting => false)["result"]
           break
         rescue Exception => e
-          puts "Caught exception in eval_js #{ex.message}\n#{e.backtrace}"
+          puts "Caught exception in eval_js #{e.message}\n#{e.backtrace}"
           sleep 1
         end
       end
