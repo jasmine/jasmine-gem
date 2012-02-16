@@ -49,8 +49,6 @@ if Jasmine::Dependencies.rails3?
 
           File.exists?("spec/javascripts/helpers/.gitkeep").should == true
           File.exists?("spec/javascripts/support/jasmine.yml").should == true
-          File.exists?("spec/javascripts/support/jasmine_runner.rb").should == true
-          File.exists?("spec/javascripts/support/jasmine_config.rb").should == true
         end
       end
 

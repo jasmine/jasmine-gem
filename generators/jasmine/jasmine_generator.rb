@@ -13,20 +13,12 @@ class JasmineGenerator < Rails::Generator::Base
     m.file "jasmine-example/spec/SpecHelper.js", "spec/javascripts/helpers/SpecHelper.js"
 
     m.directory "spec/javascripts/support"
-    m.file "spec/javascripts/support/jasmine_runner.rb", "spec/javascripts/support/jasmine_runner.rb"
-    m.file "spec/javascripts/support/jasmine_config.rb", "spec/javascripts/support/jasmine_config.rb"
     m.file "spec/javascripts/support/jasmine-rails.yml", "spec/javascripts/support/jasmine.yml"
     m.readme "INSTALL"
 
-    unless ::Rails::VERSION::STRING[0,1] == "3"
-      m.directory "lib/tasks"
-      m.file "lib/tasks/jasmine.rake", "lib/tasks/jasmine.rake"
-    end
+    m.directory "lib/tasks"
+    m.file "lib/tasks/jasmine.rake", "lib/tasks/jasmine.rake"
     m
-  end
-
-  def file_name
-    "create_blog"
   end
 
 end

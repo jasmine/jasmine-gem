@@ -39,4 +39,8 @@ module Jasmine
     end
   end
 
+  def self.runner_filepath
+    File.expand_path(File.join(File.dirname(__FILE__), "runner.rb"))
+  end
+
 end

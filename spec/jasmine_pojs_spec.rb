@@ -21,8 +21,6 @@ describe "POJS jasmine install" do
 
     it "should find the Jasmine configuration files" do
       File.exists?("spec/javascripts/support/jasmine.yml").should == true
-      File.exists?("spec/javascripts/support/jasmine_runner.rb").should == true
-      File.exists?("spec/javascripts/support/jasmine_config.rb").should == true
     end
 
     it "should find the Jasmine example files" do
@@ -33,8 +31,6 @@ describe "POJS jasmine install" do
       File.exists?("spec/javascripts/helpers/SpecHelper.js").should == true
 
       File.exists?("spec/javascripts/support/jasmine.yml").should == true
-      File.exists?("spec/javascripts/support/jasmine_runner.rb").should == true
-      File.exists?("spec/javascripts/support/jasmine_config.rb").should == true
     end
 
     it "should show jasmine rake task" do
