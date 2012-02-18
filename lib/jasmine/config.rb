@@ -32,6 +32,7 @@ module Jasmine
     end
 
     def start_jasmine_server
+      require 'json'
       @jasmine_server_port = jasmine_port
       Thread.new do
         start_server(@jasmine_server_port)
