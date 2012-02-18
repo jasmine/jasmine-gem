@@ -15,7 +15,7 @@ module Jasmine
       end
 
       def rails_3_asset_pipeline?
-        rails3? && Rails.respond_to?(:application) && Rails.application.assets
+        rails3? && Rails.respond_to?(:application) && Rails.application.respond_to?(:assets) && Rails.application.assets
       end
 
       private

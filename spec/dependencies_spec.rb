@@ -61,7 +61,7 @@ if Jasmine::Dependencies.rspec2?
 
       describe ".rails_3_asset_pipeline?" do
         subject { Jasmine::Dependencies.rails_3_asset_pipeline? }
-        let(:application) { double(:application, :assets => rails_application_assets)}
+        let(:application) { double(:application) }
         before do
           Rails.stub(:respond_to?).with(:application).and_return(respond_to_application)
           Rails.stub(:application).and_return(application)
@@ -69,6 +69,7 @@ if Jasmine::Dependencies.rspec2?
         context "when rails 3 is present and the application pipeline is in use" do
           before do
             Gem::Specification.should_receive(:find_by_name).with("rails", ">= 3.0").and_return(true)
+            application.stub(:assets).and_return(rails_application_assets) 
           end
           let(:rails3_present) { true }
           let(:respond_to_application) { true }
@@ -78,6 +79,7 @@ if Jasmine::Dependencies.rspec2?
         context "when rails 3 is present and the application pipeline is not in use" do
           before do
             Gem::Specification.should_receive(:find_by_name).with("rails", ">= 3.0").and_return(true)
+            application.stub(:assets).and_return(rails_application_assets) 
           end
           let(:rails3_present) { true }
           let(:respond_to_application) { true }
@@ -87,10 +89,19 @@ if Jasmine::Dependencies.rspec2?
         context "when rails 3 is present but not loaded" do
           before do
             Gem::Specification.should_receive(:find_by_name).with("rails", ">= 3.0").and_return(true)
+            application.stub(:assets).and_return(rails_application_assets) 
           end
           let(:rails3_present) { true }
           let(:respond_to_application) { false }
           let(:rails_application_assets) { false }
+          it { should be_false }
+        end
+        context "when rails 3 is present but doesn't respond to assets" do
+          before do
+            Gem::Specification.should_receive(:find_by_name).with("rails", ">= 3.0").and_return(true)
+          end
+          let(:rails3_present) { true }
+          let(:respond_to_application) { true }
           it { should be_false }
         end
         context "when rails 3 is not present" do
