@@ -30,7 +30,7 @@ module Jasmine
     true
   end
 
-  def self.wait_for_listener(port, name = "required process", seconds_to_wait = 10)
+  def self.wait_for_listener(port, name = "required process", seconds_to_wait = 20)
     time_out_at = Time.now + seconds_to_wait
     until server_is_listening_on "localhost", port
       sleep 0.1
