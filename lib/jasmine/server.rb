@@ -27,6 +27,7 @@ module Jasmine
       jasmine_files = @jasmine_files
       css_files = @jasmine_stylesheets + (@config.css_files || [])
       js_files = @config.js_files(focused_suite)
+      fixture_html = @config.fixture_html
       body = ERB.new(File.read(File.join(File.dirname(__FILE__), "run.html.erb"))).result(binding)
       [
         200,

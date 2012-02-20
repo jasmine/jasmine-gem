@@ -159,5 +159,9 @@ module Jasmine
         []
       end
     end
+
+    def fixture_html
+      nil
+    end
   end
 end

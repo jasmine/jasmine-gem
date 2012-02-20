@@ -12,7 +12,34 @@ describe "Jasmine.app" do
     config.stub!(:src_dir).and_return(File.join(@root, "fixture", "src"))
     config.stub!(:src_files).and_return(["file1.js"])
     config.stub!(:spec_files).and_return(["file2.js"])
+    config.stub!(:fixture_html).and_return('<span class="test">Hello, World!</span>')
     Jasmine.app(config)
+  end
+
+  context 'with fixture HTML' do
+    it 'should include any configured HTML fixtures' do
+      get "/"
+      last_response.body.should include('<span class="test">Hello, World!</span>')
+    end
+  end
+
+  context 'without fixture HTML' do
+    # This is dirty. ish.
+    def app
+      config = Jasmine::Config.new
+      @root = File.join(File.dirname(__FILE__))
+      config.stub!(:project_root).and_return(@root)
+      config.stub!(:spec_dir).and_return(File.join(@root, "fixture", "spec"))
+      config.stub!(:src_dir).and_return(File.join(@root, "fixture", "src"))
+      config.stub!(:src_files).and_return(["file1.js"])
+      config.stub!(:spec_files).and_return(["file2.js"])
+      Jasmine.app(config)
+    end
+
+    it 'should not include any HTML fixtures' do
+      get "/"
+      last_response.body.should match(/<div id="jasmine_content">\s+<\/div>/)
+    end
   end
 
   it "should serve static files from spec dir under __spec__" do
@@ -20,7 +47,7 @@ describe "Jasmine.app" do
     last_response.status.should == 200
     last_response.content_type.should == "application/javascript"
     last_response.body.should == File.read(File.join(@root, "fixture/spec/example_spec.js"))
-    end
+  end
 
   it "should serve static files from root dir under __root__" do
     get "/__root__/fixture/src/example.js"
@@ -83,6 +110,11 @@ describe "Jasmine.app" do
       ['Cache-Control', 'Pragma'].each do |key|
         last_response.headers[key].should == 'no-cache'
       end
+    end
+
+    it 'should include any configured HTML fixtures' do
+      get "/"
+      last_response.body.should include('<span class="test">Hello, World!</span>');
     end
   end
 end
