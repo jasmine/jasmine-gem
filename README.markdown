@@ -1,4 +1,4 @@
-# The Jasmine Gem <img src="https://secure.travis-ci.org/pivotal/jasmine-gem.png" />
+# The Jasmine Gem <a title="Build at Travis CI" href="http://travis-ci.org/#!/pivotal/jasmine-gem"><img src="https://secure.travis-ci.org/pivotal/jasmine-gem.png" /></a>
 
 The [Jasmine](http://github.com/pivotal/jasmine) Ruby Gem is a package of helper code for developing Jasmine projects for Ruby-based web projects (Rails, Sinatra, etc.) or for JavaScript projects where Ruby is a welcome partner. It serves up a project's Jasmine suite in a browser so you can focus on your code instead of manually editing script tags in the Jasmine runner HTML file.
 
