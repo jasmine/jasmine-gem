@@ -2,6 +2,8 @@ require File.expand_path(File.join(File.dirname(__FILE__), "spec_helper"))
 require 'rack/test'
 
 describe "Jasmine.app" do
+  LOADED_FLAG = "\n\njasmineEnv.finishedLoading();"
+
   include Rack::Test::Methods
 
   def app
@@ -15,25 +17,25 @@ describe "Jasmine.app" do
     Jasmine.app(config)
   end
 
-  it "should serve static files from spec dir under __spec__" do
+  it "should serve static files from spec dir under __spec__ with loaded flag appended" do
     get "/__spec__/example_spec.js"
     last_response.status.should == 200
     last_response.content_type.should == "application/javascript"
-    last_response.body.should == File.read(File.join(@root, "fixture/spec/example_spec.js"))
+    last_response.body.should == File.read(File.join(@root, "fixture/spec/example_spec.js")) + LOADED_FLAG
     end
 
-  it "should serve static files from root dir under __root__" do
+  it "should serve static files from root dir under __root__ with loaded flag appended" do
     get "/__root__/fixture/src/example.js"
     last_response.status.should == 200
     last_response.content_type.should == "application/javascript"
-    last_response.body.should == File.read(File.join(@root, "fixture/src/example.js"))
+    last_response.body.should == File.read(File.join(@root, "fixture/src/example.js")) + LOADED_FLAG
   end
 
-  it "should serve static files from src dir under /" do
+  it "should serve static files from src dir under / with loaded flag appended" do
     get "/example.js"
     last_response.status.should == 200
     last_response.content_type.should == "application/javascript"
-    last_response.body.should == File.read(File.join(@root, "fixture/src/example.js"))
+    last_response.body.should == File.read(File.join(@root, "fixture/src/example.js")) + LOADED_FLAG
   end
 
   it "should serve Jasmine static files under /__JASMINE_ROOT__/" do

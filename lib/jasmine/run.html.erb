@@ -39,14 +39,20 @@
       function execJasmine() {
         jasmineEnv.execute();
       }
-
     })();
   </script>
 
   <% js_files.each do |js_file| %>
-  <script src="<%= js_file %>" type="text/javascript"></script>
+    <script type="text/javascript">jasmineEnv.aboutToLoad(<%= js_file.inspect %>, function(onError) { var old = window.onerror; window.onerror = onError; return old; });</script>
+    <script src="<%= js_file %>" type="text/javascript"></script>
+    <script type="text/javascript">jasmineEnv.generateFileLoadErrors();</script>
   <% end %>
 
+  <script type="text/javascript">
+    if (window.onerror == jasmine._runner_.onError) {
+      window.onerror = jasmine._runner_.oldOnError;
+    }
+  </script>
 </head>
 <body>
 <div id="jasmine_content"></div>
