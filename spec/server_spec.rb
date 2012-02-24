@@ -15,6 +15,12 @@ describe "Jasmine.app" do
     Jasmine.app(config)
   end
 
+  it "includes no-cache headers for specs" do
+    get "/__spec__/example_spec.js"
+    last_response.headers.should have_key("Cache-Control")
+    last_response.headers["Cache-Control"].should == "max-age=0, private, must-revalidate"
+  end
+
   it "should serve static files from spec dir under __spec__" do
     get "/__spec__/example_spec.js"
     last_response.status.should == 200
