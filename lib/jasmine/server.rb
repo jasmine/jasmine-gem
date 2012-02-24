@@ -74,6 +74,7 @@ module Jasmine
   def self.app(config)
     Rack::Builder.app do
       use Rack::Head
+      use Rack::ETag, "max-age=0, private, must-revalidate"
       if Jasmine::Dependencies.rails_3_asset_pipeline?
         map('/assets') do
           run Rails.application.assets
