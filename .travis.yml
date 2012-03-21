@@ -12,6 +12,7 @@ rvm:
 
 env:
  - "rails2"
+ - "rails2_3_5"
  - "rails3"
  - "pojs-rspec1"
  - "pojs-rspec2"
