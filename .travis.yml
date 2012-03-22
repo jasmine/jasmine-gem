@@ -11,8 +11,8 @@ rvm:
   - "rbx"
 
 env:
- - "rails2"
- - "rails2_3_5"
- - "rails3"
- - "pojs-rspec1"
- - "pojs-rspec2"
+ - "RAILS_VERSION=rails2"
+ - "RAILS_VERSION=rails2_3_5"
+ - "RAILS_VERSION=rails3"
+ - "RAILS_VERSION=pojs-rspec1"
+ - "RAILS_VERSION=pojs-rspec2"
