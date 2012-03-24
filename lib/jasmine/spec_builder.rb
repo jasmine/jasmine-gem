@@ -34,7 +34,7 @@ module Jasmine
       previous_indent_level = 0
       @config.spec_files_full_paths.each do |filename|
         line_number = 1
-        File.open(filename, "r") do |file|
+        File.open(filename, "rb") do |file|
           file.readlines.each do |line|
             match = /^(\s*)(describe|it)\s*\(\s*["'](.*)["']\s*,\s*function/.match(line)
             if (match)
