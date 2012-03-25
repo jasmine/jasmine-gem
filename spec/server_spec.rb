@@ -86,7 +86,7 @@ describe "Jasmine.app" do
 
     it "should tell the browser not to cache any assets" do
       head "/"
-      ['Cache-Control', 'Pragma'].each do |key|
+      ['Pragma'].each do |key|
         last_response.headers[key].should == 'no-cache'
       end
     end

@@ -1,4 +1,5 @@
 require 'rack'
+require 'rack/utils'
 require 'jasmine-core'
 
 module Jasmine
@@ -30,7 +31,7 @@ module Jasmine
       body = ERB.new(File.read(File.join(File.dirname(__FILE__), "run.html.erb"))).result(binding)
       [
         200,
-        { 'Content-Type' => 'text/html', 'Cache-Control' => 'no-cache', 'Pragma' => 'no-cache' },
+        { 'Content-Type' => 'text/html', 'Pragma' => 'no-cache' },
         [body]
       ]
     end
@@ -71,12 +72,24 @@ module Jasmine
     end
   end
 
+  class CacheControl
+    def initialize(app)
+      @app, @content_type = app
+    end
+
+    def call(env)
+      status, headers, body = @app.call(env)
+      headers = Rack::Utils::HeaderHash.new(headers)
+      headers['Cache-Control'] ||= "max-age=0, private, must-revalidate"
+      [status, headers, body]
+    end
+  end
+
+
   def self.app(config)
     Rack::Builder.app do
       use Rack::Head
-      if defined? Rack::ETag # Rack ~>1.0 compatibility
-        use Rack::ETag, "max-age=0, private, must-revalidate"
-      end
+      use Jasmine::CacheControl
       if Jasmine::Dependencies.rails_3_asset_pipeline?
         map('/assets') do
           run Rails.application.assets
