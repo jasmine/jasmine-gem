@@ -39,9 +39,10 @@ module Jasmine
     def start_jasmine_server
       require 'json'
       @jasmine_server_port = jasmine_port
-      Thread.new do
+      t = Thread.new do
         start_server(@jasmine_server_port)
       end
+      t.abort_on_exception = true
       Jasmine::wait_for_listener(@jasmine_server_port, "jasmine server")
       puts "jasmine server started."
     end
