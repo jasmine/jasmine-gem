@@ -63,7 +63,6 @@ Gem::Specification.new do |s|
   end
 
   s.add_development_dependency 'rack-test'
-  s.add_development_dependency 'ci_reporter'
   s.add_development_dependency 'json_pure'
 
   s.add_dependency 'jasmine-core', ">= 1.2.0.rc1"

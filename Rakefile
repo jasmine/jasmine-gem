@@ -12,7 +12,6 @@ else
   require 'spec'
   require 'spec/rake/spectask'
 end
-require 'ci/reporter/rake/rspec'
 
 desc "Run all examples"
 if Jasmine::Dependencies.rspec2?
@@ -25,14 +24,14 @@ else
   end
 end
 
-task :spec => ['jasmine:copy_examples_to_gem', 'ci:setup:rspec']
+task :spec => ['jasmine:copy_examples_to_gem']
 
 task :default => :spec
 
 namespace :jasmine do
   require "jasmine-core"
   require './spec/jasmine_self_test_config'
-  task :server do          
+  task :server do
     port = ENV['JASMINE_PORT'] || 8888
     JasmineSelfTestConfig.new.start_server(port)
 
