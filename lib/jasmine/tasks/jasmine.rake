@@ -27,7 +27,7 @@ namespace :jasmine do
         t.rspec_opts = ["--colour", "--format", ENV['JASMINE_SPEC_FORMAT'] || "progress"]
         t.verbose = true
         if Jasmine::Dependencies.rails_3_asset_pipeline?
-          t.ruby_opts = ["-r #{File.expand_path(File.join(::Rails.root, 'config', 'environment'))}"]
+          t.rspec_opts += ["-r #{File.expand_path(File.join(::Rails.root, 'config', 'environment'))}"]
         end
         t.pattern = [Jasmine.runner_filepath]
       end
