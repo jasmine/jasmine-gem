@@ -17,7 +17,7 @@ if Jasmine::Dependencies.rails2?
 
     context "before Jasmine has been installed" do
 
-      it "should not the jasmine:install generator" do
+      it "should not show the jasmine:install generator" do
         output = `./script/generate --help`
         output.should_not include('jasmine:install')
       end
