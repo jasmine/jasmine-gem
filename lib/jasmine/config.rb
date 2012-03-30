@@ -40,7 +40,10 @@ module Jasmine
       require 'json'
       @jasmine_server_port = jasmine_port
       t = Thread.new do
-        start_server(@jasmine_server_port)
+        begin
+          start_server(@jasmine_server_port)
+        rescue ChildProcess::TimeoutError; end
+        #ignore bad exits
       end
       t.abort_on_exception = true
       Jasmine::wait_for_listener(@jasmine_server_port, "jasmine server")
