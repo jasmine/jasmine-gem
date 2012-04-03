@@ -10,6 +10,10 @@ module Jasmine
         safe_gem_check("rails", "~> 2.3")
       end
 
+      def legacy_rails?
+        safe_gem_check("rails", "< 2.3.11")
+      end
+
       def rails3?
         safe_gem_check("rails", ">= 3.0")
       end

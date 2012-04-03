@@ -1,6 +1,6 @@
 require File.expand_path(File.join(File.dirname(__FILE__), "spec_helper"))
 
-if Jasmine::Dependencies.rails2?
+if Jasmine::Dependencies.rails2? && !Jasmine::Dependencies.legacy_rails?
 
   describe "A Rails 2 app" do
 
