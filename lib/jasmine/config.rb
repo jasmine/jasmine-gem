@@ -15,6 +15,10 @@ module Jasmine
       ENV["JASMINE_PORT"] || Jasmine::find_unused_port
     end
 
+    def mount_apps
+      {}
+    end
+
     def start_server(port = 8888)
       if defined? Rack::Server # Rack ~>1.0 compatibility
         server = Rack::Server.new(:Port => port, :AccessLog => [])
