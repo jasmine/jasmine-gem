@@ -7,11 +7,17 @@ describe "Jasmine.app" do
   def app
     config = Jasmine::Config.new
     @root = File.join(File.dirname(__FILE__))
+    my_rack_apps = {
+      "/my_rack1" => proc { [200, { "Content-Type" => "text/plain" }, ["Rack me once, shame on you"]] },
+      "/my_rack2" => proc { [200, { "Content-Type" => "text/plain" }, ["Rack me twice, shame on me"]] }
+    }
+
     config.stub!(:project_root).and_return(@root)
     config.stub!(:spec_dir).and_return(File.join(@root, "fixture", "spec"))
     config.stub!(:src_dir).and_return(File.join(@root, "fixture", "src"))
     config.stub!(:src_files).and_return(["file1.js"])
     config.stub!(:spec_files).and_return(["file2.js"])
+    config.stub!(:mount_apps).and_return(my_rack_apps)
     Jasmine.app(config)
   end
 
@@ -66,6 +72,20 @@ describe "Jasmine.app" do
   it "should 404 non-existent files" do
     get "/some-non-existent-file"
     last_response.should be_not_found
+  end
+
+  describe "user rack apps" do
+    it "should mount and user provided rack apps" do
+      get "/my_rack1"
+      last_response.status.should == 200
+      last_response.content_type.should == "text/plain"
+      last_response.body.should == "Rack me once, shame on you"
+
+      get "/my_rack2"
+      last_response.status.should == 200
+      last_response.content_type.should == "text/plain"
+      last_response.body.should == "Rack me twice, shame on me"
+    end
   end
 
   describe "/ page" do

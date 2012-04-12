@@ -109,6 +109,12 @@ module Jasmine
           Jasmine::RunAdapter.new(config)
         ])
       end
+
+      config.mount_apps.each do |path, rack_app|
+        map(path) do
+          run rack_app
+        end
+      end
     end
   end
 end
