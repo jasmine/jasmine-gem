@@ -174,6 +174,13 @@ describe Jasmine::Config do
         end
       end
 
+      it "should permit absolute URLs to files" do
+        Dir.stub!(:glob).and_return { |glob_string| [] }
+        fake_config = Hash.new.stub!(:[]).and_return { |x| ['http://www.example.com/file.ext', 'file1.ext'] }
+        @config.stub!(:simple_config).and_return(fake_config)
+        @config.src_files.should == ['http://www.example.com/file.ext', 'file1.ext']
+      end
+
       describe "should allow .gitignore style negation (!pattern)" do
         before(:each) do
           Dir.stub!(:glob).and_return { |glob_string| [glob_string] }
