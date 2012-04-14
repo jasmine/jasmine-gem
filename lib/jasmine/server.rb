@@ -1,13 +1,19 @@
 require 'rack'
 require 'rack/utils'
 require 'jasmine-core'
-require 'rack/jasmine/run_adapter'
+require 'rack/jasmine/runner'
 require 'rack/jasmine/focused_suite'
 require 'rack/jasmine/redirect'
 require 'rack/jasmine/cache_control'
+require 'ostruct'
 
 module Jasmine
   def self.app(config)
+    jasmine_stylesheets = ::Jasmine::Core.css_files.map {|f| "/__JASMINE_ROOT__/#{f}"}
+    config_shim = OpenStruct.new({:jasmine_files => ::Jasmine::Core.js_files.map {|f| "/__JASMINE_ROOT__/#{f}"},
+                                  :js_files => config.js_files,
+                                  :css_files => jasmine_stylesheets + (config.css_files || [])})
+    page = Jasmine::Page.new(config_shim.instance_eval { binding })
     Rack::Builder.app do
       use Rack::Head
       use Rack::Jasmine::CacheControl
@@ -27,7 +33,7 @@ module Jasmine
       map('/') do
         run Rack::Cascade.new([
           Rack::URLMap.new('/' => Rack::File.new(config.src_dir)),
-          Rack::Jasmine::RunAdapter.new(config)
+          Rack::Jasmine::Runner.new(page)
         ])
       end
     end
