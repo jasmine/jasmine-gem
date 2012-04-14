@@ -1,4 +1,4 @@
-require File.expand_path(File.join(File.dirname(__FILE__), "spec_helper"))
+require 'spec_helper'
 require 'jasmine_self_test_config'
 
 jasmine_config = JasmineSelfTestConfig.new
