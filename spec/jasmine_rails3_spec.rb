@@ -57,8 +57,8 @@ if Jasmine::Dependencies.rails3?
           output = `rails g jasmine:examples`
           output.should include("create")
 
-          File.exists?("public/javascripts/jasmine_examples/Player.js").should == true
-          File.exists?("public/javascripts/jasmine_examples/Song.js").should == true
+          File.exists?("app/assets/javascripts/jasmine_examples/Player.js").should == true
+          File.exists?("app/assets/javascripts/jasmine_examples/Song.js").should == true
 
           File.exists?("spec/javascripts/jasmine_examples/PlayerSpec.js").should == true
           File.exists?("spec/javascripts/helpers/SpecHelper.js").should == true

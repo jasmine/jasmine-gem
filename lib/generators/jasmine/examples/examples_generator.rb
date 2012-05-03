@@ -7,7 +7,7 @@ module Jasmine
       end
 
       def copy_example_files
-        directory 'public'
+        directory 'app'
         directory 'spec'
       end
 
