@@ -9,7 +9,7 @@ module Jasmine
     end
 
     def template_path(filepath)
-      expand(cwd, File.join("generators/jasmine/templates", filepath))
+      expand(cwd, File.join("generators", "jasmine" ,"templates", filepath))
     end
 
     def dest_path(filepath)

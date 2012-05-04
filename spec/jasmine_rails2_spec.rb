@@ -1,4 +1,4 @@
-require File.expand_path(File.join(File.dirname(__FILE__), "spec_helper"))
+require 'spec_helper'
 
 if Jasmine::Dependencies.rails2? && !Jasmine::Dependencies.legacy_rails?
 

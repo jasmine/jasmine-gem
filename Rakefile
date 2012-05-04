@@ -1,7 +1,6 @@
 $LOAD_PATH.unshift File.expand_path(File.dirname(__FILE__))
 $LOAD_PATH.unshift File.expand_path("#{File.dirname(__FILE__)}/lib")
 require "bundler"
-Bundler.setup
 Bundler::GemHelper.install_tasks
 
 require "jasmine"

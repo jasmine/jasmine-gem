@@ -1,4 +1,4 @@
-require File.expand_path(File.join(File.dirname(__FILE__), "spec_helper"))
+require 'spec_helper'
 require 'rack/test'
 
 describe "Jasmine.app" do
@@ -50,6 +50,7 @@ describe "Jasmine.app" do
   end
 
   it "should serve focused suites when prefixing spec files with /__suite__/" do
+    pending "Temporarily removing this feature (maybe permanent)"
     Dir.stub!(:glob).and_return { |glob_string| [glob_string] }
     get "/__suite__/file2.js"
     last_response.status.should == 200
