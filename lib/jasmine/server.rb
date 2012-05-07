@@ -17,6 +17,13 @@ module Jasmine
     Rack::Builder.app do
       use Rack::Head
       use Rack::Jasmine::CacheControl
+
+      if config.custom_environment
+        map(config.custom_environment_path) do
+          run config.custom_environment
+        end
+      end
+
       if Jasmine::Dependencies.rails_3_asset_pipeline?
         map('/assets') do
           run Rails.application.assets

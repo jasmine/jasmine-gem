@@ -237,6 +237,18 @@ describe Jasmine::Config do
         ]
       end
     end
+
+    describe "custom environment" do
+      it "should return nil" do
+        @config.custom_environment.should be_nil
+      end
+    end
+
+    describe "custom environment path" do
+      it "should default to /assets" do
+        @config.custom_environment_path.should == '/assets'
+      end
+    end
   end
 
   describe "environment variables" do
