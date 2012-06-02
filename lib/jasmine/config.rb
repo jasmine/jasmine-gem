@@ -168,5 +168,12 @@ module Jasmine
         []
       end
     end
+
+    def custom_environment
+    end
+
+    def custom_environment_path
+      '/assets'
+    end
   end
 end

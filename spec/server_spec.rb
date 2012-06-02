@@ -12,6 +12,8 @@ describe "Jasmine.app" do
     config.stub!(:src_dir).and_return(File.join(@root, "fixture", "src"))
     config.stub!(:src_files).and_return(["file1.js"])
     config.stub!(:spec_files).and_return(["file2.js"])
+    config.stub!(:custom_environment).and_return(Proc.new { [200, {}, ["Hello, World!"]] })
+    config.stub!(:custom_environment_path).and_return('/custom_assets')
     Jasmine.app(config)
   end
 
@@ -90,6 +92,13 @@ describe "Jasmine.app" do
       ['Pragma'].each do |key|
         last_response.headers[key].should == 'no-cache'
       end
+    end
+  end
+
+  context "when a custom environment is configured" do
+    it "should serve assets from the configured path" do
+      get "/custom_assets"
+      last_response.body.should == 'Hello, World!'
     end
   end
 end
