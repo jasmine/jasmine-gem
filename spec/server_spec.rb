@@ -5,13 +5,18 @@ describe "Jasmine.app" do
   include Rack::Test::Methods
 
   def app
-    config = Jasmine::Config.new
     @root = File.join(File.dirname(__FILE__))
-    config.stub!(:project_root).and_return(@root)
-    config.stub!(:spec_dir).and_return(File.join(@root, "fixture", "spec"))
-    config.stub!(:src_dir).and_return(File.join(@root, "fixture", "src"))
-    config.stub!(:src_files).and_return(["file1.js"])
-    config.stub!(:spec_files).and_return(["file2.js"])
+    config = double("config",
+                    :project_root => @root,
+                    :spec_dir => File.join(@root, "fixture", "spec"),
+                    :spec_path => "/__spec__",
+                    :root_path => "/__root__",
+                    :css_files => [],
+                    :jasmine_files => [],
+                    :js_files => ["path/file1.js", "path/file2.js"],
+                    :src_dir => File.join(@root, "fixture", "src"),
+                    :src_files => ["file1.js"],
+                    :spec_files => ["example_spec.js"])
     Jasmine.app(config)
   end
 
@@ -73,9 +78,8 @@ describe "Jasmine.app" do
     it "should load each js file in order" do
       get "/"
       last_response.status.should == 200
-      last_response.body.should include("\"/file1.js")
-      last_response.body.should include("\"/__spec__/file2.js")
-      last_response.body.should satisfy {|s| s.index("/file1.js") < s.index("/__spec__/file2.js") }
+      last_response.body.should include("path/file1.js")
+      last_response.body.should include("path/file2.js")
     end
 
     it "should return an empty 200 for HEAD requests to /" do

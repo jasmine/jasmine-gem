@@ -9,11 +9,7 @@ require 'ostruct'
 
 module Jasmine
   def self.app(config)
-    jasmine_stylesheets = ::Jasmine::Core.css_files.map {|f| "/__JASMINE_ROOT__/#{f}"}
-    config_shim = OpenStruct.new({:jasmine_files => ::Jasmine::Core.js_files.map {|f| "/__JASMINE_ROOT__/#{f}"},
-                                  :js_files => config.js_files,
-                                  :css_files => jasmine_stylesheets + (config.css_files || [])})
-    page = Jasmine::Page.new(config_shim.instance_eval { binding })
+    page = Jasmine::Page.new(config)
     Rack::Builder.app do
       use Rack::Head
       use Rack::Jasmine::CacheControl
@@ -26,6 +22,7 @@ module Jasmine
       map('/run.html')         { run Rack::Jasmine::Redirect.new('/') }
       map('/__suite__')        { run Rack::Jasmine::FocusedSuite.new(config) }
 
+      #TODO: These path mappings should come from the config.
       map('/__JASMINE_ROOT__') { run Rack::File.new(Jasmine::Core.path) }
       map(config.spec_path)    { run Rack::File.new(config.spec_dir) }
       map(config.root_path)    { run Rack::File.new(config.project_root) }

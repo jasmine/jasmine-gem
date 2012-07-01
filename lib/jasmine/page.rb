@@ -5,7 +5,7 @@ module Jasmine
     end
 
     def render
-      ERB.new(::Jasmine.runner_template).result(@context)
+      ERB.new(::Jasmine.runner_template).result(@context.instance_eval { binding })
     end
   end
 end

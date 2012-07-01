@@ -1,6 +1,7 @@
 jasmine_files = ['base',
                  'dependencies',
                  'config',
+                 'user_config',
                  'server',
                  'selenium_driver',
                  'spec_builder',

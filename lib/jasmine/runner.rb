@@ -10,7 +10,7 @@ else
   require 'spec'
 end
 
-jasmine_config = Jasmine::Config.new
+jasmine_config = Jasmine::Config.new(Jasmine::UserConfig.new)
 spec_builder = Jasmine::SpecBuilder.new(jasmine_config)
 
 should_stop = false

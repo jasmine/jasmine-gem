@@ -10,7 +10,7 @@ describe Jasmine::Page do
                      :css_files => ["file1.css", "file2.css"],
                      :jasmine_files => ["jasmine_file1.js", "jasmine_file2.js"])
     end
-    let(:context) { fake_config.instance_eval { binding } }
+    let(:context) { fake_config }
     let(:page) { Jasmine::Page.new(context) }
     it "should render javascript files in the correct order" do
       js_files = subject.css("script")
