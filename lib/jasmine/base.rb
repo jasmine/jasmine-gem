@@ -40,7 +40,7 @@ module Jasmine
   end
 
   def self.runner_filepath
-    File.expand_path(File.join(File.dirname(__FILE__), "runner.rb"))
+    File.expand_path(File.join(File.dirname(__FILE__), "run_specs.rb"))
   end
 
   def self.runner_template
