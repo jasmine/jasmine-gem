@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Jasmine::SpecBuilder do
+describe Jasmine::RspecFormatter do
   describe "environment variables" do
     def stub_env_hash(hash)
       ENV.stub!(:[]) do |arg|
@@ -12,22 +12,21 @@ describe Jasmine::SpecBuilder do
         pending
         stub_env_hash({"JASMINE_BROWSER" => nil})
         config = double('config')
-        spec_builder = Jasmine::SpecBuilder.new(config)
+        formatter = Jasmine::RspecFormatter.new(config)
         Jasmine::SeleniumDriver.should_receive(:new).
           with("firefox", anything).
           and_return(mock(Jasmine::SeleniumDriver, :connect => true))
-        spec_builder.start
+        formatter.start
       end
 
       it "should use ENV['JASMINE_BROWSER'] if set" do
         pending
         stub_env_hash({"JASMINE_BROWSER" => "mosaic"})
-        config = double('config')
-        spec_builder = Jasmine::SpecBuilder.new(config)
+
         Jasmine::SeleniumDriver.should_receive(:new).
           with("mosaic", anything).
           and_return(mock(Jasmine::SeleniumDriver, :connect => true))
-        spec_builder.start
+        formatter.start
       end
     end
 

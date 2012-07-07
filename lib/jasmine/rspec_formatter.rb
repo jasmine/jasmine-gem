@@ -1,7 +1,7 @@
 require 'enumerator'
 
 module Jasmine
-  class SpecBuilder
+  class RspecFormatter
     attr_accessor :suites
 
     def initialize(config)

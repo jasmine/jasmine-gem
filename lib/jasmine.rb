@@ -4,7 +4,7 @@ jasmine_files = ['base',
                  'config',
                  'server',
                  'selenium_driver',
-                 'spec_builder',
+                 'rspec_formatter',
                  'command_line_tool',
                  'page',
                  'asset_pipeline_mapper']
