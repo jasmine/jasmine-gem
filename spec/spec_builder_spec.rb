@@ -35,7 +35,7 @@ describe Jasmine::SpecBuilder do
       it "should use http://localhost by default" do
         pending
         stub_env_hash({})
-        config = Jasmine::UserConfig.new
+        config = Jasmine::Config.new
         config.instance_variable_set(:@jasmine_server_port, '1234')
         config.stub!(:start_jasmine_server)
 
@@ -48,7 +48,7 @@ describe Jasmine::SpecBuilder do
       it "should use ENV['JASMINE_HOST'] if set" do
         pending
         stub_env_hash({"JASMINE_HOST" => "http://some_host"})
-        config = Jasmine::UserConfig.new
+        config = Jasmine::Config.new
         config.instance_variable_set(:@jasmine_server_port, '1234')
         config.stub!(:start_jasmine_server)
 
@@ -61,7 +61,7 @@ describe Jasmine::SpecBuilder do
       it "should use ENV['JASMINE_PORT'] if set" do
         pending
         stub_env_hash({"JASMINE_PORT" => "4321"})
-        config = Jasmine::UserConfig.new
+        config = Jasmine::Config.new
         Jasmine.stub!(:wait_for_listener)
         config.stub!(:start_server)
         Jasmine::SeleniumDriver.should_receive(:new).

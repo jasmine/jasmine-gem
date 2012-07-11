@@ -92,6 +92,16 @@ module Jasmine
       puts out unless out.empty?
     end
 
+    def start_server(port = 8888)
+      if defined? Rack::Server # Rack ~>1.0 compatibility
+        server = Rack::Server.new(:Port => port, :AccessLog => [])
+        server.instance_variable_set(:@app, Jasmine.app(@config)) # workaround for Rack bug, when Rack > 1.2.1 is released Rack::Server.start(:app => Jasmine.app(self)) will work
+        server.start
+      else
+        handler = Rack::Handler.get('webrick')
+        handler.run(Jasmine.app(@config), :Port => port, :AccessLog => [])
+      end
+    end
 
     private
 
@@ -171,17 +181,6 @@ module Jasmine
 
     def jasmine_port
       ENV["JASMINE_PORT"] || Jasmine::find_unused_port
-    end
-
-    def start_server(port = 8888)
-      if defined? Rack::Server # Rack ~>1.0 compatibility
-        server = Rack::Server.new(:Port => port, :AccessLog => [])
-        server.instance_variable_set(:@app, Jasmine.app(@config)) # workaround for Rack bug, when Rack > 1.2.1 is released Rack::Server.start(:app => Jasmine.app(self)) will work
-        server.start
-      else
-        handler = Rack::Handler.get('webrick')
-        handler.run(Jasmine.app(@config), :Port => port, :AccessLog => [])
-      end
     end
 
     def start_jasmine_server

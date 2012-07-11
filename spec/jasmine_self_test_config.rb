@@ -1,6 +1,6 @@
 require 'jasmine'
 
-class JasmineSelfTestConfig < Jasmine::UserConfig
+class JasmineSelfTestConfig < Jasmine::Config
   def project_root
     File.expand_path(File.join(File.dirname(__FILE__), ".."))
   end

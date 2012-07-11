@@ -1,5 +1,5 @@
 module Jasmine
-  class UserConfig
+  class Config
     require 'yaml'
     require 'erb'
 

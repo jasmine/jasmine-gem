@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'selenium-webdriver'
 
-describe Jasmine::UserConfig do
+describe Jasmine::Config do
   describe "configuration" do
     before :each do
       temp_dir_before
@@ -15,7 +15,7 @@ describe Jasmine::UserConfig do
       @project_dir  = Dir.pwd
 
       @template_dir = File.expand_path(File.join(@root, "generators/jasmine/templates"))
-      @config       = Jasmine::UserConfig.new
+      @config       = Jasmine::Config.new
     end
 
     after(:each) do
@@ -244,14 +244,14 @@ describe Jasmine::UserConfig do
     it "should return the relative web server path to the core Jasmine css stylesheets" do
       #TODO: wrap Jasmine::Core with a class that knows about the core path and the relative mapping.
       Jasmine::Core.stub(:css_files).and_return(["my_css_file1.css", "my_css_file2.css"])
-      Jasmine::UserConfig.new.jasmine_stylesheets.should == ["/__JASMINE_ROOT__/my_css_file1.css", "/__JASMINE_ROOT__/my_css_file2.css"]
+      Jasmine::Config.new.jasmine_stylesheets.should == ["/__JASMINE_ROOT__/my_css_file1.css", "/__JASMINE_ROOT__/my_css_file2.css"]
     end
   end
 
   describe "jasmine_javascripts" do
     it "should return the relative web server path to the core Jasmine css javascripts" do
       Jasmine::Core.stub(:js_files).and_return(["my_js_file1.js", "my_js_file2.js"])
-      Jasmine::UserConfig.new.jasmine_javascripts.should == ["/__JASMINE_ROOT__/my_js_file1.js", "/__JASMINE_ROOT__/my_js_file2.js"]
+      Jasmine::Config.new.jasmine_javascripts.should == ["/__JASMINE_ROOT__/my_js_file1.js", "/__JASMINE_ROOT__/my_js_file2.js"]
     end
   end
 end

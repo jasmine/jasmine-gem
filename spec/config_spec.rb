@@ -1,13 +1,13 @@
 require 'spec_helper'
 require 'selenium-webdriver'
 
-describe Jasmine::Config do
+describe Jasmine::RunnerConfig do
   describe "css_files" do
     it "should return the jasmine stylesheets and any user defined stylesheets" do
       jasmine_stylesheets = ['some/css/file']
       user_stylesheets = ['some/user/file']
       user_config = double("config", :jasmine_stylesheets => jasmine_stylesheets, :user_stylesheets => user_stylesheets)
-      Jasmine::Config.new(user_config).css_files.should == jasmine_stylesheets + user_stylesheets
+      Jasmine::RunnerConfig.new(user_config).css_files.should == jasmine_stylesheets + user_stylesheets
     end
   end
 
@@ -15,7 +15,7 @@ describe Jasmine::Config do
     it "should return the jasmine files from the config" do
       jasmine_files = ['some/file']
       user_config = double('config', :jasmine_javascripts => jasmine_files)
-      Jasmine::Config.new(user_config).jasmine_files.should == jasmine_files
+      Jasmine::RunnerConfig.new(user_config).jasmine_files.should == jasmine_files
     end
   end
 
@@ -23,7 +23,7 @@ describe Jasmine::Config do
     it "should return the user js files from the config" do
       js_files = ['some/file']
       user_config = double('config', :js_files => js_files)
-      Jasmine::Config.new(user_config).js_files.should == js_files
+      Jasmine::RunnerConfig.new(user_config).js_files.should == js_files
     end
   end
 
@@ -31,7 +31,7 @@ describe Jasmine::Config do
     it "should return the user spec_files from the config" do
       spec_files = ['some/file']
       user_config = double('config', :spec_files => spec_files)
-      Jasmine::Config.new(user_config).spec_files.should == spec_files
+      Jasmine::RunnerConfig.new(user_config).spec_files.should == spec_files
     end
   end
 
@@ -39,7 +39,7 @@ describe Jasmine::Config do
     it "should return the user spec_files_full_paths from the config" do
       spec_files_full_paths = ['some/file_path']
       user_config = double('config', :spec_files_full_paths => spec_files_full_paths)
-      Jasmine::Config.new(user_config).spec_files_full_paths.should == spec_files_full_paths
+      Jasmine::RunnerConfig.new(user_config).spec_files_full_paths.should == spec_files_full_paths
     end
   end
 
@@ -47,7 +47,7 @@ describe Jasmine::Config do
     it "should return the user spec_path from the config" do
       spec_path = ['some/path']
       user_config = double('config', :spec_path => spec_path)
-      Jasmine::Config.new(user_config).spec_path.should == spec_path
+      Jasmine::RunnerConfig.new(user_config).spec_path.should == spec_path
     end
   end
 
@@ -55,7 +55,7 @@ describe Jasmine::Config do
     it "should return the user spec_dir from the config" do
       spec_dir = ['some/dir']
       user_config = double('config', :spec_dir => spec_dir)
-      Jasmine::Config.new(user_config).spec_dir.should == spec_dir
+      Jasmine::RunnerConfig.new(user_config).spec_dir.should == spec_dir
     end
   end
 
@@ -63,7 +63,7 @@ describe Jasmine::Config do
     it "should return the user src_dir from the config" do
       src_dir = ['some/dir']
       user_config = double('config', :src_dir => src_dir)
-      Jasmine::Config.new(user_config).src_dir.should == src_dir
+      Jasmine::RunnerConfig.new(user_config).src_dir.should == src_dir
     end
   end
 
@@ -71,7 +71,7 @@ describe Jasmine::Config do
     it "should return the user project_root from the config" do
       project_root = ['some/dir']
       user_config = double('config', :project_root => project_root)
-      Jasmine::Config.new(user_config).project_root.should == project_root
+      Jasmine::RunnerConfig.new(user_config).project_root.should == project_root
     end
   end
 
@@ -79,7 +79,7 @@ describe Jasmine::Config do
     it "should return the user root_path from the config" do
       root_path = ['some/path']
       user_config = double('config', :root_path => root_path)
-      Jasmine::Config.new(user_config).root_path.should == root_path
+      Jasmine::RunnerConfig.new(user_config).root_path.should == root_path
     end
   end
 

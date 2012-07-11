@@ -1,5 +1,5 @@
 module Jasmine
-  class Config
+  class RunnerConfig
     def initialize(user_config)
       @user_config = user_config
     end
