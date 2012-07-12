@@ -6,7 +6,8 @@ jasmine_files = ['base',
                  'selenium_driver',
                  'spec_builder',
                  'command_line_tool',
-                 'page']
+                 'page',
+                 'asset_pipeline_mapper']
 
 jasmine_files.each do |file|
   require File.join('jasmine', file)

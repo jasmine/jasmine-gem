@@ -75,7 +75,9 @@ module Jasmine
     end
 
     def src_files
-      if simple_config['src_files']
+      if simple_config['src_files'] && Jasmine::Dependencies.rails_3_asset_pipeline?
+        Jasmine::AssetPipelineMapper.new(simple_config['src_files']).files
+      elsif simple_config['src_files']
         match_files(src_dir, simple_config['src_files'])
       else
         []
