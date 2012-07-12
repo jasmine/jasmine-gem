@@ -8,8 +8,8 @@ require 'rack/jasmine/cache_control'
 require 'ostruct'
 
 module Jasmine
-  def self.app(config)
-    page = Jasmine::Page.new(config)
+  def self.app(runner_config)
+    page = Jasmine::Page.new(runner_config)
     Rack::Builder.app do
       use Rack::Head
       use Rack::Jasmine::CacheControl
@@ -20,16 +20,16 @@ module Jasmine
       end
 
       map('/run.html')         { run Rack::Jasmine::Redirect.new('/') }
-      map('/__suite__')        { run Rack::Jasmine::FocusedSuite.new(config) }
+      map('/__suite__')        { run Rack::Jasmine::FocusedSuite.new(runner_config) }
 
-      #TODO: These path mappings should come from the config.
+      #TODO: These path mappings should come from the runner_config.
       map('/__JASMINE_ROOT__') { run Rack::File.new(Jasmine::Core.path) }
-      map(config.spec_path)    { run Rack::File.new(config.spec_dir) }
-      map(config.root_path)    { run Rack::File.new(config.project_root) }
+      map(runner_config.spec_path)    { run Rack::File.new(runner_config.spec_dir) }
+      map(runner_config.root_path)    { run Rack::File.new(runner_config.project_root) }
 
       map('/') do
         run Rack::Cascade.new([
-          Rack::URLMap.new('/' => Rack::File.new(config.src_dir)),
+          Rack::URLMap.new('/' => Rack::File.new(runner_config.src_dir)),
           Rack::Jasmine::Runner.new(page)
         ])
       end

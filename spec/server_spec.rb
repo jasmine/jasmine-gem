@@ -6,7 +6,7 @@ describe "Jasmine.app" do
 
   def app
     @root = File.join(File.dirname(__FILE__))
-    config = double("config",
+    runner_config = double("config",
                     :project_root => @root,
                     :spec_dir => File.join(@root, "fixture", "spec"),
                     :spec_path => "/__spec__",
@@ -17,7 +17,7 @@ describe "Jasmine.app" do
                     :src_dir => File.join(@root, "fixture", "src"),
                     :src_files => ["file1.js"],
                     :spec_files => ["example_spec.js"])
-    Jasmine.app(config)
+    Jasmine.app(runner_config)
   end
 
   it "includes no-cache headers for specs" do

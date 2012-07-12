@@ -1,8 +1,8 @@
 require 'spec_helper'
 require 'jasmine_self_test_config'
 
-jasmine_config = Jasmine::RunnerConfig.new(JasmineSelfTestConfig.new)
-spec_builder = Jasmine::SpecBuilder.new(jasmine_config)
+jasmine_runner_config = Jasmine::RunnerConfig.new(JasmineSelfTestConfig.new)
+spec_builder = Jasmine::SpecBuilder.new(jasmine_runner_config)
 
 should_stop = false
 
