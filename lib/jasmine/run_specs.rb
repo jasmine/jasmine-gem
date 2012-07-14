@@ -10,7 +10,7 @@ else
   require 'spec'
 end
 
-jasmine_runner_config = Jasmine::RunnerConfig.new(Jasmine::Config.new)
+jasmine_runner_config = Jasmine::RunnerConfig.new
 formatter = Jasmine::RspecFormatter.new(jasmine_runner_config)
 
 should_stop = false

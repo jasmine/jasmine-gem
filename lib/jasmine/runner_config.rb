@@ -1,6 +1,6 @@
 module Jasmine
   class RunnerConfig
-    def initialize(config)
+    def initialize(config = Jasmine::Config.new)
       @config = config
     end
 

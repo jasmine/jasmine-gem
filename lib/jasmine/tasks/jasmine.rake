@@ -48,7 +48,7 @@ namespace :jasmine do
     port = ENV['JASMINE_PORT'] || 8888
     puts "your tests are here:"
     puts "  http://localhost:#{port}/"
-    Jasmine::SpecBuilder.new(Jasmine::RunnerConfig.new(Jasmine::Config.new)).start_server(port)
+    Jasmine::SpecBuilder.new(Jasmine::RunnerConfig.new).start_server(port)
   end
 end
 
