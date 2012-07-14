@@ -18,6 +18,10 @@ module Jasmine
         safe_gem_check("rails", ">= 3.0")
       end
 
+      def legacy_rack?
+        !Rack.constants.include?(:Server)
+      end
+
       def rails_3_asset_pipeline?
         rails3? && Rails.respond_to?(:application) && Rails.application.respond_to?(:assets) && Rails.application.assets
       end

@@ -85,7 +85,7 @@ if Jasmine::Dependencies.rspec2?
         context "when rails 3 is present and the application pipeline is in use" do
           before do
             Gem::Specification.should_receive(:find_by_name).with("rails", ">= 3.0").and_return(true)
-            application.stub(:assets).and_return(rails_application_assets) 
+            application.stub(:assets).and_return(rails_application_assets)
           end
           let(:rails3_present) { true }
           let(:respond_to_application) { true }
@@ -95,7 +95,7 @@ if Jasmine::Dependencies.rspec2?
         context "when rails 3 is present and the application pipeline is not in use" do
           before do
             Gem::Specification.should_receive(:find_by_name).with("rails", ">= 3.0").and_return(true)
-            application.stub(:assets).and_return(rails_application_assets) 
+            application.stub(:assets).and_return(rails_application_assets)
           end
           let(:rails3_present) { true }
           let(:respond_to_application) { true }
@@ -105,7 +105,7 @@ if Jasmine::Dependencies.rspec2?
         context "when rails 3 is present but not loaded" do
           before do
             Gem::Specification.should_receive(:find_by_name).with("rails", ">= 3.0").and_return(true)
-            application.stub(:assets).and_return(rails_application_assets) 
+            application.stub(:assets).and_return(rails_application_assets)
           end
           let(:rails3_present) { true }
           let(:respond_to_application) { false }
@@ -232,5 +232,16 @@ if Jasmine::Dependencies.rspec2?
       end
     end
 
+    describe "legacy_rack?" do
+      it "should return false if Rack::Server exists" do
+        Rack.stub(:constants).and_return([:Server])
+        Jasmine::Dependencies.legacy_rack?.should be_false
+      end
+      it "should return true if Rack::Server does not exist" do
+        Rack.stub(:constants).and_return([])
+        Jasmine::Dependencies.legacy_rack?.should be_true
+      end
+    end
   end
+
 end

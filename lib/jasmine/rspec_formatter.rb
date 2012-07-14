@@ -92,17 +92,6 @@ module Jasmine
       puts out unless out.empty?
     end
 
-    def start_server(port = 8888)
-      if defined? Rack::Server # Rack ~>1.0 compatibility
-        server = Rack::Server.new(:Port => port, :AccessLog => [])
-        server.instance_variable_set(:@app, Jasmine.app(@config)) # workaround for Rack bug, when Rack > 1.2.1 is released Rack::Server.start(:app => Jasmine.app(self)) will work
-        server.start
-      else
-        handler = Rack::Handler.get('webrick')
-        handler.run(Jasmine.app(@config), :Port => port, :AccessLog => [])
-      end
-    end
-
     private
 
     def eval_js(script)
@@ -188,7 +177,7 @@ module Jasmine
       @jasmine_server_port = jasmine_port
       t = Thread.new do
         begin
-          start_server(@jasmine_server_port)
+          Jasmine::Server.new(@jasmine_server_port, Jasmine::Application.app(@config)).start
         rescue ChildProcess::TimeoutError; end
         #ignore bad exits
       end
