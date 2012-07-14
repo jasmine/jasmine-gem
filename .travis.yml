@@ -55,3 +55,4 @@ matrix:
       env: RAILS_VERSION=pojs-rspec2
   allow_failures:
     - rvm: rbx
+    - rvm: jruby
