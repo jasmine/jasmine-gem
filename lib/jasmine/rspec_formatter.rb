@@ -12,7 +12,7 @@ module Jasmine
 
     def start
       start_jasmine_server
-      @client = Jasmine::SeleniumDriver.new(browser, "#{jasmine_host}:#{@jasmine_server_port}/")
+      @client = Jasmine::SeleniumDriver.new(browser, "#{jasmine_host}:#{port}/")
       @client.connect
       load_suite_info
       wait_for_suites_to_finish_running
@@ -168,21 +168,21 @@ module Jasmine
       ENV["JASMINE_HOST"] || 'http://localhost'
     end
 
-    def jasmine_port
-      ENV["JASMINE_PORT"] || Jasmine::find_unused_port
+    def port
+      @port ||= ENV["JASMINE_PORT"] || Jasmine::find_unused_port
     end
 
     def start_jasmine_server
       require 'json'
-      @jasmine_server_port = jasmine_port
+      port_for_thread = port
       t = Thread.new do
         begin
-          Jasmine::Server.new(@jasmine_server_port, Jasmine::Application.app(@config)).start
+          Jasmine::Server.new(port_for_thread, Jasmine::Application.app(@config)).start
         rescue ChildProcess::TimeoutError; end
         #ignore bad exits
       end
       t.abort_on_exception = true
-      Jasmine::wait_for_listener(@jasmine_server_port, "jasmine server")
+      Jasmine::wait_for_listener(port, "jasmine server")
       puts "jasmine server started."
     end
 
