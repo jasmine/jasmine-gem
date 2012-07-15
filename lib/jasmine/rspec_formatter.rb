@@ -11,8 +11,6 @@ module Jasmine
     end
 
     def start
-      guess_example_locations
-
       start_jasmine_server
       @client = Jasmine::SeleniumDriver.new(browser, "#{jasmine_host}:#{@jasmine_server_port}/")
       @client.connect
@@ -51,7 +49,7 @@ module Jasmine
       me = self
       example_name = spec["name"]
       @spec_ids << spec["id"]
-      backtrace = @example_locations[parent.description + " " + example_name]
+      backtrace = example_locations[parent.description + " " + example_name]
       if Jasmine::Dependencies.rspec2?
         parent.it example_name, {} do
           me.report_spec(spec["id"])
@@ -136,7 +134,8 @@ module Jasmine
       end
     end
 
-    def guess_example_locations
+    def example_locations
+      return @example_locations if @example_locations
       @example_locations = {}
 
       example_name_parts = []
@@ -158,6 +157,7 @@ module Jasmine
           end
         end
       end
+      @example_locations
     end
 
     def browser
