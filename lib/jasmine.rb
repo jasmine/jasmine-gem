@@ -8,7 +8,8 @@ jasmine_files = ['base',
                  'rspec_formatter',
                  'command_line_tool',
                  'page',
-                 'asset_pipeline_mapper']
+                 'asset_pipeline_mapper',
+                 File.join('runners', 'selenium')]
 
 jasmine_files.each do |file|
   require File.join('jasmine', file)

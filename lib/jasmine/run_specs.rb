@@ -11,22 +11,5 @@ else
 end
 
 jasmine_runner_config = Jasmine::RunnerConfig.new
-formatter = Jasmine::RspecFormatter.new(jasmine_runner_config)
+Jasmine::Runners::Selenium.new(Jasmine::RspecFormatter.new(jasmine_runner_config), jasmine_runner_config).run
 
-should_stop = false
-
-if Jasmine::Dependencies.rspec2?
-  RSpec.configuration.after(:suite) do
-    formatter.stop if should_stop
-  end
-else
-  Spec::Runner.configure do |config|
-    config.after(:suite) do
-      formatter.stop if should_stop
-    end
-  end
-end
-
-formatter.start
-should_stop = true
-formatter.declare_suites
