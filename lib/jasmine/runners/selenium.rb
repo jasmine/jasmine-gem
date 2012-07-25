@@ -92,11 +92,6 @@ module Jasmine
         puts "jasmine server started."
       end
 
-      def windows?
-        require 'rbconfig'
-        ::RbConfig::CONFIG['host_os'] =~ /mswin|mingw/
-      end
-
     end
   end
 end
