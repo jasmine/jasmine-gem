@@ -11,5 +11,5 @@ else
 end
 
 jasmine_runner_config = Jasmine::RunnerConfig.new
-Jasmine::Runners::Selenium.new(Jasmine::RspecFormatter.new(jasmine_runner_config), jasmine_runner_config).run
+Jasmine::Runners::HTTP.new(Jasmine::RspecFormatter.new(jasmine_runner_config), jasmine_runner_config).run
 

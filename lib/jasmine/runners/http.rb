@@ -1,6 +1,6 @@
 module Jasmine
   module Runners
-    class Selenium
+    class HTTP
       attr_accessor :suites
 
       def initialize(formatter, config)

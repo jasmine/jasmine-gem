@@ -9,7 +9,7 @@ jasmine_files = ['base',
                  'command_line_tool',
                  'page',
                  'asset_pipeline_mapper',
-                 File.join('runners', 'selenium')]
+                 File.join('runners', 'http')]
 
 jasmine_files.each do |file|
   require File.join('jasmine', file)
