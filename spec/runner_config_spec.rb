@@ -83,5 +83,49 @@ describe Jasmine::RunnerConfig do
     end
   end
 
+  describe "browser" do
+    it "should default to firefox" do
+      Jasmine::RunnerConfig.new.browser.should == 'firefox'
+    end
+
+    it "should use ENV['JASMINE_BROWSER'] if it exists" do
+      ENV.stub(:[], "JASMINE_BROWSER").and_return("foo")
+      Jasmine::RunnerConfig.new.browser.should == 'foo'
+    end
+  end
+
+  describe "jasmine_host" do
+    it "should default to localhost" do
+      Jasmine::RunnerConfig.new.jasmine_host.should == 'http://localhost'
+    end
+
+    it "should use ENV['JASMINE_HOST'] if it exists" do
+      ENV.stub(:[], "JASMINE_HOST").and_return("foo")
+      Jasmine::RunnerConfig.new.jasmine_host.should == 'foo'
+    end
+  end
+
+  describe "port" do
+    it "should find an unused port" do
+      Jasmine.should_receive(:find_unused_port).and_return('1234')
+      Jasmine::RunnerConfig.new.port.should == '1234'
+    end
+
+    it "should use ENV['JASMINE_PORT'] if it exists" do
+      ENV.stub(:[], "JASMINE_PORT").and_return("foo")
+      Jasmine::RunnerConfig.new.port.should == 'foo'
+    end
+
+    it "should cache port" do
+      config = Jasmine::RunnerConfig.new
+      Jasmine.stub(:find_unused_port).and_return('1234')
+      config.port.should == '1234'
+      Jasmine.stub(:find_unused_port).and_return('4321')
+      config.port.should == '1234'
+    end
+
+
+  end
+
 end
 

@@ -43,5 +43,18 @@ module Jasmine
     def root_path
       @config.root_path
     end
+
+    def browser
+      ENV["JASMINE_BROWSER"] || 'firefox'
+    end
+
+    def jasmine_host
+      ENV["JASMINE_HOST"] || 'http://localhost'
+    end
+
+    def port
+      @port ||= ENV["JASMINE_PORT"] || Jasmine.find_unused_port
+    end
+
   end
 end
