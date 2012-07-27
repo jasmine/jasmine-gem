@@ -3,8 +3,7 @@ module Jasmine
     class HTTP
       attr_accessor :suites
 
-      def initialize(formatter, client)
-        @formatter = formatter
+      def initialize(client)
         @client = client
       end
 
@@ -12,8 +11,9 @@ module Jasmine
         @client.connect
         load_suite_info
         wait_for_suites_to_finish_running
-        @formatter.format_results(results, suites)
+        jasmine_results = Jasmine::Results.new(results, suites)
         @client.disconnect
+        jasmine_results
       end
 
       private

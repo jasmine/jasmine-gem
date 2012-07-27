@@ -7,9 +7,9 @@ module Jasmine
       @spec_files = config.spec_files
     end
 
-    def format_results(results, suites)
+    def format_results(results)
       @results = results
-      declare_suites(suites)
+      declare_suites(@results.suites)
     end
 
     def declare_suites(suites)
@@ -82,7 +82,7 @@ module Jasmine
     private
 
     def results_for(spec_id)
-      @results[spec_id.to_s]
+      @results.for_spec_id(spec_id.to_s)
     end
 
 
