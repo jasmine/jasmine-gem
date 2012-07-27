@@ -3,14 +3,12 @@ module Jasmine
     class HTTP
       attr_accessor :suites
 
-      def initialize(formatter, config)
+      def initialize(formatter, client)
         @formatter = formatter
-        @config = config
+        @client = client
       end
 
       def run
-        start_jasmine_server
-        @client = Jasmine::SeleniumDriver.new(@config.browser, "#{@config.jasmine_host}:#{@config.port}/")
         @client.connect
         load_suite_info
         wait_for_suites_to_finish_running
@@ -64,20 +62,6 @@ module Jasmine
 
       def json_generate(obj)
         @client.json_generate(obj)
-      end
-
-      def start_jasmine_server
-        require 'json'
-        port_for_thread = @config.port
-        t = Thread.new do
-          begin
-            Jasmine::Server.new(port_for_thread, Jasmine::Application.app(@config)).start
-          rescue ChildProcess::TimeoutError; end
-          # # ignore bad exits
-        end
-        t.abort_on_exception = true
-        Jasmine::wait_for_listener(@config.port, "jasmine server")
-        puts "jasmine server started."
       end
 
     end
