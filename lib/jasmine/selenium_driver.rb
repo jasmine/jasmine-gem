@@ -14,7 +14,34 @@ module Jasmine
                   {:profile => profile}
                 end || {}
       @driver = if selenium_server
-        Selenium::WebDriver.for :remote, :url => selenium_server, :desired_capabilities => browser.to_sym
+        timeout = ENV['SELENIUM_CLIENT_TIMEOUT'] == nil ? 120 : ENV['SELENIUM_CLIENT_TIMEOUT'].to_i
+        if browser == "htmlunit"
+          client = Selenium::WebDriver::Remote::Http::Default.new
+          client.timeout = timeout
+          options[:http_client] = client
+          options[:url] = selenium_server
+          options[:desired_capabilities] = Selenium::WebDriver::Remote::Capabilities.htmlunit(:javascript_enabled => true)
+          Selenium::WebDriver.for :remote, options
+        elsif browser == "saucelabs"
+          caps = { :platform => ENV['SAUCE_PLATFORM'] == nil ? :VISTA : ENV['SAUCE_PLATFORM'].to_s.upcase.to_sym,
+            :browserName => ENV['SAUCE_BROWSER'],
+            'browser-version' => ENV['SAUCE_BROWSER_VERSION'],
+            'record-screenshots' => ENV['SAUCE_SCREENSHOTS'] == nil ? false : ENV['SAUCE_SCREENSHOTS'],
+            'record-video' => ENV['SAUCE_VIDEO'] == nil ? false : ENV['SAUCE_VIDEO'],
+            'idle-timeout' => ENV['SAUCE_IDLE_TIMEOUT'] == nil ? 90 : ENV['SAUCE_IDLE_TIMEOUT'].to_i,
+            'max-duration' => ENV['SAUCE_MAX_DURATION'] == nil ? 180 : ENV['SAUCE_MAX_DURATION'].to_i,
+            :name => "Jasmine" }
+
+          client = Selenium::WebDriver::Remote::Http::Default.new
+          client.timeout = timeout
+          options[:http_client] = client
+          options[:url] = selenium_server
+          options[:desired_capabilities] = caps
+
+          Selenium::WebDriver.for :remote, options
+        else
+          Selenium::WebDriver.for :remote, :url => selenium_server, :desired_capabilities => browser.to_sym
+        end
       else
         Selenium::WebDriver.for browser.to_sym, options
       end
@@ -22,7 +49,7 @@ module Jasmine
     end
 
     def tests_have_finished?
-      @driver.execute_script("return window.jasmine.getEnv().currentRunner.finished") == "true"
+      @driver.execute_script('return jsApiReporter.finished')
     end
 
     def connect
@@ -38,14 +65,21 @@ module Jasmine
         sleep 0.1
       end
 
-      puts @driver.execute_script("return window.results()")
+      puts @driver.execute_script("return jsApiReporter.results()")
       failed_count = @driver.execute_script("return window.jasmine.getEnv().currentRunner.results().failedCount").to_i
       failed_count == 0
     end
 
     def eval_js(script)
-      result = @driver.execute_script(script)
-      JSON.parse("{\"result\":#{result}}", :max_nesting => false)["result"]
+      1.upto(3) do
+        begin
+          result = @driver.execute_script(script)
+          return JSON.parse("{\"result\":#{result}}", :max_nesting => false)["result"]
+        rescue Exception => e
+          puts "Caught exception in eval_js #{e.message}\n#{e.backtrace}"
+          sleep 1
+        end
+      end
     end
 
     def json_generate(obj)
