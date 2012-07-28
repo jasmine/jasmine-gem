@@ -85,11 +85,6 @@ module Jasmine
       @results.for_spec_id(spec_id.to_s)
     end
 
-
-    def script_path
-      File.expand_path(__FILE__)
-    end
-
     def example_locations
       return @example_locations if @example_locations
       @example_locations = {}
