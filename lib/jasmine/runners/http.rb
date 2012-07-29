@@ -3,17 +3,18 @@ module Jasmine
     class HTTP
       attr_accessor :suites
 
-      def initialize(client)
+      def initialize(client, results_processor)
         @client = client
+        @results_processor = results_processor
       end
 
       def run
         @client.connect
         load_suite_info
         wait_for_suites_to_finish_running
-        jasmine_results = Jasmine::Results.new(results, suites)
+        results = @results_processor.process(results_hash, suites)
         @client.disconnect
-        jasmine_results
+        results
       end
 
       private
@@ -28,7 +29,7 @@ module Jasmine
         @suites = eval_js("var result = jsApiReporter.suites(); if (window.Prototype && Object.toJSON) { return Object.toJSON(result) } else { return JSON.stringify(result) }")
       end
 
-      def results
+      def results_hash
         spec_results = {}
         spec_ids.each_slice(50) do |slice|
           spec_results.merge!(eval_js("var result = jsApiReporter.resultsForSpecs(#{json_generate(slice)}); if (window.Prototype && Object.toJSON) { return Object.toJSON(result) } else { return JSON.stringify(result) }"))

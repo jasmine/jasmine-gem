@@ -9,6 +9,7 @@ jasmine_files = ['base',
                  'command_line_tool',
                  'page',
                  'asset_pipeline_mapper',
+                 'results_processor',
                  'results',
                  File.join('runners', 'http')]
 

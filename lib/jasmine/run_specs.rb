@@ -26,7 +26,8 @@ t.abort_on_exception = true
 Jasmine::wait_for_listener(jasmine_runner_config.port, "jasmine server")
 puts "jasmine server started."
 
-results = Jasmine::Runners::HTTP.new(client).run
-formatter = Jasmine::RspecFormatter.new(jasmine_runner_config)
+results_processor = Jasmine::ResultsProcessor.new(jasmine_runner_config)
+results = Jasmine::Runners::HTTP.new(client, results_processor).run
+formatter = Jasmine::RspecFormatter.new
 formatter.format_results(results)
 
