@@ -9,24 +9,22 @@ module Jasmine
     end
 
     def declare_suites(suites)
-      me = self
       suites.each do |suite|
-        declare_suite(self, suite)
+        #empty block for rspec 1
+        group = example_group(suite["name"]) {}
+        process_children(group, suite["children"])
       end
     end
 
-    def declare_suite(parent, suite)
-      me = self
-      parent.describe suite["name"] do
-        suite["children"].each do |suite_or_spec|
-          type = suite_or_spec["type"]
-          if type == "suite"
-            me.declare_suite(self, suite_or_spec)
-          elsif type == "spec"
-            me.declare_spec(self, suite_or_spec)
-          else
-            raise "unknown type #{type} for #{suite_or_spec.inspect}"
-          end
+    def process_children(parent, children)
+      children.each do |suite_or_spec|
+        type = suite_or_spec["type"]
+        if type == "suite"
+          process_children(parent.describe(suite_or_spec["name"]), suite_or_spec["children"])
+        elsif type == "spec"
+          declare_spec(parent, suite_or_spec)
+        else
+          raise "unknown type #{type} for #{suite_or_spec.inspect}"
         end
       end
     end
@@ -76,6 +74,14 @@ module Jasmine
     end
 
     private
+
+    def example_group(*args, &block)
+      if Jasmine::Dependencies.rspec2?
+        RSpec::Core::ExampleGroup.describe(*args, &block).register
+      else
+        Spec::Example::ExampleGroupFactory.create_example_group(*args, &block)
+      end
+    end
 
     def results_for(spec_id)
       @results.for_spec_id(spec_id.to_s)
