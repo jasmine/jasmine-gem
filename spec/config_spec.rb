@@ -261,21 +261,25 @@ describe Jasmine::Config do
     before do
       Jasmine::Dependencies.stub(:rails_3_asset_pipeline?) { true }
     end
+
     let(:src_files) { ["assets/some.js", "assets/files.js"] }
+
     let(:config) do
       Jasmine::Config.new.tap do |config|
         #TODO: simple_config should be a passed in hash
         config.stub(:simple_config)  { { 'src_files' => src_files} }
       end
     end
+
     it "should use AssetPipelineMapper to return src_files" do
       mapped_files =  ["some.js", "files.js"]
       Jasmine::AssetPipelineMapper.stub_chain(:new, :files).and_return(mapped_files)
       config.src_files.should == mapped_files
     end
+
     it "should pass the config src_files to the AssetPipelineMapper" do
       Jasmine::Config.stub(:simple_config)
-      Jasmine::AssetPipelineMapper.should_receive(:new).with(src_files) { double("mapper").as_null_object }
+      Jasmine::AssetPipelineMapper.should_receive(:new).with(src_files).and_return(double("mapper").as_null_object)
       config.src_files
     end
   end

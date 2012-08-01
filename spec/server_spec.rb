@@ -10,7 +10,7 @@ describe Jasmine::Server do
       server = double(:server)
       port = 1234
       application = double(:application)
-      Rack::Handler.should_receive(:get).with("webrick") { server }
+      Rack::Handler.should_receive(:get).with("webrick").and_return(server)
       server.should_receive(:run).with(application, hash_including(:Port => port))
       Jasmine::Server.new(port, application).start
     end
@@ -26,7 +26,7 @@ describe Jasmine::Server do
 
     it "should create a Rack::Server with the correct port when passed" do
       port = 1234
-      Rack::Server.should_receive(:new).with(hash_including(:Port => port)) { double(:server).as_null_object }
+      Rack::Server.should_receive(:new).with(hash_including(:Port => port)).and_return(double(:server).as_null_object)
       Jasmine::Server.new(port).start
     end
 
