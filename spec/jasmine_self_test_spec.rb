@@ -3,8 +3,7 @@ require 'jasmine_self_test_config'
 
 jasmine_runner_config = Jasmine::RunnerConfig.new(JasmineSelfTestConfig.new)
 server = Jasmine::Server.new(jasmine_runner_config.port, Jasmine::Application.app(jasmine_runner_config))
-client = Jasmine::SeleniumDriver.new(jasmine_runner_config.browser,
-                                     "#{jasmine_runner_config.jasmine_host}:#{jasmine_runner_config.port}/")
+client = Jasmine::Drivers::Selenium.new("#{jasmine_runner_config.jasmine_host}:#{jasmine_runner_config.port}/", jasmine_runner_config)
 
 t = Thread.new do
   begin
