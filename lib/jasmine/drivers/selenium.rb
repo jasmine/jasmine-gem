@@ -10,7 +10,7 @@ module Jasmine
           "http://localhost:#{ENV['SELENIUM_SERVER_PORT']}/wd/hub"
         end
         options = if browser == "firefox" && ENV["JASMINE_FIREBUG"]
-                  require File.join(File.dirname(__FILE__), "firebug/firebug")
+                  require File.join(File.dirname(__FILE__), "../firebug/firebug")
                   profile = Selenium::WebDriver::Firefox::Profile.new
                   profile.enable_firebug
                   {:profile => profile}

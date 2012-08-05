@@ -1,23 +1,27 @@
+require File.join(File.dirname(__FILE__), "phantomjs/browser")
+require File.join(File.dirname(__FILE__), "phantomjs/errors")
 module Jasmine
   module Drivers
     class Phantomjs
+      attr_accessor :browser, :http_address
+
       def initialize(http_address, runner_config)
-        require "phantomjs_driver"
         @http_address = http_address
-        @driver = ::PhantomjsDriver::Driver.new
+        @browser = Browser.new(:phantomjs_path => runner_config.phantomjs_path)
       end
 
       def connect
-        @driver.visit @http_address
+        browser.visit http_address
       end
 
       def disconnect
-        @driver.quit
+        browser.server.stop
+        browser.client.stop
       end
 
       def eval_js(script)
         script = "(function(){#{script}})()"
-        result = @driver.evaluate_script(script)
+        result = browser.evaluate(script)
         JSON.parse("{\"result\":#{result}}", :max_nesting => false)["result"]
       end
 

@@ -61,5 +61,8 @@ module Jasmine
       @port ||= ENV["JASMINE_PORT"] || Jasmine.find_unused_port
     end
 
+    def phantomjs_path
+      ENV["PHANTOMJS_PATH"]
+    end
   end
 end
