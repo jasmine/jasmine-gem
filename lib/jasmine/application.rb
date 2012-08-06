@@ -6,6 +6,7 @@ require 'rack/jasmine/focused_suite'
 require 'rack/jasmine/redirect'
 require 'rack/jasmine/cache_control'
 require 'ostruct'
+require 'sprockets'
 
 module Jasmine
   class Application
@@ -20,12 +21,17 @@ module Jasmine
           end
         end
 
+        map(config.spec_path) do
+          environment = Sprockets::Environment.new
+          environment.append_path File.expand_path(config.spec_dir)
+          run environment
+        end
+
         map('/run.html')         { run Rack::Jasmine::Redirect.new('/') }
         map('/__suite__')        { run Rack::Jasmine::FocusedSuite.new(config) }
 
         #TODO: These path mappings should come from the config.
         map('/__JASMINE_ROOT__') { run Rack::File.new(Jasmine::Core.path) }
-        map(config.spec_path)    { run Rack::File.new(config.spec_dir) }
         map(config.root_path)    { run Rack::File.new(config.project_root) }
 
         map('/') do
