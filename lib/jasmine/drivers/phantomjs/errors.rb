@@ -1,6 +1,6 @@
  module Jasmine::Drivers
-	class Phantomjs
-		class Error < StandardError
+  class Phantomjs
+    class Error < StandardError
     end
 
     class ClientError < Error
@@ -49,7 +49,7 @@
       end
     end
 
-		class DeadClient < Error
+    class DeadClient < Error
       def initialize(message)
         @message = message
       end
@@ -70,5 +70,5 @@
         "PhantomJS version #{version} is too old. You must use at least version #{Client::PHANTOMJS_VERSION}"
       end
     end
-	end
+  end
 end
