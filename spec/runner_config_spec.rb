@@ -94,6 +94,17 @@ describe Jasmine::RunnerConfig do
     end
   end
 
+  describe "driver" do
+    it "should default to selenium" do
+      Jasmine::RunnerConfig.new.driver.should == Jasmine::Drivers::Selenium
+    end
+
+    it "should use ENV['JASMINE_DRIVER'] if it exists" do
+      ENV.stub(:[], "JASMINE_DRIVER").and_return("phantomjs")
+      Jasmine::RunnerConfig.new.driver.should == Jasmine::Drivers::Phantomjs
+    end
+  end
+
   describe "jasmine_host" do
     it "should default to localhost" do
       Jasmine::RunnerConfig.new.jasmine_host.should == 'http://localhost'

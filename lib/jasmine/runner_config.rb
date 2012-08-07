@@ -44,6 +44,11 @@ module Jasmine
       @config.root_path
     end
 
+    def driver
+      ENV["JASMINE_DRIVER"] ||= "Selenium"
+      Jasmine::Drivers.const_get(ENV["JASMINE_DRIVER"].capitalize)
+    end
+
     def browser
       ENV["JASMINE_BROWSER"] || 'firefox'
     end
@@ -56,5 +61,8 @@ module Jasmine
       @port ||= ENV["JASMINE_PORT"] || Jasmine.find_unused_port
     end
 
+    def phantomjs_path
+      ENV["PHANTOMJS_PATH"]
+    end
   end
 end
