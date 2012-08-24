@@ -11,6 +11,9 @@ module Jasmine
   class Application
     def self.app(config = Jasmine::RunnerConfig.new)
       page = Jasmine::Page.new(config)
+      if Jasmine::Dependencies.rails_3_asset_pipeline?
+        config.src_mapper = Jasmine::AssetPipelineMapper.new
+      end
       Rack::Builder.app do
         use Rack::Head
         use Rack::Jasmine::CacheControl

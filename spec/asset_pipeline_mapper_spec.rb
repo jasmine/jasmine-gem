@@ -11,8 +11,8 @@ describe Jasmine::AssetPipelineMapper do
       asset_context.stub(:asset_path) do |asset|
         "/some_location/#{asset}"
       end
-      mapper = Jasmine::AssetPipelineMapper.new(src_files, asset_context)
-      mapper.files.should == ['some_location/asset1.js?body=true', 'some_location/asset2.js?body=true', 'some_location/asset3.js?body=true']
+      mapper = Jasmine::AssetPipelineMapper.new(asset_context)
+      mapper.files(src_files).should == ['some_location/asset1.js?body=true', 'some_location/asset2.js?body=true', 'some_location/asset3.js?body=true']
     end
   end
 end

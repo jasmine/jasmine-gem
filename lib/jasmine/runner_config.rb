@@ -56,5 +56,12 @@ module Jasmine
       @port ||= ENV["JASMINE_PORT"] || Jasmine.find_unused_port
     end
 
+    def src_mapper=(context)
+      @config.src_mapper = context
+    end
+
+    def src_mapper
+      @config.src_mapper
+    end
   end
 end
