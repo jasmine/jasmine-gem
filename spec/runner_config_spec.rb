@@ -123,9 +123,16 @@ describe Jasmine::RunnerConfig do
       Jasmine.stub(:find_unused_port).and_return('4321')
       config.port.should == '1234'
     end
-
-
   end
 
+  describe "src_mapper" do
+    it "should update the src_mapper in the user_config" do
+      config = Jasmine::RunnerConfig.new(user_config = Jasmine::Config.new)
+      mapper = double("mapper")
+      config.src_mapper = mapper
+      config.src_mapper.should == mapper
+      user_config.src_mapper.should == mapper
+    end
+  end
 end
 
