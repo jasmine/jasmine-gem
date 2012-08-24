@@ -46,7 +46,7 @@ For Continuous Integration environments, add this task to the project build step
 
 `rake jasmine:ci`
 
-This uses Selenium to launch a browser and run the Jasmine suite. Then it uses RSpec to extract the results from the Jasmine reporter and write them to your build log.
+This uses Selenium to launch a browser and run the Jasmine suite. Then it uses RSpec to extract the results from the Jasmine reporter and write them to your build log. The browser used by selenium can be changed by setting the JASMINE_BROWSER environment variable (this might require additional webdriver dependencies).
 
 ## Configuration
 
