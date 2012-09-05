@@ -22,7 +22,11 @@ module Jasmine
 
 
     def spec_path
-      "/__spec__"
+      if simple_config['spec_files'] && Jasmine::Dependencies.rails_3_asset_pipeline?
+        "/"
+      else
+        "/__spec__"
+      end
     end
 
     def root_path
@@ -39,7 +43,11 @@ module Jasmine
     end
 
     def spec_files_full_paths
-      spec_files.collect {|spec_file| File.join(spec_dir, spec_file) }
+      if simple_config['spec_files'] && Jasmine::Dependencies.rails_3_asset_pipeline?
+        simple_config['spec_files'].collect {|spec_file| File.join(spec_dir, spec_file) }
+      else
+        spec_files.collect {|spec_file| File.join(spec_dir, spec_file) }
+      end
     end
 
     def project_root
@@ -67,7 +75,10 @@ module Jasmine
     end
 
     def helpers
-      if simple_config['helpers']
+      if simple_config['helpers'] && Jasmine::Dependencies.rails_3_asset_pipeline?
+        ::Rails.application.assets.append_path spec_dir
+        Jasmine::AssetPipelineMapper.new(simple_config['helpers']).files
+      elsif simple_config['helpers']
         match_files(spec_dir, simple_config['helpers'])
       else
         match_files(spec_dir, ["helpers/**/*.js"])
@@ -85,7 +96,10 @@ module Jasmine
     end
 
     def spec_files
-      if simple_config['spec_files']
+      if simple_config['spec_files'] && Jasmine::Dependencies.rails_3_asset_pipeline?
+        ::Rails.application.assets.append_path spec_dir
+        Jasmine::AssetPipelineMapper.new(simple_config['spec_files']).files
+      elsif simple_config['spec_files']
         match_files(spec_dir, simple_config['spec_files'])
       else
         match_files(spec_dir, ["**/*[sS]pec.js"])
