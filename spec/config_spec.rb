@@ -258,6 +258,9 @@ describe Jasmine::Config do
   end
 
   describe "when the asset pipeline is active" do
+    module Rails
+    end
+
     before do
       Jasmine::Dependencies.stub(:rails_3_asset_pipeline?) { true }
       application = double(:application)
