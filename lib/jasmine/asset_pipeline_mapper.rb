@@ -6,13 +6,12 @@ class Jasmine::AssetPipelineMapper
     context.extend(::Sprockets::Helpers::RailsHelper)
   end
 
-  def initialize(src_files, context = Jasmine::AssetPipelineMapper.context)
-    @src_files = src_files
+  def initialize(context = Jasmine::AssetPipelineMapper.context)
     @context = context
   end
 
-  def files
-    @src_files.map do |src_file|
+  def files(src_files)
+    src_files.map do |src_file|
     filename = src_file.gsub(/^assets\//, '').gsub(/\.js$/, '')
     @context.asset_paths.asset_for(filename, 'js').to_a.map { |p| @context.asset_path(p).gsub(/^\//, '') + "?body=true" }
     end.flatten.uniq

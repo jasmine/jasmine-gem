@@ -1,5 +1,7 @@
 module Jasmine
   class Config
+    attr_accessor :src_mapper
+
     require 'yaml'
     require 'erb'
 
@@ -75,12 +77,12 @@ module Jasmine
     end
 
     def src_files
-      if simple_config['src_files'] && Jasmine::Dependencies.rails_3_asset_pipeline?
-        Jasmine::AssetPipelineMapper.new(simple_config['src_files']).files
-      elsif simple_config['src_files']
-        match_files(src_dir, simple_config['src_files'])
+      return [] unless simple_config['src_files']
+
+      if self.src_mapper
+        self.src_mapper.files(simple_config['src_files'])
       else
-        []
+        match_files(src_dir, simple_config['src_files'])
       end
     end
 
