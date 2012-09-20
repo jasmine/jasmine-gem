@@ -134,5 +134,18 @@ describe Jasmine::RunnerConfig do
       user_config.src_mapper.should == mapper
     end
   end
+
+  describe "result batch size" do
+    subject { Jasmine::RunnerConfig.new }
+
+    context "when not specified" do
+      it("should use default") { subject.result_batch_size.should be(50) }
+    end
+
+    context "when overridden" do
+      before { ENV.stub(:[], "JASMINE_RESULT_BATCH_SIZE").and_return("500") }
+      it { subject.result_batch_size.should be(500) }
+    end
+  end
 end
 
