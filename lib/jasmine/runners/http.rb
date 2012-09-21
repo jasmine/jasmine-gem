@@ -3,9 +3,10 @@ module Jasmine
     class HTTP
       attr_accessor :suites
 
-      def initialize(client, results_processor)
+      def initialize(client, results_processor, result_batch_size)
         @client = client
         @results_processor = results_processor
+        @result_batch_size = result_batch_size
       end
 
       def run
@@ -31,7 +32,7 @@ module Jasmine
 
       def results_hash
         spec_results = {}
-        spec_ids.each_slice(50) do |slice|
+        spec_ids.each_slice(@result_batch_size) do |slice|
           spec_results.merge!(eval_js("var result = jsApiReporter.resultsForSpecs(#{json_generate(slice)}); if (window.Prototype && Object.toJSON) { return Object.toJSON(result) } else { return JSON.stringify(result) }"))
         end
         spec_results

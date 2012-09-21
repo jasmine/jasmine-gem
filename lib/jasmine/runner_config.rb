@@ -63,5 +63,9 @@ module Jasmine
     def src_mapper
       @config.src_mapper
     end
+
+    def result_batch_size
+      ENV["JASMINE_RESULT_BATCH_SIZE"] ? ENV["JASMINE_RESULT_BATCH_SIZE"].to_i : 50
+    end
   end
 end
