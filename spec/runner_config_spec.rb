@@ -135,16 +135,29 @@ describe Jasmine::RunnerConfig do
     end
   end
 
+  describe "jasmine_server_url" do
+    subject { Jasmine::RunnerConfig.new.jasmine_server_url }
+
+    let(:host) { "the host" }
+    let(:port) { "484" }
+    before do
+      Jasmine::RunnerConfig.any_instance.should_receive(:jasmine_host).and_return(host)
+      Jasmine::RunnerConfig.any_instance.should_receive(:port).and_return(port)
+    end
+
+    it("") { should eq("#{host}:#{port}/")}
+  end
+
   describe "result batch size" do
-    subject { Jasmine::RunnerConfig.new }
+    subject { Jasmine::RunnerConfig.new.result_batch_size }
 
     context "when not specified" do
-      it("should use default") { subject.result_batch_size.should be(50) }
+      it("should use default") { should eq(50) }
     end
 
     context "when overridden" do
       before { ENV.stub(:[], "JASMINE_RESULT_BATCH_SIZE").and_return("500") }
-      it { subject.result_batch_size.should be(500) }
+      it { should be(500) }
     end
   end
 end
