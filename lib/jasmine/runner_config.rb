@@ -48,6 +48,10 @@ module Jasmine
       ENV["JASMINE_BROWSER"] || 'firefox'
     end
 
+    def jasmine_server_url
+      "#{jasmine_host}:#{port}/"
+    end
+
     def jasmine_host
       ENV["JASMINE_HOST"] || 'http://localhost'
     end
