@@ -141,11 +141,11 @@ describe Jasmine::RunnerConfig do
     let(:host) { "the host" }
     let(:port) { "484" }
     before do
-      Jasmine::RunnerConfig.any_instance.should_receive(:jasmine_host).and_return(host)
-      Jasmine::RunnerConfig.any_instance.should_receive(:port).and_return(port)
+      ENV.stub(:[]).with("JASMINE_HOST").and_return(host)
+      ENV.stub(:[]).with("JASMINE_PORT").and_return(port)
     end
 
-    it("") { should eq("#{host}:#{port}/")}
+    it { should eq("#{host}:#{port}/")}
   end
 
   describe "result batch size" do
