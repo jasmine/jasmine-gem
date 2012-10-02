@@ -275,4 +275,35 @@ describe Jasmine::Config do
       config.src_files.should == mapped_files
     end
   end
+
+  describe "jasmine_host" do
+    it "should default to localhost" do
+      Jasmine::Config.new.jasmine_host.should == 'http://localhost'
+    end
+
+    it "should use ENV['JASMINE_HOST'] if it exists" do
+      ENV.stub(:[], "JASMINE_HOST").and_return("foo")
+      Jasmine::Config.new.jasmine_host.should == 'foo'
+    end
+  end
+
+  describe "port" do
+    it "should find an unused port" do
+      Jasmine.should_receive(:find_unused_port).and_return('1234')
+      Jasmine::Config.new.port.should == '1234'
+    end
+
+    it "should use ENV['JASMINE_PORT'] if it exists" do
+      ENV.stub(:[], "JASMINE_PORT").and_return("foo")
+      Jasmine::Config.new.port.should == 'foo'
+    end
+
+    it "should cache port" do
+      config = Jasmine::Config.new
+      Jasmine.stub(:find_unused_port).and_return('1234')
+      config.port.should == '1234'
+      Jasmine.stub(:find_unused_port).and_return('4321')
+      config.port.should == '1234'
+    end
+  end
 end

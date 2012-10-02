@@ -102,6 +102,14 @@ module Jasmine
       end
     end
 
+    def jasmine_host
+      ENV["JASMINE_HOST"] || 'http://localhost'
+    end
+
+    def port
+      @port ||= ENV["JASMINE_PORT"] || Jasmine.find_unused_port
+    end
+
     def jasmine_stylesheets
       ::Jasmine::Core.css_files.map {|f| "/__JASMINE_ROOT__/#{f}"}
     end

@@ -94,36 +94,6 @@ describe Jasmine::RunnerConfig do
     end
   end
 
-  describe "jasmine_host" do
-    it "should default to localhost" do
-      Jasmine::RunnerConfig.new.jasmine_host.should == 'http://localhost'
-    end
-
-    it "should use ENV['JASMINE_HOST'] if it exists" do
-      ENV.stub(:[], "JASMINE_HOST").and_return("foo")
-      Jasmine::RunnerConfig.new.jasmine_host.should == 'foo'
-    end
-  end
-
-  describe "port" do
-    it "should find an unused port" do
-      Jasmine.should_receive(:find_unused_port).and_return('1234')
-      Jasmine::RunnerConfig.new.port.should == '1234'
-    end
-
-    it "should use ENV['JASMINE_PORT'] if it exists" do
-      ENV.stub(:[], "JASMINE_PORT").and_return("foo")
-      Jasmine::RunnerConfig.new.port.should == 'foo'
-    end
-
-    it "should cache port" do
-      config = Jasmine::RunnerConfig.new
-      Jasmine.stub(:find_unused_port).and_return('1234')
-      config.port.should == '1234'
-      Jasmine.stub(:find_unused_port).and_return('4321')
-      config.port.should == '1234'
-    end
-  end
 
   describe "src_mapper" do
     it "should update the src_mapper in the user_config" do
@@ -136,23 +106,25 @@ describe Jasmine::RunnerConfig do
   end
 
   describe "jasmine_server_url" do
-    subject { Jasmine::RunnerConfig.new.jasmine_server_url }
-
-    let(:host) { "the host" }
-    let(:port) { "484" }
-    before do
-      Jasmine::RunnerConfig.any_instance.should_receive(:jasmine_host).and_return(host)
-      Jasmine::RunnerConfig.any_instance.should_receive(:port).and_return(port)
+    it "should return the correct server url" do
+      host = "the host"
+      port =  "484"
+      user_config = double('config', :jasmine_host => host, :port => port)
+      Jasmine::RunnerConfig.new(user_config).jasmine_server_url.should == "#{host}:#{port}/"
     end
-
-    it("") { should eq("#{host}:#{port}/")}
   end
 
+  describe "port" do
+    it "should return the port from the config" do
+      user_config = double('config', :port => 80)
+      Jasmine::RunnerConfig.new(user_config).port.should == 80
+    end
+  end
   describe "result batch size" do
     subject { Jasmine::RunnerConfig.new.result_batch_size }
 
     context "when not specified" do
-      it("should use default") { should eq(50) }
+      it("should use default") { should == 50 }
     end
 
     context "when overridden" do
