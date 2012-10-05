@@ -32,10 +32,13 @@ namespace :jasmine do
   require './spec/jasmine_self_test_config'
   task :server do
     port = ENV['JASMINE_PORT'] || 8888
-    JasmineSelfTestConfig.new.start_server(port)
-
-    puts "your tests are here:"
-    puts "  http://localhost:#{port}/"
+    config = JasmineSelfTestConfig.new
+    
+    puts "your server is running here:  http://localhost:#{port}/"
+    puts "your tests are here: #{config.spec_dir}"
+    puts "your source is here: #{config.src_dir}"
+    
+    config.start_server(port)
   end
 
   desc "Copy examples from Jasmine JS to the gem"
