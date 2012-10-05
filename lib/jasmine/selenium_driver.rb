@@ -1,18 +1,22 @@
 module Jasmine
   class SeleniumDriver
-    def initialize(browser, http_address)
+    def initialize(browser, http_address, options = {})
       require 'selenium-webdriver'
       selenium_server = if ENV['SELENIUM_SERVER']
         ENV['SELENIUM_SERVER']
       elsif ENV['SELENIUM_SERVER_PORT']
         "http://localhost:#{ENV['SELENIUM_SERVER_PORT']}/wd/hub"
       end
+
+      http_client = options[:selenium_http_client] || Selenium::WebDriver::Remote::Http::Default.new
+      http_client.timeout = options[:timeout] if options[:timeout]
       options = if browser == "firefox" && ENV["JASMINE_FIREBUG"]
                   require File.join(File.dirname(__FILE__), "firebug/firebug")
                   profile = Selenium::WebDriver::Firefox::Profile.new
                   profile.enable_firebug
-                  {:profile => profile}
-                end || {}
+                  {:profile => profile, :http_client => http_client}
+      end || { :http_client => http_client }
+
       @driver = if selenium_server
         Selenium::WebDriver.for :remote, :url => selenium_server, :desired_capabilities => browser.to_sym
       else
