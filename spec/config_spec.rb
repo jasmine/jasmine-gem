@@ -86,6 +86,13 @@ describe Jasmine::Config do
         it "should report the full paths of the spec files" do
           @config.spec_files_full_paths.should == [File.join(@project_dir, 'spec/javascripts/PlayerSpec.js')]
         end
+
+        it "should not prepend a '/' to files with absolute URLs" do
+          @config.should_receive(:spec_files).and_return([])
+          @config.should_receive(:helpers).and_return([])
+          @config.should_receive(:src_files).and_return(['http://www.example.com/file.ext', 'javascripts/Player.js'])
+          @config.js_files.should == ['http://www.example.com/file.ext', '/javascripts/Player.js']
+        end
       end
 
       it "should parse ERB" do
@@ -174,6 +181,13 @@ describe Jasmine::Config do
         it "should contain explicitly files" do
           @config.src_files.should == ["file1.ext"]
         end
+      end
+
+      it "should permit absolute URLs to files" do
+        Dir.stub!(:glob).and_return { |glob_string| [] }
+        fake_config = Hash.new.stub!(:[]).and_return { |x| ['http://www.example.com/file.ext', 'file1.ext'] }
+        @config.stub!(:simple_config).and_return(fake_config)
+        @config.src_files.should == ['http://www.example.com/file.ext', 'file1.ext']
       end
 
       describe "should allow .gitignore style negation (!pattern)" do
