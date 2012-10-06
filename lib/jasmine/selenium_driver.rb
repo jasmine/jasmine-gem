@@ -8,21 +8,18 @@ module Jasmine
         "http://localhost:#{ENV['SELENIUM_SERVER_PORT']}/wd/hub"
       end
 
-      profile = nil
-
-      options = if browser == "firefox" && ENV["JASMINE_FIREBUG"]
-                  require File.join(File.dirname(__FILE__), "firebug/firebug")
+      options = if browser == "firefox"
                   profile = Selenium::WebDriver::Firefox::Profile.new
-                  profile.enable_firebug
+                  if ENV["JASMINE_FIREBUG"]
+                    require File.join(File.dirname(__FILE__), "firebug/firebug")
+                    profile.enable_firebug
+                  end
+                  if ENV["EXTENDED_JS_TIMEOUT"]
+                    profile['dom.max_chrome_script_run_time'] = ENV['EXTENDED_JS_TIMEOUT'].to_i
+                    profile['dom.max_script_run_time'] = ENV['EXTENDED_JS_TIMEOUT'].to_i
+                  end
                   {:profile => profile}
                 end || {}
-
-      if ENV['EXTENDED_JS_TIMEOUT']
-        profile ||= Selenium::WebDriver::Firefox::Profile.new
-        profile['dom.max_chrome_script_run_time'] = ENV['EXTENDED_JS_TIMEOUT'].to_i
-        profile['dom.max_script_run_time'] = ENV['EXTENDED_JS_TIMEOUT'].to_i
-        options = {:profile => profile}
-      end
 
       @driver = if selenium_server
         Selenium::WebDriver.for :remote, :url => selenium_server, :desired_capabilities => browser.to_sym
