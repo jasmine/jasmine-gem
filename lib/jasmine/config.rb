@@ -4,6 +4,7 @@ module Jasmine
 
     require 'yaml'
     require 'erb'
+    require 'json'
 
     def match_files(dir, patterns)
       dir = File.expand_path(dir)
