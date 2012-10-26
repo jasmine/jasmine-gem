@@ -31,6 +31,14 @@ module Jasmine
     def root_path
       "/__root__"
     end
+    
+    def reporters_path
+      "/__reporters__"
+    end
+
+	def reporters_files
+		reporters.collect {|f| File.join(reporters_path, f) }
+	end
 
     def js_files(spec_filter = nil)
       spec_files_to_include = spec_filter.nil? ? spec_files : match_files(spec_dir, [spec_filter])
@@ -61,6 +69,10 @@ module Jasmine
       end
     end
 
+	def reporters_dir
+	  File.join(spec_dir, ['support/reporters'])
+	end
+
     def spec_dir
       if simple_config['spec_dir']
         File.join(project_root, simple_config['spec_dir'])
@@ -76,6 +88,14 @@ module Jasmine
         match_files(spec_dir, ["helpers/**/*.js"])
       end
     end
+
+	def reporters
+	  if simple_config['reporters']
+		match_files(reporters_dir, simple_config['reporters'])
+	  else
+	    match_files(reporters_dir, ["**/*.js"])
+	  end
+	end
 
     def src_files
       return [] unless simple_config['src_files']
