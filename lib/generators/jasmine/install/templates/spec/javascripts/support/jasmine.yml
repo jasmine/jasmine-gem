@@ -53,6 +53,16 @@ helpers:
 spec_files:
   - '**/*[sS]pec.js'
 
+# reporters
+#
+# Return an array of filepaths relative to spec_dir + /support/reporters to include.
+# Default: ["**/*.js"]
+#
+# EXAMPLE:
+#
+# resporters:
+#   - '**/*.js'
+#
 reporters:
   - '**/*.js'
 
