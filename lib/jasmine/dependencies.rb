@@ -19,7 +19,7 @@ module Jasmine
       end
 
       def legacy_rack?
-        !Rack.constants.include?(:Server)
+        !defined?(Rack::Server)
       end
 
       def rails_3_asset_pipeline?
