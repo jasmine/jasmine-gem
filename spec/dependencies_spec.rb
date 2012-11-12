@@ -311,17 +311,5 @@ if Jasmine::Dependencies.rspec2?
         end
       end
     end
-
-    describe "legacy_rack?" do
-      it "should return false if Rack::Server exists" do
-        Rack.stub(:constants).and_return([:Server])
-        Jasmine::Dependencies.legacy_rack?.should be_false
-      end
-      it "should return true if Rack::Server does not exist" do
-        Rack.stub(:constants).and_return([])
-        Jasmine::Dependencies.legacy_rack?.should be_true
-      end
-    end
   end
-
 end
