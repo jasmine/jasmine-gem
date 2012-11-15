@@ -12,17 +12,17 @@ module Jasmine
       @config.jasmine_javascripts
     end
 
-	def reporters_path
-	  @config.reporters_path
-	end
+    def reporters_path
+      @config.reporters_path
+    end
 	
-	def reporters_dir
-	  @config.reporters_dir
-	end
+    def reporters_dir
+      @config.reporters_dir
+    end
 	
-	def reporters_files
-	  @config.reporters_files
-	end
+    def reporters_files
+      @config.reporters_files
+    end
 
     def js_files
       @config.js_files
