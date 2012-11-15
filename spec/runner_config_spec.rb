@@ -19,6 +19,30 @@ describe Jasmine::RunnerConfig do
     end
   end
 
+  describe "reporters_files" do
+    it "should return the user reporter files from the config" do
+      reporters_files = ['some/file']
+      user_config = double('config', :reporters_files => reporters_files)
+      Jasmine::RunnerConfig.new(user_config).reporters_files.should == reporters_files
+    end
+  end
+
+  describe "reporters_path" do
+    it "should return the user reporters_path from the config" do
+      reporters_path = ['some/path']
+      user_config = double('config', :reporters_path => reporters_path)
+      Jasmine::RunnerConfig.new(user_config).reporters_path.should == reporters_path
+    end
+  end
+
+  describe "reporters_dir" do
+    it "should return the user reporters_dir from the config" do
+      reporters_dir = ['some/dir']
+      user_config = double('config', :reporters_dir => reporters_dir)
+      Jasmine::RunnerConfig.new(user_config).reporters_dir.should == reporters_dir
+    end
+  end
+
   describe "js_files" do
     it "should return the user js files from the config" do
       js_files = ['some/file']

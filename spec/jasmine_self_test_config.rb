@@ -13,7 +13,15 @@ class JasmineSelfTestConfig < Jasmine::Config
     Jasmine::Core.path
   end
 
+  def reporters_dir
+  	File.join(project_root, 'lib/generators/jasmine/install/templates/spec/javascripts/support/reporters')
+  end
+
   def spec_files
     Jasmine::Core.html_spec_files + Jasmine::Core.core_spec_files
+  end
+  
+  def reporters_files
+  	['__reporters__/jasmine-reporter.js']
   end
 end

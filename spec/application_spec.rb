@@ -11,6 +11,9 @@ describe "Jasmine::Application" do
                     :spec_dir => File.join(@root, "fixture", "spec"),
                     :spec_path => "/__spec__",
                     :root_path => "/__root__",
+                    :reporters_path => "/__reporters__",
+                    :reporters_dir => File.join(@root, "fixture", "reporters"),
+                    :reporters_files => ["example.js"],
                     :css_files => [],
                     :jasmine_files => [],
                     :js_files => ["path/file1.js", "path/file2.js"],
@@ -26,12 +29,25 @@ describe "Jasmine::Application" do
     last_response.headers["Cache-Control"].should == "max-age=0, private, must-revalidate"
   end
 
+  it "includes no-cache headers for reporters" do
+    get "/__reporters__/example.js"
+    last_response.headers.should have_key("Cache-Control")
+    last_response.headers["Cache-Control"].should == "max-age=0, private, must-revalidate"
+  end
+
   it "should serve static files from spec dir under __spec__" do
     get "/__spec__/example_spec.js"
     last_response.status.should == 200
     last_response.content_type.should == "application/javascript"
     last_response.body.should == File.read(File.join(@root, "fixture/spec/example_spec.js"))
-    end
+  end
+
+  it "should serve static files from spec dir under __reporters__" do
+    get "/__reporters__/example.js"
+    last_response.status.should == 200
+    last_response.content_type.should == "application/javascript"
+    last_response.body.should == File.read(File.join(@root, "fixture/reporters/example.js"))
+  end
 
   it "should serve static files from root dir under __root__" do
     get "/__root__/fixture/src/example.js"

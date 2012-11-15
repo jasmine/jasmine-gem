@@ -29,12 +29,14 @@ module Jasmine
         FileUtils.makedirs('public/javascripts')
         FileUtils.makedirs('spec/javascripts')
         FileUtils.makedirs('spec/javascripts/support')
+        FileUtils.makedirs('spec/javascripts/support/reporters')
         FileUtils.makedirs('spec/javascripts/helpers')
 
         copy_unless_exists('jasmine-example/src/Player.js', 'public/javascripts/Player.js')
         copy_unless_exists('jasmine-example/src/Song.js', 'public/javascripts/Song.js')
         copy_unless_exists('jasmine-example/spec/PlayerSpec.js', 'spec/javascripts/PlayerSpec.js')
         copy_unless_exists('jasmine-example/spec/SpecHelper.js', 'spec/javascripts/helpers/SpecHelper.js')
+        copy_unless_exists('spec/javascripts/support/reporters/jasmine-reporter.js', 'spec/javascripts/support/reporters/jasmine-reporter.js')
 
         rails_tasks_dir = dest_path('lib/tasks')
         if File.exist?(rails_tasks_dir)

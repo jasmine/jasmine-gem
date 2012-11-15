@@ -28,6 +28,7 @@ module Jasmine
 
         #TODO: These path mappings should come from the config.
         map('/__JASMINE_ROOT__') { run Rack::File.new(Jasmine::Core.path) }
+        map(config.reporters_path)	{ run Rack::File.new(config.reporters_dir) }
         map(config.spec_path)    { run Rack::File.new(config.spec_dir) }
         map(config.root_path)    { run Rack::File.new(config.project_root) }
 

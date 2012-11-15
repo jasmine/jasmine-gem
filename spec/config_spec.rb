@@ -57,6 +57,10 @@ describe Jasmine::Config do
           @config.stylesheets.should == []
         end
 
+        it "should find the reporter files" do
+          @config.reporters.should == ['jasmine-reporter.js']
+        end
+
         it "should find the spec files" do
           @config.spec_files.should == ['PlayerSpec.js']
         end
@@ -206,6 +210,7 @@ describe Jasmine::Config do
 
         @config.stub!(:simple_config_file).and_return(File.join(@template_dir, 'spec/javascripts/support/jasmine-rails.yml'))
 
+        @config.reporters_files.should == ['/__reporters__/jasmine-reporter.js']
         @config.spec_files.should == ['PlayerSpec.js']
         @config.helpers.should == ['helpers/SpecHelper.js']
         @config.src_files.should == ['public/javascripts/prototype.js',
