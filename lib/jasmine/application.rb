@@ -5,6 +5,7 @@ require 'rack/jasmine/runner'
 require 'rack/jasmine/focused_suite'
 require 'rack/jasmine/redirect'
 require 'rack/jasmine/cache_control'
+require 'rack/jasmine/ajax_quick_fix'
 require 'ostruct'
 
 module Jasmine
@@ -33,6 +34,7 @@ module Jasmine
 
         map('/') do
           run Rack::Cascade.new([
+            Rack::Jasmine::AjaxQuickFix.new(),
             Rack::URLMap.new('/' => Rack::File.new(config.src_dir)),
             Rack::Jasmine::Runner.new(page)
           ])
