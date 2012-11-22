@@ -28,8 +28,8 @@ describe Jasmine::ResultsProcessor do
         user_config = double('config', :spec_files_full_paths => spec_files_full_paths)
         config = Jasmine::RunnerConfig.new(user_config)
         runner = Jasmine::ResultsProcessor.new(config)
-     
-        runner.example_locations.keys.include?("example_spec nested_groups").should == true
+        
+        runner.example_locations["example_spec nested_groups"].should == "spec/fixture/spec/example_spec.js:6: in `it'"
      end
      
      it "should contain the full name of a nested example" do
@@ -37,10 +37,9 @@ describe Jasmine::ResultsProcessor do
         user_config = double('config', :spec_files_full_paths => spec_files_full_paths)
         config = Jasmine::RunnerConfig.new(user_config)
         runner = Jasmine::ResultsProcessor.new(config)
-        
-        runner.example_locations.keys.include?("example_spec nested_groups should contain the full name of nested example").should == true
+
+        runner.example_locations["example_spec nested_groups should contain the full name of nested example"].should == "spec/fixture/spec/example_spec.js:7: in `it'"
      end
    end
-  
  end
 end
