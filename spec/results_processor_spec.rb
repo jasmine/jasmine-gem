@@ -41,5 +41,26 @@ describe Jasmine::ResultsProcessor do
         runner.example_locations["example_spec nested_groups should contain the full name of nested example"].should == "spec/fixture/spec/example_spec.js:7: in `it'"
      end
    end
+   
+   
+   describe "groups and examples that use return function" do
+     it "should contain a group that uses JS return function" do
+        spec_files_full_paths = ['spec/fixture/spec/example_spec.js']
+        user_config = double('config', :spec_files_full_paths => spec_files_full_paths)
+        config = Jasmine::RunnerConfig.new(user_config)
+        runner = Jasmine::ResultsProcessor.new(config)
+
+        runner.example_locations["return example_spec"].should == "spec/fixture/spec/example_spec.js:13: in `it'"
+     end
+     
+     it "should contain an example that uses JS return function" do
+       spec_files_full_paths = ['spec/fixture/spec/example_spec.js']
+       user_config = double('config', :spec_files_full_paths => spec_files_full_paths)
+       config = Jasmine::RunnerConfig.new(user_config)
+       runner = Jasmine::ResultsProcessor.new(config)
+
+       runner.example_locations["return example_spec should have example name with return upfront"].should == "spec/fixture/spec/example_spec.js:14: in `it'"       
+     end
+   end
  end
 end
