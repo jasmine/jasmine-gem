@@ -9,3 +9,9 @@ describe("example_spec", function() {
 	  })
   })
 })
+
+return describe("return example_spec", function(){
+  return it("should have example name with return upfront", function(){
+    expect(true).toBe(true);
+  })
+})
