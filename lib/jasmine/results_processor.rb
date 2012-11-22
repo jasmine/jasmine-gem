@@ -17,7 +17,7 @@ module Jasmine
         line_number = 1
         File.open(filename, "r") do |file|
           file.readlines.each do |line|
-            match = /^(\s*)(describe|it|return\s*describe|return\s*it)\s*\(\s*["'](.*)["']\s*,\s*function/.match(line)
+            match = /^(\s*)(describe|it|return\s*describe|return\s*it|context|return\s*context)\s*\(\s*["'](.*)["']\s*,\s*function/.match(line)
              if (match)
                indent_level = match[1].length / 2
                example_name = match[3]
