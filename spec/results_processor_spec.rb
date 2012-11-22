@@ -50,7 +50,7 @@ describe Jasmine::ResultsProcessor do
         config = Jasmine::RunnerConfig.new(user_config)
         runner = Jasmine::ResultsProcessor.new(config)
 
-        runner.example_locations["return example_spec"].should == "spec/fixture/spec/example_spec.js:13: in `it'"
+        runner.example_locations["return example_spec"].should == "spec/fixture/spec/example_spec.js:19: in `it'"
      end
      
      it "should contain an example that uses JS return function" do
@@ -59,7 +59,17 @@ describe Jasmine::ResultsProcessor do
        config = Jasmine::RunnerConfig.new(user_config)
        runner = Jasmine::ResultsProcessor.new(config)
 
-       runner.example_locations["return example_spec should have example name with return upfront"].should == "spec/fixture/spec/example_spec.js:14: in `it'"       
+       runner.example_locations["return example_spec should have example name with return upfront"].should == "spec/fixture/spec/example_spec.js:20: in `it'"       
+     end
+   end
+   
+   describe "context" do
+     it "should contain a spec that has context in example name" do
+       
+     end
+     
+     it "should contain a spec that has context which uses return function" do
+       
      end
    end
  end
