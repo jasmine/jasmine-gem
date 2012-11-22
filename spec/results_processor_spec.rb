@@ -50,7 +50,7 @@ describe Jasmine::ResultsProcessor do
         config = Jasmine::RunnerConfig.new(user_config)
         runner = Jasmine::ResultsProcessor.new(config)
 
-        runner.example_locations["return example_spec"].should == "spec/fixture/spec/example_spec.js:19: in `it'"
+        runner.example_locations["return example_spec"].should == "spec/fixture/spec/example_spec.js:21: in `it'"
      end
      
      it "should contain an example that uses JS return function" do
@@ -59,17 +59,96 @@ describe Jasmine::ResultsProcessor do
        config = Jasmine::RunnerConfig.new(user_config)
        runner = Jasmine::ResultsProcessor.new(config)
 
-       runner.example_locations["return example_spec should have example name with return upfront"].should == "spec/fixture/spec/example_spec.js:20: in `it'"       
+       runner.example_locations["return example_spec should have example name with return upfront"].should == "spec/fixture/spec/example_spec.js:22: in `it'"       
      end
    end
    
    describe "context" do
-     it "should contain a spec that has context in example name" do
+     describe "nested context" do
+       it "should contain example_location for context in nested in a group" do
+         spec_files_full_paths = ['spec/fixture/spec/example_spec.js']
+         user_config = double('config', :spec_files_full_paths => spec_files_full_paths)
+         config = Jasmine::RunnerConfig.new(user_config)
+         runner = Jasmine::ResultsProcessor.new(config)
+
+         runner.example_locations["example_spec context group"].should == "spec/fixture/spec/example_spec.js:12: in `it'"
+       end
+              
+       it "should contain example_location for group in nested context" do
+         spec_files_full_paths = ['spec/fixture/spec/example_spec.js']
+         user_config = double('config', :spec_files_full_paths => spec_files_full_paths)
+         config = Jasmine::RunnerConfig.new(user_config)
+         runner = Jasmine::ResultsProcessor.new(config)
+
+         runner.example_locations["example_spec context group nested group in context"].should == "spec/fixture/spec/example_spec.js:13: in `it'"
+       end
        
+       it "should contain example_location for nested context spec" do
+         spec_files_full_paths = ['spec/fixture/spec/example_spec.js']
+         user_config = double('config', :spec_files_full_paths => spec_files_full_paths)
+         config = Jasmine::RunnerConfig.new(user_config)
+         runner = Jasmine::ResultsProcessor.new(config)
+
+         runner.example_locations["example_spec context group nested group in context should be here for nested context"].should == "spec/fixture/spec/example_spec.js:14: in `it'"
+       end       
      end
      
-     it "should contain a spec that has context which uses return function" do
+     describe "return context" do 
+       it "should have context example_location for return context function" do
+         spec_files_full_paths = ['spec/fixture/spec/example_spec.js']
+          user_config = double('config', :spec_files_full_paths => spec_files_full_paths)
+          config = Jasmine::RunnerConfig.new(user_config)
+          runner = Jasmine::ResultsProcessor.new(config)
+
+          runner.example_locations["return example_spec return context"].should == "spec/fixture/spec/example_spec.js:26: in `it'"         
+       end
        
+       it "should have a group example_location for return context function" do
+         spec_files_full_paths = ['spec/fixture/spec/example_spec.js']
+          user_config = double('config', :spec_files_full_paths => spec_files_full_paths)
+          config = Jasmine::RunnerConfig.new(user_config)
+          runner = Jasmine::ResultsProcessor.new(config)
+
+          runner.example_locations["return example_spec return context group inside return context"].should == "spec/fixture/spec/example_spec.js:27: in `it'"
+       end
+
+       it "should have an example_location for spec in return function" do
+         spec_files_full_paths = ['spec/fixture/spec/example_spec.js']
+         user_config = double('config', :spec_files_full_paths => spec_files_full_paths)
+         config = Jasmine::RunnerConfig.new(user_config)
+         runner = Jasmine::ResultsProcessor.new(config)
+
+         runner.example_locations["return example_spec return context group inside return context should be here for nested context with return"].should == "spec/fixture/spec/example_spec.js:28: in `it'"
+       end 
+     end
+     
+     describe("root context") do
+       it "should have a example_location for root context" do
+         spec_files_full_paths = ['spec/fixture/spec/example_spec.js']
+         user_config = double('config', :spec_files_full_paths => spec_files_full_paths)
+         config = Jasmine::RunnerConfig.new(user_config)
+         runner = Jasmine::ResultsProcessor.new(config)
+
+         runner.example_locations["root context"].should == "spec/fixture/spec/example_spec.js:35: in `it'"
+       end
+
+       it "should have a group example_location for root context" do
+         spec_files_full_paths = ['spec/fixture/spec/example_spec.js']
+         user_config = double('config', :spec_files_full_paths => spec_files_full_paths)
+         config = Jasmine::RunnerConfig.new(user_config)
+         runner = Jasmine::ResultsProcessor.new(config)
+
+         runner.example_locations["root context nested_group in context"].should == "spec/fixture/spec/example_spec.js:36: in `it'"
+       end
+
+       it "should have an example_location for spec for root context" do
+         spec_files_full_paths = ['spec/fixture/spec/example_spec.js']
+         user_config = double('config', :spec_files_full_paths => spec_files_full_paths)
+         config = Jasmine::RunnerConfig.new(user_config)
+         runner = Jasmine::ResultsProcessor.new(config)
+
+         runner.example_locations["root context nested_group in context spec in context"].should == "spec/fixture/spec/example_spec.js:37: in `it'"
+       end
      end
    end
  end
