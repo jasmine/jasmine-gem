@@ -10,8 +10,10 @@ describe("example_spec", function() {
   })
   
   context('context group', function(){
-    it("should be here for nested context", function(){
-      expect(true).toBe(true);
+    describe('nested group in context', function(){
+      it("should be here for nested context", function(){
+        expect(true).toBe(true);
+      })
     })
   })
 })
@@ -22,8 +24,10 @@ return describe("return example_spec", function(){
   })
   
   return context("return context", function(){
-    it("should be here for nested context with return", function(){
-      expect(true).toBe(true);
+    describe("group inside return context", function(){
+      it("should be here for nested context with return", function(){
+        expect(true).toBe(true);
+      })
     })
   })
 })
