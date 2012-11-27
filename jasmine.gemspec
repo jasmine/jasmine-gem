@@ -11,7 +11,8 @@ Gem::Specification.new do |s|
   s.summary            = %q{JavaScript BDD framework}
   s.description        = %q{Test your JavaScript without any framework dependencies, in any environment, and with a nice descriptive syntax.}
   s.email              = %q{jasmine-js@googlegroups.com}
-  s.homepage           = "http://pivotal.github.com/jasmine"
+  s.homepage           = "http://pivotal.github.com/jasmine/"
+  s.license            = "MIT"
 
   s.files              = `git ls-files`.split("\n") | Dir.glob('jasmine/**/*')
   s.test_files         = `git ls-files -- {test,spec,features}/*`.split("\n")
@@ -66,7 +67,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'json_pure'
   s.add_development_dependency 'nokogiri'
 
-  s.add_dependency 'jasmine-core', ">= 1.2.0"
+  s.add_dependency 'jasmine-core', ">= 1.3.0"
   s.add_dependency 'rack', '~> 1.0'
   s.add_dependency 'rspec', '>= 1.3.1'
   s.add_dependency 'selenium-webdriver', '>= 0.1.3'
