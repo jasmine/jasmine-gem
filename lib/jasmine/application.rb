@@ -19,6 +19,11 @@ module Jasmine
         use Rack::Jasmine::CacheControl
         if Jasmine::Dependencies.rails_3_asset_pipeline?
           map('/assets') do
+            #load the Sprockets asset helpers
+            Rails.application.assets.context_class.instance_eval do
+              include ::Sprockets::Helpers::IsolatedHelper
+              include ::Sprockets::Helpers::RailsHelper
+            end
             run Rails.application.assets
           end
         end
