@@ -6,15 +6,13 @@ describe Jasmine::Page do
   describe "#render" do
     subject { Nokogiri::HTML(page.render) }
     let(:fake_config) do
-      OpenStruct.new(:js_files => ["file1.js", "file2.js"],
-                     :css_files => ["file1.css", "file2.css"],
-                     :jasmine_files => ["jasmine_file1.js", "jasmine_file2.js"])
+      OpenStruct.new(:js_files => ["file1.js", "file2.js"], :css_files => ["file1.css", "file2.css"])
     end
     let(:context) { fake_config }
     let(:page) { Jasmine::Page.new(context) }
     it "should render javascript files in the correct order" do
       js_files = subject.css("script")
-      js_files.map { |file| file["src"] }.compact.should == ["jasmine_file1.js", "jasmine_file2.js", "file1.js", "file2.js"]
+      js_files.map { |file| file["src"] }.compact.should == ["file1.js", "file2.js"]
     end
 
     it "should render css files in the correct order" do

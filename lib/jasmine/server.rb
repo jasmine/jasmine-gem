@@ -1,6 +1,6 @@
 module Jasmine
   class Server
-    def initialize(port = 8888, application = Jasmine::Application.app)
+    def initialize(port = 8888, application = nil)
       @port = port
       @application = application
     end

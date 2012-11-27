@@ -47,4 +47,8 @@ module Jasmine
     File.read(File.join(File.dirname(__FILE__), "run.html.erb"))
   end
 
+  def self.root(*paths)
+    File.expand_path(File.join(File.dirname(__FILE__), *paths))
+  end
+
 end

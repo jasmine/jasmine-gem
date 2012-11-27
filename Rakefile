@@ -29,10 +29,19 @@ task :default => :spec
 
 namespace :jasmine do
   require "jasmine-core"
-  require './spec/jasmine_self_test_config'
   task :server do
     port = ENV['JASMINE_PORT'] || 8888
-    JasmineSelfTestConfig.new.start_server(port)
+    Jasmine.configure do |config|
+      root = File.expand_path(File.join(File.dirname(__FILE__), ".."))
+      config.src_dir = File.join(root, 'src')
+      config.spec_dir = Jasmine::Core.path
+      config.spec_files = lambda { (Jasmine::Core.html_spec_files + Jasmine::Core.core_spec_files).map {|f| File.join(config.spec_dir, f) } }
+    end
+
+    config = Jasmine.config
+
+    server = Jasmine::Server.new(8888, Jasmine::Application.app(config))
+    server.start
 
     puts "your tests are here:"
     puts "  http://localhost:#{port}/"

@@ -2,18 +2,22 @@ $:.unshift(ENV['JASMINE_GEM_PATH']) if ENV['JASMINE_GEM_PATH'] # for gem testing
 
 require 'rubygems'
 require 'jasmine'
-jasmine_config_overrides = File.expand_path(File.join(Dir.pwd, 'spec', 'javascripts', 'support', 'jasmine_config.rb'))
-require jasmine_config_overrides if File.exist?(jasmine_config_overrides)
 if Jasmine::Dependencies.rspec2?
   require 'rspec'
 else
   require 'spec'
 end
 
-jasmine_runner_config = Jasmine::RunnerConfig.new
-server = Jasmine::Server.new(jasmine_runner_config.port, Jasmine::Application.app(jasmine_runner_config))
-client = Jasmine::SeleniumDriver.new(jasmine_runner_config.browser, jasmine_runner_config.jasmine_server_url)
+jasmine_yml = File.join(Dir.pwd, 'spec', 'javascripts', 'support', 'jasmine.yml')
+if File.exist?(jasmine_yml)
+end
 
+Jasmine.load_configuration_from_yaml
+
+config = Jasmine.config
+
+server = Jasmine::Server.new(config.port, Jasmine::Application.app(config))
+driver = Jasmine::SeleniumDriver.new(config.browser, "#{config.host}:#{config.port}/")
 t = Thread.new do
   begin
     server.start
@@ -22,11 +26,11 @@ t = Thread.new do
   # # ignore bad exits
 end
 t.abort_on_exception = true
-Jasmine::wait_for_listener(jasmine_runner_config.port, "jasmine server")
+Jasmine::wait_for_listener(config.port, "jasmine server")
 puts "jasmine server started."
 
-results_processor = Jasmine::ResultsProcessor.new(jasmine_runner_config)
-results = Jasmine::Runners::HTTP.new(client, results_processor, jasmine_runner_config.result_batch_size).run
+results_processor = Jasmine::ResultsProcessor.new(config)
+results = Jasmine::Runners::HTTP.new(driver, results_processor, config.result_batch_size).run
 formatter = Jasmine::RspecFormatter.new
 formatter.format_results(results)
 

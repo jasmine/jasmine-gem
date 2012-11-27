@@ -27,14 +27,14 @@ describe Jasmine::Server do
     it "should create a Rack::Server with the correct port when passed" do
       port = 1234
       Rack::Server.should_receive(:new).with(hash_including(:Port => port)).and_return(double(:server).as_null_object)
-      Jasmine::Server.new(port).start
+      Jasmine::Server.new(port, double(:app)).start
     end
 
     it "should start the server" do
       server = double(:server)
       Rack::Server.should_receive(:new) { server.as_null_object }
       server.should_receive(:start)
-      Jasmine::Server.new.start
+      Jasmine::Server.new('8888', double(:app)).start
     end
 
     it "should set the app as the instance variable on the rack server" do

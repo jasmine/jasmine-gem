@@ -43,7 +43,7 @@ stylesheets:
 #   - helpers/**/*.js
 #
 helpers:
-  - helpers/**/*.js
+  - 'helpers/**/*.js'
 
 # spec_files
 #
@@ -53,7 +53,7 @@ helpers:
 # EXAMPLE:
 #
 # spec_files:
-#   - **/*[sS]pec.js
+#   - '**/*[sS]pec.js'
 #
 spec_files:
   - '**/*[sS]pec.js'
