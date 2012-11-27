@@ -1,19 +1,16 @@
-class Jasmine::AssetPipelineMapper
+module Jasmine
+  class AssetPipelineMapper
 
-  def self.context
-    context = ::Rails.application.assets.context_class
-    context.extend(::Sprockets::Helpers::IsolatedHelper)
-    context.extend(::Sprockets::Helpers::RailsHelper)
-  end
+    def initialize(config, asset_expander)
+      @config = config
+      @asset_expander = asset_expander
+    end
 
-  def initialize(context = Jasmine::AssetPipelineMapper.context)
-    @context = context
-  end
+    def map_src_paths(src_paths)
+      src_paths.map do |src_path|
+        @asset_expander.call(@config.src_dir, src_path) || src_path
+      end.flatten.uniq
+    end
 
-  def files(src_files)
-    src_files.map do |src_file|
-    filename = src_file.gsub(/^assets\//, '').gsub(/\.js$/, '')
-    @context.asset_paths.asset_for(filename, 'js').to_a.map { |p| @context.asset_path(p).gsub(/^\//, '') + "?body=true" }
-    end.flatten.uniq
   end
 end

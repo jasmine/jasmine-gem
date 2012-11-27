@@ -48,7 +48,7 @@ module Jasmine
     end
 
     def add_path_mapper(mapper)
-      @path_mappers << mapper.new(self)
+      @path_mappers << mapper.call(self)
     end
 
     def port

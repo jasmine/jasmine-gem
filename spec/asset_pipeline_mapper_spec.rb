@@ -1,18 +1,19 @@
 require 'spec_helper'
 
 describe Jasmine::AssetPipelineMapper do
-  describe "mapping files" do
-    it "should retrieve asset paths from the asset pipeline for passed files" do
-      #TODO: this expects all src files to be asset pipeline files
-      src_files = ["assets/application.js", "assets/other_manifest.js"]
-      asset_context = double("asset context")
-      asset_context.stub_chain(:asset_paths, :asset_for).with("application", "js").and_return(['asset1.js', 'asset2.js'])
-      asset_context.stub_chain(:asset_paths, :asset_for).with("other_manifest", "js").and_return(['asset1.js', 'asset3.js'])
-      asset_context.stub(:asset_path) do |asset|
-        "/some_location/#{asset}"
+  it "expands asset paths if available" do
+    expander = lambda do |dir, path|
+      if dir == "/some_location/" && path == 'asset1'
+        ['asset1', 'asset2']
+      elsif dir == "/some_location/" && path == 'asset2'
+        ['asset1', 'asset3']
       end
-      mapper = Jasmine::AssetPipelineMapper.new(asset_context)
-      mapper.files(src_files).should == ['some_location/asset1.js?body=true', 'some_location/asset2.js?body=true', 'some_location/asset3.js?body=true']
+
     end
+    config = double(:config, :src_dir => "/some_location/")
+
+    mapper = Jasmine::AssetPipelineMapper.new(config, expander)
+
+    mapper.map_src_paths(['asset1', 'asset2', 'asset4']).should == ['asset1', 'asset2', 'asset3', 'asset4']
   end
 end

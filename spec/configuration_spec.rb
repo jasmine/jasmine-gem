@@ -50,9 +50,9 @@ describe Jasmine::Configuration do
   describe "returning css files" do
     it "returns mapped jasmine_css_files + css_files" do
       config = Jasmine::Configuration.new()
-      config.add_path_mapper(test_mapper1)
-      config.add_path_mapper(test_mapper2)
-      config.add_path_mapper(test_mapper3)
+      config.add_path_mapper(lambda { |c| test_mapper1.new(c) })
+      config.add_path_mapper(lambda { |c| test_mapper2.new(c) })
+      config.add_path_mapper(lambda { |c| test_mapper3.new(c) })
       config.css_files.should == []
       config.jasmine_css_files = lambda { ["jasmine_css"] }
       config.css_files = lambda { ["css"] }
@@ -63,9 +63,9 @@ describe Jasmine::Configuration do
   describe "returning javascript files" do
     it "returns the jasmine core files, then srcs, then specs, then boot" do
       config = Jasmine::Configuration.new()
-      config.add_path_mapper(test_mapper1)
-      config.add_path_mapper(test_mapper2)
-      config.add_path_mapper(test_mapper3)
+      config.add_path_mapper(lambda { |c| test_mapper1.new(c) })
+      config.add_path_mapper(lambda { |c| test_mapper2.new(c) })
+      config.add_path_mapper(lambda { |c| test_mapper3.new(c) })
       config.js_files.should == []
       config.jasmine_files = lambda { ['jasmine'] }
       config.src_files = lambda  { ['src'] }
