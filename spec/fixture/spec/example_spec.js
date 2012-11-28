@@ -39,3 +39,21 @@ context("root context", function(){
     })
   })
 })
+
+describe("irregular indentation", function(){
+  describe("group with 2 spaces", function(){
+    it("should have spec with 2 spaces in group indent", function(){
+      expect(true).toBe(true);
+    })
+    
+      it("should have spec with 4 spaces in 2 space group", function(){
+        expect(true).toBe(true);
+      })
+  })
+  
+    describe("group with 4 spaces", function(){
+      it("should have spec with 4 spaces in group indent", function(){
+        expect(true).toBe(true);
+      })
+    
+})
