@@ -66,6 +66,9 @@ module Jasmine
     if File.exist?(path)
       yaml_config = Jasmine::YamlConfigParser.new(path, Dir.pwd, Jasmine::PathExpander.method(:expand), YAML.method(:load_file))
       Jasmine.configure do |config|
+        config.jasmine_dir = yaml_config.jasmine_dir if yaml_config.jasmine_dir
+        config.jasmine_files = lambda { yaml_config.jasmine_files } if yaml_config.jasmine_files.any?
+        config.jasmine_css_files = lambda { yaml_config.jasmine_css_files } if yaml_config.jasmine_css_files.any?
         config.src_files = lambda { yaml_config.src_files }
         config.spec_files = lambda { yaml_config.helpers + yaml_config.spec_files }
         config.css_files = lambda { yaml_config.css_files }

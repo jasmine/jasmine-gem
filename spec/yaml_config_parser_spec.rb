@@ -1,27 +1,6 @@
 require 'spec_helper'
 
 describe Jasmine::YamlConfigParser do
-  # before :each do
-  # Jasmine::Dependencies.stub(:rails_3_asset_pipeline?) { false }
-
-  # temp_dir_before
-
-  # Dir::chdir @tmp
-  # dir_name = "test_js_project"
-  # `mkdir -p #{dir_name}`
-  # Dir::chdir dir_name
-  # `#{@root}/bin/jasmine init .`
-
-  # @project_dir  = Dir.pwd
-
-  # @template_dir = File.expand_path(File.join(@root, "generators/jasmine/templates"))
-  # @config       = Jasmine::Config.new
-  # end
-
-  # after(:each) do
-  # temp_dir_after
-  # end
-
   it "src_dir uses current working directory when src dir is blank" do
     yaml_loader = lambda do |path|
       if path == "some_path"
@@ -40,6 +19,26 @@ describe Jasmine::YamlConfigParser do
     end
     parser = Jasmine::YamlConfigParser.new('some_path', 'some_project_root', nil, yaml_loader)
     parser.src_dir.should == File.join('some_project_root', 'some_src_dir')
+  end
+
+  it "jasmine_dir returns nil when jasmine dir is blank" do
+    yaml_loader = lambda do |path|
+      if path == "some_path"
+        {"jasmine_dir" => nil}
+      end
+    end
+    parser = Jasmine::YamlConfigParser.new('some_path', 'some_project_root', nil, yaml_loader)
+    parser.jasmine_dir.should be_nil
+  end
+
+  it "jasmine_dir returns jasmine_dir if set" do
+    yaml_loader = lambda do |path|
+      if path == "some_path"
+        {"jasmine_dir" => 'some_jasmine_dir'}
+      end
+    end
+    parser = Jasmine::YamlConfigParser.new('some_path', 'some_project_root', nil, yaml_loader)
+    parser.jasmine_dir.should == File.join('some_project_root', 'some_jasmine_dir')
   end
 
   it "spec_dir uses default path when spec dir is blank" do
@@ -111,6 +110,40 @@ describe Jasmine::YamlConfigParser do
     parser = Jasmine::YamlConfigParser.new('some_path', 'some_project_root', expander, yaml_loader)
 
     parser.spec_files.should == ['expected_results']
+  end
+
+  it "expands jasmine_file paths" do
+    expander = lambda do |dir, patterns|
+      if (dir == File.join('some_project_root', 'some_jasmine') && patterns == ['some_patterns'])
+        ['expected_results']
+      end
+    end
+    yaml_loader = lambda do |path|
+      if path == "some_path"
+        { 'jasmine_dir' => 'some_jasmine', 'jasmine_files' => ['some_patterns'] }
+      end
+    end
+
+    parser = Jasmine::YamlConfigParser.new('some_path', 'some_project_root', expander, yaml_loader)
+
+    parser.jasmine_files.should == ['expected_results']
+  end
+
+  it "expands jasmine css file paths" do
+    expander = lambda do |dir, patterns|
+      if (dir == File.join('some_project_root', 'some_jasmine') && patterns == ['some_patterns'])
+        ['expected_results']
+      end
+    end
+    yaml_loader = lambda do |path|
+      if path == "some_path"
+        { 'jasmine_dir' => 'some_jasmine', 'jasmine_css_files' => ['some_patterns'] }
+      end
+    end
+
+    parser = Jasmine::YamlConfigParser.new('some_path', 'some_project_root', expander, yaml_loader)
+
+    parser.jasmine_css_files.should == ['expected_results']
   end
 
   it "expands helper paths" do

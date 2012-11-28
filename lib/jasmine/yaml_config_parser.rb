@@ -17,8 +17,21 @@ module Jasmine
       File.join(@pwd, loaded_yaml['spec_dir'])
     end
 
+    def jasmine_dir
+      return nil unless loaded_yaml['jasmine_dir']
+      File.join(@pwd, loaded_yaml['jasmine_dir'])
+    end
+
     def src_files
       @path_expander.call(src_dir, loaded_yaml['src_files'] || [])
+    end
+
+    def jasmine_files
+      @path_expander.call(jasmine_dir, loaded_yaml['jasmine_files'] || [])
+    end
+
+    def jasmine_css_files
+      @path_expander.call(jasmine_dir, loaded_yaml['jasmine_css_files'] || [])
     end
 
     def spec_files
