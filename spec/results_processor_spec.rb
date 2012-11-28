@@ -151,36 +151,5 @@ describe Jasmine::ResultsProcessor do
        end
      end
    end
- 
-   describe "irregular indentation" do
-     it "should recognize the group name that is indented too far" do
-       spec_files_full_paths = ['spec/fixture/spec/example_spec.js']
-       user_config = double('config', :spec_files_full_paths => spec_files_full_paths)
-       config = Jasmine::RunnerConfig.new(user_config)
-       runner = Jasmine::ResultsProcessor.new(config)
-
-       runner.example_locations["irregular indentation group with 4 spaces"].should == "spec/fixture/spec/example_spec.js:54: in `it'"
-     end
-     
-     it "should contain example name of an irregularly indented group" do
-        spec_files_full_paths = ['spec/fixture/spec/example_spec.js']
-        user_config = double('config', :spec_files_full_paths => spec_files_full_paths)
-        config = Jasmine::RunnerConfig.new(user_config)
-        runner = Jasmine::ResultsProcessor.new(config)
-
-        runner.example_locations["irregular indentation group with 4 spaces should have spec with 4 spaces in group indent"].should == "spec/fixture/spec/example_spec.js:56: in `it'"
-     end
-     
-     it "should contain example that was irregularly indented with other examples being normally indented" do
-       spec_files_full_paths = ['spec/fixture/spec/example_spec.js']
-       user_config = double('config', :spec_files_full_paths => spec_files_full_paths)
-       config = Jasmine::RunnerConfig.new(user_config)
-       runner = Jasmine::ResultsProcessor.new(config)
-
-       runner.example_locations["irregular indentation group with 2 spaces should have spec with 4 spaces in 2 space group"].should == "spec/fixture/spec/example_spec.js:50: in `it'"       
-     end
-     
-   end
-   
  end
 end
