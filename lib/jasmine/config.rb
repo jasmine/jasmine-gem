@@ -1,4 +1,5 @@
 module Jasmine
+  require 'erb'
   def self.configure(&block)
     block.call(self.config)
   end
@@ -64,7 +65,10 @@ module Jasmine
   def self.load_configuration_from_yaml(path = nil)
     path ||= File.join(Dir.pwd, 'spec', 'javascripts', 'support', 'jasmine.yml')
     if File.exist?(path)
-      yaml_config = Jasmine::YamlConfigParser.new(path, Dir.pwd, Jasmine::PathExpander.method(:expand), YAML.method(:load_file))
+      yaml_loader = lambda do |filepath|
+        YAML::load(ERB.new(File.read(filepath)).result(binding)) if File.exist?(filepath)
+      end
+      yaml_config = Jasmine::YamlConfigParser.new(path, Dir.pwd, Jasmine::PathExpander.method(:expand), yaml_loader)
       Jasmine.configure do |config|
         config.jasmine_dir = yaml_config.jasmine_dir if yaml_config.jasmine_dir
         config.jasmine_files = lambda { yaml_config.jasmine_files } if yaml_config.jasmine_files.any?
