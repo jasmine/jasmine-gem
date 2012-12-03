@@ -8,13 +8,12 @@ module Jasmine
       @core.path
     end
 
-    #TODO: maybe this doesn't belong in CoreConfig
-    def boot_path
-      Jasmine.root('javascripts')
+    def boot_dir
+      @core.boot_dir
     end
 
     def boot_files
-      Dir.glob(File.join(boot_path, "**"))
+      @core.boot_files
     end
 
     def js_files
