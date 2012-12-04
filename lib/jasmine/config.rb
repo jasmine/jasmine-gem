@@ -1,4 +1,5 @@
 module Jasmine
+  require 'yaml'
   require 'erb'
   def self.configure(&block)
     block.call(self.config)
