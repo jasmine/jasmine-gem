@@ -1,4 +1,5 @@
 module Jasmine
+  require 'json'
   class SeleniumDriver
     def initialize(browser, http_address)
       require 'selenium-webdriver'
