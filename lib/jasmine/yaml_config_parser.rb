@@ -46,6 +46,10 @@ module Jasmine
       @path_expander.call(src_dir, loaded_yaml['stylesheets'] || [])
     end
 
+    def spec_helper
+      File.join(@pwd, loaded_yaml['spec_helper'] || File.join('spec', 'javascripts', 'support', 'jasmine_helper.rb'))
+    end
+
     private
     def loaded_yaml
       @yaml_loader.call(@path)

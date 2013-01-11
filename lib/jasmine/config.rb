@@ -22,7 +22,6 @@ module Jasmine
     @config.boot_files = lambda { core_config.boot_files }
     @config.jasmine_files = lambda { core_config.js_files }
     @config.jasmine_css_files = lambda { core_config.css_files }
-
     @config.add_rack_path(jasmine_path, lambda { Rack::File.new(config.jasmine_dir) })
     @config.add_rack_path(boot_path, lambda { Rack::File.new(config.boot_dir) })
     @config.add_rack_path(spec_path, lambda { Rack::File.new(config.spec_dir) })
@@ -80,6 +79,7 @@ module Jasmine
         config.src_dir = yaml_config.src_dir
         config.spec_dir = yaml_config.spec_dir
       end
+      require yaml_config.spec_helper if File.exist?(yaml_config.spec_helper)
     end
   end
 

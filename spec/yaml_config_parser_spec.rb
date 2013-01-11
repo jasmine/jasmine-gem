@@ -41,6 +41,26 @@ describe Jasmine::YamlConfigParser do
     parser.jasmine_dir.should == File.join('some_project_root', 'some_jasmine_dir')
   end
 
+  it "spec_helper returns default helper path when spec_helper is blank" do
+    yaml_loader = lambda do |path|
+      if path == "some_path"
+        {"spec_helper" => nil}
+      end
+    end
+    parser = Jasmine::YamlConfigParser.new('some_path', 'some_project_root', nil, yaml_loader)
+    parser.spec_helper.should == 'some_project_root/spec/javascripts/support/jasmine_helper.rb'
+  end
+
+  it "spec_helper returns spec_helper if set" do
+    yaml_loader = lambda do |path|
+      if path == "some_path"
+        {"spec_helper" => 'some_spec_helper.rb'}
+      end
+    end
+    parser = Jasmine::YamlConfigParser.new('some_path', 'some_project_root', nil, yaml_loader)
+    parser.spec_helper.should == 'some_project_root/some_spec_helper.rb'
+  end
+
   it "spec_dir uses default path when spec dir is blank" do
     yaml_loader = lambda do |path|
       if path == "some_path"

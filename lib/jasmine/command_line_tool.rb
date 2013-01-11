@@ -37,6 +37,7 @@ module Jasmine
         copy_unless_exists('jasmine-example/spec/SpecHelper.js', 'spec/javascripts/helpers/SpecHelper.js')
 
         copy_unless_exists('spec/javascripts/support/jasmine.yml')
+        copy_unless_exists('spec/javascripts/support/jasmine_helper.rb')
         require 'rake'
         write_mode = 'w'
         if File.exist?(dest_path('Rakefile'))
