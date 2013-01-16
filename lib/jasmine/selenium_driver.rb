@@ -1,5 +1,10 @@
-module Jasmine
+begin
   require 'json'
+rescue LoadError
+  puts "You must have a JSON library installed to run jasmine:ci. Try \"gem install json\""
+end
+
+module Jasmine
   class SeleniumDriver
     def initialize(browser, http_address)
       require 'selenium-webdriver'
@@ -14,6 +19,13 @@ module Jasmine
                   profile.enable_firebug
                   {:profile => profile}
                 end || {}
+      
+      if ENV['JASMINE_TIMEOUT']
+        http_client = Selenium::WebDriver::Remote::Http::Default.new
+        http_client.timeout = ENV['JASMINE_TIMEOUT'].to_i
+        options.merge! :http_client => http_client
+      end
+      
       @driver = if selenium_server
         Selenium::WebDriver.for :remote, :url => selenium_server, :desired_capabilities => browser.to_sym
       else
