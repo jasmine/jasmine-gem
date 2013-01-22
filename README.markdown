@@ -53,8 +53,6 @@ This uses Selenium to launch a browser and run the Jasmine suite. Then it uses R
 Customize `spec/javascripts/support/jasmine.yml` to enumerate the source files, stylesheets, and spec files you would like the Jasmine runner to include.
 You may use dir glob strings.
 
-For more complex configuration (e.g., port number), edit `spec/javascripts/support/jasmine_config.rb` file directly.
-
 ## Note about the CI task and RSpec
 
 This gem requires RSpec for the `jasmine:ci` rake task to work. But this gem does not explicitly *depend* on any version of the RSpec gem.
