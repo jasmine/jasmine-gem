@@ -8,11 +8,9 @@ module Jasmine
     def expand(src_dir, src_path)
       pathname = src_path.gsub(/^\/?assets\//, '').gsub(/\.js$/, '')
       bundled_asset = @bundled_asset_factory.call(pathname, 'js')
-      return nil unless bundled_asset
-
-      bundled_asset.to_a.map do |asset|
+      bundled_asset && bundled_asset.to_a.map do |asset|
         "/#{@asset_path_for.call(asset).gsub(/^\//, '')}?body=true"
-      end.flatten
+      end
     end
   end
 end
