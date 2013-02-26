@@ -36,23 +36,18 @@ module Jasmine
         copy_unless_exists('jasmine-example/spec/PlayerSpec.js', 'spec/javascripts/PlayerSpec.js')
         copy_unless_exists('jasmine-example/spec/SpecHelper.js', 'spec/javascripts/helpers/SpecHelper.js')
 
-        rails_tasks_dir = dest_path('lib/tasks')
-        if File.exist?(rails_tasks_dir)
-          copy_unless_exists('lib/tasks/jasmine.rake')
-          copy_unless_exists('spec/javascripts/support/jasmine-rails.yml', 'spec/javascripts/support/jasmine.yml')
-        else
-          copy_unless_exists('spec/javascripts/support/jasmine.yml')
-          require 'rake'
-          write_mode = 'w'
-          if File.exist?(dest_path('Rakefile'))
-            load dest_path('Rakefile')
-            write_mode = 'a'
-          end
+        copy_unless_exists('spec/javascripts/support/jasmine.yml')
+        copy_unless_exists('spec/javascripts/support/jasmine_helper.rb')
+        require 'rake'
+        write_mode = 'w'
+        if File.exist?(dest_path('Rakefile'))
+          load dest_path('Rakefile')
+          write_mode = 'a'
+        end
 
-          unless Rake::Task.task_defined?('jasmine')
-            File.open(dest_path('Rakefile'), write_mode) do |f|
-              f.write("\n" + File.read(template_path('lib/tasks/jasmine.rake')))
-            end
+        unless Rake::Task.task_defined?('jasmine')
+          File.open(dest_path('Rakefile'), write_mode) do |f|
+            f.write("\n" + File.read(template_path('lib/tasks/jasmine.rake')))
           end
         end
         File.open(template_path('INSTALL'), 'r').each_line do |line|

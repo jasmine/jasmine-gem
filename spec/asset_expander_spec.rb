@@ -22,8 +22,7 @@ describe Jasmine::AssetExpander do
 
     expander = Jasmine::AssetExpander.new(bundled_asset_getter, asset_path_getter)
     expanded_assets = expander.expand('/some_src_dir', 'asset_file')
-    expanded_assets.should == ['/asset_file?body=true',
-                               '/asset1_path?body=true',
+    expanded_assets.should == ['/asset1_path?body=true',
                                '/asset2_path?body=true']
   end
 

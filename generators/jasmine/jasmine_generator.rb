@@ -14,6 +14,7 @@ class JasmineGenerator < Rails::Generator::Base
 
     m.directory "spec/javascripts/support"
     m.file "spec/javascripts/support/jasmine-rails.yml", "spec/javascripts/support/jasmine.yml"
+    m.file "spec/javascripts/support/jasmine_helper.rb", "spec/javascripts/support/jasmine_helper.rb"
     m.readme "INSTALL"
 
     m.directory "lib/tasks"
