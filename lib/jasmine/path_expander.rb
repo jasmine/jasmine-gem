@@ -10,7 +10,7 @@ module Jasmine
             files = [File.join(base_directory, path)]
           end
           files
-        end.flatten.uniq
+        end.flatten.uniq.sort
       end
       chosen - negated
     end
