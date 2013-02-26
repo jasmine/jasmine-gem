@@ -31,8 +31,8 @@ describe Jasmine::Runners::ApiReporter do
 
   describe "#results" do
     it "gets all of the results" do
-      driver.should_receive(:eval_js).with("jsApiReporter && jsApiReporter.specResults(0, 3)").and_call_original
-      driver.should_receive(:eval_js).with("jsApiReporter && jsApiReporter.specResults(3, 3)").and_call_original
+      driver.should_receive(:eval_js).with("return jsApiReporter.specResults(0, 3)").and_call_original
+      driver.should_receive(:eval_js).with("return jsApiReporter.specResults(3, 3)").and_call_original
 
       results = subject.results
 
