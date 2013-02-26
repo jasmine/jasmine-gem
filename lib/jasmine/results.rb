@@ -21,7 +21,6 @@ module Jasmine
 
       def failed_expectations
         failedExpectations.map { |e|
-          p e
           OpenStruct.new(message: e["message"], stack_trace: e["trace"]["stack"])
         }
       end
