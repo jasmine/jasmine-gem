@@ -1,19 +1,30 @@
 module Jasmine
   class Results
-
-    attr_reader :suites
-    def initialize(result_hash, suite_hash, example_locations)
-      @suites = suite_hash
-      @results = result_hash
-      @example_locations = example_locations
+    def initialize(raw_results)
+      @results = raw_results.map {|raw| Result.new(raw) }
     end
 
-    def for_spec_id(id)
-      @results[id]
+    def failures
+      @results.select { |result|
+        result.status == "failed"
+      }
     end
 
-    def example_location_for(spec_description)
-      @example_locations[spec_description]
+    def size
+      @results.size
+    end
+
+    class Result < OpenStruct
+      def full_name
+        fullName
+      end
+
+      def failed_expectations
+        failedExpectations.map { |e|
+          p e
+          OpenStruct.new(message: e["message"], stack_trace: e["trace"]["stack"])
+        }
+      end
     end
   end
 end

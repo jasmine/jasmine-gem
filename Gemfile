@@ -1,7 +1,7 @@
 source "http://rubygems.org"
 gemspec
 
-gem "jasmine-core", :git => "http://github.com/pivotal/jasmine.git", :branch => '2_0'
+gem "jasmine-core", path: "/Users/pivotal/workspace/jasmine"
 unless ENV["TRAVIS"]
   group :debug do
     gem 'debugger'
