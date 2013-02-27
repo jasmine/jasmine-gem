@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Jasmine::Formatters::Console do
   describe "#failures" do
     it "shows the failure messages" do
-      results = OpenStruct.new(size: 2, failures: [failing_result, failing_result])
+      results = OpenStruct.new(:size => 2, :failures => [failing_result, failing_result])
       subject = Jasmine::Formatters::Console.new(results)
 
       subject.failures.should match(/a suite with a failing spec/)
@@ -15,7 +15,7 @@ describe Jasmine::Formatters::Console do
   describe "#summary" do
     describe "when the full suite passes" do
       it "shows the spec counts" do
-        results = OpenStruct.new(size: 1, failures: [])
+        results = OpenStruct.new(:size => 1, :failures => [])
         subject = Jasmine::Formatters::Console.new(results)
 
         subject.summary.should match(/1 spec/)
@@ -23,7 +23,7 @@ describe Jasmine::Formatters::Console do
       end
 
       it "shows the spec counts (pluralized)" do
-        results = OpenStruct.new(size: 2, failures: [])
+        results = OpenStruct.new(:size => 2, :failures => [])
         subject = Jasmine::Formatters::Console.new(results)
 
         subject.summary.should match(/2 specs/)
@@ -33,7 +33,7 @@ describe Jasmine::Formatters::Console do
 
     describe "when there are failures" do
       it "shows the spec counts" do
-        results = OpenStruct.new(size: 2, failures: [failing_result])
+        results = OpenStruct.new(:size => 2, :failures => [failing_result])
         subject = Jasmine::Formatters::Console.new(results)
 
         subject.summary.should match(/2 specs/)
@@ -41,7 +41,7 @@ describe Jasmine::Formatters::Console do
       end
 
       it "shows the spec counts (pluralized)" do
-        results = OpenStruct.new(size: 2, failures: [failing_result, failing_result])
+        results = OpenStruct.new(:size => 2, :failures => [failing_result, failing_result])
         subject = Jasmine::Formatters::Console.new(results)
 
         subject.summary.should match(/2 specs/)
@@ -51,8 +51,8 @@ describe Jasmine::Formatters::Console do
   end
 
   def failing_result
-    OpenStruct.new(full_name: "a suite with a failing spec", failed_expectations: [
-        OpenStruct.new(message: "a failure message", stack_trace: "a stack trace")
+    OpenStruct.new(:full_name => "a suite with a failing spec", :failed_expectations => [
+        OpenStruct.new(:message => "a failure message", :stack_trace => "a stack trace")
     ])
   end
 
