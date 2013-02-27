@@ -1,4 +1,6 @@
 class FakeSeleniumDriver
+  attr_reader :results
+
   def initialize
     @state = :stopped
     @results = [ {'id' => 1}, {'id' => 2}, {'id' => 3}, {'id' => 4} ]

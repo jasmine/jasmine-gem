@@ -7,9 +7,13 @@ describe Jasmine::Runners::ApiReporter do
 
   describe '#started?' do
     it "reflects that Jasmine has started" do
-      driver.should_receive(:eval_js).twice.with(Jasmine::Runners::ApiReporter::STARTED_JS).and_call_original
+      driver.should_receive(:eval_js).with(Jasmine::Runners::ApiReporter::STARTED_JS).and_return(false)
+
+      driver.start
 
       subject.should_not be_started
+
+      driver.should_receive(:eval_js).with(Jasmine::Runners::ApiReporter::STARTED_JS).and_return(true)
 
       driver.start
 
@@ -19,9 +23,11 @@ describe Jasmine::Runners::ApiReporter do
 
   describe '#finished?' do
     it "reflects that Jasmine has finished" do
-      driver.should_receive(:eval_js).twice.with(Jasmine::Runners::ApiReporter::FINISHED_JS).and_call_original
+      driver.should_receive(:eval_js).with(Jasmine::Runners::ApiReporter::FINISHED_JS).and_return(false)
 
       subject.should_not be_finished
+
+      driver.should_receive(:eval_js).with(Jasmine::Runners::ApiReporter::FINISHED_JS).and_return(true)
 
       driver.finish
 
@@ -31,8 +37,8 @@ describe Jasmine::Runners::ApiReporter do
 
   describe "#results" do
     it "gets all of the results" do
-      driver.should_receive(:eval_js).with("return jsApiReporter.specResults(0, 3)").and_call_original
-      driver.should_receive(:eval_js).with("return jsApiReporter.specResults(3, 3)").and_call_original
+      driver.should_receive(:eval_js).with("return jsApiReporter.specResults(0, 3)").and_return(driver.results.slice(0, 3))
+      driver.should_receive(:eval_js).with("return jsApiReporter.specResults(3, 3)").and_return(driver.results.slice(3, 4))
 
       results = subject.results
 
