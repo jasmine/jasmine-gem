@@ -14,8 +14,11 @@ class FakeSeleniumDriver
       when Jasmine::Runners::ApiReporter::FINISHED_JS
         @state == :finished
       else
-        if matches = /specResults\((?<index>\d+), (?<length>\d+)\)/.match(str)
-          slice = @results.slice(matches[:index].to_i, matches[:index].to_i + matches[:length].to_i)
+        # TODO: When we drop support for Ruby < 1.9, USE NAMED CAPTURES HEYAH
+        if matches = /specResults\((\d+), (\d+)\)/.match(str)
+          length = matches[1]
+          index = matches[2]
+          slice = @results.slice(length.to_i, length.to_i + index.to_i)
 
           slice.nil? ? [] : slice
         end
