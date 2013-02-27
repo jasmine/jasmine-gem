@@ -7,11 +7,10 @@ describe Jasmine::Runners::HTTP do
   subject { Jasmine::Runners::HTTP.new(driver, reporter) }
 
   describe '#run' do
-
     it "gets the results from the Jasmine HTML page" do
       driver.should_receive(:connect)
       driver.should_receive(:disconnect)
-      reporter.should_receive(:results).and_call_original
+      reporter.should_receive(:results).and_return(driver.results)
       reporter.stub(:started?).and_return(true)
       reporter.stub(:finished?).and_return(true)
 
