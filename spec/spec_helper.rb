@@ -67,9 +67,7 @@ def failing_raw_result
       "failedExpectations" => [
           {
               "message" => "a failure message",
-              "trace" => {
-                  "stack" => "a stack trace"
-              }
+              "stack" => "a stack trace"
           }
       ]
   })

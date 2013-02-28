@@ -40,7 +40,19 @@ describe Jasmine::Results::Result do
 
       expectation = result.failed_expectations[0]
       expectation.message.should == "a failure message"
-      expectation.stack_trace.should == "a stack trace"
+      expectation.stack.should == "a stack trace"
+    end
+
+    it "exposes only the last 7 lines of the stack trace" do
+      raw_result = failing_raw_result
+      raw_result["failedExpectations"][0]["stack"] = "1\n2\n3\n4\n5\n6\n7\n8\n9"
+
+      result = Jasmine::Results::Result.new(raw_result)
+      expectation = result.failed_expectations[0].stack
+      expectation.should match(/1/)
+      expectation.should match(/7/)
+      expectation.should_not match(/8/)
+      expectation.should_not match(/9/)
     end
   end
 end

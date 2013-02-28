@@ -21,7 +21,8 @@ module Jasmine
 
       def failed_expectations
         failedExpectations.map { |e|
-          OpenStruct.new(:message => e["message"], :stack_trace => e["trace"]["stack"])
+          short_stack = e["stack"].split("\n").slice(0, 7).join("\n")
+          OpenStruct.new(:message => e["message"], :stack => short_stack)
         }
       end
     end

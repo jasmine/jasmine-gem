@@ -52,7 +52,7 @@ describe Jasmine::Formatters::Console do
 
   def failing_result
     OpenStruct.new(:full_name => "a suite with a failing spec", :failed_expectations => [
-        OpenStruct.new(:message => "a failure message", :stack_trace => "a stack trace")
+        OpenStruct.new(:message => "a failure message", :stack => "a stack trace")
     ])
   end
 

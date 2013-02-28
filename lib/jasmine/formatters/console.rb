@@ -25,9 +25,9 @@ module Jasmine
       end
 
       def expectation_message(expectation)
-        template = <<-FE
+        <<-FE
           #{expectation.message}
-          #{expectation.stack_trace}
+          #{expectation.stack}
         FE
       end
     end
