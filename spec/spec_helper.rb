@@ -59,6 +59,10 @@ def passing_raw_result
   raw_result("passed")
 end
 
+def pending_raw_result
+  raw_result("pending")
+end
+
 def failing_raw_result
   raw_result("failed", {
       "id" => 124,

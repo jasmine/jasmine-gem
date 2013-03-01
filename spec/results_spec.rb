@@ -2,12 +2,22 @@ require 'spec_helper'
 
 describe Jasmine::Results do
   describe "#failures" do
-    it "should report a failure count" do
+    it "should report all the failing spec" do
       subject = Jasmine::Results.new([failing_raw_result, failing_raw_result])
       subject.failures.size.should == 2
 
       subject = Jasmine::Results.new([failing_raw_result, passing_raw_result])
       subject.failures.size.should == 1
+    end
+  end
+
+  describe "#pending_specs" do
+    it "should report all the pending specs" do
+      subject = Jasmine::Results.new([pending_raw_result, pending_raw_result])
+      subject.pending_specs.size.should == 2
+
+      subject = Jasmine::Results.new([pending_raw_result, passing_raw_result])
+      subject.pending_specs.size.should == 1
     end
   end
 

@@ -10,6 +10,12 @@ module Jasmine
       }
     end
 
+    def pending_specs
+      @results.select { |result|
+        result.status == "pending"
+      }
+    end
+
     def size
       @results.size
     end

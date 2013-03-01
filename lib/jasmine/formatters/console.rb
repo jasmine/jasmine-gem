@@ -2,7 +2,12 @@ module Jasmine
   module Formatters
     class Console < Struct.new(:results)
       def summary
-        "#{pluralize(results.size, 'spec')}, #{pluralize(results.failures.size, 'failure')}"
+        summary = "#{pluralize(results.size, 'spec')}, " +
+          "#{pluralize(results.failures.size, 'failure')}"
+
+        summary += ", #{pluralize(results.pending_specs.size, 'pending spec')}" unless results.pending_specs.empty?
+
+        summary
       end
 
       def failures
