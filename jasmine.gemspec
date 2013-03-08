@@ -71,4 +71,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'rack', '~> 1.0'
   s.add_dependency 'rspec', '>= 1.3.1'
   s.add_dependency 'selenium-webdriver', '>= 0.1.3'
+  s.add_dependency 'jasmine-parser', '>= 0.0.1'
 end

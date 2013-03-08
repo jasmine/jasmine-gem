@@ -20,7 +20,8 @@ module Jasmine
       children.each do |suite_or_spec|
         type = suite_or_spec["type"]
         if type == "suite"
-          process_children(parent.describe(suite_or_spec["name"]), suite_or_spec["children"])
+          grand_parent_and_parent = example_group(parent.description + " " + suite_or_spec["name"]) {}
+          process_children(grand_parent_and_parent, suite_or_spec["children"])
         elsif type == "spec"
           declare_spec(parent, suite_or_spec)
         else
@@ -34,7 +35,7 @@ module Jasmine
       example_name = spec["name"]
       backtrace = @results.example_location_for(parent.description + " " + example_name)
       if Jasmine::Dependencies.rspec2?
-        parent.it example_name, {} do
+        parent.it example_name, {:jasmine_backtrace => backtrace} do
           me.report_spec(spec["id"])
         end
       else

@@ -52,7 +52,8 @@ module Jasmine
       end
 
       def wait_for_suites_to_finish_running
-        puts "Waiting for suite to finish in browser ..."
+        puts "Waiting for suite to finish in browser and parsing SPEC files ..."
+        @results_processor.example_locations
         while !eval_js('return jsApiReporter.finished') do
           sleep 0.1
         end
