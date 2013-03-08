@@ -16,8 +16,8 @@ describe Jasmine::Results do
   end
 
   it "should return an example location for a particular string" do
-    example_location1 = {:some => 'spec location'}
-    example_location2 = {:some => 'other spec location'}
+    example_location1 = ["file1", "file2", "file3"]
+    example_location2 = ["file4", "file5"]
     example_locations = {'foo bar' => example_location1, 'baz quux' => example_location2 }
     results = Jasmine::Results.new({}, {}, example_locations)
     results.example_location_for('foo bar').should == example_location1

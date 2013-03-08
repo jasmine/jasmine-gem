@@ -2,10 +2,13 @@ $:.unshift(ENV['JASMINE_GEM_PATH']) if ENV['JASMINE_GEM_PATH'] # for gem testing
 
 require 'rubygems'
 require 'jasmine'
+
 if Jasmine::Dependencies.rspec2?
   require 'rspec'
+  require 'jasmine/rspec_2_backtrace'
 else
   require 'spec'
+  require 'jasmine/rspec_1_backtrace'
 end
 
 jasmine_yml = File.join(Dir.pwd, 'spec', 'javascripts', 'support', 'jasmine.yml')
