@@ -11,6 +11,12 @@ This gem contains:
 
 You can get all of this by: `gem install jasmine` or by adding Jasmine to your `Gemfile`.
 
+```ruby
+group :development, :test do
+  gem 'jasmine'
+end
+```
+
 ## Init A Project
 
 To initialize a project for Jasmine, it depends on your web framework
