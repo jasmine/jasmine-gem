@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-if Jasmine::Dependencies.rails3?
+if Jasmine::Dependencies.at_least_rails3?
 
   describe "A Rails 3 app" do
 

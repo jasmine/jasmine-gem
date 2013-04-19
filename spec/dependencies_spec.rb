@@ -78,7 +78,7 @@ if Jasmine::Dependencies.rspec2?
       end
 
       describe ".rails3?" do
-        subject { Jasmine::Dependencies.rails3? }
+        subject { Jasmine::Dependencies.at_least_rails3? }
         context "when rails 3 is present and running" do
           before do
             Gem::Specification.should_receive(:find_by_name).with("rails", ">= 3.0").and_return(true)
@@ -240,7 +240,7 @@ if Jasmine::Dependencies.rspec2?
       end
 
       describe ".rails3?" do
-        subject { Jasmine::Dependencies.rails3? }
+        subject { Jasmine::Dependencies.at_least_rails3? }
         before do
           Gem.should_receive(:available?).with("rails", ">= 3.0").and_return(rails3_present)
         end

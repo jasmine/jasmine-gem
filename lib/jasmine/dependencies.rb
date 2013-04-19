@@ -14,8 +14,8 @@ module Jasmine
         safe_gem_check("rails", "< 2.3.11") && running_legacy_rails?
       end
 
-      def rails3?
-        safe_gem_check("rails", ">= 3.0") && running_rails3?
+      def at_least_rails3?
+        safe_gem_check("rails", ">= 3.0") && running_at_least_rails3?
       end
 
       def legacy_rack?
@@ -23,7 +23,7 @@ module Jasmine
       end
 
       def rails_3_asset_pipeline?
-        rails3? && Rails.respond_to?(:application) && Rails.application.respond_to?(:assets) && Rails.application.assets
+        at_least_rails3? && Rails.respond_to?(:application) && Rails.application.respond_to?(:assets) && Rails.application.assets
       end
 
       private
@@ -36,8 +36,8 @@ module Jasmine
         running_rails? && Rails.version.to_i == 2
       end
 
-      def running_rails3?
-        running_rails? && Rails.version.to_i == 3
+      def running_at_least_rails3?
+        running_rails? && Rails.version.to_i >= 3
       end
 
       def running_rails?
