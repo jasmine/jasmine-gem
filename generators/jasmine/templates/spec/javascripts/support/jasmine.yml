@@ -77,12 +77,12 @@ spec_dir:
 #
 # Ruby file that Jasmine server will require before starting.
 # Returned relative to your root path
-# Default spec/support/jasmine_helper.rb
+# Default spec/javascripts/support/jasmine_helper.rb
 #
 # EXAMPLE:
 #
-# spec_helper: spec/support/jasmine_helper.rb
+# spec_helper: spec/javascripts/support/jasmine_helper.rb
 #
-spec_helper: spec/support/jasmine_helper.rb
+spec_helper: spec/javascripts/support/jasmine_helper.rb
 
 
