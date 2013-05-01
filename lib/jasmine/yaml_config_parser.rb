@@ -50,6 +50,10 @@ module Jasmine
       File.join(@pwd, loaded_yaml['spec_helper'] || File.join('spec', 'javascripts', 'support', 'jasmine_helper.rb'))
     end
 
+    def browser
+      loaded_yaml['browser']
+    end
+
     private
     def loaded_yaml
       @yaml_loader.call(@path)
