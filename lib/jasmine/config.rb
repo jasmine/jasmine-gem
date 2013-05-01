@@ -78,6 +78,7 @@ module Jasmine
         config.css_files = lambda { yaml_config.css_files }
         config.src_dir = yaml_config.src_dir
         config.spec_dir = yaml_config.spec_dir
+        config.browser = yaml_config.browser if yaml_config.browser
       end
       require yaml_config.spec_helper if File.exist?(yaml_config.spec_helper)
     end
