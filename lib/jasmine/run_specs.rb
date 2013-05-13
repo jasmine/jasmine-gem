@@ -8,8 +8,6 @@ else
   require 'spec'
 end
 
-jasmine_yml = File.join(Dir.pwd, 'spec', 'javascripts', 'support', 'jasmine.yml')
-
 Jasmine.load_configuration_from_yaml
 
 config = Jasmine.config
