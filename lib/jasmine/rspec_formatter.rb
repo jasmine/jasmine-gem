@@ -20,7 +20,8 @@ module Jasmine
       children.each do |suite_or_spec|
         type = suite_or_spec["type"]
         if type == "suite"
-          process_children(parent.describe(suite_or_spec["name"]), suite_or_spec["children"])
+          grand_parent_and_parent = example_group(parent.description + " " + suite_or_spec["name"]) {}
+          process_children(grand_parent_and_parent, suite_or_spec["children"])
         elsif type == "spec"
           declare_spec(parent, suite_or_spec)
         else
