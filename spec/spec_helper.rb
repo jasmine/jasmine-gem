@@ -18,7 +18,7 @@ end
 
 
 def create_rails(name)
-  if Jasmine::Dependencies.rails3?
+  if Jasmine::Dependencies.at_least_rails3?
     `rails new #{name}`
   else
     `rails #{name}`
