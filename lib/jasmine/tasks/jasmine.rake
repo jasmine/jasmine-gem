@@ -26,7 +26,7 @@ namespace :jasmine do
       RSpec::Core::RakeTask.new(:jasmine_continuous_integration_runner) do |t|
         t.rspec_opts = ["--colour", "--format", ENV['JASMINE_SPEC_FORMAT'] || "progress"]
         t.verbose = true
-        if Jasmine::Dependencies.rails_3_asset_pipeline?
+        if Jasmine::Dependencies.use_asset_pipeline?
           t.rspec_opts += ["-r #{File.expand_path(File.join(::Rails.root, 'config', 'environment'))}"]
         end
         t.pattern = [Jasmine.runner_filepath]

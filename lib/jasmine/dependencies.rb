@@ -15,15 +15,23 @@ module Jasmine
       end
 
       def rails3?
-        safe_gem_check("rails", ">= 3.0") && running_rails3?
+        safe_gem_check("rails", "~> 3") && running_rails3?
+      end
+
+      def rails4?
+        safe_gem_check("rails", "~> 4.0.0.rc1") && running_rails4?
       end
 
       def legacy_rack?
         !defined?(Rack::Server)
       end
 
-      def rails_3_asset_pipeline?
-        rails3? && Rails.respond_to?(:application) && Rails.application.respond_to?(:assets) && Rails.application.assets
+      def use_asset_pipeline?
+        (rails3? || rails4?) && Rails.respond_to?(:application) && Rails.application.respond_to?(:assets) && Rails.application.assets
+      end
+
+      def use_railties?
+        rails3? || rails4?
       end
 
       private
@@ -38,6 +46,10 @@ module Jasmine
 
       def running_rails3?
         running_rails? && Rails.version.to_i == 3
+      end
+
+      def running_rails4?
+        running_rails? && Rails.version.to_i == 4
       end
 
       def running_rails?
