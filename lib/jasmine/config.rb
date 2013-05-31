@@ -37,10 +37,7 @@ module Jasmine
 
     if Jasmine::Dependencies.rails_3_asset_pipeline?
       @config.add_path_mapper(lambda { |config|
-        asset_expander = Jasmine::AssetExpander.new(
-          Jasmine::AssetPipelineUtility.method(:bundled_asset_factory),
-          Jasmine::AssetPipelineUtility.method(:asset_path_for)
-        )
+        asset_expander = Jasmine::AssetExpander.new(Jasmine::AssetBundle.factory)
         Jasmine::AssetPipelineMapper.new(config, asset_expander.method(:expand))
       })
       @config.add_rack_path('/assets', lambda {
