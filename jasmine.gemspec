@@ -68,7 +68,9 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'nokogiri'
 
   s.add_development_dependency 'anchorman'
-
+  if ENV["RUBY_VERSION"] =~ /1\.8\.6/
+    s.add_dependency 'json_pure'
+  end
   s.add_dependency 'jasmine-core', "~> 1.3.1"
   s.add_dependency 'rack', '~> 1.0'
   s.add_dependency 'rspec', '>= 1.3.1'
