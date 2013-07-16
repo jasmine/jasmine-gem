@@ -26,9 +26,9 @@ module Jasmine
 
     def js_files
       map(@jasmine_files, :jasmine) +
+        map(@boot_files, :boot) +
         map(@src_files, :src) +
-        map(@spec_files, :spec) +
-        map(@boot_files, :boot)
+        map(@spec_files, :spec)
     end
 
     def rack_path_map

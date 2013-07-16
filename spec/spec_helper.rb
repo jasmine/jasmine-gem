@@ -16,6 +16,7 @@ else
   require 'spec'
 end
 
+require 'support/fake_selenium_driver'
 
 def create_rails(name)
   if Jasmine::Dependencies.rails3?
@@ -53,3 +54,30 @@ module Kernel
     $stdout = STDOUT
   end
 end
+
+def passing_raw_result
+  raw_result("passed")
+end
+
+def pending_raw_result
+  raw_result("pending")
+end
+
+def failing_raw_result
+  raw_result("failed", {
+      "id" => 124,
+      "description" => "a failing spec",
+      "fullName" => "a suite with a failing spec",
+      "failedExpectations" => [
+          {
+              "message" => "a failure message",
+              "stack" => "a stack trace"
+          }
+      ]
+  })
+end
+
+def raw_result(status, options = {})
+  {"status" => status}.merge(options)
+end
+

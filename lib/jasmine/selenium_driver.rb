@@ -32,7 +32,7 @@ module Jasmine
 
     def eval_js(script)
       result = @driver.execute_script(script)
-      JSON.parse("{\"result\":#{result}}", :max_nesting => false)["result"]
+      JSON.parse("{\"result\":#{result.to_json}}", :max_nesting => false)["result"]
     end
 
     def json_generate(obj)

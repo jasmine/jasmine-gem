@@ -73,9 +73,9 @@ describe Jasmine::Configuration do
       config.spec_files = lambda { ['spec'] }
       config.js_files.should == [
         'mapped_jasmine/jasmine/jasmine',
+        'mapped_boot/boot/boot',
         'mapped_src/src/src',
         'mapped_spec/spec/spec',
-        'mapped_boot/boot/boot',
       ]
     end
   end

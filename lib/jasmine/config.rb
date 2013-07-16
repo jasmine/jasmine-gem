@@ -18,7 +18,7 @@ module Jasmine
     @config.boot_path = boot_path = "/__boot__"
 
     @config.jasmine_dir = core_config.path
-    @config.boot_dir = core_config.boot_path
+    @config.boot_dir = core_config.boot_dir
     @config.boot_files = lambda { core_config.boot_files }
     @config.jasmine_files = lambda { core_config.js_files }
     @config.jasmine_css_files = lambda { core_config.css_files }
@@ -75,11 +75,15 @@ module Jasmine
         config.jasmine_dir = yaml_config.jasmine_dir if yaml_config.jasmine_dir
         config.jasmine_files = lambda { yaml_config.jasmine_files } if yaml_config.jasmine_files.any?
         config.jasmine_css_files = lambda { yaml_config.jasmine_css_files } if yaml_config.jasmine_css_files.any?
-        config.src_files = lambda { yaml_config.src_files }
-        config.spec_files = lambda { yaml_config.helpers + yaml_config.spec_files }
-        config.css_files = lambda { yaml_config.css_files }
+        config.boot_dir = yaml_config.boot_dir if yaml_config.boot_dir
+        config.boot_files = lambda { yaml_config.boot_files } if yaml_config.boot_files.any?
+
         config.src_dir = yaml_config.src_dir
+        config.src_files = lambda { yaml_config.src_files }
+        config.css_files = lambda { yaml_config.css_files }
+
         config.spec_dir = yaml_config.spec_dir
+        config.spec_files = lambda { yaml_config.helpers + yaml_config.spec_files }
       end
       require yaml_config.spec_helper if File.exist?(yaml_config.spec_helper)
     end

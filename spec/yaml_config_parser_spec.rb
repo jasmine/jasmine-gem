@@ -61,6 +61,26 @@ describe Jasmine::YamlConfigParser do
     parser.spec_helper.should == 'some_project_root/some_spec_helper.rb'
   end
 
+  it "boot_dir returns nil when boot dir is blank" do
+    yaml_loader = lambda do |path|
+      if path == "some_path"
+        {"boot_dir" => nil}
+      end
+    end
+    parser = Jasmine::YamlConfigParser.new('some_path', 'some_project_root', nil, yaml_loader)
+    parser.boot_dir.should be_nil
+  end
+
+  it "boot_dir returns boot_dir if set" do
+    yaml_loader = lambda do |path|
+      if path == "some_path"
+        {"boot_dir" => 'some_boot_dir'}
+      end
+    end
+    parser = Jasmine::YamlConfigParser.new('some_path', 'some_project_root', nil, yaml_loader)
+    parser.boot_dir.should == File.join('some_project_root', 'some_boot_dir')
+  end
+
   it "spec_dir uses default path when spec dir is blank" do
     yaml_loader = lambda do |path|
       if path == "some_path"
@@ -147,6 +167,23 @@ describe Jasmine::YamlConfigParser do
     parser = Jasmine::YamlConfigParser.new('some_path', 'some_project_root', expander, yaml_loader)
 
     parser.jasmine_files.should == ['expected_results']
+  end
+
+  it "expands boot_file paths" do
+    expander = lambda do |dir, patterns|
+      if (dir == File.join('some_project_root', 'some_boot') && patterns == ['some_patterns'])
+        ['expected_results']
+      end
+    end
+    yaml_loader = lambda do |path|
+      if path == "some_path"
+        { 'boot_dir' => 'some_boot', 'boot_files' => ['some_patterns'] }
+      end
+    end
+
+    parser = Jasmine::YamlConfigParser.new('some_path', 'some_project_root', expander, yaml_loader)
+
+    parser.boot_files.should == ['expected_results']
   end
 
   it "expands jasmine css file paths" do

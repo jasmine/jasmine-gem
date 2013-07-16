@@ -22,12 +22,21 @@ module Jasmine
       File.join(@pwd, loaded_yaml['jasmine_dir'])
     end
 
+    def boot_dir
+      return nil unless loaded_yaml['boot_dir']
+      File.join(@pwd, loaded_yaml['boot_dir'])
+    end
+
     def src_files
       @path_expander.call(src_dir, loaded_yaml['src_files'] || [])
     end
 
     def jasmine_files
       @path_expander.call(jasmine_dir, loaded_yaml['jasmine_files'] || [])
+    end
+
+    def boot_files
+      @path_expander.call(boot_dir, loaded_yaml['boot_files'] || [])
     end
 
     def jasmine_css_files

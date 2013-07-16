@@ -19,7 +19,7 @@ describe "Jasmine command line tool" do
 
     ENV['JASMINE_GEM_PATH'] = "#{@root}/lib"
     ci_output = `rake -E "#{bootstrap}" --trace jasmine:ci`
-    ci_output.should =~ (/[1-9][0-9]* examples, 0 failures/)
+    ci_output.should =~ (/[1-9][0-9]* specs, 0 failures/)
   end
 
   it "should include license info" do

@@ -6,7 +6,7 @@ module Jasmine
     end
 
     def process(results_hash, suites_hash)
-      return Jasmine::Results.new(results_hash, suites_hash, example_locations)
+      Jasmine::Results.new(results_hash, suites_hash, example_locations)
     end
 
     def example_locations
