@@ -6,6 +6,7 @@ module Jasmine
     attr_accessor :jasmine_dir, :spec_dir, :boot_dir, :src_dir
     #TODO: these are largely client concerns, move them.
     attr_accessor :port, :browser, :host, :result_batch_size
+    attr_accessor :selenium_server, :selenium_server_port
 
     def initialize()
       @rack_paths = {}
@@ -17,6 +18,8 @@ module Jasmine
       @boot_files = lambda { [] }
       @src_files = lambda { [] }
       @spec_files = lambda { [] }
+
+      @browser = 'firefox'
     end
 
     def css_files
@@ -53,10 +56,6 @@ module Jasmine
 
     def port
       @port ||= Jasmine.find_unused_port
-    end
-
-    def browser
-      @browser || 'firefox'
     end
 
     def host

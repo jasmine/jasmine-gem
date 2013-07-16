@@ -3,14 +3,15 @@ module Jasmine
   class SeleniumDriver
     def initialize(browser, http_address)
       require 'selenium-webdriver'
-      selenium_server = if ENV['SELENIUM_SERVER']
-        ENV['SELENIUM_SERVER']
-      elsif ENV['SELENIUM_SERVER_PORT']
-        "http://localhost:#{ENV['SELENIUM_SERVER_PORT']}/wd/hub"
-      end
-      options = if browser == "firefox" && ENV["JASMINE_FIREBUG"]
-                  require File.join(File.dirname(__FILE__), "firebug/firebug")
-                  profile = Selenium::WebDriver::Firefox::Profile.new
+
+      selenium_server = if Jasmine.config.selenium_server
+                          Jasmine.config.selenium_server
+                        elsif Jasmine.config.selenium_server_port
+                          "http://localhost:#{Jasmine.config.selenium_server_port}/wd/hub"
+                        end
+      options = if browser == 'firefox-firebug'
+                  require File.join(File.dirname(__FILE__), 'firebug/firebug')
+                  (profile = Selenium::WebDriver::Firefox::Profile.new)
                   profile.enable_firebug
                   {:profile => profile}
                 end || {}
@@ -32,7 +33,7 @@ module Jasmine
 
     def eval_js(script)
       result = @driver.execute_script(script)
-      JSON.parse("{\"result\":#{result.to_json}}", :max_nesting => false)["result"]
+      JSON.parse("{\"result\":#{result.to_json}}", :max_nesting => false)['result']
     end
 
     def json_generate(obj)
