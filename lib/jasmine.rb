@@ -19,7 +19,8 @@ jasmine_files = ['base',
                  'yaml_config_parser',
                  File.join('formatters', 'console'),
                  File.join('runners', 'http'),
-                 File.join('reporters', 'api_reporter')]
+                 File.join('reporters', 'api_reporter'),
+                 File.join('formatters', 'junit_xml')]
 
 jasmine_files.each do |file|
   require File.join('jasmine', file)

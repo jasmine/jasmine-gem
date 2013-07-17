@@ -65,7 +65,6 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'rack-test'
   s.add_development_dependency 'json_pure'
-  s.add_development_dependency 'nokogiri'
 
   s.add_development_dependency 'anchorman'
 
@@ -73,4 +72,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'rack', '~> 1.0'
   s.add_dependency 'rspec', '>= 1.3.1'
   s.add_dependency 'selenium-webdriver', '>= 0.1.3'
+  s.add_dependency 'nokogiri'
 end

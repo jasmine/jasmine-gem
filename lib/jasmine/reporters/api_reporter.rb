@@ -1,5 +1,5 @@
 module Jasmine
-  module Runners
+  module Reporters
     #TODO: where does this live?
     class ApiReporter < Struct.new(:driver, :batch_size)
       STARTED_JS = "return jsApiReporter && jsApiReporter.started"

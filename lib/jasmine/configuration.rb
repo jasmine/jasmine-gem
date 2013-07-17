@@ -7,6 +7,7 @@ module Jasmine
     #TODO: these are largely client concerns, move them.
     attr_accessor :port, :browser, :host, :result_batch_size
     attr_accessor :selenium_server, :selenium_server_port
+    attr_accessor :junit_xml, :junit_xml_path
 
     def initialize()
       @rack_paths = {}
@@ -20,6 +21,8 @@ module Jasmine
       @spec_files = lambda { [] }
 
       @browser = 'firefox'
+      @junit_xml = false
+      @junit_xml_path = Dir.getwd
     end
 
     def css_files

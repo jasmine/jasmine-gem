@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Jasmine::Runners::HTTP do
   let(:driver) { FakeSeleniumDriver.new }
   let(:batch_size) { 3 }
-  let(:reporter) { Jasmine::Runners::ApiReporter.new(driver, batch_size) }
+  let(:reporter) { Jasmine::Reporters::ApiReporter.new(driver, batch_size) }
   subject { Jasmine::Runners::HTTP.new(driver, reporter) }
 
   describe '#run' do

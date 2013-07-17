@@ -1,5 +1,7 @@
 module Jasmine
   class Results
+    attr_reader :results
+
     def initialize(raw_results)
       @results = raw_results.map {|raw| Result.new(raw) }
     end

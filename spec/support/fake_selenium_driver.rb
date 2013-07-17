@@ -9,9 +9,9 @@ class FakeSeleniumDriver
   def eval_js(str)
 
     case str
-      when Jasmine::Runners::ApiReporter::STARTED_JS
+      when Jasmine::Reporters::ApiReporter::STARTED_JS
         @state == :started
-      when Jasmine::Runners::ApiReporter::FINISHED_JS
+      when Jasmine::Reporters::ApiReporter::FINISHED_JS
         @state == :finished
       else
         # TODO: When we drop support for Ruby < 1.9, USE NAMED CAPTURES HEYAH

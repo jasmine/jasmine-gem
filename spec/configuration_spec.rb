@@ -168,5 +168,24 @@ describe Jasmine::Configuration do
       config.selenium_server_port.should == 'turnip'
     end
   end
+
+  describe 'junit xml' do
+    it 'returns value if set' do
+      config = Jasmine::Configuration.new()
+      config.junit_xml = 'fish'
+      config.junit_xml.should == 'fish'
+
+      config.junit_xml_path = 'turnip'
+      config.junit_xml_path.should == 'turnip'
+    end
+
+    it 'returns defaults' do
+      config = Jasmine::Configuration.new()
+
+      config.junit_xml.should == false
+
+      config.junit_xml_path.should == Dir.getwd
+    end
+  end
 end
 

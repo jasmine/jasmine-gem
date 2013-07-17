@@ -25,10 +25,17 @@ t.abort_on_exception = true
 Jasmine::wait_for_listener(config.port, "jasmine server")
 puts "jasmine server started."
 
-reporter = Jasmine::Runners::ApiReporter.new(driver, config.result_batch_size)
+reporter = Jasmine::Reporters::ApiReporter.new(driver, config.result_batch_size)
 raw_results = Jasmine::Runners::HTTP.new(driver, reporter).run
 results = Jasmine::Results.new(raw_results)
 
 formatter = Jasmine::Formatters::Console.new(results)
 puts formatter.failures
 puts formatter.summary
+
+if config.junit_xml
+  xml = Jasmine::Formatters::JUnitXml.new(results)
+  f = open(File.join(config.junit_xml_location, 'junit_results.xml'), 'w')
+  f.puts xml.summary
+  f.close()
+end
