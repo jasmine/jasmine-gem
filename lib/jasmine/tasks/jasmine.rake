@@ -44,4 +44,3 @@ end
 
 desc 'Run specs via server'
 task :jasmine => %w(jasmine:server)
-task 'jasmine:require' => [:environment]
