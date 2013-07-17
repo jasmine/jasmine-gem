@@ -16,10 +16,12 @@ jasmine_files = ['base',
                  'results',
                  'path_expander',
                  'yaml_config_parser',
+                 File.join('formatters', 'base'),
                  File.join('formatters', 'console'),
+                 File.join('formatters', 'junit_xml'),
                  File.join('runners', 'http'),
-                 File.join('reporters', 'api_reporter'),
-                 File.join('formatters', 'junit_xml')]
+                 File.join('reporters', 'api_reporter')]
+
 
 jasmine_files.each do |file|
   require File.join('jasmine', file)

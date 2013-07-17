@@ -2,7 +2,13 @@ require 'nokogiri'
 
 module Jasmine
   module Formatters
-    class JUnitXml < Struct.new(:results)
+    class JUnitXml < BaseFormatter
+      def format
+        f = open(File.join(Jasmine.config.junit_xml_location, 'junit_results.xml'), 'w')
+        f.puts summary
+        f.close()
+      end
+
       def summary
         doc = Nokogiri::XML '<testsuites></testsuites>', nil, 'UTF-8'
 

@@ -172,8 +172,6 @@ describe Jasmine::Configuration do
   describe 'junit xml' do
     it 'returns value if set' do
       config = Jasmine::Configuration.new()
-      config.junit_xml = 'fish'
-      config.junit_xml.should == 'fish'
 
       config.junit_xml_path = 'turnip'
       config.junit_xml_path.should == 'turnip'
@@ -181,8 +179,6 @@ describe Jasmine::Configuration do
 
     it 'returns defaults' do
       config = Jasmine::Configuration.new()
-
-      config.junit_xml.should == false
 
       config.junit_xml_path.should == Dir.getwd
     end
@@ -207,6 +203,20 @@ describe Jasmine::Configuration do
       config = Jasmine::Configuration.new()
 
       config.jasmine_port.should == 8888
+    end
+  end
+
+  describe 'jasmine ports' do
+    it 'returns value if set' do
+      config = Jasmine::Configuration.new()
+      config.formatters = ['pants']
+      config.formatters.should == ['pants']
+    end
+
+    it 'returns defaults' do
+      config = Jasmine::Configuration.new()
+
+      config.formatters.should == [Jasmine::Formatters::Console]
     end
   end
 end

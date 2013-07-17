@@ -1,6 +1,11 @@
 module Jasmine
   module Formatters
-    class Console < Struct.new(:results)
+    class Console < BaseFormatter
+      def format
+        puts failures
+        puts summary
+      end
+
       def summary
         summary = "#{pluralize(results.size, 'spec')}, " +
           "#{pluralize(results.failures.size, 'failure')}"

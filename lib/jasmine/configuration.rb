@@ -4,10 +4,11 @@ module Jasmine
     attr_writer :jasmine_files, :boot_files, :src_files, :spec_files
     attr_accessor :jasmine_path, :spec_path, :boot_path, :src_path
     attr_accessor :jasmine_dir, :spec_dir, :boot_dir, :src_dir
+    attr_accessor :formatters
     #TODO: these are largely client concerns, move them.
     attr_accessor :port, :browser, :host, :result_batch_size
     attr_accessor :selenium_server, :selenium_server_port
-    attr_accessor :junit_xml, :junit_xml_path
+    attr_accessor :junit_xml_path
     attr_accessor :spec_format, :jasmine_port
 
     def initialize()
@@ -21,8 +22,9 @@ module Jasmine
       @src_files = lambda { [] }
       @spec_files = lambda { [] }
 
+      @formatters = [Jasmine::Formatters::Console]
+
       @browser = 'firefox'
-      @junit_xml = false
       @junit_xml_path = Dir.getwd
       @jasmine_port = 8888
     end
