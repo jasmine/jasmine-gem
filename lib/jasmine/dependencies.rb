@@ -10,6 +10,10 @@ module Jasmine
         safe_gem_check("rails", "~> 4.0.0.rc1") && running_rails4?
       end
 
+      def rails?
+        safe_gem_check("rails", ">= 3") && running_rails?
+      end
+
       def legacy_rack?
         !defined?(Rack::Server)
       end
