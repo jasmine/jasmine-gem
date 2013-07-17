@@ -19,8 +19,6 @@ matrix:
       env: RAILS_VERSION=pojs-rspec2
     - rvm: jruby
       env: RAILS_VERSION=pojs-rspec2
-    - rvm: 1.9.3
-      env: RAILS_VERSION=pojs-rspec2
   allow_failures:
     - rvm: rbx
     - rvm: jruby
