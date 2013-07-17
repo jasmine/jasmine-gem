@@ -8,6 +8,7 @@ module Jasmine
     attr_accessor :port, :browser, :host, :result_batch_size
     attr_accessor :selenium_server, :selenium_server_port
     attr_accessor :junit_xml, :junit_xml_path
+    attr_accessor :spec_format, :jasmine_port
 
     def initialize()
       @rack_paths = {}
@@ -23,6 +24,7 @@ module Jasmine
       @browser = 'firefox'
       @junit_xml = false
       @junit_xml_path = Dir.getwd
+      @jasmine_port = 8888
     end
 
     def css_files

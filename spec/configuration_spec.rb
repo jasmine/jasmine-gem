@@ -187,5 +187,27 @@ describe Jasmine::Configuration do
       config.junit_xml_path.should == Dir.getwd
     end
   end
+
+  describe 'spec format' do
+    it 'returns value if set' do
+      config = Jasmine::Configuration.new()
+      config.spec_format = 'fish'
+      config.spec_format.should == 'fish'
+    end
+  end
+
+  describe 'jasmine ports' do
+    it 'returns value if set' do
+      config = Jasmine::Configuration.new()
+      config.jasmine_port = 'fish'
+      config.jasmine_port.should == 'fish'
+    end
+
+    it 'returns defaults' do
+      config = Jasmine::Configuration.new()
+
+      config.jasmine_port.should == 8888
+    end
+  end
 end
 
