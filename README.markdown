@@ -7,7 +7,7 @@ This gem contains:
 
 * A small server that builds and executes a Jasmine suite for a project
 * A script that sets up a project to use the Jasmine gem's server
-* Generators for Ruby on Rails projects (Rails 2 and Rails 3)
+* Generators for Ruby on Rails projects (Rails 3 and Rails 4)
 
 You can get all of this by: `gem install jasmine` or by adding Jasmine to your `Gemfile`.
 
@@ -19,13 +19,7 @@ end
 
 ## Init A Project
 
-To initialize a project for Jasmine, it depends on your web framework
-
-For Rails2 support, use
-
-`script/generate jasmine`
-
-For Rails3 support, use
+To initialize a project for Jasmine
 
 `rails g jasmine:install`
 `rails g jasmine:examples`
@@ -78,4 +72,4 @@ Twitter: [@jasminebdd](http://twitter.com/jasminebdd)
 
 Please file issues here at Github
 
-Copyright (c) 2008-2010 Pivotal Labs. This software is licensed under the MIT License.
+Copyright (c) 2008-2013 Pivotal Labs. This software is licensed under the MIT License.

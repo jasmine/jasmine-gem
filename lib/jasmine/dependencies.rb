@@ -2,18 +2,6 @@ module Jasmine
   module Dependencies
 
     class << self
-      def rspec2?
-        safe_gem_check("rspec", ">= 2.0")
-      end
-
-      def rails2?
-        safe_gem_check("rails", "~> 2.3") && running_rails2?
-      end
-
-      def legacy_rails?
-        safe_gem_check("rails", "< 2.3.11") && running_legacy_rails?
-      end
-
       def rails3?
         safe_gem_check("rails", "~> 3") && running_rails3?
       end
@@ -30,19 +18,7 @@ module Jasmine
         (rails3? || rails4?) && Rails.respond_to?(:application) && Rails.application.respond_to?(:assets) && Rails.application.assets
       end
 
-      def use_railties?
-        rails3? || rails4?
-      end
-
       private
-
-      def running_legacy_rails?
-        running_rails? && (Gem::Version.new(Rails.version) < Gem::Version.new("2.3.11"))
-      end
-
-      def running_rails2?
-        running_rails? && Rails.version.to_i == 2
-      end
 
       def running_rails3?
         running_rails? && Rails.version.to_i == 3

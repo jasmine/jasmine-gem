@@ -4,26 +4,15 @@ require 'bundler'
 Bundler::GemHelper.install_tasks
 
 require 'jasmine'
-if Jasmine::Dependencies.rspec2?
-  require 'rspec'
-  require 'rspec/core/rake_task'
-else
-  require 'spec'
-  require 'spec/rake/spectask'
-end
+require 'rspec'
+require 'rspec/core/rake_task'
 
 desc 'Run all examples'
-if Jasmine::Dependencies.rspec2?
-  RSpec::Core::RakeTask.new(:spec) do |t|
-    t.pattern = 'spec/**/*_spec.rb'
-  end
-else
-  Spec::Rake::SpecTask.new('spec') do |t|
-    t.spec_files = FileList['spec/**/*.rb']
-  end
+RSpec::Core::RakeTask.new(:spec) do |t|
+  t.pattern = 'spec/**/*_spec.rb'
 end
 
-task :spec => ['jasmine:copy_examples_to_gem']
+task :spec => %w(jasmine:copy_examples_to_gem)
 
 task :default => :spec
 
@@ -58,5 +47,5 @@ namespace :jasmine do
 end
 
 desc 'Run specs via server'
-task :jasmine => ['jasmine:server']
+task :jasmine => %w(jasmine:server)
 

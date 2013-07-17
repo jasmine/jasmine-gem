@@ -9,21 +9,11 @@ Bundler.setup(*envs)
 
 $:.unshift(File.expand_path(File.join(File.dirname(__FILE__), '../lib')))
 require 'jasmine'
-
-if Jasmine::Dependencies.rspec2?
-  require 'rspec'
-else
-  require 'spec'
-end
-
+require 'rspec'
 require 'support/fake_selenium_driver'
 
 def create_rails(name)
-  if Jasmine::Dependencies.rails3?
-    `rails new #{name}`
-  else
-    `rails #{name}`
-  end
+  `rails new #{name}`
 end
 
 def create_temp_dir
