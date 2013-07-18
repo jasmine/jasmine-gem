@@ -23,5 +23,9 @@ module Jasmine
     def css_files
       @core.css_files
     end
+
+    def images_dir
+      @core.images_dir
+    end
   end
 end

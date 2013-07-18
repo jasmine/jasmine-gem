@@ -12,10 +12,11 @@ module Jasmine
 
     @config.add_path_mapper(Jasmine::PathMapper.method(:new))
 
-    @config.jasmine_path = jasmine_path = "/__jasmine__"
-    @config.src_path = src_path = "/"
-    @config.spec_path = spec_path = "/__spec__"
-    @config.boot_path = boot_path = "/__boot__"
+    @config.jasmine_path = jasmine_path = '/__jasmine__'
+    @config.src_path = src_path = '/'
+    @config.spec_path = spec_path = '/__spec__'
+    @config.boot_path = boot_path = '/__boot__'
+    @config.image_path = image_path = '/__images__'
 
     @config.jasmine_dir = core_config.path
     @config.boot_dir = core_config.boot_dir
@@ -25,6 +26,7 @@ module Jasmine
     @config.add_rack_path(jasmine_path, lambda { Rack::File.new(config.jasmine_dir) })
     @config.add_rack_path(boot_path, lambda { Rack::File.new(config.boot_dir) })
     @config.add_rack_path(spec_path, lambda { Rack::File.new(config.spec_dir) })
+    @config.add_rack_path(image_path, lambda { Rack::File.new(core_config.images_dir) })
     @config.add_rack_path(src_path, lambda {
       Rack::Cascade.new([
         Rack::URLMap.new('/' => Rack::File.new(config.src_dir)),
