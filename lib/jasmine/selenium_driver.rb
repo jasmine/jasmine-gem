@@ -15,11 +15,13 @@ module Jasmine
                   profile.enable_firebug
                   {:profile => profile}
                 end || {}
-      @driver = if selenium_server
-        Selenium::WebDriver.for :remote, :url => selenium_server, :desired_capabilities => browser.to_sym
-      else
-        Selenium::WebDriver.for browser.to_sym, options
-      end
+      @driver = if Jasmine.config.webdriver
+                  Jasmine.config.webdriver
+                elsif selenium_server
+                  Selenium::WebDriver.for :remote, :url => selenium_server, :desired_capabilities => browser.to_sym
+                else
+                  Selenium::WebDriver.for browser.to_sym, options
+                end
       @http_address = http_address
     end
 

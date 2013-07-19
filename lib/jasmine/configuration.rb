@@ -7,7 +7,7 @@ module Jasmine
     attr_accessor :formatters
     #TODO: these are largely client concerns, move them.
     attr_accessor :port, :browser, :host, :result_batch_size
-    attr_accessor :selenium_server, :selenium_server_port
+    attr_accessor :selenium_server, :selenium_server_port, :webdriver
     attr_accessor :junit_xml_path
     attr_accessor :spec_format, :jasmine_port
 
