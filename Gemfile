@@ -12,5 +12,5 @@ end
 if ENV['TRAVIS']
   gem 'jasmine-core', :git => 'http://github.com/pivotal/jasmine.git'
 else
-  gem 'jasmine-core', :path => '/Users/pivotal/workspace/jasmine'
+  gem 'jasmine-core', :path => '../jasmine'
 end
