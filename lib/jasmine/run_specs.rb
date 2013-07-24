@@ -30,3 +30,4 @@ config.formatters.each do |formatter_class|
   formatter.format()
 end
 
+exit 1 if results.failures.present?
