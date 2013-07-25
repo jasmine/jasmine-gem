@@ -30,7 +30,7 @@ module Jasmine
     end
 
     def disconnect
-      @driver.quit
+      @driver.close
     end
 
     def eval_js(script)
