@@ -26,6 +26,24 @@ module Jasmine
       if argv[0] == 'init'
         require 'fileutils'
 
+        force = false
+
+        if argv.size > 1 && argv[1] == "--force"
+          force = true
+        end
+
+        if File.exist?("Gemfile") && open("Gemfile", 'r').read.include?('rails') && !force
+          puts <<-EOF
+
+  You're attempting to run jasmine init in a Rails project. You probably want to use the Rails generator like so:
+      rails g jasmine:init
+
+  If you're not actually in a Rails application, just run this command again with --force
+      jasmine init --force
+          EOF
+          exit 1
+        end
+
         FileUtils.makedirs('public/javascripts')
         FileUtils.makedirs('spec/javascripts')
         FileUtils.makedirs('spec/javascripts/support')
