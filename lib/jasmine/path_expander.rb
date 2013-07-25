@@ -9,7 +9,7 @@ module Jasmine
           if files.empty? && !(path =~ /\*|^\!/)
             files = [File.join(base_directory, path)]
           end
-          files
+          files.sort
         end.flatten.uniq
       end
       chosen - negated

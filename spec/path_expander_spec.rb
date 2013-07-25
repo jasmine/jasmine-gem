@@ -51,6 +51,31 @@ describe Jasmine::PathExpander do
     ]
   end
 
+  it "sorts files" do
+    dir_glob = lambda do |pattern|
+      case pattern
+      when 'some_base/src0*'
+        ['some_base/src0.js']
+      when 'some_base/src1*'
+        ['some_base/src1zzz.js', 'some_base/src1.js']
+      else
+        raise "Unexpected pattern received: #{pattern}"
+      end
+    end
+
+    expanded_files = Jasmine::PathExpander.expand(
+      'some_base',
+      ['src1*', 'src0*'],
+      dir_glob
+    )
+
+    expanded_files.should == [
+      File.join('some_base', 'src1.js'),
+      File.join('some_base', 'src1zzz.js'),
+      File.join('some_base', 'src0.js')
+    ]
+  end
+
   it "supports negation of passed patterns" do
     dir_glob = lambda do |pattern|
       case pattern
