@@ -11,7 +11,11 @@ module Jasmine
       end
 
       def rails?
-        safe_gem_check("rails", ">= 3") && running_rails?
+        rails_available? && running_rails?
+      end
+
+      def rails_available?
+        safe_gem_check("rails", '>= 3')
       end
 
       def legacy_rack?

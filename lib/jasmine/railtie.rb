@@ -1,4 +1,5 @@
 require 'rails/railtie'
+
 module Jasmine
   class Railtie < Rails::Railtie
 
@@ -15,6 +16,7 @@ module Jasmine
 
     rake_tasks do
       load 'jasmine/tasks/jasmine.rake'
+      load 'jasmine/tasks/jasmine_rails.rake'
     end
   end
 end

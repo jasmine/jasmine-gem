@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+
 gemspec
 
 unless ENV['TRAVIS']
