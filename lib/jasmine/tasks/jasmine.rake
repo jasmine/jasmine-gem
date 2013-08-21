@@ -1,7 +1,7 @@
 namespace :jasmine do
   require 'jasmine/config'
 
-  Jasmine.load_configuration_from_yaml
+  Jasmine.load_configuration_from_yaml(ENV['JASMINE_CONFIG_PATH'])
 
   task :require do
     require 'jasmine'
