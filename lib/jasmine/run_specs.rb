@@ -4,7 +4,7 @@ require 'rubygems'
 require 'jasmine'
 require 'rspec'
 
-Jasmine.load_configuration_from_yaml
+Jasmine.load_configuration_from_yaml(ENV['JASMINE_CONFIG_PATH'])
 
 config = Jasmine.config
 
