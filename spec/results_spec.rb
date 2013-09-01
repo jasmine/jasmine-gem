@@ -64,6 +64,15 @@ describe Jasmine::Results::Result do
       expectation.should_not match(/8/)
       expectation.should_not match(/9/)
     end
+
+    it "handles failed specs with no stack trace" do
+      raw_result = failing_result_no_stack_trace
+
+      result = Jasmine::Results::Result.new(raw_result)
+      expectation = result.failed_expectations[0].stack
+      expectation.should match(/No stack/)
+    end
+
   end
 end
 

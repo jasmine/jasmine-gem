@@ -29,7 +29,11 @@ module Jasmine
 
       def failed_expectations
         failedExpectations.map { |e|
-          short_stack = e["stack"].split("\n").slice(0, 7).join("\n")
+          short_stack = if e["stack"]
+                          e["stack"].split("\n").slice(0, 7).join("\n")
+                        else
+                          "No stack trace present."
+                        end
           OpenStruct.new(:message => e["message"], :stack => short_stack)
         }
       end

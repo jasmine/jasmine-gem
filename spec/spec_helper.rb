@@ -67,6 +67,20 @@ def failing_raw_result
   })
 end
 
+def failing_result_no_stack_trace
+  raw_result('failed', {
+      'id' => 124,
+      'description' => 'a failing spec',
+      'fullName' => 'a suite with a failing spec',
+      'failedExpectations' => [
+          {
+              'message' => 'a failure message, but no stack',
+              'stack' => nil
+          }
+      ]
+  })
+end
+
 def raw_result(status, options = {})
   {'status' => status}.merge(options)
 end
