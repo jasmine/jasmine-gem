@@ -5,6 +5,7 @@ gemspec
 unless ENV['TRAVIS']
   group :debug do
     gem 'debugger', :platform => :mri
+    gem 'ruby-debug', :platform => :jruby
   end
 end
 
@@ -15,3 +16,4 @@ if ENV['TRAVIS']
 else
   gem 'jasmine-core', :path => '../jasmine'
 end
+
