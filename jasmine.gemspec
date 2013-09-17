@@ -34,9 +34,7 @@ Gem::Specification.new do |s|
   end
 
   s.add_development_dependency 'rack-test'
-  s.add_development_dependency 'json_pure'
-
-  s.add_development_dependency 'anchorman'
+  s.add_development_dependency 'multi_json'
 
   s.add_dependency 'jasmine-core', '~> 2.0.0.alpha'
   s.add_dependency 'rack'

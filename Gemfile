@@ -4,11 +4,11 @@ gemspec
 
 unless ENV['TRAVIS']
   group :debug do
-    gem 'debugger'
+    gem 'debugger', :platform => :mri
   end
 end
 
-
+gem 'anchorman', :platform => :mri
 # during development, do not release
 if ENV['TRAVIS']
   gem 'jasmine-core', :git => 'http://github.com/pivotal/jasmine.git'
