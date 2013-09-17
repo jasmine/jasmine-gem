@@ -27,7 +27,6 @@ Gem::Specification.new do |s|
     # for development & test of Rails 3 Generators
     s.add_development_dependency 'rspec', '>= 2.5.0'
     s.add_development_dependency 'rails', '>= 3.0.0', '< 4.0.0'
-    s.add_development_dependency 'sqlite3'
   else
     s.add_development_dependency 'rspec', '>= 2.5.0'
     s.add_development_dependency 'rails', '>= 4'
