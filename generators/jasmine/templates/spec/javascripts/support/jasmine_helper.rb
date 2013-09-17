@@ -6,7 +6,7 @@
 #Jasmine.configure do |config|
 #   config.boot_dir = '/absolute/path/to/boot_dir'
 #   config.boot_files = lambda { ['/absolute/path/to/boot_dir/file.js'] }
-#   config.browser = :firefox
+#   config.browser = [:firefox, :chrome, :phantomjs].sample
 #end
 #
 
