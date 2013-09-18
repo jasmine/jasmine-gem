@@ -37,19 +37,13 @@ module Jasmine
       end
     end
 
-    class Rails4AssetBundle
-
-      def initialize(pathname)
-        @pathname = pathname
-      end
+    class Rails4AssetBundle < RailsAssetBundle
 
       def assets
         context.get_original_assets(pathname)
       end
 
       private
-      attr_reader :pathname
-
       def context
         return @context if @context
         @context = ActionView::Base.new
