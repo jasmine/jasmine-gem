@@ -67,25 +67,26 @@ if Jasmine::Dependencies.rails_available?
           File.exists?('spec/javascripts/helpers/.gitkeep').should == true
           File.exists?('spec/javascripts/support/jasmine.yml').should == true
         end
-      end
 
-      context 'and the jasmine examples have been installed' do
-        it 'should find the Jasmine example files' do
-          Bundler.with_clean_env do
-            output = `bundle exec rails g jasmine:examples`
-            output.should include('create')
+        context 'and the jasmine examples have been installed' do
+          it 'should find the Jasmine example files' do
+            Bundler.with_clean_env do
+              output = `bundle exec rails g jasmine:examples`
+              output.should include('create')
 
-            File.exists?('app/assets/javascripts/jasmine_examples/Player.js').should == true
-            File.exists?('app/assets/javascripts/jasmine_examples/Song.js').should == true
+              File.exists?('app/assets/javascripts/jasmine_examples/Player.js').should == true
+              File.exists?('app/assets/javascripts/jasmine_examples/Song.js').should == true
 
-            File.exists?('spec/javascripts/jasmine_examples/PlayerSpec.js').should == true
-            File.exists?('spec/javascripts/helpers/SpecHelper.js').should == true
+              File.exists?('spec/javascripts/jasmine_examples/PlayerSpec.js').should == true
+              File.exists?('spec/javascripts/helpers/SpecHelper.js').should == true
 
-            output = `bundle exec rake jasmine:ci`
-            output.should include('5 specs, 0 failures')
+              output = `bundle exec rake jasmine:ci`
+              output.should include('5 specs, 0 failures')
+            end
           end
         end
       end
+
     end
   end
 end
