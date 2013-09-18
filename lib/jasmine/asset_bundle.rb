@@ -24,7 +24,7 @@ module Jasmine
 
       def assets
         context = get_asset_context
-        context.asset_paths.asset_for(pathname, 'js').to_a.map do |path|
+        context.asset_paths.asset_for(pathname, nil).to_a.map do |path|
           context.asset_path(path)
         end
       end
@@ -49,8 +49,13 @@ module Jasmine
         @context = ActionView::Base.new
         @context.instance_eval do
           def get_original_assets(pathname)
-            lookup_asset_for_path(pathname, :type => :javascript).to_a.map do |processed_asset|
-              path_to_javascript(processed_asset.logical_path)
+            assets_environment.find_asset(pathname).to_a.map do |processed_asset|
+              case processed_asset.content_type
+              when "text/css"
+                path_to_stylesheet(processed_asset.logical_path)
+              when "application/javascript"
+                path_to_javascript(processed_asset.logical_path)
+              end
             end
           end
         end

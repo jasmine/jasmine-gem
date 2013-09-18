@@ -55,9 +55,15 @@ if Jasmine::Dependencies.rails_available?
     end
 
     it "rake jasmine runs and serves the expected webpage when using asset pipeline" do
+      open('app/assets/stylesheets/foo.css', 'w') { |f|
+        f.puts "/* hi dere */"
+        f.flush
+      }
+
       jasmine_yml_path = 'spec/javascripts/support/jasmine.yml'
       jasmine_config = YAML.load_file(jasmine_yml_path)
       jasmine_config['src_files'] = ['assets/application.js']
+      jasmine_config['stylesheets'] = ['assets/application.css']
       open(jasmine_yml_path, 'w') { |f|
         f.puts YAML.dump(jasmine_config)
         f.flush
@@ -70,6 +76,7 @@ if Jasmine::Dependencies.rails_available?
           output = Net::HTTP.get(URI.parse('http://localhost:8888/'))
           output.should match(%r{script src.*/assets/jasmine_examples/Player.js})
           output.should match(%r{script src.*/assets/jasmine_examples/Song.js})
+          output.should match(%r{<link rel=.stylesheet.*?href=./assets/foo.css\?.*?>})
         ensure
           Process.kill(:SIGINT, pid)
           Process.waitpid pid
