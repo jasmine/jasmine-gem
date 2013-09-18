@@ -15,6 +15,7 @@ describe "Jasmine command line tool" do
       FileUtils.cp("#{@old_dir}/spec/fixture/Rakefile", @tmp)
       output = capture_stdout { Jasmine::CommandLineTool.new.process ["init"] }
       output.should =~ /Jasmine has been installed with example specs./
+      File.read(File.join(@tmp, 'Rakefile')).should include('jasmine_flunk')
     end
   end
 end
