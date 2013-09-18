@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'net/http'
 
 if Jasmine::Dependencies.rails_available?
   describe 'A Rails app' do
@@ -53,6 +54,27 @@ if Jasmine::Dependencies.rails_available?
       end
     end
 
+    it "rake jasmine runs and serves the expected webpage when using asset pipeline" do
+      jasmine_yml_path = 'spec/javascripts/support/jasmine.yml'
+      jasmine_config = YAML.load_file(jasmine_yml_path)
+      jasmine_config['src_files'] = ['assets/application.js']
+      open(jasmine_yml_path, 'w') { |f|
+        f.puts YAML.dump(jasmine_config)
+        f.flush
+      }
 
+      Bundler.with_clean_env do
+        begin
+          pid = Process.spawn "bundle exec rake jasmine"
+          Jasmine::wait_for_listener(8888, 'jasmine server')
+          output = Net::HTTP.get(URI.parse('http://localhost:8888/'))
+          output.should match(%r{script src.*/assets/jasmine_examples/Player.js})
+          output.should match(%r{script src.*/assets/jasmine_examples/Song.js})
+        ensure
+          Process.kill(:SIGINT, pid)
+          Process.waitpid pid
+        end
+      end
+    end
   end
 end
