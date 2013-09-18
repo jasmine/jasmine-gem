@@ -10,6 +10,7 @@ module Jasmine
     attr_accessor :selenium_server, :selenium_server_port, :webdriver
     attr_accessor :junit_xml_path
     attr_accessor :spec_format, :jasmine_port
+    attr_accessor :runner
 
     def initialize()
       @rack_paths = {}
@@ -21,6 +22,7 @@ module Jasmine
       @boot_files = lambda { [] }
       @src_files = lambda { [] }
       @spec_files = lambda { [] }
+      @runner = lambda { |config| }
 
       @formatters = [Jasmine::Formatters::Console]
 
@@ -75,8 +77,8 @@ module Jasmine
 
     private
 
-    def map(paths, type)
-      @path_mappers.inject(paths.call)  do |paths, mapper|
+    def map(path_procs, type)
+      @path_mappers.inject(path_procs.call) do |paths, mapper|
         if mapper.respond_to?("map_#{type}_paths")
           mapper.send("map_#{type}_paths", paths)
         else

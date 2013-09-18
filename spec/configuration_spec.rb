@@ -87,7 +87,6 @@ describe Jasmine::Configuration do
       map['some/path'].should be
       map['some/path'].call.should == result
     end
-
   end
 
   describe 'rack apps' do
@@ -217,6 +216,20 @@ describe Jasmine::Configuration do
       config = Jasmine::Configuration.new()
 
       config.formatters.should == [Jasmine::Formatters::Console]
+    end
+  end
+
+  describe 'custom runner' do
+    it 'stores and returns what is passed' do
+      config = Jasmine::Configuration.new
+      foo = double(:foo)
+      config.runner = foo
+      config.runner.should == foo
+    end
+
+    it 'does nothing by default' do
+      config = Jasmine::Configuration.new
+      config.runner.call('hi')
     end
   end
 end
