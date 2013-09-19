@@ -38,8 +38,5 @@ module Jasmine
       JSON.parse("{\"result\":#{result.to_json}}", :max_nesting => false)['result']
     end
 
-    def json_generate(obj)
-      JSON.generate(obj)
-    end
   end
 end
