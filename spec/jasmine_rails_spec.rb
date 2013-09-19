@@ -79,7 +79,10 @@ if Jasmine::Dependencies.rails_available?
           output.should match(%r{<link rel=.stylesheet.*?href=./assets/foo.css\?.*?>})
         ensure
           Process.kill(:SIGINT, pid)
-          Process.waitpid pid
+          begin
+            Process.waitpid pid
+          rescue Errno::ECHILD
+          end
         end
       end
     end
