@@ -1,8 +1,11 @@
 module Jasmine
   module Formatters
-    class BaseFormatter < Struct.new(:results)
-      def format
-        raise NotImplementedError.new('You must override the summary method on any custom formatters.')
+    class BaseFormatter < Struct.new(:config)
+      def format(results)
+        raise NotImplementedError.new('You must override the format method on any custom formatters.')
+      end
+
+      def done
       end
     end
   end

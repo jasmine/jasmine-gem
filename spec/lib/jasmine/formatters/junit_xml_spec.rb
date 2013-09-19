@@ -7,9 +7,9 @@ describe Jasmine::Formatters::JUnitXml do
       it 'shows the spec counts' do
         results = OpenStruct.new(:size => 1, :failures => [], :pending_specs => [],
                                  :results => [passing_result(fullName: 'Passing test', description: 'test')])
-        subject = Jasmine::Formatters::JUnitXml.new(results)
+        subject = Jasmine::Formatters::JUnitXml.new(nil)
 
-        xml = Nokogiri::XML(subject.summary)
+        xml = Nokogiri::XML(subject.summary(results))
 
         testsuite = xml.xpath('/testsuites/testsuite').first
         testsuite['tests'].should == '1'
@@ -25,9 +25,9 @@ describe Jasmine::Formatters::JUnitXml do
       it 'shows the spec counts' do
         results = OpenStruct.new(:size => 2, :failures => [failing_result], :pending_specs=> [],
                                  :results => [passing_result, failing_result])
-        subject = Jasmine::Formatters::JUnitXml.new(results)
+        subject = Jasmine::Formatters::JUnitXml.new(nil)
 
-        xml = Nokogiri::XML(subject.summary)
+        xml = Nokogiri::XML(subject.summary(results))
 
         testsuite = xml.xpath('/testsuites/testsuite').first
         testsuite['tests'].should == '1'

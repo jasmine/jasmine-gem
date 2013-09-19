@@ -3,13 +3,18 @@ require 'nokogiri'
 module Jasmine
   module Formatters
     class JUnitXml < BaseFormatter
-      def format
-        f = open(File.join(Jasmine.config.junit_xml_location, 'junit_results.xml'), 'w')
-        f.puts summary
+      def format(results)
+        @results ||= []
+        @results << results
+      end
+
+      def done
+        f = open(File.join(config.junit_xml_location, 'junit_results.xml'), 'w')
+        f.puts summary(@results.flatten)
         f.close()
       end
 
-      def summary
+      def summary(results)
         doc = Nokogiri::XML '<testsuites></testsuites>', nil, 'UTF-8'
 
         testsuites = doc.at_css('testsuites')

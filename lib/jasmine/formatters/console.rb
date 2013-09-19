@@ -1,12 +1,12 @@
 module Jasmine
   module Formatters
     class Console < BaseFormatter
-      def format
-        puts failures
-        puts summary
+      def format(results)
+        puts failures(results)
+        puts summary(results)
       end
 
-      def summary
+      def summary(results)
         summary = "#{pluralize(results.size, 'spec')}, " +
           "#{pluralize(results.failures.size, 'failure')}"
 
@@ -15,7 +15,7 @@ module Jasmine
         summary
       end
 
-      def failures
+      def failures(results)
         results.failures.map { |f| failure_message(f) }.join("\n\n")
       end
 

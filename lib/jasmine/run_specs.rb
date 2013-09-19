@@ -24,8 +24,9 @@ raw_results = config.runner.call(config)
 results = Jasmine::Results.new(raw_results)
 
 config.formatters.each do |formatter_class|
-  formatter = formatter_class.new(results)
-  formatter.format()
+  formatter = formatter_class.new(config)
+  formatter.format(results)
+  formatter.done
 end
 
 exit results.failures.size
