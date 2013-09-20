@@ -59,7 +59,7 @@ module Jasmine
       })
     end
 
-    @config.runner = Jasmine::Runners::HTTP
+    @config.runner = Jasmine::Runners::PhantomJs
   end
 
   def self.config

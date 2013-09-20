@@ -39,5 +39,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'rack'
   s.add_dependency 'rspec', '>= 1.3.1'
   s.add_dependency 'selenium-webdriver', '~> 2.35'
+  s.add_dependency 'phantomjs'
   s.add_dependency 'nokogiri'
 end
