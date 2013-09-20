@@ -3,20 +3,12 @@ require 'nokogiri'
 module Jasmine
   module Formatters
     class JUnitXml < BaseFormatter
+      def initialize(config)
+        super
+        @doc = Nokogiri::XML '<testsuites></testsuites>', nil, 'UTF-8'
+      end
+
       def format(results)
-        @results ||= []
-        @results << results
-      end
-
-      def done
-        f = open(File.join(config.junit_xml_location, 'junit_results.xml'), 'w')
-        f.puts summary(@results.flatten)
-        f.close()
-      end
-
-      def summary(results)
-        doc = Nokogiri::XML '<testsuites></testsuites>', nil, 'UTF-8'
-
         testsuites = doc.at_css('testsuites')
 
         results.results.each do |result|
@@ -44,9 +36,17 @@ module Jasmine
 
           testcase.parent = testsuite
         end
-
-        doc.to_xml(indent: 2)
       end
+
+      def done
+        File.open(File.join(config.junit_xml_location, 'junit_results.xml'), 'w') do |file|
+          file.puts doc.to_xml(indent: 2)
+        end
+      end
+
+      private
+      attr_reader :doc
+
     end
   end
 end

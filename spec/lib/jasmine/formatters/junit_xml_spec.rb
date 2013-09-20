@@ -2,14 +2,37 @@ require 'spec_helper'
 require 'nokogiri'
 
 describe Jasmine::Formatters::JUnitXml do
+
+  class FakeFile
+    def initialize
+      @content = ''
+    end
+
+    attr_reader :content
+
+    def puts(content)
+      @content << content
+    end
+  end
+
+  let(:file_stub) { FakeFile.new }
+
+  let(:config) { double(:config, :junit_xml_location => '/junit_path/') }
+
+  before do
+    File.stub(:open).with('/junit_path/junit_results.xml', 'w').and_yield(file_stub)
+  end
+
   describe '#summary' do
     describe 'when the full suite passes' do
       it 'shows the spec counts' do
         results = OpenStruct.new(:size => 1, :failures => [], :pending_specs => [],
                                  :results => [passing_result(fullName: 'Passing test', description: 'test')])
-        subject = Jasmine::Formatters::JUnitXml.new(nil)
+        subject = Jasmine::Formatters::JUnitXml.new(config)
 
-        xml = Nokogiri::XML(subject.summary(results))
+        subject.format(results)
+        subject.done
+        xml = Nokogiri::XML(file_stub.content)
 
         testsuite = xml.xpath('/testsuites/testsuite').first
         testsuite['tests'].should == '1'
@@ -23,11 +46,16 @@ describe Jasmine::Formatters::JUnitXml do
 
     describe 'when there are failures' do
       it 'shows the spec counts' do
-        results = OpenStruct.new(:size => 2, :failures => [failing_result], :pending_specs=> [],
-                                 :results => [passing_result, failing_result])
-        subject = Jasmine::Formatters::JUnitXml.new(nil)
+        results1 = OpenStruct.new(:size => 1, :failures => [], :pending_specs=> [],
+                                 :results => [passing_result])
+        results2 = OpenStruct.new(:size => 1, :failures => [failing_result], :pending_specs=> [],
+                                 :results => [failing_result])
+        subject = Jasmine::Formatters::JUnitXml.new(config)
 
-        xml = Nokogiri::XML(subject.summary(results))
+        subject.format(results1)
+        subject.format(results2)
+        subject.done
+        xml = Nokogiri::XML(file_stub.content)
 
         testsuite = xml.xpath('/testsuites/testsuite').first
         testsuite['tests'].should == '1'
