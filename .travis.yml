@@ -1,6 +1,6 @@
 before_script:
   - "sh -e /etc/init.d/xvfb start"
-script: "DISPLAY=:99.0 bundle exec rake"
+script: "if [ -z $PERFORMANCE_SPECS ];then bundle exec rake performance_specs; else bundle exec rake; fi"
 
 rvm:
   - "1.9.3"
@@ -14,8 +14,11 @@ env:
  - "RAILS_VERSION=pojs-rspec2"
 
 matrix:
+  include:
+    - rvm: "2.0.0"
+      env: "PERFORMANCE_SPECS=true"
   exclude:
-    - rvm: rbx
-      env: RAILS_VERSION=pojs-rspec2
-    - rvm: jruby
-      env: RAILS_VERSION=pojs-rspec2
+    - rvm: "rbx"
+      env: "RAILS_VERSION=pojs-rspec2"
+    - rvm: "jruby"
+      env: "RAILS_VERSION=pojs-rspec2"

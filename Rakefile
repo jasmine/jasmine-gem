@@ -10,6 +10,13 @@ require 'rspec/core/rake_task'
 desc 'Run all examples'
 RSpec::Core::RakeTask.new(:spec) do |t|
   t.pattern = 'spec/**/*_spec.rb'
+  t.rspec_opts = '-t ~performance'
+end
+
+desc 'Run performance build'
+RSpec::Core::RakeTask.new(:performance_specs) do |t|
+  t.pattern = 'spec/**/*_spec.rb'
+  t.rspec_opts = '-t performance'
 end
 
 task :spec => %w(jasmine:copy_examples_to_gem)

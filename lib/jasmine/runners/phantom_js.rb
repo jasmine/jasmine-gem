@@ -10,11 +10,17 @@ module Jasmine
       end
 
       def run
-        command = "#{Phantomjs.path} '#{File.join(File.dirname(__FILE__), 'phantom_jasmine_run.js')}' #{config.host}:#{config.port}/"
-        result_str = `#{command}`
-
-        @results = Jasmine::Results.new(JSON.parse(result_str))
-        formatter.format(@results)
+        command = "#{Phantomjs.path} '#{File.join(File.dirname(__FILE__), 'phantom_jasmine_run.js')}' #{config.host}:#{config.port}/ #{config.result_batch_size}"
+        all_raw_results = []
+        IO.popen(command) do |output|
+          output.each do |line|
+            raw_results = JSON.parse(line, :max_nesting => false)
+            line_results = Jasmine::Results.new(raw_results)
+            formatter.format(line_results)
+            all_raw_results += raw_results
+          end
+        end
+        @results = Jasmine::Results.new(all_raw_results)
         formatter.done
       end
 
