@@ -71,7 +71,7 @@ if Jasmine::Dependencies.rails_available?
 
       Bundler.with_clean_env do
         begin
-          pid = Process.spawn "bundle exec rake jasmine"
+          pid = IO.popen("bundle exec rake jasmine").pid
           Jasmine::wait_for_listener(8888, 'jasmine server')
           output = Net::HTTP.get(URI.parse('http://localhost:8888/'))
           output.should match(%r{script src.*/assets/jasmine_examples/Player.js})
