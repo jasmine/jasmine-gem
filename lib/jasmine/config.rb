@@ -59,12 +59,7 @@ module Jasmine
       })
     end
 
-    @config.runner = lambda { |config|
-      driver = Jasmine::SeleniumDriver.new(config.browser, "#{config.host}:#{config.port}/")
-      reporter = Jasmine::Reporters::ApiReporter.new(driver, config.result_batch_size)
-      Jasmine::Runners::HTTP.new(driver, reporter).run
-    }
-
+    @config.runner = Jasmine::Runners::HTTP
   end
 
   def self.config

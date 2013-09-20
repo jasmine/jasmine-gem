@@ -20,13 +20,8 @@ t.abort_on_exception = true
 Jasmine::wait_for_listener(config.port, 'jasmine server')
 puts 'jasmine server started.'
 
-raw_results = config.runner.call(config)
-results = Jasmine::Results.new(raw_results)
+formatters = config.formatters.map { |formatter_class| formatter_class.new(config) }
+runner = config.runner.new(Jasmine::Formatters::Multi.new(formatters), config)
+runner.run
 
-config.formatters.each do |formatter_class|
-  formatter = formatter_class.new(config)
-  formatter.format(results)
-  formatter.done
-end
-
-exit results.failures.size
+exit runner.succeeded? ? 0 : 1

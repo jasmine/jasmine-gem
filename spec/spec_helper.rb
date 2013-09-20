@@ -10,7 +10,6 @@ Bundler.setup(*envs)
 $:.unshift(File.expand_path(File.join(File.dirname(__FILE__), '../lib')))
 require 'jasmine'
 require 'rspec'
-require 'support/fake_selenium_driver'
 
 def create_rails(name)
   `rails new #{name}`
