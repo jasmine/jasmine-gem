@@ -11,20 +11,19 @@ module Jasmine
       def format(results)
         testsuites = doc.at_css('testsuites')
 
-        results.results.each do |result|
-          suite_name = result.full_name.slice(0, result.full_name.size - result.description.size - 1)
 
+        results.each do |result|
           testsuite = Nokogiri::XML::Node.new 'testsuite', doc
           testsuite['tests'] = 1
-          testsuite['failures'] = result.status == 'failed' ? 1 : 0
+          testsuite['failures'] = result.failed? ? 1 : 0
           testsuite['errors'] = 0
-          testsuite['name'] = suite_name
+          testsuite['name'] = result.suite_name
           testsuite.parent = testsuites
 
           testcase = Nokogiri::XML::Node.new 'testcase', doc
           testcase['name'] = result.description
 
-          if result.status == 'failed'
+          if result.failed?
             result.failed_expectations.each do |failed_exp|
               failure = Nokogiri::XML::Node.new 'failure', doc
               failure['message'] = failed_exp.message

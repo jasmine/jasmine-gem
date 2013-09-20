@@ -6,7 +6,7 @@ module Jasmine
       def initialize(formatter, config)
         @formatter = formatter
         @config = config
-        @results = Jasmine::Results.new([])
+        @results = []
       end
 
       def run
@@ -15,17 +15,17 @@ module Jasmine
         IO.popen(command) do |output|
           output.each do |line|
             raw_results = JSON.parse(line, :max_nesting => false)
-            line_results = Jasmine::Results.new(raw_results)
+            line_results = raw_results.map { |r| Result.new(r) }
             formatter.format(line_results)
             all_raw_results += raw_results
           end
         end
-        @results = Jasmine::Results.new(all_raw_results)
+        @results = Result.map_raw_results(all_raw_results)
         formatter.done
       end
 
       def succeeded?
-        results.failures.count == 0
+        results.count(&:failed?) == 0
       end
 
       private

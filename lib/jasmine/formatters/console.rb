@@ -7,16 +7,18 @@ module Jasmine
       end
 
       def summary(results)
+        failure_count = results.count(&:failed?)
+        pending_count = results.count(&:pending?)
         summary = "#{pluralize(results.size, 'spec')}, " +
-          "#{pluralize(results.failures.size, 'failure')}"
+          "#{pluralize(failure_count, 'failure')}"
 
-        summary += ", #{pluralize(results.pending_specs.size, 'pending spec')}" unless results.pending_specs.empty?
+        summary += ", #{pluralize(pending_count, 'pending spec')}" if pending_count > 0
 
         summary
       end
 
       def failures(results)
-        results.failures.map { |f| failure_message(f) }.join("\n\n")
+        results.select(&:failed?).map { |f| failure_message(f) }.join("\n\n")
       end
 
       private

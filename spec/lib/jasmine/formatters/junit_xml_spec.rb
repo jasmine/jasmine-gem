@@ -20,14 +20,14 @@ describe Jasmine::Formatters::JUnitXml do
   let(:config) { double(:config, :junit_xml_location => '/junit_path/') }
 
   before do
+    File.stub(:open).and_call_original
     File.stub(:open).with('/junit_path/junit_results.xml', 'w').and_yield(file_stub)
   end
 
   describe '#summary' do
     describe 'when the full suite passes' do
       it 'shows the spec counts' do
-        results = OpenStruct.new(:size => 1, :failures => [], :pending_specs => [],
-                                 :results => [passing_result(fullName: 'Passing test', description: 'test')])
+        results = [passing_result('fullName' => 'Passing test', 'description' => 'test')]
         subject = Jasmine::Formatters::JUnitXml.new(config)
 
         subject.format(results)
@@ -46,10 +46,8 @@ describe Jasmine::Formatters::JUnitXml do
 
     describe 'when there are failures' do
       it 'shows the spec counts' do
-        results1 = OpenStruct.new(:size => 1, :failures => [], :pending_specs=> [],
-                                 :results => [passing_result])
-        results2 = OpenStruct.new(:size => 1, :failures => [failing_result], :pending_specs=> [],
-                                 :results => [failing_result])
+        results1 = [passing_result]
+        results2 = [failing_result]
         subject = Jasmine::Formatters::JUnitXml.new(config)
 
         subject.format(results1)
@@ -74,10 +72,10 @@ describe Jasmine::Formatters::JUnitXml do
   end
 
   def failing_result(options = {})
-    Jasmine::Results::Result.new(failing_raw_result.merge(options))
+    Jasmine::Result.new(failing_raw_result.merge(options))
   end
 
   def passing_result(options = {})
-    Jasmine::Results::Result.new(passing_raw_result.merge(options))
+    Jasmine::Result.new(passing_raw_result.merge(options))
   end
 end

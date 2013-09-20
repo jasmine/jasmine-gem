@@ -45,42 +45,40 @@ module Kernel
 end
 
 def passing_raw_result
-  raw_result('passed', {fullName: 'Passing test', description: 'Passing'})
+  {'id' => 123, 'status' => 'passed', 'fullName' => 'Passing test', 'description' => 'Passing', 'failedExpectations' => []}
 end
 
 def pending_raw_result
-  raw_result('pending', {fullName: 'Passing test', description: 'Passing'})
+  {'id' => 123, 'status' => 'pending', 'fullName' => 'Passing test', 'description' => 'Pending', 'failedExpectations' => []}
 end
 
 def failing_raw_result
-  raw_result('failed', {
-      'id' => 124,
-      'description' => 'a failing spec',
-      'fullName' => 'a suite with a failing spec',
-      'failedExpectations' => [
-          {
-              'message' => 'a failure message',
-              'stack' => 'a stack trace'
-          }
-      ]
-  })
+  {
+    'status' => 'failed',
+    'id' => 124,
+    'description' => 'a failing spec',
+    'fullName' => 'a suite with a failing spec',
+    'failedExpectations' => [
+      {
+        'message' => 'a failure message',
+        'stack' => 'a stack trace'
+      }
+    ]
+  }
 end
 
 def failing_result_no_stack_trace
-  raw_result('failed', {
-      'id' => 124,
-      'description' => 'a failing spec',
-      'fullName' => 'a suite with a failing spec',
-      'failedExpectations' => [
-          {
-              'message' => 'a failure message, but no stack',
-              'stack' => nil
-          }
-      ]
-  })
-end
-
-def raw_result(status, options = {})
-  {'status' => status}.merge(options)
+  {
+    'status' => 'failed',
+    'id' => 124,
+    'description' => 'a failing spec',
+    'fullName' => 'a suite with a failing spec',
+    'failedExpectations' => [
+      {
+        'message' => 'a failure message, but no stack',
+        'stack' => nil
+      }
+    ]
+  }
 end
 
