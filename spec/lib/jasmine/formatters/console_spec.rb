@@ -1,14 +1,17 @@
 require 'spec_helper'
 
 describe Jasmine::Formatters::Console do
+
+  let(:outputter_output) { '' }
+  let(:outputter) { lambda { |str| outputter_output << str } }
   describe '#failures' do
     it 'shows the failure messages' do
       results = [failing_result, failing_result]
-      subject = Jasmine::Formatters::Console.new(nil).failures(results)
+      Jasmine::Formatters::Console.new(nil, outputter).format(results)
 
-      subject.should match(/a suite with a failing spec/)
-      subject.should match(/a failure message/)
-      subject.should match(/a stack trace/)
+      outputter_output.should match(/a suite with a failing spec/)
+      outputter_output.should match(/a failure message/)
+      outputter_output.should match(/a stack trace/)
     end
   end
 
@@ -16,52 +19,64 @@ describe Jasmine::Formatters::Console do
     describe 'when the full suite passes' do
       it 'shows the spec counts' do
         results = [passing_result]
-        subject = Jasmine::Formatters::Console.new(nil).summary(results)
+        console = Jasmine::Formatters::Console.new(nil, outputter)
+        console.format(results)
+        console.done
 
-        subject.should match(/1 spec/)
-        subject.should match(/0 failures/)
+        outputter_output.should match(/1 spec/)
+        outputter_output.should match(/0 failures/)
       end
 
       it 'shows the spec counts (pluralized)' do
         results = [passing_result, passing_result]
-        subject = Jasmine::Formatters::Console.new(nil).summary(results)
+        console = Jasmine::Formatters::Console.new(nil, outputter)
+        console.format(results)
+        console.done
 
-        subject.should match(/2 specs/)
-        subject.should match(/0 failures/)
+        outputter_output.should match(/2 specs/)
+        outputter_output.should match(/0 failures/)
       end
     end
 
     describe 'when there are failures' do
       it 'shows the spec counts' do
         results = [passing_result, failing_result]
-        subject = Jasmine::Formatters::Console.new(nil).summary(results)
+        console = Jasmine::Formatters::Console.new(nil, outputter)
+        console.format(results)
+        console.done
 
-        subject.should match(/2 specs/)
-        subject.should match(/1 failure/)
+        outputter_output.should match(/2 specs/)
+        outputter_output.should match(/1 failure/)
       end
 
       it 'shows the spec counts (pluralized)' do
         results = [failing_result, failing_result]
-        subject = Jasmine::Formatters::Console.new(nil).summary(results)
+        console = Jasmine::Formatters::Console.new(nil, outputter)
+        console.format(results)
+        console.done
 
-        subject.should match(/2 specs/)
-        subject.should match(/2 failures/)
+        outputter_output.should match(/2 specs/)
+        outputter_output.should match(/2 failures/)
       end
     end
 
     describe 'when there are pending specs' do
       it 'shows the spec counts' do
         results = [passing_result, pending_result]
-        subject = Jasmine::Formatters::Console.new(nil).summary(results)
+        console = Jasmine::Formatters::Console.new(nil, outputter)
+        console.format(results)
+        console.done
 
-        subject.should match(/1 pending spec/)
+        outputter_output.should match(/1 pending spec/)
       end
 
       it 'shows the spec counts (pluralized)' do
         results = [pending_result, pending_result]
-        subject = Jasmine::Formatters::Console.new(nil).summary(results)
+        console = Jasmine::Formatters::Console.new(nil, outputter)
+        console.format(results)
+        console.done
 
-        subject.should match(/2 pending specs/)
+        outputter_output.should match(/2 pending specs/)
       end
     end
 
@@ -69,9 +84,11 @@ describe Jasmine::Formatters::Console do
 
       it 'should not mention pending specs' do
         results = [passing_result]
-        subject = Jasmine::Formatters::Console.new(nil).summary(results)
+        console = Jasmine::Formatters::Console.new(nil, outputter)
+        console.format(results)
+        console.done
 
-        subject.should_not match(/pending spec[s]/)
+        outputter_output.should_not match(/pending spec[s]/)
       end
     end
   end
