@@ -34,7 +34,7 @@ Start the Jasmine server:
 
 `rake jasmine`
 
-Point your browser to `localhost:8888`. The suite will run every time this page is re-loaded.  
+Point your browser to `localhost:8888`. The suite will run every time this page is re-loaded.
 
 Start Jasmine on a different port:
 
@@ -46,24 +46,12 @@ For Continuous Integration environments, add this task to the project build step
 
 `rake jasmine:ci`
 
-This uses Selenium to launch a browser and run the Jasmine suite. Then it uses RSpec to extract the results from the Jasmine reporter and write them to your build log. The browser used by selenium can be changed by configuration in spec_helper file (this might require additional webdriver dependencies).
+This uses PhantomJS to load and run the Jasmine suite.
 
 ## Configuration
 
 Customize `spec/javascripts/support/jasmine.yml` to enumerate the source files, stylesheets, and spec files you would like the Jasmine runner to include.
 You may use dir glob strings.
-
-## Note about the CI task and RSpec
-
-This gem requires RSpec for the `jasmine:ci` rake task to work. But this gem does not explicitly *depend* on any version of the RSpec gem.
-
-If you're writing a Rails application then as long as you've installed RSpec before you install Jasmine and attempt a `rake jasmine:ci`, then you will be fine.
-
-If you're using another Ruby framework, or don't care about Ruby, then run
-
-`gem install rspec`
-
-before you attempt the CI task.
 
 ## Support
 
