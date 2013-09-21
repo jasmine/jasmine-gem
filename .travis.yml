@@ -1,6 +1,6 @@
 before_script:
   - "sh -e /etc/init.d/xvfb start"
-script: "if [ -n $PERFORMANCE_SPECS ];then bundle exec rake performance_specs; else bundle exec rake; fi"
+script: "if [ $PERFORMANCE_SPECS ];then bundle exec rake performance_specs; else bundle exec rake; fi"
 
 rvm:
   - "1.9.3"
