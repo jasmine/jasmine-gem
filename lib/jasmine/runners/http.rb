@@ -22,7 +22,7 @@ module Jasmine
       end
 
       def succeeded?
-        results.failures.count == 0
+        results.detect(&:failed?).nil?
       end
 
       private
