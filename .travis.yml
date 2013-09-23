@@ -11,7 +11,7 @@ rvm:
 env:
  - "RAILS_VERSION=rails3"
  - "RAILS_VERSION=rails4"
- - "RAILS_VERSION=pojs-rspec2"
+ - "RAILS_VERSION=pojs"
 
 matrix:
   include:
@@ -19,6 +19,6 @@ matrix:
       env: "PERFORMANCE_SPECS=true"
   exclude:
     - rvm: "rbx"
-      env: "RAILS_VERSION=pojs-rspec2"
+      env: "RAILS_VERSION=pojs"
     - rvm: "jruby"
-      env: "RAILS_VERSION=pojs-rspec2"
+      env: "RAILS_VERSION=pojs"

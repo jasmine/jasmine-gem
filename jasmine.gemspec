@@ -20,24 +20,21 @@ Gem::Specification.new do |s|
   s.require_paths      = ["lib"]
   s.rdoc_options       = ["--charset=UTF-8"]
 
-  if ENV['RAILS_VERSION'] == 'pojs-rspec2'
-    s.add_development_dependency 'rspec', '>= 2.5.0'
-    s.add_development_dependency 'rake-tasks'
-  elsif ENV['RAILS_VERSION'] == 'rails3'
-    # for development & test of Rails 3 Generators
-    s.add_development_dependency 'rspec', '>= 2.5.0'
+  case ENV['RAILS_VERSION']
+  when 'rails3'
     s.add_development_dependency 'rails', '>= 3.0.0', '< 4.0.0'
-  else
-    s.add_development_dependency 'rspec', '>= 2.5.0'
+  when 'pojs'
+  else #default to rails 4
     s.add_development_dependency 'rails', '>= 4'
   end
 
   s.add_development_dependency 'rack-test'
   s.add_development_dependency 'multi_json'
+  s.add_development_dependency 'rspec', '>= 2.5.0'
 
   s.add_dependency 'jasmine-core', '~> 2.0.0.alpha'
   s.add_dependency 'rack'
-  s.add_dependency 'rspec', '>= 1.3.1'
+  s.add_dependency 'rake'
   s.add_dependency 'selenium-webdriver', '~> 2.35'
   s.add_dependency 'phantomjs'
   s.add_dependency 'nokogiri'

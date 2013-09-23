@@ -20,7 +20,6 @@ describe "Phantom JS Runner performance/integration suite", :performance => true
 
     FileUtils.cp(File.join(@root, 'spec', 'fixture', 'large_test_suite_spec.js'), File.join(@tmp, 'spec', 'javascripts'))
 
-    ENV['JASMINE_GEM_PATH'] = "#{@root}/lib"
     ci_output = `rake -E "#{bootstrap}" --trace jasmine:ci`
     ci_output.should =~ (/40005 specs, 20000 failures/)
   end
