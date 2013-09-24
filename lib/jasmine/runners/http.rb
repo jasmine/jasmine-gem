@@ -1,10 +1,10 @@
 module Jasmine
   module Runners
     class HTTP
-      def initialize(formatter, config)
+      def initialize(formatter, jasmine_server_url, options)
         @formatter = formatter
-        @driver = Jasmine::SeleniumDriver.new(config.browser, "#{config.host}:#{config.port}/")
-        @reporter = Jasmine::Reporters::ApiReporter.new(driver, config.result_batch_size)
+        @driver = Jasmine::SeleniumDriver.new(jasmine_server_url, options)
+        @reporter = Jasmine::Reporters::ApiReporter.new(driver, options.result_batch_size)
         @results = []
       end
 

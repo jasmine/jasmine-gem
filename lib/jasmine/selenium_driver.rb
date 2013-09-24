@@ -1,26 +1,30 @@
 module Jasmine
   require 'json'
   class SeleniumDriver
-    def initialize(browser, http_address)
+    def initialize(http_address, options)
       require 'selenium-webdriver'
+      browser = options.browser
 
-      selenium_server = if Jasmine.config.selenium_server
-                          Jasmine.config.selenium_server
-                        elsif Jasmine.config.selenium_server_port
-                          "http://localhost:#{Jasmine.config.selenium_server_port}/wd/hub"
+      selenium_server = if options.selenium_server
+                          options.selenium_server
+                        elsif options.selenium_server_port
+                          "http://localhost:#{options.selenium_server_port}/wd/hub"
                         end
-      options = if browser == 'firefox-firebug'
-                  require File.join(File.dirname(__FILE__), 'firebug/firebug')
-                  (profile = Selenium::WebDriver::Firefox::Profile.new)
-                  profile.enable_firebug
-                  {:profile => profile}
-                end || {}
-      @driver = if Jasmine.config.webdriver
-                  Jasmine.config.webdriver
+
+      selenium_options = {}
+      if browser == 'firefox-firebug'
+        require File.join(File.dirname(__FILE__), 'firebug/firebug')
+        (profile = Selenium::WebDriver::Firefox::Profile.new)
+        profile.enable_firebug
+        selenium_options[:profile] = profile
+      end
+
+      @driver = if options.webdriver
+                  options.webdriver
                 elsif selenium_server
                   Selenium::WebDriver.for :remote, :url => selenium_server, :desired_capabilities => browser.to_sym
                 else
-                  Selenium::WebDriver.for browser.to_sym, options
+                  Selenium::WebDriver.for browser.to_sym, selenium_options
                 end
       @http_address = http_address
     end

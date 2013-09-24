@@ -38,7 +38,8 @@ namespace :jasmine do
     puts 'jasmine server started.'
 
     formatters = config.formatters.map { |formatter_class| formatter_class.new(config) }
-    runner = config.runner.new(Jasmine::Formatters::Multi.new(formatters), config)
+    url = "#{config.host}:#{config.port}/"
+    runner = config.runner.call(Jasmine::Formatters::Multi.new(formatters), url)
     runner.run
 
     exit runner.succeeded? ? 0 : 1
