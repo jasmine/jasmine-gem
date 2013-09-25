@@ -15,10 +15,7 @@ describe 'Jasmine command line tool' do
         output = capture_stdout { Jasmine::CommandLineTool.new.process ['init'] }
         output.should =~ /Jasmine has been installed with example specs./
 
-        my_jasmine_lib = File.expand_path(File.join(@root, 'lib'))
-        bootstrap = "$:.unshift('#{my_jasmine_lib}')"
-
-        ci_output = `rake -E "#{bootstrap}" --trace jasmine:ci`
+        ci_output = `rake --trace jasmine:ci`
         ci_output.should =~ (/[1-9][0-9]* specs, 0 failures/)
       end
 
@@ -30,7 +27,7 @@ describe 'Jasmine command line tool' do
           end
 
           it 'should warn the user' do
-            output = capture_stdout { 
+            output = capture_stdout {
                 expect {
                     Jasmine::CommandLineTool.new.process ['init']
                 }.to raise_error SystemExit
@@ -39,9 +36,9 @@ describe 'Jasmine command line tool' do
 
             Dir.entries(@tmp).sort.should == [".", "..", "Gemfile"]
           end
-          
+
           it 'should allow the user to override the warning' do
-            output = capture_stdout { 
+            output = capture_stdout {
                 expect {
                     Jasmine::CommandLineTool.new.process ['init', '--force']
                 }.not_to raise_error
@@ -51,7 +48,7 @@ describe 'Jasmine command line tool' do
             Dir.entries(@tmp).sort.should == [".", "..", "Gemfile", "Rakefile", "public", "spec"]
           end
       end
-      
+
       describe 'with a Gemfile not containing Rails' do
           before :each do
               open(File.join(@tmp, "Gemfile"), 'w') do |f|
@@ -60,7 +57,7 @@ describe 'Jasmine command line tool' do
           end
 
           it 'should perform normally' do
-            output = capture_stdout { 
+            output = capture_stdout {
                 expect {
                     Jasmine::CommandLineTool.new.process ['init']
                 }.not_to raise_error
