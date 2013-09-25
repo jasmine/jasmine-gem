@@ -17,6 +17,7 @@ describe "POJS jasmine install" do
   context "when the Jasmine generators are available" do
     before :each do
       `jasmine init`
+      `jasmine examples`
     end
 
     it "should find the Jasmine configuration files" do
@@ -24,11 +25,11 @@ describe "POJS jasmine install" do
     end
 
     it "should find the Jasmine example files" do
-      File.exists?("public/javascripts/Player.js").should == true
-      File.exists?("public/javascripts/Song.js").should == true
+      File.exists?("public/javascripts/jasmine_examples/Player.js").should == true
+      File.exists?("public/javascripts/jasmine_examples/Song.js").should == true
 
-      File.exists?("spec/javascripts/PlayerSpec.js").should == true
-      File.exists?("spec/javascripts/helpers/SpecHelper.js").should == true
+      File.exists?("spec/javascripts/jasmine_examples/PlayerSpec.js").should == true
+      File.exists?("spec/javascripts/helpers/jasmine_examples/SpecHelper.js").should == true
 
       File.exists?("spec/javascripts/support/jasmine.yml").should == true
     end
@@ -41,6 +42,7 @@ describe "POJS jasmine install" do
 
     it "should successfully run rake jasmine:ci" do
       output = `rake jasmine:ci`
+      output.should =~ (/[1-9]\d* specs, 0 failures/)
     end
 
   end

@@ -44,15 +44,14 @@ module Jasmine
           exit 1
         end
 
-        FileUtils.makedirs('public/javascripts')
-        FileUtils.makedirs('spec/javascripts')
         FileUtils.makedirs('spec/javascripts/support')
         FileUtils.makedirs('spec/javascripts/helpers')
 
-        copy_unless_exists('jasmine-example/src/Player.js', 'public/javascripts/Player.js')
-        copy_unless_exists('jasmine-example/src/Song.js', 'public/javascripts/Song.js')
-        copy_unless_exists('jasmine-example/spec/PlayerSpec.js', 'spec/javascripts/PlayerSpec.js')
-        copy_unless_exists('jasmine-example/spec/SpecHelper.js', 'spec/javascripts/helpers/SpecHelper.js')
+        unless File.exist?('spec/javascripts/helpers/.gitkeep')
+          source_file = File.expand_path(File.join(File.dirname(__FILE__), '..', 'generators', 'jasmine', 'install', 'templates', 'spec', 'javascripts', 'helpers', '.gitkeep'))
+          dest_file = File.expand_path(File.join(Dir.pwd, 'spec', 'javascripts', 'helpers', '.gitkeep'))
+          FileUtils.copy(source_file, dest_file)
+        end
 
         copy_unless_exists('spec/javascripts/support/jasmine.yml')
         copy_unless_exists('spec/javascripts/support/jasmine_helper.rb')
@@ -74,11 +73,23 @@ JASMINE_RAKE
         File.open(template_path('INSTALL'), 'r').each_line do |line|
           puts line
         end
+      elsif argv[0] == "examples"
+        FileUtils.makedirs('public/javascripts/jasmine_examples')
+        FileUtils.makedirs('spec/javascripts/jasmine_examples')
+        FileUtils.makedirs('spec/javascripts/helpers/jasmine_examples')
+
+        copy_unless_exists('jasmine-example/src/Player.js', 'public/javascripts/jasmine_examples/Player.js')
+        copy_unless_exists('jasmine-example/src/Song.js', 'public/javascripts/jasmine_examples/Song.js')
+        copy_unless_exists('jasmine-example/spec/PlayerSpec.js', 'spec/javascripts/jasmine_examples/PlayerSpec.js')
+        copy_unless_exists('jasmine-example/spec/SpecHelper.js', 'spec/javascripts/helpers/jasmine_examples/SpecHelper.js')
+
+        puts "Jasmine has installed some examples."
       elsif argv[0] == "license"
         puts File.new(expand(cwd, "MIT.LICENSE")).read
       else
         puts "unknown command #{argv}"
         puts "Usage: jasmine init"
+        puts "               examples"
         puts "               license"
       end
     end
