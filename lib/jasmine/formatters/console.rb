@@ -1,6 +1,6 @@
 module Jasmine
   module Formatters
-    class Console < BaseFormatter
+    class Console < Base
       def initialize(config, outputter = Kernel.method(:puts))
         super config
         @results = []

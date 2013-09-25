@@ -54,6 +54,24 @@ if Jasmine::Dependencies.rails_available?
       end
     end
 
+    it "rake jasmine:ci returns proper exit code when specs fail" do
+      Bundler.with_clean_env do
+        open('spec/javascripts/failing_spec.js', 'w') { |f|
+          f.puts <<-FAILING_SPEC
+describe("failing", function() {
+  it('should fail', function() {
+    expect(true).toBe(false);
+  });
+});
+FAILING_SPEC
+          f.flush
+        }
+        output = `bundle exec rake jasmine:ci`
+        $?.should_not be_success
+        output.should include('6 specs, 1 failure')
+      end
+    end
+
     it "rake jasmine runs and serves the expected webpage when using asset pipeline" do
       open('app/assets/stylesheets/foo.css', 'w') { |f|
         f.puts "/* hi dere */"

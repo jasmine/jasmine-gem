@@ -1,6 +1,6 @@
 module Jasmine
   module Formatters
-    class BaseFormatter
+    class Base
       def initialize(config)
         @config = config
       end

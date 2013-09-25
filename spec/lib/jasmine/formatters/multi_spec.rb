@@ -3,7 +3,7 @@ require 'spec_helper'
 describe Jasmine::Formatters::Multi do
   it "should have all the methods of a formatter" do
     instance_methods = Jasmine::Formatters::Multi.instance_methods - Object.instance_methods
-    base_methods = Jasmine::Formatters::BaseFormatter.instance_methods(false).first
+    base_methods = Jasmine::Formatters::Base.instance_methods(false).first
     instance_methods.should include(base_methods)
   end
 

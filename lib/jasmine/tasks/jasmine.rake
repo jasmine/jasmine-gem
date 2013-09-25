@@ -38,11 +38,15 @@ namespace :jasmine do
     puts 'jasmine server started.'
 
     formatters = config.formatters.map { |formatter_class| formatter_class.new(config) }
+
+    exit_code_formatter = Jasmine::Formatters::ExitCode.new(config)
+    formatters << exit_code_formatter
+
     url = "#{config.host}:#{config.port}/"
     runner = config.runner.call(Jasmine::Formatters::Multi.new(formatters), url)
     runner.run
 
-    exit runner.succeeded? ? 0 : 1
+    exit exit_code_formatter.exit_code
   end
 
   task :server => 'jasmine:require' do

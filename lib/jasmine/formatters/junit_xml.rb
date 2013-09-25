@@ -2,7 +2,7 @@ require 'nokogiri'
 
 module Jasmine
   module Formatters
-    class JUnitXml < BaseFormatter
+    class JUnitXml < Base
       def initialize(config)
         super
         @doc = Nokogiri::XML '<testsuites></testsuites>', nil, 'UTF-8'
