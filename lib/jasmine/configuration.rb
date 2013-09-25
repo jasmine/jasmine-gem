@@ -5,9 +5,7 @@ module Jasmine
     attr_accessor :jasmine_path, :spec_path, :boot_path, :src_path, :image_path
     attr_accessor :jasmine_dir, :spec_dir, :boot_dir, :src_dir, :images_dir
     attr_accessor :formatters
-    #TODO: these are largely client concerns, move them.
-    attr_accessor :port, :browser, :host, :result_batch_size
-    attr_accessor :selenium_server, :selenium_server_port, :webdriver
+    attr_accessor :port, :host
     attr_accessor :junit_xml_path
     attr_accessor :spec_format, :jasmine_port
     attr_accessor :runner
@@ -26,7 +24,6 @@ module Jasmine
 
       @formatters = [Jasmine::Formatters::Console]
 
-      @browser = 'firefox'
       @junit_xml_path = Dir.getwd
       @jasmine_port = 8888
     end
@@ -69,10 +66,6 @@ module Jasmine
 
     def host
       @host || 'http://localhost'
-    end
-
-    def result_batch_size
-      @result_batch_size || 50
     end
 
     private

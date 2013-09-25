@@ -121,30 +121,6 @@ describe Jasmine::Configuration do
     end
   end
 
-  describe 'browser' do
-    it 'should default to firefox' do
-      Jasmine::Configuration.new().browser.should == 'firefox'
-    end
-
-    it 'returns browser if set' do
-      config = Jasmine::Configuration.new()
-      config.browser = 'foo'
-      config.browser.should == 'foo'
-    end
-  end
-
-  describe 'result_batch_size' do
-    it 'should default to 50' do
-      Jasmine::Configuration.new().result_batch_size.should == 50
-    end
-
-    it 'returns result_batch_size if set' do
-      config = Jasmine::Configuration.new()
-      config.result_batch_size = 25
-      config.result_batch_size.should == 25
-    end
-  end
-
   describe 'host' do
     it 'should default to localhost' do
       Jasmine::Configuration.new().host.should == 'http://localhost'
@@ -154,17 +130,6 @@ describe Jasmine::Configuration do
       config = Jasmine::Configuration.new()
       config.host = 'foo'
       config.host.should == 'foo'
-    end
-  end
-
-  describe 'selenium config' do
-    it 'returns server if set' do
-      config = Jasmine::Configuration.new()
-      config.selenium_server = 'fish'
-      config.selenium_server.should == 'fish'
-
-      config.selenium_server_port = 'turnip'
-      config.selenium_server_port.should == 'turnip'
     end
   end
 
