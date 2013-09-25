@@ -11,62 +11,62 @@ describe 'Jasmine command line tool' do
   end
 
   describe '.init' do
-      it 'should create files on init' do
-        output = capture_stdout { Jasmine::CommandLineTool.new.process ['init'] }
+    it 'should create files on init' do
+      output = capture_stdout { Jasmine::CommandLineTool.new.process ['init'] }
+      output.should =~ /Jasmine has been installed with example specs./
+
+      ci_output = `rake --trace jasmine:ci`
+      ci_output.should =~ (/[1-9][0-9]* specs, 0 failures/)
+    end
+
+    describe 'with a Gemfile containing Rails' do
+      before :each do
+        open(File.join(@tmp, "Gemfile"), 'w') do |f|
+          f.puts "rails"
+        end
+      end
+
+      it 'should warn the user' do
+        output = capture_stdout {
+          expect {
+            Jasmine::CommandLineTool.new.process ['init']
+          }.to raise_error SystemExit
+        }
+        output.should =~ /attempting to run jasmine init in a Rails project/
+
+        Dir.entries(@tmp).sort.should == [".", "..", "Gemfile"]
+      end
+
+      it 'should allow the user to override the warning' do
+        output = capture_stdout {
+          expect {
+            Jasmine::CommandLineTool.new.process ['init', '--force']
+          }.not_to raise_error
+        }
         output.should =~ /Jasmine has been installed with example specs./
 
-        ci_output = `rake --trace jasmine:ci`
-        ci_output.should =~ (/[1-9][0-9]* specs, 0 failures/)
+        Dir.entries(@tmp).sort.should == [".", "..", "Gemfile", "Rakefile", "public", "spec"]
+      end
+    end
+
+    describe 'with a Gemfile not containing Rails' do
+      before :each do
+        open(File.join(@tmp, "Gemfile"), 'w') do |f|
+          f.puts "sqlite3"
+        end
       end
 
-      describe 'with a Gemfile containing Rails' do
-          before :each do
-              open(File.join(@tmp, "Gemfile"), 'w') do |f|
-                  f.puts "rails"
-              end
-          end
+      it 'should perform normally' do
+        output = capture_stdout {
+          expect {
+            Jasmine::CommandLineTool.new.process ['init']
+          }.not_to raise_error
+        }
+        output.should =~ /Jasmine has been installed with example specs./
 
-          it 'should warn the user' do
-            output = capture_stdout {
-                expect {
-                    Jasmine::CommandLineTool.new.process ['init']
-                }.to raise_error SystemExit
-            }
-            output.should =~ /attempting to run jasmine init in a Rails project/
-
-            Dir.entries(@tmp).sort.should == [".", "..", "Gemfile"]
-          end
-
-          it 'should allow the user to override the warning' do
-            output = capture_stdout {
-                expect {
-                    Jasmine::CommandLineTool.new.process ['init', '--force']
-                }.not_to raise_error
-            }
-            output.should =~ /Jasmine has been installed with example specs./
-
-            Dir.entries(@tmp).sort.should == [".", "..", "Gemfile", "Rakefile", "public", "spec"]
-          end
+        Dir.entries(@tmp).sort.should == [".", "..", "Gemfile", "Rakefile", "public", "spec"]
       end
-
-      describe 'with a Gemfile not containing Rails' do
-          before :each do
-              open(File.join(@tmp, "Gemfile"), 'w') do |f|
-                  f.puts "sqlite3"
-              end
-          end
-
-          it 'should perform normally' do
-            output = capture_stdout {
-                expect {
-                    Jasmine::CommandLineTool.new.process ['init']
-                }.not_to raise_error
-            }
-            output.should =~ /Jasmine has been installed with example specs./
-
-            Dir.entries(@tmp).sort.should == [".", "..", "Gemfile", "Rakefile", "public", "spec"]
-          end
-      end
+    end
   end
 
 
