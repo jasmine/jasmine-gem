@@ -28,7 +28,7 @@ if Jasmine::Dependencies.rails_available?
         File.exists?('app/assets/javascripts/jasmine_examples/Player.js').should == true
         File.exists?('app/assets/javascripts/jasmine_examples/Song.js').should == true
         File.exists?('spec/javascripts/jasmine_examples/PlayerSpec.js').should == true
-        File.exists?('spec/javascripts/helpers/SpecHelper.js').should == true
+        File.exists?('spec/javascripts/helpers/jasmine_examples/SpecHelper.js').should == true
       end
     end
 
