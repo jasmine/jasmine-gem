@@ -18,9 +18,6 @@ namespace :jasmine do
 
   desc 'Run continuous integration tests'
   task :ci => %w(jasmine:require_json jasmine:require) do
-    if Jasmine::Dependencies.use_asset_pipeline?
-      require File.expand_path(File.join(::Rails.root, 'config', 'environment'))
-    end
     Jasmine.load_configuration_from_yaml
 
     config = Jasmine.config
