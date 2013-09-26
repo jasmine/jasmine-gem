@@ -1,7 +1,9 @@
 namespace :jasmine do
-  require 'jasmine/config'
+  task :configure do
+    require 'jasmine/config'
 
-  Jasmine.load_configuration_from_yaml
+    Jasmine.load_configuration_from_yaml
+  end
 
   task :require do
     require 'jasmine'
@@ -17,9 +19,7 @@ namespace :jasmine do
   end
 
   desc 'Run continuous integration tests'
-  task :ci => %w(jasmine:require_json jasmine:require) do
-    Jasmine.load_configuration_from_yaml
-
+  task :ci => %w(jasmine:require_json jasmine:require jasmine:configure) do
     config = Jasmine.config
 
     server = Jasmine::Server.new(config.port, Jasmine::Application.app(config))
@@ -46,7 +46,7 @@ namespace :jasmine do
     exit exit_code_formatter.exit_code
   end
 
-  task :server => 'jasmine:require' do
+  task :server => %w(jasmine:require jasmine:configure) do
     port = Jasmine.config.jasmine_port || 8888
     puts 'your tests are here:'
     puts "  http://localhost:#{port}/"
