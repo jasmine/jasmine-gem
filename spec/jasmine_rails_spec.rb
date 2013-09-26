@@ -3,6 +3,18 @@ require 'net/http'
 
 if Jasmine::Dependencies.rails_available?
   describe 'A Rails app' do
+    def bundle_install
+      tries_remaining = 3
+      while tries_remaining > 0
+        puts `NOKOGIRI_USE_SYSTEM_LIBRARIES=true bundle install --path vendor;`
+        if $?.success?
+          tries_remaining = 0
+        else
+          tries_remaining -= 1
+          puts "\n\nBundle failed, trying #{tries_remaining} more times\n\n"
+        end
+      end
+    end
 
     before :all do
       temp_dir_before
@@ -20,7 +32,7 @@ if Jasmine::Dependencies.rails_available?
       }
 
       Bundler.with_clean_env do
-        puts `NOKOGIRI_USE_SYSTEM_LIBRARIES=true bundle install --path vendor;`
+        bundle_install
         `bundle exec rails g jasmine:install`
         File.exists?('spec/javascripts/helpers/.gitkeep').should == true
         File.exists?('spec/javascripts/support/jasmine.yml').should == true
