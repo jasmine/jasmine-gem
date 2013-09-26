@@ -47,9 +47,19 @@ namespace :jasmine do
   task :copy_examples_to_gem do
     require 'fileutils'
 
-    # copy jasmine's example tree into our generator templates dir
-    FileUtils.rm_r('generators/jasmine/templates/jasmine-example', :force => true)
-    FileUtils.cp_r(File.join(Jasmine::Core.path, 'example'), 'generators/jasmine/templates/jasmine-example', :preserve => true)
+    destination_root = File.expand_path(File.join('..', 'lib', 'generators', 'jasmine', 'examples', 'templates'), __FILE__)
+    spec_path = File.join(destination_root, 'spec', 'javascripts', 'jasmine_examples')
+    helpers_path = File.join(destination_root, 'spec', 'javascripts', 'helpers', 'jasmine_examples')
+    source_code_path = File.join(destination_root, 'app', 'assets', 'javascripts', 'jasmine_examples')
+
+    FileUtils.rm Dir.glob(File.join(spec_path, '*'))
+    FileUtils.cp(Dir.glob(File.join(Jasmine::Core.path, 'example', 'spec', '*Spec.js')), spec_path, :preserve => true)
+
+    FileUtils.rm Dir.glob(File.join(helpers_path, '*'))
+    FileUtils.cp(Dir.glob(File.join(Jasmine::Core.path, 'example', 'spec', 'SpecHelper.js')), helpers_path, :preserve => true)
+
+    FileUtils.rm Dir.glob(File.join(source_code_path, '*'))
+    FileUtils.cp(Dir.glob(File.join(Jasmine::Core.path, 'example', 'src', '*')), source_code_path, :preserve => true)
   end
 end
 

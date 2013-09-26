@@ -1,24 +1,36 @@
 module Jasmine
   class CommandLineTool
-    def cwd
-      File.expand_path(File.join(File.dirname(__FILE__), '../..'))
+    def root_dir
+      File.expand_path('../../..', __FILE__)
     end
 
-    def expand(*paths)
-      File.expand_path(File.join(*paths))
-    end
-
-    def template_path(filepath)
-      expand(cwd, File.join("generators", "jasmine" ,"templates", filepath))
+    def install_path
+      File.join(root_dir, "lib", "jasmine", "command_line_install.txt")
     end
 
     def dest_path(filepath)
-      expand(Dir.pwd, filepath)
+      File.join(Dir.pwd, filepath)
     end
 
-    def copy_unless_exists(relative_path, dest_path = nil)
-      unless File.exist?(dest_path(relative_path))
-        FileUtils.copy(template_path(relative_path), dest_path(dest_path || relative_path))
+    def copy_file_structure(generator)
+      source_dir = File.join(root_dir, 'lib', 'generators', 'jasmine', generator, 'templates')
+      dest_dir = Dir.pwd
+
+      globber = File.join(source_dir, '**', '{*,.*}')
+      source_files = Dir.glob(globber).reject { |path| File.directory?(path) }
+      source_files.each do |source_path|
+        relative_path = source_path.sub(source_dir, '')
+        dest_path = File.join(dest_dir, relative_path).sub(/app[\/\\]assets/, 'public')
+        unless File.exist?(dest_path)
+          FileUtils.mkdir_p(File.dirname(dest_path))
+          FileUtils.copy(source_path, dest_path)
+          if File.basename(dest_path) == 'jasmine.yml'
+            replaced = File.read(dest_path).gsub("assets/application.js", "public/javascripts/**/*.js")
+            File.open(dest_path, 'w') do |file|
+              file.write(replaced)
+            end
+          end
+        end
       end
     end
 
@@ -44,17 +56,8 @@ module Jasmine
           exit 1
         end
 
-        FileUtils.makedirs('spec/javascripts/support')
-        FileUtils.makedirs('spec/javascripts/helpers')
+        copy_file_structure('install')
 
-        unless File.exist?('spec/javascripts/helpers/.gitkeep')
-          source_file = File.expand_path(File.join(File.dirname(__FILE__), '..', 'generators', 'jasmine', 'install', 'templates', 'spec', 'javascripts', 'helpers', '.gitkeep'))
-          dest_file = File.expand_path(File.join(Dir.pwd, 'spec', 'javascripts', 'helpers', '.gitkeep'))
-          FileUtils.copy(source_file, dest_file)
-        end
-
-        copy_unless_exists('spec/javascripts/support/jasmine.yml')
-        copy_unless_exists('spec/javascripts/support/jasmine_helper.rb')
         require 'rake'
         write_mode = 'w'
         if File.exist?(dest_path('Rakefile'))
@@ -70,22 +73,13 @@ load 'jasmine/tasks/jasmine.rake'
 JASMINE_RAKE
           end
         end
-        File.open(template_path('INSTALL'), 'r').each_line do |line|
-          puts line
-        end
+        puts File.read(install_path)
       elsif argv[0] == "examples"
-        FileUtils.makedirs('public/javascripts/jasmine_examples')
-        FileUtils.makedirs('spec/javascripts/jasmine_examples')
-        FileUtils.makedirs('spec/javascripts/helpers/jasmine_examples')
-
-        copy_unless_exists('jasmine-example/src/Player.js', 'public/javascripts/jasmine_examples/Player.js')
-        copy_unless_exists('jasmine-example/src/Song.js', 'public/javascripts/jasmine_examples/Song.js')
-        copy_unless_exists('jasmine-example/spec/PlayerSpec.js', 'spec/javascripts/jasmine_examples/PlayerSpec.js')
-        copy_unless_exists('jasmine-example/spec/SpecHelper.js', 'spec/javascripts/helpers/jasmine_examples/SpecHelper.js')
+        copy_file_structure('examples')
 
         puts "Jasmine has installed some examples."
       elsif argv[0] == "license"
-        puts File.new(expand(cwd, "MIT.LICENSE")).read
+        puts File.read(File.join(root_dir, "MIT.LICENSE"))
       else
         puts "unknown command #{argv}"
         puts "Usage: jasmine init"
