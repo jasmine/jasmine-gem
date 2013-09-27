@@ -155,7 +155,7 @@ describe Jasmine::Configuration do
     end
   end
 
-  describe 'jasmine ports' do
+  describe 'jasmine formatters' do
     it 'returns value if set' do
       config = Jasmine::Configuration.new()
       config.formatters = ['pants']
