@@ -34,9 +34,9 @@ namespace :jasmine do
     Jasmine::wait_for_listener(config.port, 'jasmine server')
     puts 'jasmine server started.'
 
-    formatters = config.formatters.map { |formatter_class| formatter_class.new(config) }
+    formatters = config.formatters.map { |formatter_class| formatter_class.new }
 
-    exit_code_formatter = Jasmine::Formatters::ExitCode.new(config)
+    exit_code_formatter = Jasmine::Formatters::ExitCode.new
     formatters << exit_code_formatter
 
     url = "#{config.host}:#{config.port}/"

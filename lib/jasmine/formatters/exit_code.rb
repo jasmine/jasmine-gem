@@ -1,14 +1,15 @@
 module Jasmine
   module Formatters
-    class ExitCode < Base
-
-      def initialize(config)
-        super
+    class ExitCode
+      def initialize
         @results = []
       end
 
       def format(results)
         @results += results
+      end
+
+      def done
       end
 
       def exit_code

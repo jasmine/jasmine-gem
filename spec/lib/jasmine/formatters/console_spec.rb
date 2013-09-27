@@ -7,7 +7,7 @@ describe Jasmine::Formatters::Console do
   describe '#failures' do
     it 'shows the failure messages' do
       results = [failing_result, failing_result]
-      Jasmine::Formatters::Console.new(nil, outputter).format(results)
+      Jasmine::Formatters::Console.new(outputter).format(results)
 
       outputter_output.should match(/a suite with a failing spec/)
       outputter_output.should match(/a failure message/)
@@ -19,7 +19,7 @@ describe Jasmine::Formatters::Console do
     describe 'when the full suite passes' do
       it 'shows the spec counts' do
         results = [passing_result]
-        console = Jasmine::Formatters::Console.new(nil, outputter)
+        console = Jasmine::Formatters::Console.new(outputter)
         console.format(results)
         console.done
 
@@ -29,7 +29,7 @@ describe Jasmine::Formatters::Console do
 
       it 'shows the spec counts (pluralized)' do
         results = [passing_result, passing_result]
-        console = Jasmine::Formatters::Console.new(nil, outputter)
+        console = Jasmine::Formatters::Console.new(outputter)
         console.format(results)
         console.done
 
@@ -41,7 +41,7 @@ describe Jasmine::Formatters::Console do
     describe 'when there are failures' do
       it 'shows the spec counts' do
         results = [passing_result, failing_result]
-        console = Jasmine::Formatters::Console.new(nil, outputter)
+        console = Jasmine::Formatters::Console.new(outputter)
         console.format(results)
         console.done
 
@@ -51,7 +51,7 @@ describe Jasmine::Formatters::Console do
 
       it 'shows the spec counts (pluralized)' do
         results = [failing_result, failing_result]
-        console = Jasmine::Formatters::Console.new(nil, outputter)
+        console = Jasmine::Formatters::Console.new(outputter)
         console.format(results)
         console.done
 
@@ -63,7 +63,7 @@ describe Jasmine::Formatters::Console do
     describe 'when there are pending specs' do
       it 'shows the spec counts' do
         results = [passing_result, pending_result]
-        console = Jasmine::Formatters::Console.new(nil, outputter)
+        console = Jasmine::Formatters::Console.new(outputter)
         console.format(results)
         console.done
 
@@ -72,7 +72,7 @@ describe Jasmine::Formatters::Console do
 
       it 'shows the spec counts (pluralized)' do
         results = [pending_result, pending_result]
-        console = Jasmine::Formatters::Console.new(nil, outputter)
+        console = Jasmine::Formatters::Console.new(outputter)
         console.format(results)
         console.done
 
@@ -84,7 +84,7 @@ describe Jasmine::Formatters::Console do
 
       it 'should not mention pending specs' do
         results = [passing_result]
-        console = Jasmine::Formatters::Console.new(nil, outputter)
+        console = Jasmine::Formatters::Console.new(outputter)
         console.format(results)
         console.done
 
