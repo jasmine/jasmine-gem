@@ -22,7 +22,7 @@ namespace :jasmine do
   task :ci => %w(jasmine:require_json jasmine:require jasmine:configure) do
     config = Jasmine.config
 
-    server = Jasmine::Server.new(config.port, Jasmine::Application.app(config))
+    server = Jasmine::Server.new(config.port(:ci), Jasmine::Application.app(config))
     t = Thread.new do
       begin
         server.start
@@ -31,7 +31,7 @@ namespace :jasmine do
       # # ignore bad exits
     end
     t.abort_on_exception = true
-    Jasmine::wait_for_listener(config.port, 'jasmine server')
+    Jasmine::wait_for_listener(config.port(:ci), 'jasmine server')
     puts 'jasmine server started.'
 
     formatters = config.formatters.map { |formatter_class| formatter_class.new }
@@ -39,7 +39,7 @@ namespace :jasmine do
     exit_code_formatter = Jasmine::Formatters::ExitCode.new
     formatters << exit_code_formatter
 
-    url = "#{config.host}:#{config.port}/"
+    url = "#{config.host}:#{config.port(:ci)}/"
     runner = config.runner.call(Jasmine::Formatters::Multi.new(formatters), url)
     runner.run
 
@@ -47,7 +47,7 @@ namespace :jasmine do
   end
 
   task :server => %w(jasmine:require jasmine:configure) do
-    port = Jasmine.config.jasmine_port || 8888
+    port = Jasmine.config.port(:server)
     puts 'your tests are here:'
     puts "  http://localhost:#{port}/"
     app = Jasmine::Application.app(Jasmine.config)
@@ -55,5 +55,5 @@ namespace :jasmine do
   end
 end
 
-desc 'Run specs via server'
+desc 'Run specs via server:ci'
 task :jasmine => %w(jasmine:server)

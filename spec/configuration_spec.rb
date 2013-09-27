@@ -105,22 +105,6 @@ describe Jasmine::Configuration do
     end
   end
 
-  describe 'port' do
-    it 'returns new port and caches return value' do
-      config = Jasmine::Configuration.new()
-      Jasmine.stub(:find_unused_port).and_return('1234')
-      config.port.should == '1234'
-      Jasmine.stub(:find_unused_port).and_return('4321')
-      config.port.should == '1234'
-    end
-    it 'returns port if configured' do
-      config = Jasmine::Configuration.new()
-      config.port = '5678'
-      Jasmine.stub(:find_unused_port).and_return('1234')
-      config.port.should == '5678'
-    end
-  end
-
   describe 'host' do
     it 'should default to localhost' do
       Jasmine::Configuration.new().host.should == 'http://localhost'
@@ -142,16 +126,31 @@ describe Jasmine::Configuration do
   end
 
   describe 'jasmine ports' do
-    it 'returns value if set' do
+    it 'returns new CI port and caches return value' do
       config = Jasmine::Configuration.new()
-      config.jasmine_port = 'fish'
-      config.jasmine_port.should == 'fish'
+      Jasmine.stub(:find_unused_port).and_return('1234')
+      config.port(:ci).should == '1234'
+      Jasmine.stub(:find_unused_port).and_return('4321')
+      config.port(:ci).should == '1234'
     end
 
-    it 'returns defaults' do
+    it 'returns ci port if configured' do
+      config = Jasmine::Configuration.new()
+      config.ci_port = '5678'
+      Jasmine.stub(:find_unused_port).and_return('1234')
+      config.port(:ci).should == '5678'
+    end
+
+    it 'returns configured server port' do
+      config = Jasmine::Configuration.new()
+      config.server_port = 'fish'
+      config.port(:server).should == 'fish'
+    end
+
+    it 'returns default server port' do
       config = Jasmine::Configuration.new()
 
-      config.jasmine_port.should == 8888
+      config.port(:server).should == 8888
     end
   end
 

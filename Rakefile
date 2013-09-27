@@ -31,16 +31,16 @@ namespace :jasmine do
       config.src_dir = File.join(root, 'src')
       config.spec_dir = Jasmine::Core.path
       config.spec_files = lambda { (Jasmine::Core.html_spec_files + Jasmine::Core.core_spec_files).map {|f| File.join(config.spec_dir, f) } }
-      config.jasmine_port = ENV['JASMINE_PORT'] || 8888
+      config.server_port = ENV['JASMINE_PORT'] || 8888
     end
 
     config = Jasmine.config
 
-    server = Jasmine::Server.new(config.jasmine_port, Jasmine::Application.app(config))
+    server = Jasmine::Server.new(config.port(:server), Jasmine::Application.app(config))
     server.start
 
     puts 'your tests are here:'
-    puts "  http://localhost:#{config.jasmine_port}/"
+    puts "  http://localhost:#{config.port(:server)}/"
   end
 
   desc 'Copy examples from Jasmine JS to the gem'

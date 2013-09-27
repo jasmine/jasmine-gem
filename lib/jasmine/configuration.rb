@@ -5,8 +5,8 @@ module Jasmine
     attr_accessor :jasmine_path, :spec_path, :boot_path, :src_path, :image_path
     attr_accessor :jasmine_dir, :spec_dir, :boot_dir, :src_dir, :images_dir
     attr_accessor :formatters
-    attr_accessor :port, :host
-    attr_accessor :spec_format, :jasmine_port
+    attr_accessor :host
+    attr_accessor :spec_format
     attr_accessor :runner
 
     def initialize()
@@ -23,7 +23,7 @@ module Jasmine
 
       @formatters = [Jasmine::Formatters::Console]
 
-      @jasmine_port = 8888
+      @server_port = 8888
     end
 
     def css_files
@@ -58,8 +58,20 @@ module Jasmine
       @path_mappers << mapper.call(self)
     end
 
-    def port
-      @port ||= Jasmine.find_unused_port
+    def server_port=(port)
+      @server_port = port
+    end
+
+    def ci_port=(port)
+      @ci_port = port
+    end
+
+    def port(server_type)
+      if server_type == :server
+        @server_port
+      else
+        @ci_port ||= Jasmine.find_unused_port
+      end
     end
 
     def host
