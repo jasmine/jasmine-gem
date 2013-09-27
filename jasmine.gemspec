@@ -36,5 +36,4 @@ Gem::Specification.new do |s|
   s.add_dependency 'rack'
   s.add_dependency 'rake'
   s.add_dependency 'phantomjs'
-  s.add_dependency 'nokogiri'
 end
