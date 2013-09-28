@@ -47,6 +47,29 @@ This uses PhantomJS to load and run the Jasmine suite.
 Customize `spec/javascripts/support/jasmine.yml` to enumerate the source files, stylesheets, and spec files you would like the Jasmine runner to include.
 You may use dir glob strings.
 
+In addition, the `spec_helper` key in your jasmine.yml specifies the path to a ruby file that can do programmatic configuration.
+After running `jasmine init` or `rails g jasmine:init` it will point to `spec/javascripts/support/jasmine_helper.rb` which you can modify to fit your needs.
+
+### Running Jasmine on a different port
+
+The ports that `rake jasmine` (or `rake jasmine:server`) and `rake jasmine:ci` run on are configured independently, so they can both run at the same time.
+
+To change the port that `rake jasmine` uses:
+
+In your jasmine_helper.rb:
+
+    Jasmine.configure do |config|
+       config.server_port = 5555
+    end
+
+By default `rake jasmine:ci` will attempt to find a random open port, to set the port that `rake jasmine:ci` uses:
+
+In your jasmine_helper.rb:
+
+    Jasmine.configure do |config|
+       config.ci_port = 1234
+    end
+
 ## Support
 
 Jasmine Mailing list: [jasmine-js@googlegroups.com](mailto:jasmine-js@googlegroups.com)
