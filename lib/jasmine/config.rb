@@ -42,19 +42,19 @@ module Jasmine
         asset_expander = Jasmine::AssetExpander.new(Jasmine::AssetBundle.factory)
         Jasmine::AssetPipelineMapper.new(config, asset_expander.method(:expand))
       })
-      @config.add_rack_path(Rails.application.config.assets.prefix, lambda {
-        # In order to have asset helpers like asset_path and image_path, we need to require 'action_view/base'.  This
-        # triggers run_load_hooks on action_view which, in turn, causes sprockets/railtie to load the Sprockets asset
-        # helpers.  Alternatively, you can include the helpers yourself without loading action_view/base:
-        Rails.application.assets.context_class.instance_eval do
-          if Jasmine::Dependencies.rails3?
-            include ::Sprockets::Helpers::IsolatedHelper
-            include ::Sprockets::Helpers::RailsHelper
-          end
-          if Jasmine::Dependencies.rails4?
-            include ::Sprockets::Rails::Helper
-          end
+      # In order to have asset helpers like asset_path and image_path, we need to require 'action_view/base'.  This
+      # triggers run_load_hooks on action_view which, in turn, causes sprockets/railtie to load the Sprockets asset
+      # helpers.  Alternatively, you can include the helpers yourself without loading action_view/base:
+      Rails.application.assets.context_class.instance_eval do
+        if Jasmine::Dependencies.rails3?
+          include ::Sprockets::Helpers::IsolatedHelper
+          include ::Sprockets::Helpers::RailsHelper
         end
+        if Jasmine::Dependencies.rails4?
+          include ::Sprockets::Rails::Helper
+        end
+      end
+      @config.add_rack_path(Rails.application.config.assets.prefix, lambda {
         Rails.application.assets
       })
     end
