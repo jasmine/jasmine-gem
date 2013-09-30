@@ -25,7 +25,15 @@ module Jasmine
     @config.jasmine_css_files = lambda { core_config.css_files }
     @config.add_rack_path(jasmine_path, lambda { Rack::File.new(config.jasmine_dir) })
     @config.add_rack_path(boot_path, lambda { Rack::File.new(config.boot_dir) })
-    @config.add_rack_path(spec_path, lambda { Rack::File.new(config.spec_dir) })
+    if Jasmine::Dependencies.use_asset_pipeline?
+      @config.add_rack_path(spec_path, lambda {
+        sprockets_spec_env = Sprockets::Environment.new
+        sprockets_spec_env.append_path @config.spec_dir
+        sprockets_spec_env
+      })
+    else
+      @config.add_rack_path(spec_path, lambda { Rack::File.new(config.spec_dir) })
+    end
     @config.add_rack_path(image_path, lambda { Rack::File.new(core_config.images_dir) })
     @config.add_rack_path(src_path, lambda {
       Rack::Cascade.new([

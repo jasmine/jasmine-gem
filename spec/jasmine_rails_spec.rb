@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'net/http'
+require 'yaml'
 
 if Jasmine::Dependencies.rails_available?
   describe 'A Rails app' do
@@ -67,20 +68,46 @@ if Jasmine::Dependencies.rails_available?
     end
 
     it "rake jasmine:ci returns proper exit code when specs fail" do
-      Bundler.with_clean_env do
-        open('spec/javascripts/failing_spec.js', 'w') { |f|
-          f.puts <<-FAILING_SPEC
+      begin
+        Bundler.with_clean_env do
+          open('spec/javascripts/failing_spec.js', 'w') { |f|
+            f.puts <<-FAILING_SPEC
 describe("failing", function() {
   it('should fail', function() {
     expect(true).toBe(false);
   });
 });
 FAILING_SPEC
+            f.flush
+          }
+          output = `bundle exec rake jasmine:ci`
+          $?.should_not be_success
+          output.should include('6 specs, 1 failure')
+        end
+      ensure
+        FileUtils.rm_f(File.join('spec', 'javascripts', 'failing_spec.js'))
+      end
+    end
+
+    it "runs specs written in coffeescript" do
+      begin
+        support_path = File.join('spec', 'javascripts', 'support')
+        FileUtils.cp(File.join(@root, 'spec', 'fixture', 'coffee_spec.coffee'), File.join('spec', 'javascripts'))
+        FileUtils.mv(File.join(support_path, 'jasmine.yml'), File.join(support_path, 'original_jasmine.yml'))
+        jasmine_config = YAML.load_file(File.join(support_path, 'original_jasmine.yml'))
+        jasmine_config['spec_files'] << 'coffee_spec.coffee'
+        File.open(File.join(support_path, 'jasmine.yml'), 'w') do |f|
+          f.write YAML.dump(jasmine_config)
           f.flush
-        }
-        output = `bundle exec rake jasmine:ci`
-        $?.should_not be_success
-        output.should include('6 specs, 1 failure')
+        end
+
+        Bundler.with_clean_env do
+          output = `bundle exec rake jasmine:ci`
+          output.should include('6 specs, 0 failures')
+        end
+      ensure
+        FileUtils.rm_f(File.join(support_path, 'jasmine.yml'))
+        FileUtils.mv(File.join(support_path, 'original_jasmine.yml'), File.join(support_path, 'jasmine.yml'))
       end
     end
 
