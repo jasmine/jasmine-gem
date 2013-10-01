@@ -47,11 +47,14 @@ namespace :jasmine do
   end
 
   task :server => %w(jasmine:require jasmine:configure) do
-    port = Jasmine.config.port(:server)
-    puts 'your tests are here:'
-    puts "  http://localhost:#{port}/"
-    app = Jasmine::Application.app(Jasmine.config)
-    Jasmine::Server.new(port, app).start
+    config = Jasmine.config
+    port = config.port(:server)
+    server = Jasmine::Server.new(port, Jasmine::Application.app(Jasmine.config))
+    puts "your server is running here: http://localhost:#{port}/"
+    puts "your tests are here:         #{config.spec_dir}"
+    puts "your source files are here:  #{config.src_dir}"
+    puts ''
+    server.start
   end
 end
 
