@@ -22,6 +22,19 @@ describe 'Jasmine command line tool' do
         ci_output = `rake --trace jasmine:ci`
         ci_output.should =~ (/0 specs, 0 failures/)
       end
+
+      it 'should create a new Rakefile if it does not exist' do
+        output = capture_stdout { Jasmine::CommandLineTool.new.process ["init"] }
+        output.should =~ /Jasmine has been installed\./
+        File.read(File.join(@tmp, 'Rakefile')).should include('jasmine.rake')
+      end
+
+      it "should append to an existing Rakefile" do
+        FileUtils.cp("#{@old_dir}/spec/fixture/Rakefile", @tmp)
+        output = capture_stdout { Jasmine::CommandLineTool.new.process ["init"] }
+        output.should =~ /Jasmine has been installed\./
+        File.read(File.join(@tmp, 'Rakefile')).should include('jasmine_flunk')
+      end
     end
 
     describe 'with a Gemfile containing Rails' do
