@@ -48,4 +48,16 @@ describe "POJS jasmine install" do
     $?.should_not be_success
     output.should =~ /Unable to load jasmine config from #{config_path}/
   end
+
+  it "rake jasmine:ci returns proper exit code when the runner raises" do
+    failing_runner = File.join('spec', 'javascripts', 'support', 'failing_runner.rb')
+    failing_yaml = custom_jasmine_config('raises_exception') do |config|
+      config['spec_helper'] = failing_runner
+    end
+
+    FileUtils.cp(File.join(@root, 'spec', 'fixture', 'failing_runner.rb'), failing_runner)
+
+    `rake jasmine:ci JASMINE_CONFIG_PATH=#{failing_yaml}`
+    $?.should_not be_success
+  end
 end
