@@ -68,46 +68,26 @@ if Jasmine::Dependencies.rails_available?
     end
 
     it "rake jasmine:ci returns proper exit code when specs fail" do
-      begin
-        Bundler.with_clean_env do
-          open('spec/javascripts/failing_spec.js', 'w') { |f|
-            f.puts <<-FAILING_SPEC
-describe("failing", function() {
-  it('should fail', function() {
-    expect(true).toBe(false);
-  });
-});
-FAILING_SPEC
-            f.flush
-          }
-          output = `bundle exec rake jasmine:ci`
-          $?.should_not be_success
-          output.should include('6 specs, 1 failure')
+      Bundler.with_clean_env do
+        FileUtils.cp(File.join(@root, 'spec', 'fixture', 'failing_test.js'), File.join('spec', 'javascripts'))
+        failing_yaml = custom_jasmine_config('failing') do |jasmine_config|
+          jasmine_config['spec_files'] << 'failing_test.js'
         end
-      ensure
-        FileUtils.rm_f(File.join('spec', 'javascripts', 'failing_spec.js'))
+        output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{failing_yaml}`
+        $?.should_not be_success
+        output.should include('6 specs, 1 failure')
       end
     end
 
     it "runs specs written in coffeescript" do
-      begin
-        support_path = File.join('spec', 'javascripts', 'support')
-        FileUtils.cp(File.join(@root, 'spec', 'fixture', 'coffee_spec.coffee'), File.join('spec', 'javascripts'))
-        FileUtils.mv(File.join(support_path, 'jasmine.yml'), File.join(support_path, 'original_jasmine.yml'))
-        jasmine_config = YAML.load_file(File.join(support_path, 'original_jasmine.yml'))
+      coffee_yaml = custom_jasmine_config('coffee') do |jasmine_config|
         jasmine_config['spec_files'] << 'coffee_spec.coffee'
-        File.open(File.join(support_path, 'jasmine.yml'), 'w') do |f|
-          f.write YAML.dump(jasmine_config)
-          f.flush
-        end
+      end
+      FileUtils.cp(File.join(@root, 'spec', 'fixture', 'coffee_spec.coffee'), File.join('spec', 'javascripts'))
 
-        Bundler.with_clean_env do
-          output = `bundle exec rake jasmine:ci`
-          output.should include('6 specs, 0 failures')
-        end
-      ensure
-        FileUtils.rm_f(File.join(support_path, 'jasmine.yml'))
-        FileUtils.mv(File.join(support_path, 'original_jasmine.yml'), File.join(support_path, 'jasmine.yml'))
+      Bundler.with_clean_env do
+        output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{coffee_yaml}`
+        output.should include('6 specs, 0 failures')
       end
     end
 
@@ -117,18 +97,14 @@ FAILING_SPEC
         f.flush
       }
 
-      jasmine_yml_path = 'spec/javascripts/support/jasmine.yml'
-      jasmine_config = YAML.load_file(jasmine_yml_path)
-      jasmine_config['src_files'] = ['assets/application.js']
-      jasmine_config['stylesheets'] = ['assets/application.css']
-      open(jasmine_yml_path, 'w') { |f|
-        f.puts YAML.dump(jasmine_config)
-        f.flush
-      }
+      css_yaml = custom_jasmine_config('css') do |jasmine_config|
+        jasmine_config['src_files'] = ['assets/application.js']
+        jasmine_config['stylesheets'] = ['assets/application.css']
+      end
 
       Bundler.with_clean_env do
         begin
-          pid = IO.popen("bundle exec rake jasmine").pid
+          pid = IO.popen("bundle exec rake jasmine JASMINE_CONFIG_PATH=#{css_yaml}").pid
           Jasmine::wait_for_listener(8888, 'jasmine server', 60)
           output = Net::HTTP.get(URI.parse('http://localhost:8888/'))
           output.should match(%r{script src.*/assets/jasmine_examples/Player.js})

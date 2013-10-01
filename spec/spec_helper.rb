@@ -33,6 +33,19 @@ def temp_dir_after
   FileUtils.rm_r @tmp
 end
 
+def custom_jasmine_config(prefix, &block)
+  require 'yaml'
+  support_path = File.join('spec', 'javascripts', 'support')
+  jasmine_config = YAML.load_file(File.join(support_path, 'jasmine.yml'))
+  block.call(jasmine_config)
+  custom_path = File.join(support_path, "#{prefix}_jasmine.yml")
+  File.open(custom_path, 'w') do |f|
+    f.write YAML.dump(jasmine_config)
+    f.flush
+  end
+  custom_path
+end
+
 module Kernel
   def capture_stdout
     out = StringIO.new
