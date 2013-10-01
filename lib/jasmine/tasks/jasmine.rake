@@ -2,7 +2,12 @@ namespace :jasmine do
   task :configure do
     require 'jasmine/config'
 
-    Jasmine.load_configuration_from_yaml
+    begin
+      Jasmine.load_configuration_from_yaml(ENV['JASMINE_CONFIG_PATH'])
+    rescue Jasmine::ConfigNotFound => e
+      puts e.message
+      exit 1
+    end
   end
 
   task :require do

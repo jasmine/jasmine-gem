@@ -47,6 +47,10 @@ This uses PhantomJS to load and run the Jasmine suite.
 Customize `spec/javascripts/support/jasmine.yml` to enumerate the source files, stylesheets, and spec files you would like the Jasmine runner to include.
 You may use dir glob strings.
 
+Alternatively, you may specify the path to your `jasmine.yml` by setting an environment variable:
+
+`rake jasmine:ci JASMINE_CONFIG_PATH=relative/path/to/your/jasmine.yml`
+
 In addition, the `spec_helper` key in your jasmine.yml specifies the path to a ruby file that can do programmatic configuration.
 After running `jasmine init` or `rails g jasmine:init` it will point to `spec/javascripts/support/jasmine_helper.rb` which you can modify to fit your needs.
 

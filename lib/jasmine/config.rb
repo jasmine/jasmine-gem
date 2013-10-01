@@ -1,4 +1,5 @@
 module Jasmine
+  ConfigNotFound = Class.new(Exception)
   require 'yaml'
   require 'erb'
   def self.configure(&block)
@@ -97,6 +98,8 @@ module Jasmine
         config.spec_files = lambda { yaml_config.helpers + yaml_config.spec_files }
       end
       require yaml_config.spec_helper if File.exist?(yaml_config.spec_helper)
+    else
+     raise ConfigNotFound, "Unable to load jasmine config from #{path}"
     end
   end
 
