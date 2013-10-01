@@ -20,28 +20,12 @@ RSpec::Core::RakeTask.new(:performance_specs) do |t|
 end
 
 task :spec => %w(jasmine:copy_examples_to_gem)
+task :performance_specs => %w(jasmine:copy_examples_to_gem)
 
 task :default => :spec
 
 namespace :jasmine do
   require 'jasmine-core'
-  task :server do
-    Jasmine.configure do |config|
-      root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
-      config.src_dir = File.join(root, 'src')
-      config.spec_dir = Jasmine::Core.path
-      config.spec_files = lambda { (Jasmine::Core.html_spec_files + Jasmine::Core.core_spec_files).map {|f| File.join(config.spec_dir, f) } }
-      config.server_port = ENV['JASMINE_PORT'] || 8888
-    end
-
-    config = Jasmine.config
-
-    server = Jasmine::Server.new(config.port(:server), Jasmine::Application.app(config))
-    server.start
-
-    puts 'your tests are here:'
-    puts "  http://localhost:#{config.port(:server)}/"
-  end
 
   desc 'Copy examples from Jasmine JS to the gem'
   task :copy_examples_to_gem do
@@ -62,7 +46,4 @@ namespace :jasmine do
     FileUtils.cp(Dir.glob(File.join(Jasmine::Core.path, 'example', 'src', '*')), source_code_path, :preserve => true)
   end
 end
-
-desc 'Run specs via server'
-task :jasmine => %w(jasmine:server)
 
