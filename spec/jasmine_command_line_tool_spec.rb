@@ -76,23 +76,35 @@ describe 'Jasmine command line tool' do
     end
   end
 
-  describe '.examples' do
-    it 'should install the examples' do
-      output = capture_stdout { Jasmine::CommandLineTool.new.process ['examples'] }
-      output.should =~ /Jasmine has installed some examples\./
-      File.exists?(File.join(@tmp, 'public/javascripts/jasmine_examples/Player.js')).should == true
-      File.exists?(File.join(@tmp, 'public/javascripts/jasmine_examples/Song.js')).should == true
-      File.exists?(File.join(@tmp, 'spec/javascripts/jasmine_examples/PlayerSpec.js')).should == true
-      File.exists?(File.join(@tmp, 'spec/javascripts/helpers/jasmine_examples/SpecHelper.js')).should == true
+  it 'should install the examples' do
+    output = capture_stdout { Jasmine::CommandLineTool.new.process ['examples'] }
+    output.should =~ /Jasmine has installed some examples\./
+    File.exists?(File.join(@tmp, 'public/javascripts/jasmine_examples/Player.js')).should == true
+    File.exists?(File.join(@tmp, 'public/javascripts/jasmine_examples/Song.js')).should == true
+    File.exists?(File.join(@tmp, 'spec/javascripts/jasmine_examples/PlayerSpec.js')).should == true
+    File.exists?(File.join(@tmp, 'spec/javascripts/helpers/jasmine_examples/SpecHelper.js')).should == true
 
-      capture_stdout { Jasmine::CommandLineTool.new.process ['init'] }
-      ci_output = `rake --trace jasmine:ci`
-      ci_output.should =~ (/[1-9]\d* specs, 0 failures/)
-    end
+    capture_stdout { Jasmine::CommandLineTool.new.process ['init'] }
+    ci_output = `rake --trace jasmine:ci`
+    ci_output.should =~ (/[1-9]\d* specs, 0 failures/)
   end
 
   it 'should include license info' do
     output = capture_stdout { Jasmine::CommandLineTool.new.process ['license'] }
     output.should =~ /Copyright/
+  end
+
+  it 'should copy boot.js' do
+    output = capture_stdout { Jasmine::CommandLineTool.new.process ['copy_boot_js'] }
+    output.should =~ /Jasmine has copied an example boot.js to spec\/javascripts\/support/
+
+    File.exists?(File.join(@tmp, 'spec/javascripts/support/boot.js')).should == true
+  end
+
+  it 'should not overwrite an existing boot.js' do
+    capture_stdout { Jasmine::CommandLineTool.new.process ['copy_boot_js'] }
+    output = capture_stdout { Jasmine::CommandLineTool.new.process ['copy_boot_js'] }
+
+    output.should =~ /already exists/
   end
 end

@@ -80,10 +80,25 @@ JASMINE_RAKE
         puts "Jasmine has installed some examples."
       elsif argv[0] == "license"
         puts File.read(File.join(root_dir, "MIT.LICENSE"))
+      elsif argv[0] == 'copy_boot_js'
+        destination_path = File.join('spec', 'javascripts', 'support', 'boot.js')
+        if File.exists?(destination_path)
+          puts "#{destination_path} already exists"
+        else
+          require 'jasmine-core'
+          source = File.join(Jasmine::Core.path, 'boot.js')
+          FileUtils.mkdir_p(File.dirname(destination_path))
+          FileUtils.cp(source, destination_path)
+
+          puts 'Jasmine has copied an example boot.js to spec/javascripts/support'
+          puts 'To use it set the boot_dir and boot_files keys in jasmine.yml'
+          puts ' to point to your custom boot.js'
+        end
       else
         puts "unknown command #{argv}"
         puts "Usage: jasmine init"
         puts "               examples"
+        puts "               copy_boot_js"
         puts "               license"
       end
     end
