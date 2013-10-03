@@ -32,7 +32,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'multi_json'
   s.add_development_dependency 'rspec', '>= 2.5.0'
 
-  s.add_dependency 'jasmine-core', '~> 2.0.0.alpha'
+  s.add_dependency 'jasmine-core', '~> 2.0.0.rc3'
   s.add_dependency 'rack'
   s.add_dependency 'rake'
   s.add_dependency 'phantomjs'
