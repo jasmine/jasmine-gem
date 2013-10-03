@@ -130,5 +130,20 @@ if Jasmine::Dependencies.rails_available?
         end
       end
     end
+
+    it "should load js files outside of the assets path too" do
+      yaml = custom_jasmine_config('public-assets') do |jasmine_config|
+        jasmine_config['src_files'] << 'public/javascripts/**/*.js'
+        jasmine_config['spec_files'] = ['non_asset_pipeline_test.js']
+      end
+      FileUtils.mkdir_p(File.join('public', 'javascripts'))
+      FileUtils.cp(File.join(@root, 'spec', 'fixture', 'non_asset_pipeline.js'), File.join('public', 'javascripts'))
+      FileUtils.cp(File.join(@root, 'spec', 'fixture', 'non_asset_pipeline_test.js'), File.join('spec', 'javascripts'))
+
+      Bundler.with_clean_env do
+        output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{yaml}`
+        output.should include('1 spec, 0 failures')
+      end
+    end
   end
 end
