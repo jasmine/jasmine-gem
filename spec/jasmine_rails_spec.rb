@@ -106,6 +106,17 @@ if Jasmine::Dependencies.rails_available?
         begin
           pid = IO.popen("bundle exec rake jasmine JASMINE_CONFIG_PATH=#{css_yaml}").pid
           Jasmine::wait_for_listener(8888, 'jasmine server', 60)
+
+          # if the process we started is not still running, it's very likely this test
+          # will fail because another server is already running on port 8888
+          # (kill -0 will check if you can send *ANY* signal to this process)
+          # (( it does not actually kill the process, that happens below))
+          `kill -0 #{pid}`
+          unless $?.success?
+            puts "someone else is running a server on port 8888"
+            $?.should be_success
+          end
+
           output = Net::HTTP.get(URI.parse('http://localhost:8888/'))
           output.should match(%r{script src.*/assets/jasmine_examples/Player.js})
           output.should match(%r{script src.*/assets/jasmine_examples/Song.js})
