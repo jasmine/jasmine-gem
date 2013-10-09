@@ -23,7 +23,9 @@ module Jasmine
       end
 
       def use_asset_pipeline?
-        (rails3? || rails4?) && Rails.respond_to?(:application) && Rails.application.respond_to?(:assets)
+        assets_pipeline_available = (rails3? || rails4?) && Rails.respond_to?(:application) && Rails.application.respond_to?(:assets)
+        rails3_assets_enabled = rails3? && assets_pipeline_available && Rails.application.config.assets.enabled != false
+        assets_pipeline_available && (rails4? || rails3_assets_enabled)
       end
 
       private
