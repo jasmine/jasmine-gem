@@ -15,6 +15,10 @@ module Jasmine
       def exit_code
         @results.detect(&:failed?) ? 1 : 0
       end
+
+      def succeeded?
+        !@results.detect(&:failed?)
+      end
     end
   end
 end

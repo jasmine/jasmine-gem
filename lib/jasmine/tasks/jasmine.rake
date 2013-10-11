@@ -48,7 +48,7 @@ namespace :jasmine do
     runner = config.runner.call(Jasmine::Formatters::Multi.new(formatters), url)
     runner.run
 
-    exit exit_code_formatter.exit_code
+    break unless exit_code_formatter.succeeded?
   end
 
   task :server => %w(jasmine:require jasmine:configure) do
