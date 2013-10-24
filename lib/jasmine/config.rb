@@ -17,6 +17,7 @@ module Jasmine
     @config.src_path = src_path = '/'
     @config.spec_path = spec_path = '/__spec__'
     @config.boot_path = boot_path = '/__boot__'
+    @config.runner_boot_path = runner_boot_path = '/__runner_boot__'
     @config.image_path = image_path = '/__images__'
 
     @config.jasmine_dir = core_config.path
@@ -26,6 +27,7 @@ module Jasmine
     @config.jasmine_css_files = lambda { core_config.css_files }
     @config.add_rack_path(jasmine_path, lambda { Rack::File.new(config.jasmine_dir) })
     @config.add_rack_path(boot_path, lambda { Rack::File.new(config.boot_dir) })
+    @config.add_rack_path(runner_boot_path, lambda { Rack::File.new(config.runner_boot_dir) })
     if Jasmine::Dependencies.use_asset_pipeline?
       @config.add_rack_path(spec_path, lambda {
         sprockets_spec_env = Sprockets::Environment.new

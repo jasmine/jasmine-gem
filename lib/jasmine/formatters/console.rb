@@ -1,17 +1,19 @@
 module Jasmine
   module Formatters
     class Console
-      def initialize(outputter = Kernel.method(:puts))
+      def initialize(outputter = Kernel)
         @results = []
         @outputter = outputter
       end
 
       def format(results_batch)
-        outputter.call(failures(results_batch))
+        outputter.print(chars(results_batch))
         @results += results_batch
       end
 
       def done
+        outputter.puts
+        outputter.puts(failures(@results))
         failure_count = results.count(&:failed?)
         pending_count = results.count(&:pending?)
         summary = "#{pluralize(results.size, 'spec')}, " +
@@ -19,7 +21,7 @@ module Jasmine
 
         summary += ", #{pluralize(pending_count, 'pending spec')}" if pending_count > 0
 
-        outputter.call(summary)
+        outputter.puts(summary)
       end
 
       private
@@ -27,6 +29,18 @@ module Jasmine
 
       def failures(results)
         results.select(&:failed?).map { |f| failure_message(f) }.join("\n\n")
+      end
+
+      def chars(results)
+        results.map do |result|
+          if result.succeeded?
+            '.'
+          elsif result.pending?
+            '*'
+          else
+            'F'
+          end
+        end.join('')
       end
 
       def pluralize(count, str)

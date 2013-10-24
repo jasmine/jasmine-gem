@@ -3,19 +3,24 @@ require 'spec_helper'
 describe Jasmine::Formatters::Console do
 
   let(:outputter_output) { '' }
-  let(:outputter) { lambda { |str| outputter_output << str } }
-  describe '#failures' do
-    it 'shows the failure messages' do
-      results = [failing_result, failing_result]
-      Jasmine::Formatters::Console.new(outputter).format(results)
-
-      outputter_output.should match(/a suite with a failing spec/)
-      outputter_output.should match(/a failure message/)
-      outputter_output.should match(/a stack trace/)
+  let(:outputter) do
+    double(:outputter).tap do |o|
+      o.stub(:print) { |str| outputter_output << str }
+      o.stub(:puts) { |str| outputter_output << "#{str}\n" }
     end
   end
 
   describe '#summary' do
+    it 'shows the failure messages' do
+      results = [failing_result, failing_result]
+      formatter = Jasmine::Formatters::Console.new(outputter)
+      formatter.format(results)
+      formatter.done
+      outputter_output.should match(/a suite with a failing spec/)
+      outputter_output.should match(/a failure message/)
+      outputter_output.should match(/a stack trace/)
+    end
+
     describe 'when the full suite passes' do
       it 'shows the spec counts' do
         results = [passing_result]

@@ -27,6 +27,18 @@ namespace :jasmine do
   task :ci => %w(jasmine:require_json jasmine:require jasmine:configure) do
     config = Jasmine.config
 
+    formatters = config.formatters.map { |formatter_class| formatter_class.new }
+
+    exit_code_formatter = Jasmine::Formatters::ExitCode.new
+    formatters << exit_code_formatter
+
+    url = "#{config.host}:#{config.port(:ci)}/"
+    runner = config.runner.call(Jasmine::Formatters::Multi.new(formatters), url)
+    if runner.respond_to?(:boot_js)
+      config.runner_boot_dir = File.dirname(runner.boot_js)
+      config.runner_boot_files = lambda { [runner.boot_js] }
+    end
+
     server = Jasmine::Server.new(config.port(:ci), Jasmine::Application.app(config))
     t = Thread.new do
       server.start
@@ -35,13 +47,6 @@ namespace :jasmine do
     Jasmine::wait_for_listener(config.port(:ci), 'jasmine server')
     puts 'jasmine server started.'
 
-    formatters = config.formatters.map { |formatter_class| formatter_class.new }
-
-    exit_code_formatter = Jasmine::Formatters::ExitCode.new
-    formatters << exit_code_formatter
-
-    url = "#{config.host}:#{config.port(:ci)}/"
-    runner = config.runner.call(Jasmine::Formatters::Multi.new(formatters), url)
     runner.run
 
     break unless exit_code_formatter.succeeded?

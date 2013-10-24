@@ -21,6 +21,10 @@ module Jasmine
         formatter.done
       end
 
+      def boot_js
+        File.expand_path('phantom_boot.js', File.dirname(__FILE__))
+      end
+
       private
       attr_reader :formatter, :jasmine_server_url, :result_batch_size
     end
