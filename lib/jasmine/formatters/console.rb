@@ -34,11 +34,11 @@ module Jasmine
       def chars(results)
         results.map do |result|
           if result.succeeded?
-            '.'
+            "\e[32m.\e[0m"
           elsif result.pending?
-            '*'
+            "\e[33m*\e[0m"
           else
-            'F'
+            "\e[31mF\e[0m"
           end
         end.join('')
       end
