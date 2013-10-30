@@ -1,5 +1,7 @@
 script: "if [ $PERFORMANCE_SPECS ];then bundle exec rake performance_specs --trace; else bundle exec rake --trace; fi"
 
+before_install: "bundle check" #seems to resolve issues with bundler hanging on install
+
 rvm:
   - "1.9.3"
   - "2.0.0"
