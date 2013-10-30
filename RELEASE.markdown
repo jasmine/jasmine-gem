@@ -8,6 +8,7 @@ See release docs in jasmine-core
 
 ## Jasmine Gem
 
+1. Update the release notes in `release_notes` - use the Anchorman gem to generate the markdown file and edit accordingly
 1. update version in version.rb
   * for release candidates, add ".rc" + number to the end of the appropriate version part
 1. commit and push the version update to github
