@@ -52,7 +52,7 @@ Alternatively, you may specify the path to your `jasmine.yml` by setting an envi
 `rake jasmine:ci JASMINE_CONFIG_PATH=relative/path/to/your/jasmine.yml`
 
 In addition, the `spec_helper` key in your jasmine.yml specifies the path to a ruby file that can do programmatic configuration.
-After running `jasmine init` or `rails g jasmine:init` it will point to `spec/javascripts/support/jasmine_helper.rb` which you can modify to fit your needs.
+After running `jasmine init` or `rails g jasmine:install` it will point to `spec/javascripts/support/jasmine_helper.rb` which you can modify to fit your needs.
 
 ### Running Jasmine on a different port
 
