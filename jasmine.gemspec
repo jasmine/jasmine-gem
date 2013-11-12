@@ -31,6 +31,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rack-test'
   s.add_development_dependency 'multi_json'
   s.add_development_dependency 'rspec', '>= 2.5.0'
+  s.add_development_dependency 'nokogiri'
 
   s.add_dependency 'jasmine-core', '~> 2.0.0.rc5'
   s.add_dependency 'rack', '>= 1.2.1'
