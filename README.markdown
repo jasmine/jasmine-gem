@@ -27,6 +27,7 @@ To initialize a project for Jasmine
 For any other project (Sinatra, Merb, or something we don't yet know about) use
 
 `jasmine init`
+`jasmine examples`
 
 ## Usage
 
