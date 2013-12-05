@@ -33,15 +33,19 @@ For any other project (Sinatra, Merb, or something we don't yet know about) use
 
 Start the Jasmine server:
 
-`rake jasmine`
+    rake jasmine
 
 Point your browser to `localhost:8888`. The suite will run every time this page is re-loaded.
 
 For Continuous Integration environments, add this task to the project build steps:
 
-`rake jasmine:ci`
+    rake jasmine:ci
 
-This uses PhantomJS to load and run the Jasmine suite.
+This uses PhantomJS to load and run the Jasmine suite. 
+
+Please note that PhantomJS will be auto-installed by the [phantomjs-gem][phantomjs-gem] at the first `rake jasmine:ci` run. If you have a PhantomJS somewhere on your path, it won't install.
+
+[phantomjs-gem]: https://github.com/colszowka/phantomjs-gem#phantomjs-as-a-rubygem
 
 ## Configuration
 
