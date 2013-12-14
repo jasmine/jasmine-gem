@@ -29,6 +29,8 @@ if Jasmine::Dependencies.rails_available?
       open('Gemfile', 'a') { |f|
         f.puts "gem 'jasmine', :path => '#{base}'"
         f.puts "gem 'jasmine-core', :github => 'pivotal/jasmine'"
+        f.puts "gem 'rubysl', :platform => :rbx"
+        f.puts "gem 'racc', :platform => :rbx"
         f.flush
       }
 

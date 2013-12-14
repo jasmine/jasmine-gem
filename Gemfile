@@ -22,3 +22,9 @@ if ENV['RAILS_VERSION'] == "rails3"
 else
   gem 'rack', '1.5.2'
 end
+
+platform :rbx do
+  gem 'json'
+  gem 'rubysl'
+  gem 'racc'
+end
