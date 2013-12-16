@@ -1,7 +1,5 @@
 # Releasing Jasmine
 
-Add release notes to gh-pages branch /release-notes.html.markdown
-
 ## Jasmine core
 
 See release docs in jasmine-core
