@@ -5,7 +5,7 @@ module Jasmine
     def process(argv)
       @argv = argv
 
-      if respond_to?(@argv[0])
+      if @argv.size > 0 && respond_to?(@argv[0])
         public_send(@argv[0])
       else
         print_help
@@ -50,7 +50,7 @@ module Jasmine
     end
 
     def print_help
-      puts "unknown command #{@argv.join(' ')}"
+      puts "unknown command #{@argv.join(' ')}" unless @argv.empty?
       puts "Usage: jasmine init"
       puts "               examples"
       puts "               copy_boot_js"

@@ -120,4 +120,14 @@ describe 'Jasmine command line tool' do
 
     output.should =~ /already exists/
   end
+
+  it 'should show help' do
+    no_arg_output = capture_stdout { Jasmine::CommandLineTool.new.process [] }
+    no_arg_output.should_not =~ /unknown command/
+    no_arg_output.should =~ /Usage:/
+
+    unknown_arg_output = capture_stdout { Jasmine::CommandLineTool.new.process ['blurgh', 'blargh'] }
+    unknown_arg_output.should =~ /unknown command blurgh blargh/
+    unknown_arg_output.should =~ /Usage:/
+  end
 end
