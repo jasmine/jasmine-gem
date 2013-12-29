@@ -29,11 +29,7 @@ namespace :jasmine do
 
     server = Jasmine::Server.new(config.port(:ci), Jasmine::Application.app(config))
     t = Thread.new do
-      begin
-        server.start
-      rescue ChildProcess::TimeoutError
-      end
-      # # ignore bad exits
+      server.start
     end
     t.abort_on_exception = true
     Jasmine::wait_for_listener(config.port(:ci), 'jasmine server')
