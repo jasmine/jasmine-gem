@@ -20,3 +20,6 @@ matrix:
       env: "RAILS_VERSION=pojs"
     - rvm: "jruby"
       env: "RAILS_VERSION=pojs"
+
+before_install:
+  - gem install bundler -v "= 1.5.1"
