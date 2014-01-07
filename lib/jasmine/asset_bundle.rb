@@ -49,7 +49,7 @@ module Jasmine
         @context = ActionView::Base.new
         @context.instance_eval do
           def get_original_assets(pathname)
-            assets_environment.find_asset(pathname).to_a.map do |processed_asset|
+            Rails.application.assets.find_asset(pathname).to_a.map do |processed_asset|
               case processed_asset.content_type
               when "text/css"
                 path_to_stylesheet(processed_asset.logical_path)
