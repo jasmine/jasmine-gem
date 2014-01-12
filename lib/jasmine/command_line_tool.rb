@@ -94,7 +94,7 @@ module Jasmine
         puts <<-EOF
 
 You're attempting to run jasmine init in a Rails project. You probably want to use the Rails generator like so:
-    rails g jasmine:init
+    rails g jasmine:install
 
 If you're not actually in a Rails application, just run this command again with --force
     jasmine init --force
