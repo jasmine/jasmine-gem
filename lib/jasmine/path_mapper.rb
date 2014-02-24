@@ -16,6 +16,10 @@ module Jasmine
       map(paths, @config.boot_dir, @config.boot_path)
     end
 
+    def map_runner_boot_paths(paths)
+      map(paths, @config.runner_boot_dir, @config.runner_boot_path)
+    end
+
     def map_jasmine_paths(paths)
       map(paths, @config.jasmine_dir, @config.jasmine_path)
     end

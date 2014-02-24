@@ -1,9 +1,9 @@
 module Jasmine
   class Configuration
     attr_writer :jasmine_css_files, :css_files
-    attr_writer :jasmine_files, :boot_files, :src_files, :spec_files
-    attr_accessor :jasmine_path, :spec_path, :boot_path, :src_path, :image_path
-    attr_accessor :jasmine_dir, :spec_dir, :boot_dir, :src_dir, :images_dir
+    attr_writer :jasmine_files, :boot_files, :src_files, :spec_files, :runner_boot_files
+    attr_accessor :jasmine_path, :spec_path, :boot_path, :src_path, :image_path, :runner_boot_path
+    attr_accessor :jasmine_dir, :spec_dir, :boot_dir, :src_dir, :images_dir, :runner_boot_dir
     attr_accessor :formatters
     attr_accessor :host
     attr_accessor :spec_format
@@ -17,6 +17,7 @@ module Jasmine
       @css_files = lambda { [] }
       @jasmine_files = lambda { [] }
       @boot_files = lambda { [] }
+      @runner_boot_files = lambda { [] }
       @src_files = lambda { [] }
       @spec_files = lambda { [] }
       @runner = lambda { |config| }
@@ -34,6 +35,7 @@ module Jasmine
     def js_files
       map(@jasmine_files, :jasmine) +
         map(@boot_files, :boot) +
+        map(@runner_boot_files, :runner_boot) +
         map(@src_files, :src) +
         map(@spec_files, :spec)
     end
