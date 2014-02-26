@@ -36,6 +36,7 @@ if Jasmine::Dependencies.rails_available?
         f.puts "gem 'jasmine-core', :github => 'pivotal/jasmine'"
         f.puts "gem 'rubysl', :platform => :rbx"
         f.puts "gem 'racc', :platform => :rbx"
+        f.puts "gem 'thin'"
         f.flush
       }
 
@@ -150,6 +151,20 @@ if Jasmine::Dependencies.rails_available?
       Bundler.with_clean_env do
         output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{yaml}`
         output.should include('1 spec, 0 failures')
+      end
+    end
+
+    it "should pass custom rack options from jasmine.yml" do
+      rack_yaml = custom_jasmine_config('custom_rack') do |jasmine_config|
+        jasmine_config['rack_options'] = { 'server' => 'webrick' }
+      end
+
+      Bundler.with_clean_env do
+        default_output = `bundle exec rake jasmine:ci`
+        default_output.should include('Thin web server')
+
+        custom_output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{rack_yaml} 2>&1`
+        custom_output.should include("WEBrick")
       end
     end
   end

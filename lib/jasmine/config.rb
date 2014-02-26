@@ -98,6 +98,8 @@ module Jasmine
 
         config.spec_dir = yaml_config.spec_dir
         config.spec_files = lambda { yaml_config.helpers + yaml_config.spec_files }
+
+        config.rack_options = yaml_config.rack_options
       end
       require yaml_config.spec_helper if File.exist?(yaml_config.spec_helper)
     else

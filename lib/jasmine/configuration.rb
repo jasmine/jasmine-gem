@@ -8,6 +8,7 @@ module Jasmine
     attr_accessor :host
     attr_accessor :spec_format
     attr_accessor :runner
+    attr_accessor :rack_options
 
     def initialize()
       @rack_paths = {}
@@ -21,6 +22,7 @@ module Jasmine
       @src_files = lambda { [] }
       @spec_files = lambda { [] }
       @runner = lambda { |config| }
+      @rack_options = {}
 
       @formatters = [Jasmine::Formatters::Console]
 

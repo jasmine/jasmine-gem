@@ -44,5 +44,12 @@ describe Jasmine::Server do
       Jasmine::Server.new(1234, app).start
       server.instance_variable_get(:@app).should == app
     end
+
+    it "should pass rack options when starting the server" do
+      app = double('application')
+      server = double(:server)
+      Rack::Server.should_receive(:new).with(hash_including(:Port => 1234, :foo => 'bar')).and_return(double(:server).as_null_object)
+      Jasmine::Server.new(1234, app, {:foo => 'bar', :Port => 4321}).start
+    end
   end
 end

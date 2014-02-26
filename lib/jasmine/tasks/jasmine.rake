@@ -39,7 +39,7 @@ namespace :jasmine do
       config.runner_boot_files = lambda { [runner.boot_js] }
     end
 
-    server = Jasmine::Server.new(config.port(:ci), Jasmine::Application.app(config))
+    server = Jasmine::Server.new(config.port(:ci), Jasmine::Application.app(config), config.rack_options)
     t = Thread.new do
       server.start
     end
@@ -55,7 +55,7 @@ namespace :jasmine do
   task :server => %w(jasmine:require jasmine:configure) do
     config = Jasmine.config
     port = config.port(:server)
-    server = Jasmine::Server.new(port, Jasmine::Application.app(Jasmine.config))
+    server = Jasmine::Server.new(port, Jasmine::Application.app(Jasmine.config), config.rack_options)
     puts "your server is running here: http://localhost:#{port}/"
     puts "your tests are here:         #{config.spec_dir}"
     puts "your source files are here:  #{config.src_dir}"
