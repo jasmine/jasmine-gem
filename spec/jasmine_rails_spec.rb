@@ -36,7 +36,7 @@ if Jasmine::Dependencies.rails_available?
         f.puts "gem 'jasmine-core', :github => 'pivotal/jasmine'"
         f.puts "gem 'rubysl', :platform => :rbx"
         f.puts "gem 'racc', :platform => :rbx"
-        f.puts "gem 'thin'"
+        f.puts "gem 'thin'" unless RUBY_PLATFORM == 'java'
         f.flush
       }
 
@@ -155,6 +155,7 @@ if Jasmine::Dependencies.rails_available?
     end
 
     it "should pass custom rack options from jasmine.yml" do
+      pending "we're testing this with thin, which doesn't work in jruby" if RUBY_PLATFORM == 'java'
       rack_yaml = custom_jasmine_config('custom_rack') do |jasmine_config|
         jasmine_config['rack_options'] = { 'server' => 'webrick' }
       end
