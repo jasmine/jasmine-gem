@@ -26,7 +26,12 @@ if Jasmine::Dependencies.rails_available?
 
       base = File.absolute_path(File.join(__FILE__, '../..'))
 
-      open('Gemfile', 'a') { |f|
+      # sqlite3 v 1.3.9 is broken on rbx, so restrict to 1.3.8 for now until they fix it.
+      # see: https://github.com/sparklemotion/sqlite3-ruby/issues/122
+      file_contents = File.read('Gemfile')
+
+      open('Gemfile', 'w') { |f|
+        f.puts file_contents.sub("gem 'sqlite3'", "gem 'sqlite3', '1.3.8'")
         f.puts "gem 'jasmine', :path => '#{base}'"
         f.puts "gem 'jasmine-core', :github => 'pivotal/jasmine'"
         f.puts "gem 'rubysl', :platform => :rbx"
