@@ -118,4 +118,21 @@ describe Jasmine::PathExpander do
       File.join('some_base', 'src2.js')
     ]
   end
+
+  it "passes through files that are not found by the globber and look like urls" do
+    #this is designed to support cdn files
+    dir_glob = lambda do |pattern|
+      []
+    end
+
+    expanded_files = Jasmine::PathExpander.expand(
+        'some_base',
+        ['http://www.google.com'],
+        dir_glob
+    )
+
+    expanded_files.should == [
+        'http://www.google.com'
+    ]
+  end
 end

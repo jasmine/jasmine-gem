@@ -7,7 +7,11 @@ module Jasmine
         patterns.map do |path|
           files = globber.call(File.join(base_directory, path.gsub(/^!/, '')))
           if files.empty? && !(path =~ /\*|^\!/)
-            files = [File.join(base_directory, path)]
+            if path[0..3] == 'http'
+              files << path
+            else
+              files = [File.join(base_directory, path)]
+            end
           end
           files.sort
         end.flatten.uniq

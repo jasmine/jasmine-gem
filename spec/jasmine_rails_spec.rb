@@ -106,7 +106,7 @@ if Jasmine::Dependencies.rails_available?
       }
 
       css_yaml = custom_jasmine_config('css') do |jasmine_config|
-        jasmine_config['src_files'] = ['assets/application.js']
+        jasmine_config['src_files'] = %w[assets/application.js http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js]
         jasmine_config['stylesheets'] = ['assets/application.css']
       end
 
@@ -126,9 +126,10 @@ if Jasmine::Dependencies.rails_available?
           end
 
           output = Net::HTTP.get(URI.parse('http://localhost:8888/'))
-          output.should match(%r{script src.*/assets/jasmine_examples/Player.js})
-          output.should match(%r{script src.*/assets/jasmine_examples/Song.js})
-          output.should match(%r{<link rel=.stylesheet.*?href=./assets/foo.css\?.*?>})
+          output.should match(%r{script src.*/assets/jasmine_examples/Player\.js})
+          output.should match(%r{script src=['"]http://ajax\.googleapis\.com/ajax/libs/jquery/1\.11\.0/jquery\.min\.js})
+          output.should match(%r{script src.*/assets/jasmine_examples/Song\.js})
+          output.should match(%r{<link rel=.stylesheet.*?href=./assets/foo\.css\?.*?>})
         ensure
           Process.kill(:SIGINT, pid)
           begin

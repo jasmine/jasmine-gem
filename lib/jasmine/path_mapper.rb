@@ -26,8 +26,13 @@ module Jasmine
 
     private
     def map(paths, remove_path, add_path)
-      paths.map { |path| File.join(add_path, (path.gsub(remove_path, ''))) }
+      paths.map do |path|
+        if path[0..3] == 'http'
+          path
+        else
+          File.join(add_path, (path.gsub(remove_path, '')))
+        end
+      end
     end
-
   end
 end
