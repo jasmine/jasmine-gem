@@ -26,14 +26,24 @@ describe 'Jasmine::Application' do
 
     Jasmine::Application.app(config, builder).should == builder
   end
+
   it 'should run rack apps provided by the config' do
     app1 = double(:app1)
     app2 = double(:app2)
+    app3 = double(:app3)
+    app4 = double(:app4)
     block = lambda { 'foo' }
-    config = double(:config, :rack_path_map => [], :rack_apps => [[app1, nil], [app2, block]])
+    config = double(:config, :rack_path_map => [], :rack_apps => [
+        { :app => app1 },
+        { :app => app2, :block => block },
+        { :app => app3, :args => [:foo], :block => block },
+        { :app => app4, :args => [:bar] }
+    ])
     builder = double('Rack::Builder.new')
     builder.should_receive(:use).with(app1)
     builder.should_receive(:use).with(app2, &block)
+    builder.should_receive(:use).with(app3, :foo, &block)
+    builder.should_receive(:use).with(app4, :bar)
     Jasmine::Application.app(config, builder).should == builder
   end
 end

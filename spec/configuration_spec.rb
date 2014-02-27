@@ -94,14 +94,30 @@ describe Jasmine::Configuration do
       config = Jasmine::Configuration.new()
       app = double
       config.add_rack_app(app)
-      config.rack_apps.should == [[app, nil]]
+      config.rack_apps.should == [{ :app => app, :args => [], :block => nil }]
     end
-    it 'permits the addition of arbitary rack apps with arbitrary config' do
+
+    it 'permits the addition of arbitary rack apps with a config block' do
       config = Jasmine::Configuration.new()
       app = double
       block = lambda { 'foo' }
       config.add_rack_app(app, &block)
-      config.rack_apps.should == [[app, block]]
+      config.rack_apps.should == [{ :app => app, :args => [], :block => block }]
+    end
+
+    it 'permits the addition of arbitary rack apps with arbitrary config' do
+      config = Jasmine::Configuration.new()
+      app = double
+      config.add_rack_app(app, { :foo => 'bar' })
+      config.rack_apps.should == [{ :app => app, :args => [{ :foo => 'bar' }], :block => nil }]
+    end
+
+    it 'permits the addition of arbitary rack apps with arbitrary config and a config block' do
+      config = Jasmine::Configuration.new()
+      app = double
+      block = lambda { 'foo' }
+      config.add_rack_app(app, { :foo => 'bar' }, &block)
+      config.rack_apps.should == [{ :app => app, :args => [{ :foo => 'bar' }], :block => block }]
     end
   end
 

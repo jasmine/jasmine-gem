@@ -9,8 +9,8 @@ require 'ostruct'
 module Jasmine
   class Application
     def self.app(config, builder = Rack::Builder.new)
-      config.rack_apps.each do |(app, config_block)|
-        builder.use(app, &config_block)
+      config.rack_apps.each do |app_config|
+        builder.use(app_config[:app], *app_config[:args], &app_config[:block])
       end
       config.rack_path_map.each do |path, handler|
         builder.map(path) { run handler.call }

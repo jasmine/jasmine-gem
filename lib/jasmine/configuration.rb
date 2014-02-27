@@ -54,8 +54,12 @@ module Jasmine
       [] + @apps
     end
 
-    def add_rack_app(app, &block)
-      @apps << [app, block]
+    def add_rack_app(app, *args, &block)
+      @apps << {
+          :app => app,
+          :args => args,
+          :block => block
+      }
     end
 
     def add_path_mapper(mapper)
