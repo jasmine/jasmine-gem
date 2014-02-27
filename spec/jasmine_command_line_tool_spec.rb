@@ -23,6 +23,15 @@ describe 'Jasmine command line tool' do
         ci_output.should =~ (/0 specs, 0 failures/)
       end
 
+      it 'should not have rails-like paths' do
+        output = capture_stdout { Jasmine::CommandLineTool.new.process ['init'] }
+        output.should =~ /Jasmine has been installed\./
+
+        config = YAML.load_file(File.join(@tmp, 'spec/javascripts/support/jasmine.yml'))
+        config['src_files'].should == ['public/javascripts/**/*.js']
+        config['stylesheets'].should == ['stylesheets/**/*.css']
+      end
+
       it 'should create a new Rakefile if it does not exist' do
         output = capture_stdout { Jasmine::CommandLineTool.new.process ["init"] }
         output.should =~ /Jasmine has been installed\./

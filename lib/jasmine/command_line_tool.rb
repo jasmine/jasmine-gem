@@ -76,7 +76,7 @@ module Jasmine
           FileUtils.mkdir_p(File.dirname(dest_path))
           FileUtils.copy(source_path, dest_path)
           if File.basename(dest_path) == 'jasmine.yml'
-            replaced = File.read(dest_path).gsub("assets/application.js", "public/javascripts/**/*.js")
+            replaced = File.read(dest_path).gsub("assets/application.js", "public/javascripts/**/*.js").gsub("assets/application.css", "stylesheets/**/*.css")
             File.open(dest_path, 'w') do |file|
               file.write(replaced)
             end
