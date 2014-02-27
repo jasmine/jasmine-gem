@@ -23,8 +23,10 @@ namespace :jasmine do
     end
   end
 
+  task :configure_plugins
+
   desc 'Run continuous integration tests'
-  task :ci => %w(jasmine:require_json jasmine:require jasmine:configure) do
+  task :ci => %w(jasmine:require_json jasmine:require jasmine:configure jasmine:configure_plugins) do
     config = Jasmine.config
 
     formatters = config.formatters.map { |formatter_class| formatter_class.new }
@@ -52,7 +54,7 @@ namespace :jasmine do
     break unless exit_code_formatter.succeeded?
   end
 
-  task :server => %w(jasmine:require jasmine:configure) do
+  task :server => %w(jasmine:require jasmine:configure jasmine:configure_plugins) do
     config = Jasmine.config
     port = config.port(:server)
     server = Jasmine::Server.new(port, Jasmine::Application.app(Jasmine.config), config.rack_options)
