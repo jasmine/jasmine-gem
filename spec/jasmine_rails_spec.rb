@@ -87,6 +87,18 @@ if Jasmine::Dependencies.rails_available?
       end
     end
 
+    it "rake jasmine:ci runs specs when an error occurs in the javascript" do
+      Bundler.with_clean_env do
+        FileUtils.cp(File.join(@root, 'spec', 'fixture', 'exception_test.js'), File.join('spec', 'javascripts'))
+        exception_yaml = custom_jasmine_config('exception') do |jasmine_config|
+          jasmine_config['spec_files'] << 'exception_test.js'
+        end
+        output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{exception_yaml}`
+        $?.should be_success
+        output.should include('5 specs, 0 failures')
+      end
+    end
+
     it "runs specs written in coffeescript" do
       coffee_yaml = custom_jasmine_config('coffee') do |jasmine_config|
         jasmine_config['spec_files'] << 'coffee_spec.coffee'

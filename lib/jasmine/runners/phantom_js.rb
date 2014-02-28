@@ -13,9 +13,12 @@ module Jasmine
         command = "#{Phantomjs.path} '#{File.join(File.dirname(__FILE__), 'phantom_jasmine_run.js')}' #{jasmine_server_url} #{result_batch_size}"
         IO.popen(command) do |output|
           output.each do |line|
-            raw_results = JSON.parse(line, :max_nesting => false)
-            results = raw_results.map { |r| Result.new(r) }
-            formatter.format(results)
+            if line =~ /^jasmine_result/
+              line = line.sub(/^jasmine_result/, '')
+              raw_results = JSON.parse(line, :max_nesting => false)
+              results = raw_results.map { |r| Result.new(r) }
+              formatter.format(results)
+            end
           end
         end
         formatter.done
