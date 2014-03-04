@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="<%= css_file %>" type="text/css" media="screen"/>
   <% end %>
   <% js_files.each do |js_file| %>
-  <script src="<%= js_file %>" type="text/javascript"></script>
+    <script src="<%= js_file %>" type="text/<%= (js_file.split(".").last == "jsx")? "jsx" : "javascript" %>"></script>
   <% end %>
 
 </head>
