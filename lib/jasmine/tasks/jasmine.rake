@@ -1,3 +1,19 @@
+if Rake.application.tasks.any? {|t| t.name == 'jasmine/ci' }
+  message = <<-EOF
+
+                        WARNING
+Detected that jasmine rake tasks have been loaded twice.
+This will cause the 'rake jasmine:ci' and 'rake jasmine' tasks to fail.
+
+To fix this problem, you should ensure that you only load 'jasmine/tasks/jasmine.rake'
+once. This should be done for you automatically if you installed jasmine's rake tasks
+with either 'jasmine init' or 'rails g jasmine:install'.
+
+
+EOF
+  raise Exception.new(message)
+end
+
 namespace :jasmine do
   task :configure do
     require 'jasmine/config'
