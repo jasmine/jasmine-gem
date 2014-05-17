@@ -6,19 +6,11 @@ module Jasmine
       end
 
       def format(results)
-        go(:format, results)
+        @formatters.each { |formatter| formatter.format(results) }
       end
 
       def done
-        go(:done)
-      end
-
-      private
-
-      def go(method, *args)
-        (@formatters || []).each do |formatter|
-          formatter.public_send(method, *args)
-        end
+        @formatters.each(&:done)
       end
     end
   end

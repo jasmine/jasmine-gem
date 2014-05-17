@@ -9,10 +9,11 @@ module Jasmine
     attr_accessor :spec_format
     attr_accessor :runner
     attr_accessor :rack_options
+    attr_reader :rack_apps
 
     def initialize()
       @rack_paths = {}
-      @apps = []
+      @rack_apps = []
       @path_mappers = []
       @jasmine_css_files = lambda { [] }
       @css_files = lambda { [] }
@@ -50,12 +51,8 @@ module Jasmine
       @rack_paths[path] = rack_app_lambda
     end
 
-    def rack_apps
-      [] + @apps
-    end
-
     def add_rack_app(app, *args, &block)
-      @apps << {
+      @rack_apps << {
           :app => app,
           :args => args,
           :block => block

@@ -6,9 +6,17 @@ describe Jasmine::Formatters::Multi do
     formatter2 = double(:formatter2)
     multi = Jasmine::Formatters::Multi.new([formatter1, formatter2])
 
-    formatter1.should_receive(:format)
-    formatter2.should_receive(:format)
-    multi.format(nil)
+    results1 = double(:results1)
+
+    formatter1.should_receive(:format).with(results1)
+    formatter2.should_receive(:format).with(results1)
+    multi.format(results1)
+
+    results2 = double(:results1)
+
+    formatter1.should_receive(:format).with(results2)
+    formatter2.should_receive(:format).with(results2)
+    multi.format(results2)
 
     formatter1.should_receive(:done)
     formatter2.should_receive(:done)

@@ -50,7 +50,7 @@ module Jasmine
 
     if Jasmine::Dependencies.use_asset_pipeline?
       @config.add_path_mapper(lambda { |config|
-        asset_expander = Jasmine::AssetExpander.new(Jasmine::AssetBundle.factory)
+        asset_expander = Jasmine::AssetExpander.new
         Jasmine::AssetPipelineMapper.new(config, asset_expander.method(:expand))
       })
       # In order to have asset helpers like asset_path and image_path, we need to require 'action_view/base'.  This
