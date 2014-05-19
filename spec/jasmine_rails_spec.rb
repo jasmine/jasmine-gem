@@ -37,6 +37,7 @@ if Jasmine::Dependencies.rails_available?
         f.puts "gem 'rubysl', :platform => :rbx"
         f.puts "gem 'racc', :platform => :rbx"
         f.puts "gem 'thin'" unless RUBY_PLATFORM == 'java'
+        f.puts "gem 'angularjs-rails'"
         f.flush
       }
 
@@ -117,6 +118,11 @@ if Jasmine::Dependencies.rails_available?
         f.flush
       }
 
+      open('spec/javascripts/helpers/angular_helper.js', 'w') { |f|
+        f.puts "//= require angular-mocks"
+        f.flush
+      }
+
       css_yaml = custom_jasmine_config('css') do |jasmine_config|
         jasmine_config['src_files'] = %w[assets/application.js http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js]
         jasmine_config['stylesheets'] = ['assets/application.css']
@@ -141,7 +147,11 @@ if Jasmine::Dependencies.rails_available?
           output.should match(%r{script src.*/assets/jasmine_examples/Player\.js})
           output.should match(%r{script src=['"]http://ajax\.googleapis\.com/ajax/libs/jquery/1\.11\.0/jquery\.min\.js})
           output.should match(%r{script src.*/assets/jasmine_examples/Song\.js})
+          output.should match(%r{script src.*angular_helper\.js})
           output.should match(%r{<link rel=.stylesheet.*?href=./assets/foo\.css\?.*?>})
+
+          output = Net::HTTP.get(URI.parse('http://localhost:8888/__spec__/helpers/angular_helper.js'))
+          output.should match(/angular\.mock/)
         ensure
           Process.kill(:SIGINT, pid)
           begin
