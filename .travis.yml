@@ -3,6 +3,7 @@ script: "if [ $PERFORMANCE_SPECS ];then bundle exec rake performance_specs --tra
 rvm:
   - "1.9.3"
   - "2.0.0"
+  - "2.1.1"
   - "jruby"
   - "rbx-2"
 
