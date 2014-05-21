@@ -43,7 +43,7 @@ For Continuous Integration environments, add this task to the project build step
 
 This uses PhantomJS to load and run the Jasmine suite. 
 
-Please note that PhantomJS will be auto-installed by the [phantomjs-gem][phantomjs-gem] at the first `rake jasmine:ci` run. If you have a PhantomJS somewhere on your path, it won't install.
+Please note that PhantomJS will be auto-installed by the [phantomjs-gem][phantomjs-gem] at the first `rake jasmine:ci` run. If you have a matching PhantomJS version somewhere on your path, it won't install. You can disable automatic installation altogether (and use the PhantomJS on your path) via the config helper.
 
 [phantomjs-gem]: https://github.com/colszowka/phantomjs-gem#phantomjs-as-a-rubygem
 

@@ -141,6 +141,14 @@ describe Jasmine::Configuration do
     end
   end
 
+  describe 'prevent phantomjs auto install' do
+    it 'returns value if set' do
+      config = Jasmine::Configuration.new()
+      config.prevent_phantom_js_auto_install = true
+      config.prevent_phantom_js_auto_install.should == true
+    end
+  end
+
   describe 'jasmine ports' do
     it 'returns new CI port and caches return value' do
       config = Jasmine::Configuration.new()
