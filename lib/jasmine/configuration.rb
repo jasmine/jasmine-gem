@@ -9,6 +9,7 @@ module Jasmine
     attr_accessor :spec_format
     attr_accessor :runner
     attr_accessor :rack_options
+    attr_accessor :prevent_phantom_js_auto_install
     attr_reader :rack_apps
 
     def initialize()
