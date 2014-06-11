@@ -61,7 +61,6 @@ if Jasmine::Dependencies.rails_available?
     it 'should have the jasmine & jasmine:ci rake task' do
       #See https://github.com/jimweirich/rake/issues/220 and https://github.com/jruby/activerecord-jdbc-adapter/pull/467
       #There's a workaround, but requires setting env vars & jruby opts (non-trivial when inside of a jruby process), so skip for now.
-      pending "activerecord-jdbc + rake -T doesn't work correctly under Jruby" if ENV['RAILS_VERSION'] == 'rails3' && RUBY_PLATFORM == 'java'
       Bundler.with_clean_env do
         output = `bundle exec rake -T`
         output.should include('jasmine ')
