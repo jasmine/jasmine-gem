@@ -36,13 +36,19 @@ describe 'Jasmine::Application' do
     config = double(:config, :rack_path_map => [], :rack_apps => [
         { :app => app1 },
         { :app => app2, :block => block },
-        { :app => app3, :args => [:foo], :block => block },
+        { :app => app3, :args => [:foo, :bar], :block => block },
         { :app => app4, :args => [:bar] }
     ])
     builder = double('Rack::Builder.new')
     builder.should_receive(:use).with(app1)
-    builder.should_receive(:use).with(app2, &block)
-    builder.should_receive(:use).with(app3, :foo, &block)
+    builder.should_receive(:use) do |*args, &arg_block|
+      args.should == [app2]
+      arg_block.should == block
+    end
+    builder.should_receive(:use) do |*args, &arg_block|
+      args.should == [app3, :foo, :bar]
+      arg_block.should == block
+    end
     builder.should_receive(:use).with(app4, :bar)
     Jasmine::Application.app(config, builder).should == builder
   end
