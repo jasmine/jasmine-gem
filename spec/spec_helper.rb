@@ -11,10 +11,6 @@ $:.unshift(File.expand_path(File.join(File.dirname(__FILE__), '../lib')))
 require 'jasmine'
 require 'rspec'
 
-def create_rails(name)
-  `rails new #{name}`
-end
-
 def create_temp_dir
   tmp = File.join(Dir.tmpdir, "jasmine-gem-test_#{Time.now.to_f}")
   FileUtils.rm_r(tmp, :force => true)

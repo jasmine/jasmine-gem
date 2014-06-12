@@ -21,13 +21,17 @@ if Jasmine::Dependencies.rails_available?
       temp_dir_before
       Dir::chdir @tmp
 
-      create_rails 'rails-example'
+      `rails new rails-example --skip-bundle`
       Dir::chdir File.join(@tmp, 'rails-example')
 
       base = File.absolute_path(File.join(__FILE__, '../..'))
 
       # sqlite3 v 1.3.9 is broken on rbx, so restrict to 1.3.8 for now until they fix it.
       # see: https://github.com/sparklemotion/sqlite3-ruby/issues/122
+      #
+      # execjs v2.2.0 is broken in rbx, locking the version to 2.0.2 for now
+      # see https://github.com/sstephenson/execjs/issues/148
+
       file_contents = File.read('Gemfile')
 
       open('Gemfile', 'w') { |f|
@@ -38,6 +42,7 @@ if Jasmine::Dependencies.rails_available?
         f.puts "gem 'racc', :platform => :rbx"
         f.puts "gem 'thin'" unless RUBY_PLATFORM == 'java'
         f.puts "gem 'angularjs-rails'"
+        f.puts "gem 'execjs', '2.0.2'"
         f.flush
       }
 
