@@ -66,6 +66,7 @@ module Jasmine
         end
         if Jasmine::Dependencies.rails4?
           include ::Sprockets::Rails::Helper
+          Rails.application.assets.context_class.assets_prefix = Rails.application.config.assets.prefix
         end
       end
       @config.add_rack_path(Rails.application.config.assets.prefix, lambda {
