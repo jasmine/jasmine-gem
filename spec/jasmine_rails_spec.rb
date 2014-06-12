@@ -21,7 +21,7 @@ if Jasmine::Dependencies.rails_available?
       temp_dir_before
       Dir::chdir @tmp
 
-      create_rails 'rails-example'
+      `rails new rails-example --skip-bundle`
       Dir::chdir File.join(@tmp, 'rails-example')
 
       base = File.absolute_path(File.join(__FILE__, '../..'))
