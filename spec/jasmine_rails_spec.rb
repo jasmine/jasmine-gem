@@ -7,7 +7,7 @@ if Jasmine::Dependencies.rails_available?
     def bundle_install
       tries_remaining = 3
       while tries_remaining > 0
-        puts `NOKOGIRI_USE_SYSTEM_LIBRARIES=true bundle install --path vendor;`
+        run_command("NOKOGIRI_USE_SYSTEM_LIBRARIES=true bundle install --path vendor")
         if $?.success?
           tries_remaining = 0
         else
@@ -21,7 +21,7 @@ if Jasmine::Dependencies.rails_available?
       temp_dir_before
       Dir::chdir @tmp
 
-      `rails new rails-example --skip-bundle  --skip-active-record`
+      run_command!("rails new rails-example --skip-bundle  --skip-active-record")
       Dir::chdir File.join(@tmp, 'rails-example')
 
       base = File.absolute_path(File.join(__FILE__, '../..'))
@@ -40,10 +40,10 @@ if Jasmine::Dependencies.rails_available?
 
       Bundler.with_clean_env do
         bundle_install
-        `bundle exec rails g jasmine:install`
+        run_command!("bundle exec rails g jasmine:install")
         File.exists?('spec/javascripts/helpers/.gitkeep').should == true
         File.exists?('spec/javascripts/support/jasmine.yml').should == true
-        `bundle exec rails g jasmine:examples`
+        run_command!("bundle exec rails g jasmine:examples")
         File.exists?('app/assets/javascripts/jasmine_examples/Player.js').should == true
         File.exists?('app/assets/javascripts/jasmine_examples/Song.js').should == true
         File.exists?('spec/javascripts/jasmine_examples/PlayerSpec.js').should == true
@@ -59,7 +59,7 @@ if Jasmine::Dependencies.rails_available?
       #See https://github.com/jimweirich/rake/issues/220 and https://github.com/jruby/activerecord-jdbc-adapter/pull/467
       #There's a workaround, but requires setting env vars & jruby opts (non-trivial when inside of a jruby process), so skip for now.
       Bundler.with_clean_env do
-        output = `bundle exec rake -T`
+        output = run_command!("bundle exec rake -T")
         output.should include('jasmine ')
         output.should include('jasmine:ci')
       end
@@ -67,7 +67,7 @@ if Jasmine::Dependencies.rails_available?
 
     it "rake jasmine:ci runs and returns expected results" do
       Bundler.with_clean_env do
-        output = `bundle exec rake jasmine:ci`
+        output = run_command!("bundle exec rake jasmine:ci")
         output.should include('5 specs, 0 failures')
       end
     end
@@ -78,7 +78,7 @@ if Jasmine::Dependencies.rails_available?
         failing_yaml = custom_jasmine_config('failing') do |jasmine_config|
           jasmine_config['spec_files'] << 'failing_test.js'
         end
-        output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{failing_yaml}`
+        output = run_command("bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{failing_yaml}")
         $?.should_not be_success
         output.should include('6 specs, 1 failure')
       end
@@ -90,8 +90,7 @@ if Jasmine::Dependencies.rails_available?
         exception_yaml = custom_jasmine_config('exception') do |jasmine_config|
           jasmine_config['spec_files'] << 'exception_test.js'
         end
-        output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{exception_yaml}`
-        $?.should be_success
+        output = run_command!("bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{exception_yaml}")
         output.should include('5 specs, 0 failures')
       end
     end
@@ -103,7 +102,7 @@ if Jasmine::Dependencies.rails_available?
       FileUtils.cp(File.join(@root, 'spec', 'fixture', 'coffee_spec.coffee'), File.join('spec', 'javascripts'))
 
       Bundler.with_clean_env do
-        output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{coffee_yaml}`
+        output = run_command!("bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{coffee_yaml}")
         output.should include('6 specs, 0 failures')
       end
     end
@@ -159,7 +158,7 @@ if Jasmine::Dependencies.rails_available?
       FileUtils.cp(File.join(@root, 'spec', 'fixture', 'non_asset_pipeline_test.js'), File.join('spec', 'javascripts'))
 
       Bundler.with_clean_env do
-        output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{yaml}`
+        output = run_command!("bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{yaml}")
         output.should include('1 spec, 0 failures')
       end
     end
@@ -171,10 +170,10 @@ if Jasmine::Dependencies.rails_available?
       end
 
       Bundler.with_clean_env do
-        default_output = `bundle exec rake jasmine:ci`
+        default_output = run_command!("bundle exec rake jasmine:ci")
         default_output.should include('Thin web server')
 
-        custom_output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{rack_yaml} 2>&1`
+        custom_output = run_command!("bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{rack_yaml}")
         custom_output.should include("WEBrick")
       end
     end
@@ -183,7 +182,7 @@ if Jasmine::Dependencies.rails_available?
       Bundler.with_clean_env do
         begin
           pid = IO.popen("bundle exec rake jasmine #{options}").pid
-          Jasmine::wait_for_listener(8888, 'jasmine server', 60)
+          Jasmine::wait_for_listener(8888, 'jasmine server', 60, verbose?)
 
           # if the process we started is not still running, it's very likely this test
           # will fail because another server is already running on port 8888
