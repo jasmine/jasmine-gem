@@ -9,8 +9,8 @@ describe "POJS jasmine install" do
     Dir::mkdir @install_directory
     Dir::chdir @install_directory
 
-    `jasmine init`
-    `jasmine examples`
+    run_command!("jasmine init")
+    run_command!("jasmine examples")
   end
 
   after :each do
@@ -32,20 +32,19 @@ describe "POJS jasmine install" do
   end
 
   it "should show jasmine rake task" do
-    output = `rake -T`
+    output = run_command!("rake -T")
     output.should include("jasmine ")
     output.should include("jasmine:ci")
   end
 
   it "should successfully run rake jasmine:ci" do
-    output = `rake jasmine:ci`
+    output = run_command!("rake jasmine:ci")
     output.should =~ (/[1-9]\d* specs, 0 failures/)
   end
 
   it "should raise an error when jasmine.yml cannot be found" do
     config_path = 'some/thing/that/doesnt/exist'
-    output = `rake jasmine:ci JASMINE_CONFIG_PATH=#{config_path}`
-    $?.should_not be_success
+    output = run_command("rake jasmine:ci JASMINE_CONFIG_PATH=#{config_path}")
     output.should =~ /Unable to load jasmine config from #{config_path}/
   end
 
@@ -57,7 +56,7 @@ describe "POJS jasmine install" do
 
     FileUtils.cp(File.join(@root, 'spec', 'fixture', 'failing_runner.rb'), failing_runner)
 
-    `rake jasmine:ci JASMINE_CONFIG_PATH=#{failing_yaml}`
+    run_command("rake jasmine:ci JASMINE_CONFIG_PATH=#{failing_yaml}")
     $?.should_not be_success
   end
 end
