@@ -67,7 +67,7 @@ namespace :jasmine do
 
     runner.run
 
-    break unless exit_code_formatter.succeeded?
+    exit(1) unless exit_code_formatter.succeeded?
   end
 
   task :server => %w(jasmine:require jasmine:configure jasmine:configure_plugins) do
