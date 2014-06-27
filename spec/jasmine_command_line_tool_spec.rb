@@ -19,7 +19,7 @@ describe 'Jasmine command line tool' do
         File.exists?(File.join(@tmp, 'spec/javascripts/helpers/.gitkeep')).should == true
         File.exists?(File.join(@tmp, 'spec/javascripts/support/jasmine.yml')).should == true
         File.exists?(File.join(@tmp, 'Rakefile')).should == true
-        ci_output = `rake --trace jasmine:ci`
+        ci_output = run_command!("rake --trace jasmine:ci")
         ci_output.should =~ (/0 specs, 0 failures/)
       end
 
@@ -107,7 +107,7 @@ describe 'Jasmine command line tool' do
     File.exists?(File.join(@tmp, 'spec/javascripts/helpers/jasmine_examples/SpecHelper.js')).should == true
 
     capture_stdout { Jasmine::CommandLineTool.new.process ['init'] }
-    ci_output = `rake --trace jasmine:ci`
+    ci_output = run_command!("rake --trace jasmine:ci")
     ci_output.should =~ (/[1-9]\d* specs, 0 failures/)
   end
 
