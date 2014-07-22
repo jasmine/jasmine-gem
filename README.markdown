@@ -21,13 +21,15 @@ end
 
 To initialize a project for Jasmine
 
-`rails g jasmine:install`
-`rails g jasmine:examples`
+    rails g jasmine:install
+
+    rails g jasmine:examples
 
 For any other project (Sinatra, Merb, or something we don't yet know about) use
 
-`jasmine init`
-`jasmine examples`
+    jasmine init
+
+    jasmine examples
 
 ## Usage
 
