@@ -74,7 +74,12 @@ module Jasmine
       })
     end
 
-    @config.runner = lambda { |formatter, jasmine_server_url| Jasmine::Runners::PhantomJs.new(formatter, jasmine_server_url, 50, @config.prevent_phantom_js_auto_install) }
+    @config.runner = lambda do |formatter, jasmine_server_url|
+      Jasmine::Runners::PhantomJs.new(formatter,
+                                      jasmine_server_url,
+                                      @config.prevent_phantom_js_auto_install,
+                                      @config.show_console_log)
+    end
   end
 
   def self.config
@@ -102,6 +107,8 @@ module Jasmine
 
         config.spec_dir = yaml_config.spec_dir
         config.spec_files = lambda { yaml_config.helpers + yaml_config.spec_files }
+
+        config.show_console_log = yaml_config.show_console_log
 
         config.rack_options = yaml_config.rack_options
       end

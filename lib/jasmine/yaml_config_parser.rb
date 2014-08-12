@@ -59,6 +59,10 @@ module Jasmine
       File.join(@pwd, loaded_yaml['spec_helper'] || File.join('spec', 'javascripts', 'support', 'jasmine_helper.rb'))
     end
 
+    def show_console_log
+      loaded_yaml['show_console_log'] || false
+    end
+
     def rack_options
       loaded_yaml.fetch('rack_options', {}).inject({}) do |memo, (key, value)|
         memo[key.to_sym] = value

@@ -10,6 +10,7 @@ module Jasmine
     attr_accessor :runner
     attr_accessor :rack_options
     attr_accessor :prevent_phantom_js_auto_install
+    attr_accessor :show_console_log
     attr_reader :rack_apps
 
     def initialize()
@@ -25,6 +26,7 @@ module Jasmine
       @spec_files = lambda { [] }
       @runner = lambda { |config| }
       @rack_options = {}
+      @show_console_log = false
 
       @formatters = [Jasmine::Formatters::Console]
 

@@ -60,4 +60,23 @@ describe "POJS jasmine install" do
     `rake jasmine:ci JASMINE_CONFIG_PATH=#{failing_yaml}`
     $?.should_not be_success
   end
+
+  context 'with a spec with a console.log' do
+    before do
+      FileUtils.cp(File.join(@root, 'spec', 'fixture', 'console_log_spec.js'), File.join('spec', 'javascripts'))
+    end
+
+    it 'hides console.log by default' do
+      output = `rake jasmine:ci`
+      output.should_not include("I'm in the webpage!")
+    end
+
+    it 'can be told to show console.log' do
+      log_yaml = custom_jasmine_config('log') do |jasmine_config|
+        jasmine_config['show_console_log'] = true
+      end
+      output = `rake jasmine:ci JASMINE_CONFIG_PATH=#{log_yaml}`
+      output.should include("I'm in the webpage!")
+    end
+  end
 end
