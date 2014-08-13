@@ -79,4 +79,15 @@ describe "POJS jasmine install" do
       output.should include("I'm in the webpage!")
     end
   end
+
+  it 'should allow customizing the phantom page' do
+    FileUtils.cp(File.join(@root, 'spec', 'fixture', 'viewport_spec.js'), File.join('spec', 'javascripts'))
+    FileUtils.cp(File.join(@root, 'spec', 'fixture', 'phantomConfig.js'), File.join('spec', 'javascripts', 'support'))
+    viewport_yaml = custom_jasmine_config('viewport') do |jasmine_config|
+      jasmine_config['phantom_config_script'] = 'spec/javascripts/support/phantomConfig.js'
+    end
+
+    output = `rake jasmine:ci JASMINE_CONFIG_PATH=#{viewport_yaml}`
+    output.should =~ /[1-9]\d* specs, 0 failures/
+  end
 end

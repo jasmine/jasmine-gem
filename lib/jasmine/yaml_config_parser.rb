@@ -63,6 +63,11 @@ module Jasmine
       loaded_yaml['show_console_log'] || false
     end
 
+    def phantom_config_script
+      return nil unless loaded_yaml['phantom_config_script']
+      File.join @pwd, loaded_yaml['phantom_config_script']
+    end
+
     def rack_options
       loaded_yaml.fetch('rack_options', {}).inject({}) do |memo, (key, value)|
         memo[key.to_sym] = value
