@@ -21,6 +21,14 @@ module Jasmine
               raw_results = JSON.parse(line, :max_nesting => false)
               results = raw_results.map { |r| Result.new(r) }
               formatter.format(results)
+            elsif line =~ /^Failed to configure phantom$/
+              config_failure = Result.new('fullName' => line,
+                                          'failedExpectations' => [],
+                                          'description' => '',
+                                          'status' => 'failed')
+              formatter.format([config_failure])
+              @show_console_log = true
+              puts line
             elsif show_console_log
               puts line
             end

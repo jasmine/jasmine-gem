@@ -90,4 +90,14 @@ describe "POJS jasmine install" do
     output = `rake jasmine:ci JASMINE_CONFIG_PATH=#{viewport_yaml}`
     output.should =~ /[1-9]\d* specs, 0 failures/
   end
+
+  it 'should throw a useful error when the phantom customization fails' do
+    bad_phantom_yaml = custom_jasmine_config('viewport') do |jasmine_config|
+      jasmine_config['phantom_config_script'] = 'spec/javascripts/support/doesNotExist.js'
+    end
+
+    output = `rake jasmine:ci JASMINE_CONFIG_PATH=#{bad_phantom_yaml}`
+    $?.should_not be_success
+    output.should =~ /Failed to configure phantom/
+  end
 end
