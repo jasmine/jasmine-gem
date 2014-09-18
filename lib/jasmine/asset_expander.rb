@@ -54,9 +54,9 @@ module Jasmine
           assets_environment.find_asset(pathname).to_a.map do |processed_asset|
             case processed_asset.content_type
             when "text/css"
-              path_to_stylesheet(processed_asset.logical_path)
+              path_to_stylesheet(processed_asset.logical_path, debug: true)
             when "application/javascript"
-              path_to_javascript(processed_asset.logical_path)
+              path_to_javascript(processed_asset.logical_path, debug: true)
             end
           end
         end
