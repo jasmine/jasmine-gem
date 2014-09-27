@@ -100,4 +100,12 @@ describe "POJS jasmine install" do
     $?.should_not be_success
     output.should =~ /Failed to configure phantom/
   end
+
+  it 'should fail correctly with a failure in afterAll' do
+    FileUtils.cp(File.join(@root, 'spec', 'fixture', 'afterall_spec.js'), File.join('spec', 'javascripts'))
+
+    output = `rake jasmine:ci`
+    $?.should_not be_success
+    output.should =~ /afterAll go boom/
+  end
 end
