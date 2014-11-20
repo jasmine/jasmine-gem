@@ -19,7 +19,7 @@ end
 
 ## Init A Project
 
-To initialize a project for Jasmine
+To initialize a rails project for Jasmine
 
     rails g jasmine:install
 
