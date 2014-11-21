@@ -1,7 +1,4 @@
-script: "if [ $PERFORMANCE_SPECS ];then bundle exec rake performance_specs --trace; else bundle exec rake --trace; fi"
-
-install:
-  - bundle install --retry=3
+language: ruby
 
 rvm:
   - "1.9.3"
@@ -14,6 +11,13 @@ env:
  - "RAILS_VERSION=rails3"
  - "RAILS_VERSION=rails4"
  - "RAILS_VERSION=pojs"
+
+sudo: false
+
+script: "if [ $PERFORMANCE_SPECS ];then bundle exec rake performance_specs --trace; else bundle exec rake --trace; fi"
+
+install:
+  - bundle install --retry=3
 
 matrix:
   include:
