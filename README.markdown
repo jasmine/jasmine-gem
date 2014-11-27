@@ -1,6 +1,6 @@
-# The Jasmine Gem [![Build Status](https://travis-ci.org/pivotal/jasmine-gem.png?branch=master)](https://travis-ci.org/pivotal/jasmine-gem)
+# The Jasmine Gem [![Build Status](https://travis-ci.org/jasmine/jasmine-gem.png?branch=master)](https://travis-ci.org/jasmine/jasmine-gem)
 
-The [Jasmine](http://github.com/pivotal/jasmine) Ruby Gem is a package of helper code for developing Jasmine projects for Ruby-based web projects (Rails, Sinatra, etc.) or for JavaScript projects where Ruby is a welcome partner. It serves up a project's Jasmine suite in a browser so you can focus on your code instead of manually editing script tags in the Jasmine runner HTML file.
+The [Jasmine](http://github.com/jasmine/jasmine) Ruby Gem is a package of helper code for developing Jasmine projects for Ruby-based web projects (Rails, Sinatra, etc.) or for JavaScript projects where Ruby is a welcome partner. It serves up a project's Jasmine suite in a browser so you can focus on your code instead of manually editing script tags in the Jasmine runner HTML file.
 
 ## Contents
 This gem contains:
