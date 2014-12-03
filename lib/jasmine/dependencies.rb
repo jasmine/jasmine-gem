@@ -3,11 +3,11 @@ module Jasmine
 
     class << self
       def rails3?
-        safe_gem_check("rails", "~> 3") && running_rails3?
+        safe_gem_check("railties", "~> 3") && running_rails3?
       end
 
       def rails4?
-        safe_gem_check("rails", "~> 4") && running_rails4?
+        safe_gem_check("railties", "~> 4") && running_rails4?
       end
 
       def rails?
@@ -15,7 +15,7 @@ module Jasmine
       end
 
       def rails_available?
-        safe_gem_check("rails", '>= 3')
+        safe_gem_check("railties", '>= 3')
       end
 
       def legacy_rack?
