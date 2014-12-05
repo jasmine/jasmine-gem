@@ -3,12 +3,13 @@ require 'phantomjs'
 module Jasmine
   module Runners
     class PhantomJs
-      def initialize(formatter, jasmine_server_url, prevent_phantom_js_auto_install, show_console_log, phantom_config_script)
+      def initialize(formatter, jasmine_server_url, prevent_phantom_js_auto_install, show_console_log, phantom_config_script, show_full_stack_trace)
         @formatter = formatter
         @jasmine_server_url = jasmine_server_url
         @prevent_phantom_js_auto_install = prevent_phantom_js_auto_install
         @show_console_log = show_console_log
         @phantom_config_script = phantom_config_script
+        @show_full_stack_trace = show_full_stack_trace
       end
 
       def run
@@ -19,12 +20,12 @@ module Jasmine
             if line =~ /^jasmine_spec_result/
               line = line.sub(/^jasmine_spec_result/, '')
               raw_results = JSON.parse(line, :max_nesting => false)
-              results = raw_results.map { |r| Result.new(r) }
+              results = raw_results.map { |r| Result.new(r.merge!("show_full_stack_trace" => @show_full_stack_trace)) }
               formatter.format(results)
             elsif line =~ /^jasmine_suite_result/
               line = line.sub(/^jasmine_suite_result/, '')
               raw_results = JSON.parse(line, :max_nesting => false)
-              results = raw_results.map { |r| Result.new(r) }
+              results = raw_results.map { |r| Result.new(r.merge!("show_full_stack_trace" => @show_full_stack_trace)) }
               failures = results.select(&:failed?)
               if failures.any?
                 formatter.format(failures)
@@ -33,7 +34,8 @@ module Jasmine
               config_failure = Result.new('fullName' => line,
                                           'failedExpectations' => [],
                                           'description' => '',
-                                          'status' => 'failed')
+                                          'status' => 'failed',
+                                          'show_full_stack_trace' => @show_full_stack_trace)
               formatter.format([config_failure])
               @show_console_log = true
               puts line
