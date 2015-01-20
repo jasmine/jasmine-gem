@@ -79,7 +79,8 @@ module Jasmine
                                       jasmine_server_url,
                                       @config.prevent_phantom_js_auto_install,
                                       @config.show_console_log,
-                                      @config.phantom_config_script)
+                                      @config.phantom_config_script,
+                                      @config.show_full_stack_trace)
     end
   end
 

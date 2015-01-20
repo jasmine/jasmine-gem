@@ -6,6 +6,7 @@ module Jasmine
     end
 
     def initialize(attrs)
+      @show_full_stack_trace = attrs["show_full_stack_trace"]
       @status = attrs["status"]
       @full_name = attrs["fullName"]
       @description = attrs["description"]
@@ -28,16 +29,21 @@ module Jasmine
     attr_reader :full_name, :description, :failed_expectations, :suite_name
 
     private
-    attr_reader :status
+    attr_reader :status, :show_full_stack_trace
 
     def map_failures(failures)
       failures.map do |e|
-        short_stack = if e["stack"]
-                        e["stack"].split("\n").slice(0, 7).join("\n")
-                      else
-                        "No stack trace present."
-                      end
-        Failure.new(e["message"], short_stack)
+        if e["stack"]
+          if show_full_stack_trace
+            stack = e["stack"]
+          else
+            stack = e["stack"].split("\n").slice(0, 7).join("\n")
+          end
+        else
+          stack = "No stack trace present."
+        end
+
+        Failure.new(e["message"], stack)
       end
     end
 

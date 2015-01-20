@@ -149,6 +149,14 @@ describe Jasmine::Configuration do
     end
   end
 
+  describe 'show full stack trace' do
+    it 'returns value if set' do
+      config = Jasmine::Configuration.new()
+      config.show_full_stack_trace = true
+      config.show_full_stack_trace.should == true
+    end
+  end
+
   describe 'jasmine ports' do
     it 'returns new CI port and caches return value' do
       config = Jasmine::Configuration.new()

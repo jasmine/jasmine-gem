@@ -12,6 +12,7 @@ module Jasmine
     attr_accessor :prevent_phantom_js_auto_install
     attr_accessor :show_console_log
     attr_accessor :phantom_config_script
+    attr_accessor :show_full_stack_trace
     attr_reader :rack_apps
 
     def initialize()
