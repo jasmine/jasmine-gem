@@ -13,9 +13,20 @@ module Jasmine
 
       def done
         outputter.puts
-        outputter.puts(failures(@results))
+
         failure_count = results.count(&:failed?)
+        if failure_count > 0
+          outputter.puts('Failures:')
+          outputter.puts(failures(@results))
+          outputter.puts
+        end
+
         pending_count = results.count(&:pending?)
+        if pending_count > 0
+          outputter.puts('Pending:')
+          outputter.puts(pending(@results))
+          outputter.puts
+        end
         summary = "#{pluralize(results.size, 'spec')}, " +
           "#{pluralize(failure_count, 'failure')}"
 
@@ -29,6 +40,10 @@ module Jasmine
 
       def failures(results)
         results.select(&:failed?).map { |f| failure_message(f) }.join("\n\n")
+      end
+
+      def pending(results)
+        results.select(&:pending?).map { |spec| pending_message(spec) }.join("\n\n")
       end
 
       def chars(results)
@@ -46,6 +61,13 @@ module Jasmine
       def pluralize(count, str)
         word = (count == 1) ? str : str + 's'
         "#{count} #{word}"
+      end
+
+      def pending_message(spec)
+        reason = 'No reason given'
+        reason = spec.pending_reason if spec.pending_reason && spec.pending_reason != ''
+
+        "\t#{spec.full_name}\n\t  \e[33m#{reason}\e[0m"
       end
 
       def failure_message(failure)

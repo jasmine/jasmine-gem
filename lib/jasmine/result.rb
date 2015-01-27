@@ -12,6 +12,7 @@ module Jasmine
       @description = attrs["description"]
       @failed_expectations = map_failures(attrs["failedExpectations"])
       @suite_name = full_name.slice(0, full_name.size - description.size - 1)
+      @pending_reason = attrs["pendingReason"]
     end
 
     def succeeded?
@@ -26,7 +27,7 @@ module Jasmine
       status == 'pending'
     end
 
-    attr_reader :full_name, :description, :failed_expectations, :suite_name
+    attr_reader :full_name, :description, :failed_expectations, :suite_name, :pending_reason
 
     private
     attr_reader :status, :show_full_stack_trace

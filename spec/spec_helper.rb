@@ -58,7 +58,7 @@ def passing_raw_result
 end
 
 def pending_raw_result
-  {'id' => 123, 'status' => 'pending', 'fullName' => 'Passing test', 'description' => 'Pending', 'failedExpectations' => []}
+  {'id' => 123, 'status' => 'pending', 'fullName' => 'Passing test', 'description' => 'Pending', 'failedExpectations' => [], 'pendingReason' => 'I pend because'}
 end
 
 def failing_raw_result

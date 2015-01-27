@@ -63,6 +63,15 @@ describe Jasmine::Formatters::Console do
         outputter_output.should match(/2 specs/)
         outputter_output.should match(/2 failures/)
       end
+
+      it 'shows the failure message' do
+        results = [failing_result]
+        console = Jasmine::Formatters::Console.new(outputter)
+        console.format(results)
+        console.done
+
+        outputter_output.should match(/a failure message/)
+      end
     end
 
     describe 'when there are pending specs' do
@@ -82,6 +91,24 @@ describe Jasmine::Formatters::Console do
         console.done
 
         outputter_output.should match(/2 pending specs/)
+      end
+
+      it 'shows the pending reason' do
+        results = [pending_result]
+        console = Jasmine::Formatters::Console.new(outputter)
+        console.format(results)
+        console.done
+
+        outputter_output.should match(/I pend because/)
+      end
+
+      it 'shows the default pending reason' do
+        results = [Jasmine::Result.new(pending_raw_result.merge('pendingReason' => ''))]
+        console = Jasmine::Formatters::Console.new(outputter)
+        console.format(results)
+        console.done
+
+        outputter_output.should match(/No reason given/)
       end
     end
 
