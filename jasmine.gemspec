@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.summary            = %q{JavaScript BDD framework}
   s.description        = %q{Test your JavaScript without any framework dependencies, in any environment, and with a nice descriptive syntax.}
   s.email              = %q{jasmine-js@googlegroups.com}
-  s.homepage           = "http://pivotal.github.com/jasmine/"
+  s.homepage           = "http://jasmine.github.io/"
   s.license            = "MIT"
 
   s.files              = `git ls-files`.split("\n") | Dir.glob('jasmine/**/*')
