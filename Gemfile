@@ -2,13 +2,6 @@ source 'https://rubygems.org'
 
 gemspec
 
-unless ENV['TRAVIS']
-  group :debug do
-    gem 'debugger', :platform => :mri
-    gem 'ruby-debug', :platform => :jruby
-  end
-end
-
 gem 'anchorman', :platform => :mri
 # during development, do not release
 if ENV['TRAVIS']
