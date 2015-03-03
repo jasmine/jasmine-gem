@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'net/http'
 require 'yaml'
 
-if Jasmine::Dependencies.rails_available?
+if Jasmine::Dependencies.rails?
   describe 'A Rails app' do
     def bundle_install
       tries_remaining = 3

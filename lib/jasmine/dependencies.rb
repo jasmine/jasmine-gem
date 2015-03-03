@@ -3,21 +3,16 @@ module Jasmine
 
     class << self
       def rails3?
-        safe_gem_check("railties", "~> 3") && running_rails3?
+        running_rails3?
       end
 
       def rails4?
-        safe_gem_check("railties", "~> 4") && running_rails4?
+        running_rails4?
       end
 
       def rails?
-        rails_available? && running_rails?
+        running_rails?
       end
-
-      def rails_available?
-        safe_gem_check("railties", '>= 3')
-      end
-
       def legacy_rack?
         !defined?(Rack::Server)
       end
@@ -41,17 +36,6 @@ module Jasmine
       def running_rails?
         defined?(Rails) && Rails.respond_to?(:version)
       end
-
-      def safe_gem_check(gem_name, version_string)
-        if Gem::Specification.respond_to?(:find_by_name)
-          Gem::Specification.find_by_name(gem_name, version_string)
-        elsif Gem.respond_to?(:available?)
-          Gem.available?(gem_name, version_string)
-        end
-      rescue Gem::LoadError
-        false
-      end
-
     end
   end
 end
