@@ -43,31 +43,8 @@ namespace :jasmine do
 
   desc 'Run continuous integration tests'
   task :ci => %w(jasmine:require_json jasmine:require jasmine:configure jasmine:configure_plugins) do
-    config = Jasmine.config
-
-    formatters = config.formatters.map { |formatter_class| formatter_class.new }
-
-    exit_code_formatter = Jasmine::Formatters::ExitCode.new
-    formatters << exit_code_formatter
-
-    url = "#{config.host}:#{config.port(:ci)}/"
-    runner = config.runner.call(Jasmine::Formatters::Multi.new(formatters), url)
-    if runner.respond_to?(:boot_js)
-      config.runner_boot_dir = File.dirname(runner.boot_js)
-      config.runner_boot_files = lambda { [runner.boot_js] }
-    end
-
-    server = Jasmine::Server.new(config.port(:ci), Jasmine::Application.app(config), config.rack_options)
-    t = Thread.new do
-      server.start
-    end
-    t.abort_on_exception = true
-    Jasmine::wait_for_listener(config.port(:ci), 'jasmine server')
-    puts 'jasmine server started.'
-
-    runner.run
-
-    exit(1) unless exit_code_formatter.succeeded?
+    ci_runner = Jasmine::CiRunner.new(Jasmine.config)
+    exit(1) unless ci_runner.run
   end
 
   task :server => %w(jasmine:require jasmine:configure jasmine:configure_plugins) do
