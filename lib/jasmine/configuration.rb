@@ -11,6 +11,7 @@ module Jasmine
     attr_accessor :rack_options
     attr_accessor :prevent_phantom_js_auto_install
     attr_accessor :show_console_log
+    attr_accessor :stop_spec_on_expectation_failure
     attr_accessor :phantom_config_script
     attr_accessor :show_full_stack_trace
     attr_reader :rack_apps
@@ -29,6 +30,7 @@ module Jasmine
       @runner = lambda { |config| }
       @rack_options = {}
       @show_console_log = false
+      @stop_spec_on_expectation_failure = false
       @phantom_config_script = nil
 
       @formatters = [Jasmine::Formatters::Console]

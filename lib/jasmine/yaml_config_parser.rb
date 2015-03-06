@@ -63,6 +63,10 @@ module Jasmine
       loaded_yaml['show_console_log'] || false
     end
 
+    def stop_spec_on_expectation_failure
+      loaded_yaml['stop_spec_on_expectation_failure'] || false
+    end
+
     def phantom_config_script
       return nil unless loaded_yaml['phantom_config_script']
       File.join @pwd, loaded_yaml['phantom_config_script']

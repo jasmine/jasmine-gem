@@ -111,6 +111,7 @@ module Jasmine
         config.spec_files = lambda { yaml_config.helpers + yaml_config.spec_files }
 
         config.show_console_log = yaml_config.show_console_log
+        config.stop_spec_on_expectation_failure = yaml_config.stop_spec_on_expectation_failure
         config.phantom_config_script = yaml_config.phantom_config_script
 
         config.rack_options = yaml_config.rack_options
