@@ -27,6 +27,10 @@ module Jasmine
       status == 'pending'
     end
 
+    def disabled?
+      status == 'disabled'
+    end
+
     attr_reader :full_name, :description, :failed_expectations, :suite_name, :pending_reason
 
     private

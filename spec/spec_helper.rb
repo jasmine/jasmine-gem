@@ -61,6 +61,10 @@ def pending_raw_result
   {'id' => 123, 'status' => 'pending', 'fullName' => 'Passing test', 'description' => 'Pending', 'failedExpectations' => [], 'pendingReason' => 'I pend because'}
 end
 
+def disabled_raw_result
+  {'id' => 123, 'status' => 'disabled', 'fullName' => 'Disabled test', 'description' => 'Disabled', 'failedExpectations' => []}
+end
+
 def failing_raw_result
   {
     'status' => 'failed',

@@ -10,6 +10,36 @@ describe Jasmine::Formatters::Console do
     end
   end
 
+  describe '#format' do
+    it 'prints a dot for a successful spec' do
+      formatter = Jasmine::Formatters::Console.new(outputter)
+      formatter.format([passing_result])
+
+      expect(outputter_output).to include('.')
+    end
+
+    it 'prints a star for a pending spec' do
+      formatter = Jasmine::Formatters::Console.new(outputter)
+      formatter.format([pending_result])
+
+      expect(outputter_output).to include('*')
+    end
+
+    it 'prints an F for a failing spec' do
+      formatter = Jasmine::Formatters::Console.new(outputter)
+      formatter.format([failing_result])
+
+      expect(outputter_output).to include('F')
+    end
+
+    it 'prints a dot for a disabled spec' do
+      formatter = Jasmine::Formatters::Console.new(outputter)
+      formatter.format([disabled_result])
+
+      expect(outputter_output).to eq('.')
+    end
+  end
+
   describe '#summary' do
     it 'shows the failure messages' do
       results = [failing_result, failing_result]
@@ -135,5 +165,9 @@ describe Jasmine::Formatters::Console do
 
   def pending_result
     Jasmine::Result.new(pending_raw_result)
+  end
+
+  def disabled_result
+    Jasmine::Result.new(disabled_raw_result)
   end
 end

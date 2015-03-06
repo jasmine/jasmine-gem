@@ -52,6 +52,8 @@ module Jasmine
             "\e[32m.\e[0m"
           elsif result.pending?
             "\e[33m*\e[0m"
+          elsif result.disabled?
+            "."
           else
             "\e[31mF\e[0m"
           end
