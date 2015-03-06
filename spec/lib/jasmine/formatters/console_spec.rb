@@ -36,7 +36,7 @@ describe Jasmine::Formatters::Console do
       formatter = Jasmine::Formatters::Console.new(outputter)
       formatter.format([disabled_result])
 
-      expect(outputter_output).to eq('.')
+      expect(outputter_output).to eq('')
     end
   end
 
