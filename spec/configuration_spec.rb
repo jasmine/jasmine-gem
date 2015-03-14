@@ -213,5 +213,16 @@ describe Jasmine::Configuration do
       config.runner.call('hi')
     end
   end
-end
 
+  describe 'debug' do
+    it 'is true by default' do
+      Jasmine::Configuration.new.debug.should == true
+    end
+
+    it 'can be set' do
+      config = Jasmine::Configuration.new
+      config.debug = false
+      config.debug.should == false
+    end
+  end
+end
