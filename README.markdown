@@ -90,7 +90,7 @@ tests up.
 To configure this, in your jasmine_helper.rb:
 
     Jasmine.configure do |config|
-      config.debug = false
+      config.concatenate_assets = true
     end
 
 ## Support

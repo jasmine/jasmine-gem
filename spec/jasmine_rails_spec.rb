@@ -137,11 +137,11 @@ if Jasmine::Dependencies.rails?
       end
     end
 
-    it "bundles assets together when debug is set to false" do
+    it "bundles assets together when concatenate_assets is set to true" do
       asset_yaml = custom_jasmine_config('debug_mode') do |jasmine_config|
         jasmine_config['src_files'] = ['assets/application.js']
         jasmine_config['stylesheets'] = ['assets/application.css']
-        jasmine_config['debug'] = false
+        jasmine_config['concatenate_assets'] = true
       end
 
       run_jasmine_server("JASMINE_CONFIG_PATH=#{asset_yaml}") do

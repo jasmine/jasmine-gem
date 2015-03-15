@@ -15,6 +15,6 @@
 #
 #Example: concatenate application assets into a single file.
 #Jasmine.configure do |config|
-#   config.debug = false
+#   config.concatenate_assets = true
 #end
 #

@@ -214,15 +214,15 @@ describe Jasmine::Configuration do
     end
   end
 
-  describe 'debug' do
-    it 'is true by default' do
-      Jasmine::Configuration.new.debug.should == true
+  describe 'concatenate_assets' do
+    it 'is false by default' do
+      Jasmine::Configuration.new.concatenate_assets.should == false
     end
 
     it 'can be set' do
       config = Jasmine::Configuration.new
-      config.debug = false
-      config.debug.should == false
+      config.concatenate_assets = true
+      config.concatenate_assets.should == true
     end
   end
 end
