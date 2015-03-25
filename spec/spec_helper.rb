@@ -11,6 +11,16 @@ $:.unshift(File.expand_path(File.join(File.dirname(__FILE__), '../lib')))
 require 'jasmine'
 require 'rspec'
 
+def rails_available?
+  if Gem::Specification.respond_to?(:find_by_name)
+    Gem::Specification.find_by_name('railties', '>= 3')
+  elsif Gem.respond_to?(:available?)
+    Gem.available?('railties', '>= 3')
+  end
+rescue Gem::LoadError
+  false
+end
+
 def create_temp_dir
   tmp = File.join(Dir.tmpdir, "jasmine-gem-test_#{Time.now.to_f}")
   FileUtils.rm_r(tmp, :force => true)
