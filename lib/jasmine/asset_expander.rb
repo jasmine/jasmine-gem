@@ -1,9 +1,9 @@
 module Jasmine
   class AssetExpander
-    def expand(src_dir, src_path)
+    def expand(src_dir, src_path, concat_assets)
       pathname = src_path.gsub(/^\/?assets\//, '').gsub(/\.js$/, '')
 
-      asset_bundle.assets(pathname).flat_map { |asset|
+      asset_bundle(concat_assets).assets(pathname).flat_map { |asset|
         "/#{asset.gsub(/^\//, '')}?body=true"
       }
     end
@@ -12,9 +12,9 @@ module Jasmine
 
     UnsupportedRailsVersion = Class.new(StandardError)
 
-    def asset_bundle
+    def asset_bundle(concat_assets)
       return Rails3AssetBundle.new if Jasmine::Dependencies.rails3?
-      return Rails4AssetBundle.new if Jasmine::Dependencies.rails4?
+      return Rails4AssetBundle.new(concat_assets) if Jasmine::Dependencies.rails4?
       raise UnsupportedRailsVersion, "Jasmine only supports the asset pipeline for Rails 3 or 4"
     end
 
@@ -39,6 +39,10 @@ module Jasmine
     end
 
     class Rails4AssetBundle
+      def initialize(concat_assets)
+        @concat_assets = concat_assets
+      end
+
       def assets(pathname)
         context.get_original_assets(pathname)
       end
@@ -54,9 +58,9 @@ module Jasmine
           assets_environment.find_asset(pathname).to_a.map do |processed_asset|
             case processed_asset.content_type
             when "text/css"
-              path_to_stylesheet(processed_asset.logical_path, debug: true)
+              path_to_stylesheet(processed_asset.logical_path, debug: !@concat_assets)
             when "application/javascript"
-              path_to_javascript(processed_asset.logical_path, debug: true)
+              path_to_javascript(processed_asset.logical_path, debug: !@concat_assets)
             end
           end
         end

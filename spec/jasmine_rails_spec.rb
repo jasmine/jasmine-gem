@@ -137,6 +137,24 @@ if rails_available?
       end
     end
 
+    it "bundles assets together when concatenate_assets is set to true" do
+      asset_yaml = custom_jasmine_config('debug_mode') do |jasmine_config|
+        jasmine_config['src_files'] = ['assets/application.js']
+        jasmine_config['stylesheets'] = ['assets/application.css']
+        jasmine_config['concatenate_assets'] = true
+      end
+
+      run_jasmine_server("JASMINE_CONFIG_PATH=#{asset_yaml}") do
+        output = Net::HTTP.get(URI.parse('http://localhost:8888/'))
+        output.should_not match(%r{script src.*/assets/jasmine_examples/Player\.js})
+        output.should_not match(%r{script src.*/assets/jasmine_examples/Song\.js})
+        output.should match(%r{script src.*/assets/application\.js})
+
+        output = `bundle exec rake jasmine:ci`
+        output.should include('5 specs, 0 failures')
+      end
+    end
+
     it "sets assets_prefix when using sprockets" do
       open('app/assets/stylesheets/assets_prefix.js.erb', 'w') { |f|
         f.puts "<%= assets_prefix %>"

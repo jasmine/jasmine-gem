@@ -14,6 +14,7 @@ module Jasmine
     attr_accessor :stop_spec_on_expectation_failure
     attr_accessor :phantom_config_script
     attr_accessor :show_full_stack_trace
+    attr_accessor :concatenate_assets
     attr_reader :rack_apps
 
     def initialize()
@@ -32,6 +33,7 @@ module Jasmine
       @show_console_log = false
       @stop_spec_on_expectation_failure = false
       @phantom_config_script = nil
+      @concatenate_assets = false
 
       @formatters = [Jasmine::Formatters::Console]
 

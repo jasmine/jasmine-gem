@@ -13,3 +13,8 @@
 #   config.prevent_phantom_js_auto_install = true
 #end
 #
+#Example: concatenate application assets into a single file.
+#Jasmine.configure do |config|
+#   config.concatenate_assets = true
+#end
+#

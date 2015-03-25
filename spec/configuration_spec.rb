@@ -213,5 +213,16 @@ describe Jasmine::Configuration do
       config.runner.call('hi')
     end
   end
-end
 
+  describe 'concatenate_assets' do
+    it 'is false by default' do
+      Jasmine::Configuration.new.concatenate_assets.should == false
+    end
+
+    it 'can be set' do
+      config = Jasmine::Configuration.new
+      config.concatenate_assets = true
+      config.concatenate_assets.should == true
+    end
+  end
+end

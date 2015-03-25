@@ -81,6 +81,18 @@ In your jasmine_helper.rb:
        config.ci_port = 1234
     end
 
+### Asset concatenation
+
+By default, assets will be served up as single files, which aids debugging and makes stack traces more useful. For
+very large apps with thousands of files, concatenating all the files into a single application.js may speed the
+tests up.
+
+To configure this, in your jasmine_helper.rb:
+
+    Jasmine.configure do |config|
+      config.concatenate_assets = true
+    end
+
 ## Support
 
 Jasmine Mailing list: [jasmine-js@googlegroups.com](mailto:jasmine-js@googlegroups.com)
