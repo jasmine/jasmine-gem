@@ -30,6 +30,14 @@ describe Jasmine::Server do
       Jasmine::Server.new(port, double(:app)).start
     end
 
+    it "should create a Rack::Server with the correct host when passed" do
+      host = '0.0.0.0'
+      server = double(:server)
+      Rack::Server.should_receive(:new).with(hash_including(:host => host)).and_return(double(:server).as_null_object)
+      Jasmine::Server.new(1234, double(:app), {:Host => host}).start
+      server.instance_variable_get(:@host).should == host
+    end
+
     it "should start the server" do
       server = double(:server)
       Rack::Server.should_receive(:new) { server.as_null_object }
