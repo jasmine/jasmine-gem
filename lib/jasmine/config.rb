@@ -113,6 +113,7 @@ module Jasmine
         config.show_console_log = yaml_config.show_console_log
         config.stop_spec_on_expectation_failure = yaml_config.stop_spec_on_expectation_failure
         config.phantom_config_script = yaml_config.phantom_config_script
+        config.prevent_phantom_js_auto_install = yaml_config.prevent_phantom_js_auto_install
 
         config.rack_options = yaml_config.rack_options
       end
