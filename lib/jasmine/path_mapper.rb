@@ -30,7 +30,7 @@ module Jasmine
         if path[0..3] == 'http'
           path
         else
-          File.join(add_path, (path.gsub(remove_path, '')))
+          File.join(add_path, (path.sub(remove_path, '')))
         end
       end
     end

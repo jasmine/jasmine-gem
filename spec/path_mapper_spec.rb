@@ -30,4 +30,9 @@ describe Jasmine::PathMapper do
     mapper = Jasmine::PathMapper.new(config)
     mapper.map_src_paths(['/src_dir/foo']).should == ['/src_dir/foo']
   end
+  it 'handles edge case with multiple instances of src dir' do
+    config = double(:config, :src_dir => '/app', :src_path => '/')
+    mapper = Jasmine::PathMapper.new(config)
+    mapper.map_src_paths(['/app/assets/application.js']).should == ['/assets/application.js']
+  end
 end
