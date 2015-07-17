@@ -10,7 +10,7 @@ once. This should be done for you automatically if you installed jasmine's rake 
 with either 'jasmine init' or 'rails g jasmine:install'.
 
 
-EOF
+  EOF
   raise Exception.new(message)
 end
 
@@ -20,6 +20,14 @@ namespace :jasmine do
 
     begin
       Jasmine.load_configuration_from_yaml(ENV['JASMINE_CONFIG_PATH'])
+      if ENV['spec']
+        spec_path = ENV['spec'].dup
+        if spec_path.include? "spec/javascripts/" # crappy hack to allow for bash tab completion
+          spec_path.slice! "spec/javascripts/" 
+        end
+        Jasmine.load_spec(spec_path)
+      end
+
     rescue Jasmine::ConfigNotFound => e
       puts e.message
       exit 1
