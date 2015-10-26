@@ -14,8 +14,8 @@ module Jasmine
 
     def asset_bundle
       return Rails3AssetBundle.new if Jasmine::Dependencies.rails3?
-      return Rails4AssetBundle.new if Jasmine::Dependencies.rails4?
-      raise UnsupportedRailsVersion, "Jasmine only supports the asset pipeline for Rails 3 or 4"
+      return Rails4Or5AssetBundle.new if Jasmine::Dependencies.rails4? || Jasmine::Dependencies.rails5?
+      raise UnsupportedRailsVersion, "Jasmine only supports the asset pipeline for Rails 3 - 5"
     end
 
     class Rails3AssetBundle
@@ -38,7 +38,7 @@ module Jasmine
       end
     end
 
-    class Rails4AssetBundle
+    class Rails4Or5AssetBundle
       def assets(pathname)
         context.get_original_assets(pathname)
       end
@@ -51,7 +51,7 @@ module Jasmine
 
       module GetOriginalAssetsHelper
         def get_original_assets(pathname)
-          assets_environment.find_asset(pathname).to_a.map do |processed_asset|
+          Array(assets_environment.find_asset(pathname)).map do |processed_asset|
             case processed_asset.content_type
             when "text/css"
               path_to_stylesheet(processed_asset.logical_path, debug: true)
