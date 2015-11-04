@@ -9,7 +9,7 @@ module Jasmine
         @results += results
       end
 
-      def done
+      def done(details)
       end
 
       def exit_code

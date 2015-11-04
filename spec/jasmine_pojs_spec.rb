@@ -40,6 +40,7 @@ describe "POJS jasmine install" do
   it "should successfully run rake jasmine:ci" do
     output = `rake jasmine:ci`
     output.should =~ (/[1-9]\d* specs, 0 failures/)
+    output.should_not =~ /Randomized with seed/
   end
 
   it "should raise an error when jasmine.yml cannot be found" do
@@ -85,6 +86,7 @@ describe "POJS jasmine install" do
     FileUtils.cp(File.join(@root, 'spec', 'fixture', 'phantomConfig.js'), File.join('spec', 'javascripts', 'support'))
     viewport_yaml = custom_jasmine_config('viewport') do |jasmine_config|
       jasmine_config['phantom_config_script'] = 'spec/javascripts/support/phantomConfig.js'
+      jasmine_config['show_console_log'] = true
     end
 
     output = `rake jasmine:ci JASMINE_CONFIG_PATH=#{viewport_yaml}`
@@ -94,6 +96,7 @@ describe "POJS jasmine install" do
   it 'should throw a useful error when the phantom customization fails' do
     bad_phantom_yaml = custom_jasmine_config('viewport') do |jasmine_config|
       jasmine_config['phantom_config_script'] = 'spec/javascripts/support/doesNotExist.js'
+      jasmine_config['show_console_log'] = true
     end
 
     output = `rake jasmine:ci JASMINE_CONFIG_PATH=#{bad_phantom_yaml}`
@@ -107,5 +110,15 @@ describe "POJS jasmine install" do
     output = `rake jasmine:ci`
     $?.should_not be_success
     output.should =~ /afterAll go boom/
+  end
+
+  it 'should tell jasmine to randomize the execution order' do
+    randomized_yaml = custom_jasmine_config('random') do |jasmine_config|
+      jasmine_config['random'] = true
+    end
+
+    output = `rake jasmine:ci JASMINE_CONFIG_PATH=#{randomized_yaml}`
+    $?.should be_success
+    output.should =~ /Randomized with seed/
   end
 end

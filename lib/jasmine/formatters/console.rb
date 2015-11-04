@@ -11,7 +11,7 @@ module Jasmine
         @results += results_batch
       end
 
-      def done
+      def done(run_details)
         outputter.puts
 
         failure_count = results.count(&:failed?)
@@ -33,6 +33,10 @@ module Jasmine
         summary += ", #{pluralize(pending_count, 'pending spec')}" if pending_count > 0
 
         outputter.puts(summary)
+
+        if run_details['order'] && run_details['order']['random']
+          outputter.puts("Randomized with seed #{run_details['order']['seed']}")
+        end
       end
 
       private

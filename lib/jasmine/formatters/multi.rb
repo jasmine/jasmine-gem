@@ -9,8 +9,8 @@ module Jasmine
         @formatters.each { |formatter| formatter.format(results) }
       end
 
-      def done
-        @formatters.each(&:done)
+      def done(details = {})
+        @formatters.each { |formatter| formatter.done(details) }
       end
     end
   end

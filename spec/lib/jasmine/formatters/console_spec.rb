@@ -9,6 +9,7 @@ describe Jasmine::Formatters::Console do
       o.stub(:puts) { |str| outputter_output << "#{str}\n" }
     end
   end
+  let(:run_details) { { 'order' => { 'random' => false } } }
 
   describe '#format' do
     it 'prints a dot for a successful spec' do
@@ -45,7 +46,7 @@ describe Jasmine::Formatters::Console do
       results = [failing_result, failing_result]
       formatter = Jasmine::Formatters::Console.new(outputter)
       formatter.format(results)
-      formatter.done
+      formatter.done(run_details)
       outputter_output.should match(/a suite with a failing spec/)
       outputter_output.should match(/a failure message/)
       outputter_output.should match(/a stack trace/)
@@ -56,7 +57,7 @@ describe Jasmine::Formatters::Console do
         results = [passing_result]
         console = Jasmine::Formatters::Console.new(outputter)
         console.format(results)
-        console.done
+        console.done(run_details)
 
         outputter_output.should match(/1 spec/)
         outputter_output.should match(/0 failures/)
@@ -66,7 +67,7 @@ describe Jasmine::Formatters::Console do
         results = [passing_result, passing_result]
         console = Jasmine::Formatters::Console.new(outputter)
         console.format(results)
-        console.done
+        console.done(run_details)
 
         outputter_output.should match(/2 specs/)
         outputter_output.should match(/0 failures/)
@@ -78,7 +79,7 @@ describe Jasmine::Formatters::Console do
         results = [passing_result, failing_result]
         console = Jasmine::Formatters::Console.new(outputter)
         console.format(results)
-        console.done
+        console.done(run_details)
 
         outputter_output.should match(/2 specs/)
         outputter_output.should match(/1 failure/)
@@ -88,7 +89,7 @@ describe Jasmine::Formatters::Console do
         results = [failing_result, failing_result]
         console = Jasmine::Formatters::Console.new(outputter)
         console.format(results)
-        console.done
+        console.done(run_details)
 
         outputter_output.should match(/2 specs/)
         outputter_output.should match(/2 failures/)
@@ -98,7 +99,7 @@ describe Jasmine::Formatters::Console do
         results = [failing_result]
         console = Jasmine::Formatters::Console.new(outputter)
         console.format(results)
-        console.done
+        console.done(run_details)
 
         outputter_output.should match(/a failure message/)
       end
@@ -109,7 +110,7 @@ describe Jasmine::Formatters::Console do
         results = [passing_result, pending_result]
         console = Jasmine::Formatters::Console.new(outputter)
         console.format(results)
-        console.done
+        console.done(run_details)
 
         outputter_output.should match(/1 pending spec/)
       end
@@ -118,7 +119,7 @@ describe Jasmine::Formatters::Console do
         results = [pending_result, pending_result]
         console = Jasmine::Formatters::Console.new(outputter)
         console.format(results)
-        console.done
+        console.done(run_details)
 
         outputter_output.should match(/2 pending specs/)
       end
@@ -127,7 +128,7 @@ describe Jasmine::Formatters::Console do
         results = [pending_result]
         console = Jasmine::Formatters::Console.new(outputter)
         console.format(results)
-        console.done
+        console.done(run_details)
 
         outputter_output.should match(/I pend because/)
       end
@@ -136,7 +137,7 @@ describe Jasmine::Formatters::Console do
         results = [Jasmine::Result.new(pending_raw_result.merge('pendingReason' => ''))]
         console = Jasmine::Formatters::Console.new(outputter)
         console.format(results)
-        console.done
+        console.done(run_details)
 
         outputter_output.should match(/No reason given/)
       end
@@ -148,9 +149,20 @@ describe Jasmine::Formatters::Console do
         results = [passing_result]
         console = Jasmine::Formatters::Console.new(outputter)
         console.format(results)
-        console.done
+        console.done(run_details)
 
         outputter_output.should_not match(/pending spec[s]/)
+      end
+    end
+
+    describe 'when the tests were randomized' do
+      it 'should print a message with the seed' do
+        results = [passing_result]
+        console = Jasmine::Formatters::Console.new(outputter)
+        console.format(results)
+        console.done({ 'order' => { 'random' => true, 'seed' => '4325' } })
+
+        outputter_output.should match(/Randomized with seed 4325/)
       end
     end
   end

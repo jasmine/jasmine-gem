@@ -11,7 +11,8 @@ describe Jasmine::CiRunner do
            :host => 'foo.bar.com',
            :port => '1234',
            :rack_options => 'rack options',
-           :stop_spec_on_expectation_failure => false
+           :stop_spec_on_expectation_failure => false,
+           :random => false
           )
   end
 
@@ -41,7 +42,10 @@ describe Jasmine::CiRunner do
     expect(config).to have_received(:port).with(:ci).at_least(:once)
     expect(config).not_to have_received(:port).with(:server)
 
-    expect(runner_factory).to have_received(:call).with(instance_of(Jasmine::Formatters::Multi), 'foo.bar.com:1234/?throwFailures=false')
+    expect(runner_factory).to have_received(:call).with(instance_of(Jasmine::Formatters::Multi), instance_of(String)) do |formatter, url|
+      expect(url).to match(/\bthrowFailures=false\b/)
+      expect(url).to match(/\brandom=false\b/)
+    end
 
     expect(application_factory).to have_received(:app).with(config)
     expect(server_factory).to have_received(:new).with('1234', 'my fake app', 'rack options')
@@ -92,6 +96,20 @@ describe Jasmine::CiRunner do
 
     ci_runner.run
 
-    expect(runner_factory).to have_received(:call).with(instance_of(Jasmine::Formatters::Multi), 'foo.bar.com:1234/?throwFailures=true')
+    expect(runner_factory).to have_received(:call).with(instance_of(Jasmine::Formatters::Multi), instance_of(String)) do |formatter, url|
+      expect(url).to match(/\bthrowFailures=true\b/)
+    end
+  end
+
+  it 'can tell the jasmine page to randomize' do
+    allow(config).to receive(:random) { true }
+
+    ci_runner = Jasmine::CiRunner.new(config, thread: fake_thread, application_factory: application_factory, server_factory: server_factory, outputter: outputter)
+
+    ci_runner.run
+
+    expect(runner_factory).to have_received(:call).with(instance_of(Jasmine::Formatters::Multi), instance_of(String)) do |formatter, url|
+      expect(url).to match(/\brandom=true\b/)
+    end
   end
 end

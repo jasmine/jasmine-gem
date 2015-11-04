@@ -67,6 +67,10 @@ module Jasmine
       loaded_yaml['stop_spec_on_expectation_failure'] || false
     end
 
+    def random
+      loaded_yaml['random'] || false
+    end
+
     def phantom_config_script
       return nil unless loaded_yaml['phantom_config_script']
       File.join @pwd, loaded_yaml['phantom_config_script']

@@ -14,7 +14,8 @@ module Jasmine
 
       def run
         phantom_script = File.join(File.dirname(__FILE__), 'phantom_jasmine_run.js')
-        command = "#{phantom_js_path} '#{phantom_script}' #{jasmine_server_url} #{show_console_log} '#{@phantom_config_script}'"
+        command = "#{phantom_js_path} '#{phantom_script}' \"#{jasmine_server_url}\" #{show_console_log} '#{@phantom_config_script}'"
+        run_details = { 'random' => false }
         IO.popen(command) do |output|
           output.each do |line|
             if line =~ /^jasmine_spec_result/
@@ -30,6 +31,9 @@ module Jasmine
               if failures.any?
                 formatter.format(failures)
               end
+            elsif line =~ /^jasmine_done/
+              line = line.sub(/^jasmine_done/, '')
+              run_details = JSON.parse(line, :max_nesting => false)
             elsif line =~ /^Failed to configure phantom$/
               config_failure = Result.new('fullName' => line,
                                           'failedExpectations' => [],
@@ -44,7 +48,7 @@ module Jasmine
             end
           end
         end
-        formatter.done
+        formatter.done(run_details)
       end
 
       def phantom_js_path

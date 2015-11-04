@@ -18,8 +18,10 @@ describe Jasmine::Formatters::Multi do
     formatter2.should_receive(:format).with(results2)
     multi.format(results2)
 
-    formatter1.should_receive(:done)
-    formatter2.should_receive(:done)
-    multi.done
+    run_details = double(:run_details)
+
+    formatter1.should_receive(:done).with(run_details)
+    formatter2.should_receive(:done).with(run_details)
+    multi.done(run_details)
   end
 end
