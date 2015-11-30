@@ -41,9 +41,9 @@ namespace :jasmine do
 
   task :configure_plugins
 
-  desc 'Run continuous integration tests'
-  task :ci => %w(jasmine:require_json jasmine:require jasmine:configure jasmine:configure_plugins) do
-    ci_runner = Jasmine::CiRunner.new(Jasmine.config)
+  desc 'Run jasmine tests in a browser, random and seed override config'
+  task :ci, [:random, :seed] => %w(jasmine:require_json jasmine:require jasmine:configure jasmine:configure_plugins) do |t, args|
+    ci_runner = Jasmine::CiRunner.new(Jasmine.config, args.to_hash)
     exit(1) unless ci_runner.run
   end
 
@@ -59,5 +59,5 @@ namespace :jasmine do
   end
 end
 
-desc 'Run specs via server:ci'
+desc 'Start server to host jasmine specs'
 task :jasmine => %w(jasmine:server)

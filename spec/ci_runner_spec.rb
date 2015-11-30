@@ -42,10 +42,8 @@ describe Jasmine::CiRunner do
     expect(config).to have_received(:port).with(:ci).at_least(:once)
     expect(config).not_to have_received(:port).with(:server)
 
-    expect(runner_factory).to have_received(:call).with(instance_of(Jasmine::Formatters::Multi), instance_of(String)) do |formatter, url|
-      expect(url).to match(/\bthrowFailures=false\b/)
-      expect(url).to match(/\brandom=false\b/)
-    end
+    expect(runner_factory).to have_received(:call).with(instance_of(Jasmine::Formatters::Multi), /\bthrowFailures=false\b/)
+    expect(runner_factory).to have_received(:call).with(instance_of(Jasmine::Formatters::Multi), /\brandom=false\b/)
 
     expect(application_factory).to have_received(:app).with(config)
     expect(server_factory).to have_received(:new).with('1234', 'my fake app', 'rack options')
@@ -96,9 +94,7 @@ describe Jasmine::CiRunner do
 
     ci_runner.run
 
-    expect(runner_factory).to have_received(:call).with(instance_of(Jasmine::Formatters::Multi), instance_of(String)) do |formatter, url|
-      expect(url).to match(/\bthrowFailures=true\b/)
-    end
+    expect(runner_factory).to have_received(:call).with(instance_of(Jasmine::Formatters::Multi), /\bthrowFailures=true\b/)
   end
 
   it 'can tell the jasmine page to randomize' do
@@ -108,8 +104,34 @@ describe Jasmine::CiRunner do
 
     ci_runner.run
 
-    expect(runner_factory).to have_received(:call).with(instance_of(Jasmine::Formatters::Multi), instance_of(String)) do |formatter, url|
-      expect(url).to match(/\brandom=true\b/)
-    end
+    expect(runner_factory).to have_received(:call).with(instance_of(Jasmine::Formatters::Multi), /\brandom=true\b/)
+  end
+
+  it 'allows randomization to be turned on, overriding the config' do
+    allow(config).to receive(:random) { false }
+
+    ci_runner = Jasmine::CiRunner.new(config, random: true, thread: fake_thread, application_factory: application_factory, server_factory: server_factory, outputter: outputter)
+
+    ci_runner.run
+
+    expect(runner_factory).to have_received(:call).with(instance_of(Jasmine::Formatters::Multi), /\brandom=true\b/)
+  end
+
+  it 'allows randomization to be turned off, overriding the config' do
+    allow(config).to receive(:random) { true }
+
+    ci_runner = Jasmine::CiRunner.new(config, random: false, thread: fake_thread, application_factory: application_factory, server_factory: server_factory, outputter: outputter)
+
+    ci_runner.run
+
+    expect(runner_factory).to have_received(:call).with(instance_of(Jasmine::Formatters::Multi), /\brandom=false\b/)
+  end
+
+  it 'allows a randomization seed to be specified' do
+    ci_runner = Jasmine::CiRunner.new(config, seed: '4231', thread: fake_thread, application_factory: application_factory, server_factory: server_factory, outputter: outputter)
+
+    ci_runner.run
+
+    expect(runner_factory).to have_received(:call).with(instance_of(Jasmine::Formatters::Multi), /\bseed=4231\b/)
   end
 end
