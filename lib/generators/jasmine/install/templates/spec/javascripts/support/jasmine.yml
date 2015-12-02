@@ -122,3 +122,14 @@ boot_files:
 # rack_options:
 #   server: 'thin'
 
+# random
+#
+# Run specs in semi-random order.
+# Default: false
+#
+# EXAMPLE:
+#
+# random: true
+#
+random:
+
