@@ -33,7 +33,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec', '>= 2.5.0'
   s.add_development_dependency 'nokogiri'
 
-  s.add_dependency 'jasmine-core', '~> 2.3'
+  s.add_dependency 'jasmine-core', '~> 2.4'
   s.add_dependency 'rack', '>= 1.2.1'
   s.add_dependency 'rake'
   s.add_dependency 'phantomjs'
