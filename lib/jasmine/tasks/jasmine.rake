@@ -10,7 +10,7 @@ once. This should be done for you automatically if you installed jasmine's rake 
 with either 'jasmine init' or 'rails g jasmine:install'.
 
 
-EOF
+  EOF
   raise Exception.new(message)
 end
 
@@ -43,6 +43,14 @@ namespace :jasmine do
 
   desc 'Run jasmine tests in a browser, random and seed override config'
   task :ci, [:random, :seed] => %w(jasmine:require_json jasmine:require jasmine:configure jasmine:configure_plugins) do |t, args|
+    if ENV['spec']
+      spec_path = ENV['spec'].dup
+      if spec_path.include? "spec/javascripts/" # crappy hack to allow for bash tab completion
+        spec_path.slice! "spec/javascripts/"
+      end
+      Jasmine.load_spec(spec_path)
+    end
+
     ci_runner = Jasmine::CiRunner.new(Jasmine.config, args.to_hash)
     exit(1) unless ci_runner.run
   end

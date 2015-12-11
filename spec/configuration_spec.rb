@@ -70,7 +70,7 @@ describe Jasmine::Configuration do
       config.jasmine_files = lambda { %w(jasmine) }
       config.src_files = lambda  { %w(src) }
       config.boot_files = lambda { %w(boot) }
-      config.spec_files = lambda { %w(spec) }
+      config.testing_files = lambda { %w(spec) }
       config.js_files.should == %w(
         mapped_jasmine/jasmine/jasmine
         mapped_boot/boot/boot mapped_src/src/src
