@@ -29,5 +29,10 @@ describe Jasmine do
       Jasmine.config.spec_files.should == [ "spec/test" ]
       Jasmine.config.helper_files.should == ["aaa"]
     end
+
+    it "assigns multiple specs" do
+      Jasmine.load_spec("spec/test1 spec/test2")
+      Jasmine.config.spec_files.should == [ "spec/test1", "spec/test2" ]
+    end
   end
 end

@@ -128,7 +128,7 @@ module Jasmine
   def self.load_spec(spec_path)
     return if spec_path.nil?
     Jasmine.configure do |c|  
-      c.spec_files = [spec_path]
+      c.spec_files = spec_path.split
     end
   end
 end
