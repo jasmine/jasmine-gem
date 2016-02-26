@@ -14,6 +14,8 @@ module Jasmine
       def done(run_details)
         outputter.puts
 
+        global_failure_details(run_details)
+
         failure_count = results.count(&:failed?)
         if failure_count > 0
           outputter.puts('Failures:')
@@ -48,6 +50,15 @@ module Jasmine
 
       def pending(results)
         results.select(&:pending?).map { |spec| pending_message(spec) }.join("\n\n")
+      end
+
+      def global_failure_details(run_details)
+        fails = run_details.fetch('failedExpectations', [])
+        if fails.size > 0
+          fail_result = Jasmine::Result.new('fullName' => 'Error occurred in afterAll', 'description' => '', 'failedExpectations' => fails)
+          outputter.puts(failure_message(fail_result))
+          outputter.puts
+        end
       end
 
       def chars(results)

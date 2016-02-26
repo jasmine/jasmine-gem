@@ -3,6 +3,7 @@ module Jasmine
     class ExitCode
       def initialize
         @results = []
+        @global_failure = false
       end
 
       def format(results)
@@ -10,14 +11,11 @@ module Jasmine
       end
 
       def done(details)
-      end
-
-      def exit_code
-        @results.detect(&:failed?) ? 1 : 0
+        @global_failure = details.fetch('failedExpectations', []).size > 0
       end
 
       def succeeded?
-        !@results.detect(&:failed?)
+        !@results.detect(&:failed?) && !@global_failure
       end
     end
   end

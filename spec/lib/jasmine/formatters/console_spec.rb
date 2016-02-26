@@ -165,6 +165,17 @@ describe Jasmine::Formatters::Console do
         outputter_output.should match(/Randomized with seed 4325/)
       end
     end
+
+    describe 'with errors in a global afterAll' do
+      it 'should show the errors' do
+        console = Jasmine::Formatters::Console.new(outputter)
+        console.done({ 'failedExpectations' => [{ 'message' => 'Global Failure', 'stack' => 'more info' }] })
+
+        expect(outputter_output).to match(/Error occurred in afterAll/)
+        expect(outputter_output).to match(/Global Failure/)
+        expect(outputter_output).to match(/more info/)
+      end
+    end
   end
 
   def failing_result
