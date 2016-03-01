@@ -14,7 +14,7 @@ module Jasmine
 
       def run
         phantom_script = File.join(File.dirname(__FILE__), 'phantom_jasmine_run.js')
-        command = "#{phantom_js_path} '#{phantom_script}' \"#{jasmine_server_url}\" #{show_console_log} '#{@phantom_config_script}'"
+        command = "\"#{phantom_js_path}\" \"#{phantom_script}\" \"#{jasmine_server_url}\" \"#{show_console_log}\" \"#{@phantom_config_script}\""
         run_details = { 'random' => false }
         IO.popen(command) do |output|
           output.each do |line|
