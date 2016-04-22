@@ -33,7 +33,9 @@ module Jasmine
               end
             elsif line =~ /^jasmine_done/
               line = line.sub(/^jasmine_done/, '')
-              run_details = JSON.parse(line, :max_nesting => false)
+              if !line.empty?
+                run_details = JSON.parse(line, :max_nesting => false)
+              end
             elsif line =~ /^Failed to configure phantom$/
               config_failure = Result.new('fullName' => line,
                                           'failedExpectations' => [],
