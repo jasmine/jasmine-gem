@@ -16,6 +16,10 @@ else
   gem 'rack', '1.5.2'
 end
 
+platform :mri_19 do
+  gem 'mime-types', '< 3.0'
+end
+
 platform :rbx do
   gem 'json'
   gem 'rubysl'
