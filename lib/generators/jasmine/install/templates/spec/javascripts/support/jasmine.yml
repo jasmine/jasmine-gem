@@ -8,7 +8,7 @@
 # src_files:
 #   - lib/source1.js
 #   - lib/source2.js
-#   - dist/**/*.js
+#   - 'dist/**/*.js'
 #
 src_files:
   - assets/application.js
@@ -22,7 +22,7 @@ src_files:
 #
 # stylesheets:
 #   - css/style.css
-#   - stylesheets/*.css
+#   - 'stylesheets/*.css'
 #
 stylesheets:
   - assets/application.css
@@ -35,7 +35,7 @@ stylesheets:
 # EXAMPLE:
 #
 # helpers:
-#   - helpers/**/*.js
+#   - 'helpers/**/*.js'
 #
 helpers:
   - 'helpers/**/*.js'
@@ -48,7 +48,7 @@ helpers:
 # EXAMPLE:
 #
 # spec_files:
-#   - **/*[sS]pec.js
+#   - '**/*[sS]pec.js'
 #
 spec_files:
   - '**/*[sS]pec.js'
