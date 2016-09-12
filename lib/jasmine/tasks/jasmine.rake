@@ -44,10 +44,7 @@ namespace :jasmine do
   desc 'Run jasmine tests in a browser, random and seed override config'
   task :ci, [:random, :seed] => %w(jasmine:require_json jasmine:require jasmine:configure jasmine:configure_plugins) do |t, args|
     if ENV['spec']
-      spec_path = ENV['spec'].dup
-      if spec_path.include? "spec/javascripts/" # crappy hack to allow for bash tab completion
-        spec_path.slice! "spec/javascripts/"
-      end
+      spec_path = ENV['spec'].gsub("spec/javascripts/", "")
       Jasmine.load_spec(spec_path)
     end
 
