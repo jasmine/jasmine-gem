@@ -8,9 +8,13 @@ rvm:
 
 env:
  - "RAILS_VERSION=rails3"
+   "JRUBY_OPTS=''"
  - "RAILS_VERSION=rails4"
+   "JRUBY_OPTS=''"
  - "RAILS_VERSION=rails5"
+   "JRUBY_OPTS=''"
  - "RAILS_VERSION=pojs"
+   "JRUBY_OPTS=''"
 
 sudo: false
 
