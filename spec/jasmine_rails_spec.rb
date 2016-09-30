@@ -32,7 +32,9 @@ if rails_available?
       open('Gemfile', 'a') { |f|
         f.puts "gem 'jasmine', :path => '#{base}'"
         f.puts "gem 'jasmine-core', :github => 'pivotal/jasmine'"
-        f.puts "gem 'thin'" unless RUBY_PLATFORM == 'java'
+        if RUBY_PLATFORM != 'java' && ENV['RAILS_VERSION'] != 'rails5'
+          f.puts "gem 'thin'"
+        end
         f.puts "gem 'angularjs-rails'"
         f.puts "gem 'execjs', '2.0.2'"
         f.flush
@@ -172,7 +174,11 @@ if rails_available?
 
       Bundler.with_clean_env do
         default_output = `bundle exec rake jasmine:ci`
-        default_output.should include('Thin web server')
+        if ENV['RAILS_VERSION'] == 'rails5'
+          default_output.should include('Puma starting')
+        else
+          default_output.should include('Thin web server')
+        end
 
         custom_output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{rack_yaml} 2>&1`
         custom_output.should include("WEBrick")

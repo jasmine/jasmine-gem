@@ -24,8 +24,10 @@ Gem::Specification.new do |s|
   when 'rails3'
     s.add_development_dependency 'rails', '>= 3.0.0', '< 4.0.0'
   when 'pojs'
-  else #default to rails 4
-    s.add_development_dependency 'rails', '>= 4'
+  when 'rails4'
+    s.add_development_dependency 'rails', '>= 4', '< 5.0.0'
+  else #default to rails 5
+    s.add_development_dependency 'rails', '>= 5'
   end
 
   s.add_development_dependency 'rack-test'

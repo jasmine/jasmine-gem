@@ -10,6 +10,7 @@ rvm:
 env:
  - "RAILS_VERSION=rails3"
  - "RAILS_VERSION=rails4"
+ - "RAILS_VERSION=rails5"
  - "RAILS_VERSION=pojs"
 
 sudo: false
