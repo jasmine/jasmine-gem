@@ -4,17 +4,11 @@ rvm:
   - "1.9.3"
   - "2.0.0"
   - "2.3.0"
-  - "jruby-9.1.5.0"
 
 env:
  - "RAILS_VERSION=rails3"
-   "JRUBY_OPTS=''"
  - "RAILS_VERSION=rails4"
-   "JRUBY_OPTS=''"
- - "RAILS_VERSION=rails5"
-   "JRUBY_OPTS=''"
  - "RAILS_VERSION=pojs"
-   "JRUBY_OPTS=''"
 
 sudo: false
 
@@ -29,14 +23,11 @@ matrix:
       env:
         - "PERFORMANCE_SPECS=true"
         - "RAILS_VERSION=rails5"
-  exclude:
     - rvm: "jruby-9.1.5.0"
-      env: "RAILS_VERSION=pojs"
-    - rvm: "1.9.3"
-      env: "RAILS_VERSION=rails5"
-    - rvm: "2.0.0"
-      env: "RAILS_VERSION=rails5"
-    - rvm: "jruby-9.1.5.0"
+      env:
+        - "RAILS_VERSION=rails4"
+        - "JRUBY_OPTS=''"
+    - rvm: "2.3.0"
       env: "RAILS_VERSION=rails5"
 
 before_install:
