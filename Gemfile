@@ -14,6 +14,8 @@ if ENV['RAILS_VERSION'] == "rails3"
   gem 'rack', '1.4.5'
 elsif ENV['RAILS_VERSION'] == "rails4"
   gem 'rack', '1.5.2'
+elsif ENV['RAILS_VERSION'] == "rails5"
+  gem 'rack', '>= 2.0'
 else
   gem 'rack', '< 2.0'
 end
