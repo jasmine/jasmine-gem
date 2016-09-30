@@ -5,7 +5,6 @@ rvm:
   - "2.0.0"
   - "2.3.0"
   - "jruby-9.1.5.0"
-  - "rbx-3"
 
 env:
  - "RAILS_VERSION=rails3"
@@ -27,8 +26,6 @@ matrix:
         - "PERFORMANCE_SPECS=true"
         - "RAILS_VERSION=rails5"
   exclude:
-    - rvm: "rbx-3"
-      env: "RAILS_VERSION=pojs"
     - rvm: "jruby-9.1.5.0"
       env: "RAILS_VERSION=pojs"
     - rvm: "1.9.3"
