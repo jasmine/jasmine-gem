@@ -25,7 +25,7 @@ matrix:
     - rvm: "2.3.0"
       env: "PERFORMANCE_SPECS=true"
   exclude:
-    - rvm: "rbx"
+    - rvm: "rbx-2"
       env: "RAILS_VERSION=pojs"
     - rvm: "jruby-9"
       env: "RAILS_VERSION=pojs"

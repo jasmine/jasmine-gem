@@ -15,7 +15,7 @@ if ENV['RAILS_VERSION'] == "rails3"
 elsif ENV['RAILS_VERSION'] == "rails4"
   gem 'rack', '1.5.2'
 else
-  gem 'rack'
+  gem 'rack', '< 2.0'
 end
 
 gem 'mime-types', '< 3.0', platform: [:mri_19, :jruby]
