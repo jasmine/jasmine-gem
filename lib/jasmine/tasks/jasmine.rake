@@ -46,7 +46,7 @@ namespace :jasmine do
     if ENV['spec']
       spec_path = ENV['spec'].dup
       if spec_path.include? "spec/javascripts/" # crappy hack to allow for bash tab completion
-        spec_path.slice! "spec/javascripts/"
+        spec_path = spec_path.split("spec/javascripts/").last
       end
       Jasmine.load_spec(spec_path)
     end
