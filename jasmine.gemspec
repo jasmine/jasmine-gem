@@ -2,6 +2,17 @@
 $:.push File.expand_path("../lib", __FILE__)
 require "jasmine/version"
 
+def ruby_version_less_than(target_version)
+  version_parts = RUBY_VERSION.split('.').map(&:to_i).zip(target_version)
+
+  version_parts.each do |(current_part, target_part)|
+    if current_part < target_part
+      return true
+    end
+  end
+  false
+end
+
 Gem::Specification.new do |s|
   s.name               = %q{jasmine}
   s.version            = Jasmine::VERSION
@@ -33,7 +44,12 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rack-test'
   s.add_development_dependency 'multi_json'
   s.add_development_dependency 'rspec', '>= 2.5.0'
-  s.add_development_dependency 'nokogiri'
+
+  if ruby_version_less_than([2,1,0])
+    s.add_development_dependency 'nokogiri', '< 1.7.0'
+  else
+    s.add_development_dependency 'nokogiri'
+  end
 
   s.add_dependency 'jasmine-core', '>= 2.5.1', '< 3.0.0'
   s.add_dependency 'rack', '>= 1.2.1'
