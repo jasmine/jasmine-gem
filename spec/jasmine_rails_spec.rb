@@ -174,7 +174,7 @@ if rails_available?
 
       Bundler.with_clean_env do
         default_output = `bundle exec rake jasmine:ci`
-        if ENV['RAILS_VERSION'] == 'rails5'
+        if ENV['RAILS_VERSION'] == 'rails5' || ENV['RAILS_VERSION'].nil?
           default_output.should include('Puma starting')
         else
           default_output.should include('Thin web server')

@@ -1,12 +1,14 @@
 module Jasmine
   class Server
-    def initialize(port = 8888, application = nil, rack_options = nil)
+    def initialize(port = 8888, application = nil, rack_options = nil, env = ENV)
       @port = port
       @application = application
       @rack_options = rack_options || {}
+      @env = env
     end
 
     def start
+      @env['PORT'] = @port.to_s
       if Jasmine::Dependencies.legacy_rack?
         handler = Rack::Handler.get('webrick')
         handler.run(@application, :Port => @port, :AccessLog => [])
