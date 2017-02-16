@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.version            = Jasmine::VERSION
   s.platform           = Gem::Platform::RUBY
 
-  s.authors            = ["Rajan Agaskar", "Christian Williams", "Davis Frank"]
+  s.authors            = ["Gregg Van Hove"]
   s.summary            = %q{JavaScript BDD framework}
   s.description        = %q{Test your JavaScript without any framework dependencies, in any environment, and with a nice descriptive syntax.}
   s.email              = %q{jasmine-js@googlegroups.com}
