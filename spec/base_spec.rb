@@ -30,4 +30,13 @@ describe Jasmine do
       Jasmine.config.helper_files.should == ["aaa"]
     end
   end
+  describe '#config=' do
+    let(:config) { Jasmine.config }
+
+    it 'sets config instance variable' do
+      expect { Jasmine.config = nil }
+        .to change { Jasmine.instance_variable_get(:@config) }
+        .from(config).to(nil)
+    end
+  end
 end

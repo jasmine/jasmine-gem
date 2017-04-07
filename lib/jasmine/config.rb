@@ -131,4 +131,8 @@ module Jasmine
       c.spec_files = [spec_path]
     end
   end
+
+  def self.config=(config)
+    @config = nil
+  end
 end
