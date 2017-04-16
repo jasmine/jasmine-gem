@@ -32,7 +32,7 @@ describe 'Jasmine::Application' do
     app2 = double(:app2)
     app3 = double(:app3)
     app4 = double(:app4)
-    block = lambda { 'foo' }
+    block = lambda { |*| 'foo' }
     config = double(:config, :rack_path_map => [], :rack_apps => [
         { :app => app1 },
         { :app => app2, :block => block },
