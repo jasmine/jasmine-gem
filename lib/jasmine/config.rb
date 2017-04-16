@@ -58,14 +58,14 @@ module Jasmine
       })
       # In order to have asset helpers like asset_path and image_path, we need to require 'action_view/base'.  This
       # triggers run_load_hooks on action_view which, in turn, causes sprockets/railtie to load the Sprockets asset
-      # helpers.  Alternatively, you can include the helpers yourself without loading action_view/base:
+      # helpers and set some configuration options.
       Rails.application.assets.context_class.instance_eval do
         if Jasmine::Dependencies.rails3?
           include ::Sprockets::Helpers::IsolatedHelper
           include ::Sprockets::Helpers::RailsHelper
         end
         if Jasmine::Dependencies.rails4?
-          include ::Sprockets::Rails::Helper
+          require 'action_view/base'
           Rails.application.assets.context_class.assets_prefix = Rails.application.config.assets.prefix
         end
       end
