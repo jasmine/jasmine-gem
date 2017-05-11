@@ -18,10 +18,6 @@ module Jasmine
         defined?(Rails) && Rails.respond_to?(:version)
       end
 
-      def legacy_rack?
-        !defined?(Rack::Server)
-      end
-
       def use_asset_pipeline?
         assets_pipeline_available = (rails3? || rails4? || rails5?) && Rails.respond_to?(:application) && Rails.application.respond_to?(:assets)
         rails3_assets_enabled = rails3? && assets_pipeline_available && Rails.application.config.assets.enabled != false
