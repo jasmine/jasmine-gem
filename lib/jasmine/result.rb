@@ -10,7 +10,7 @@ module Jasmine
       @status = attrs["status"]
       @full_name = attrs["fullName"]
       @description = attrs["description"]
-      @failed_expectations = map_failures(attrs["failedExpectations"])
+      @failed_expectations = map_failures(attrs["failedExpectations"]) unless attrs["failedExpectations"].nil?
       @suite_name = full_name.slice(0, full_name.size - description.size - 1)
       @pending_reason = attrs["pendingReason"]
     end
