@@ -76,6 +76,10 @@ module Jasmine
       File.join @pwd, loaded_yaml['phantom_config_script']
     end
 
+    def prevent_phantom_js_auto_install
+      loaded_yaml['prevent_phantom_js_auto_install']
+    end
+
     def rack_options
       loaded_yaml.fetch('rack_options', {}).inject({}) do |memo, (key, value)|
         memo[key.to_sym] = value
