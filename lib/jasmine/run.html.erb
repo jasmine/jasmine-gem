@@ -8,13 +8,12 @@
   <% css_files.each do |css_file| %>
     <link rel="stylesheet" href="<%= css_file %>" type="text/css" media="screen"/>
   <% end %>
-  <% js_files.each do |js_file| %>
-  <script src="<%= js_file %>" type="text/javascript"></script>
-  <% end %>
-
 </head>
 <!-- TODO: turbolinks breaks spec filter links -->
 <body data-no-turbolink data-turbolinks="false">
 <div id="jasmine_content"></div>
+  <% js_files.each do |js_file| %>
+    <script src="<%= js_file %>" type="text/javascript"></script>
+  <% end %>
 </body>
 </html>
