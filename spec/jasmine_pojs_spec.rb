@@ -18,36 +18,36 @@ describe "POJS jasmine install" do
   end
 
   it "should find the Jasmine configuration files" do
-    File.exists?("spec/javascripts/support/jasmine.yml").should == true
+    expect(File.exists?("spec/javascripts/support/jasmine.yml")).to eq true
   end
 
   it "should find the Jasmine example files" do
-    File.exists?("public/javascripts/jasmine_examples/Player.js").should == true
-    File.exists?("public/javascripts/jasmine_examples/Song.js").should == true
+    expect(File.exists?("public/javascripts/jasmine_examples/Player.js")).to eq true
+    expect(File.exists?("public/javascripts/jasmine_examples/Song.js")).to eq true
 
-    File.exists?("spec/javascripts/jasmine_examples/PlayerSpec.js").should == true
-    File.exists?("spec/javascripts/helpers/jasmine_examples/SpecHelper.js").should == true
+    expect(File.exists?("spec/javascripts/jasmine_examples/PlayerSpec.js")).to eq true
+    expect(File.exists?("spec/javascripts/helpers/jasmine_examples/SpecHelper.js")).to eq true
 
-    File.exists?("spec/javascripts/support/jasmine.yml").should == true
+    expect(File.exists?("spec/javascripts/support/jasmine.yml")).to eq true
   end
 
   it "should show jasmine rake task" do
     output = `rake -T`
-    output.should include("jasmine ")
-    output.should include("jasmine:ci")
+    expect(output).to include("jasmine ")
+    expect(output).to include("jasmine:ci")
   end
 
   it "should successfully run rake jasmine:ci" do
     output = `rake jasmine:ci`
-    output.should =~ (/[1-9]\d* specs, 0 failures/)
-    output.should_not =~ /Randomized with seed/
+    expect(output).to match (/[1-9]\d* specs, 0 failures/)
+    expect(output).to_not match /Randomized with seed/
   end
 
   it "should raise an error when jasmine.yml cannot be found" do
     config_path = 'some/thing/that/doesnt/exist'
     output = `rake jasmine:ci JASMINE_CONFIG_PATH=#{config_path}`
-    $?.should_not be_success
-    output.should =~ /Unable to load jasmine config from #{config_path}/
+    expect($?).to_not be_success
+    expect(output).to match /Unable to load jasmine config from #{config_path}/
   end
 
   it "rake jasmine:ci returns proper exit code when the runner raises" do
@@ -59,7 +59,7 @@ describe "POJS jasmine install" do
     FileUtils.cp(File.join(@root, 'spec', 'fixture', 'failing_runner.rb'), failing_runner)
 
     `rake jasmine:ci JASMINE_CONFIG_PATH=#{failing_yaml}`
-    $?.should_not be_success
+    expect($?).to_not be_success
   end
 
   context 'with a spec with a console.log' do
@@ -69,7 +69,7 @@ describe "POJS jasmine install" do
 
     it 'hides console.log by default' do
       output = `rake jasmine:ci`
-      output.should_not include("I'm in the webpage!")
+      expect(output).to_not include("I'm in the webpage!")
     end
 
     it 'can be told to show console.log' do
@@ -77,7 +77,7 @@ describe "POJS jasmine install" do
         jasmine_config['show_console_log'] = true
       end
       output = `rake jasmine:ci JASMINE_CONFIG_PATH=#{log_yaml}`
-      output.should include("I'm in the webpage!")
+      expect(output).to include("I'm in the webpage!")
     end
   end
 
@@ -90,7 +90,7 @@ describe "POJS jasmine install" do
     end
 
     output = `rake jasmine:ci JASMINE_CONFIG_PATH=#{viewport_yaml}`
-    output.should =~ /[1-9]\d* specs, 0 failures/
+    expect(output).to match /[1-9]\d* specs, 0 failures/
   end
 
   it 'should throw a useful error when the phantom customization fails' do
@@ -100,16 +100,16 @@ describe "POJS jasmine install" do
     end
 
     output = `rake jasmine:ci JASMINE_CONFIG_PATH=#{bad_phantom_yaml}`
-    $?.should_not be_success
-    output.should =~ /Failed to configure phantom/
+    expect($?).to_not be_success
+    expect(output).to match /Failed to configure phantom/
   end
 
   it 'should fail correctly with a failure in afterAll' do
     FileUtils.cp(File.join(@root, 'spec', 'fixture', 'afterall_spec.js'), File.join('spec', 'javascripts'))
 
     output = `rake jasmine:ci`
-    $?.should_not be_success
-    output.should =~ /afterAll go boom/
+    expect($?).to_not be_success
+    expect(output).to match /afterAll go boom/
   end
 
   it 'should tell jasmine to randomize the execution order' do
@@ -118,7 +118,7 @@ describe "POJS jasmine install" do
     end
 
     output = `rake jasmine:ci JASMINE_CONFIG_PATH=#{randomized_yaml}`
-    $?.should be_success
-    output.should =~ /Randomized with seed/
+    expect($?).to be_success
+    expect(output).to match /Randomized with seed/
   end
 end

@@ -11,14 +11,14 @@ describe Rack::Jasmine::Runner do
       let(:expected_headers) { {"Content-Type" => "text/html"} }
       let(:path) { "/" }
       it "should return a response with the passed content" do
-        subject.should == [200, expected_headers, [content]]
+        expect(subject).to eq [200, expected_headers, [content]]
       end
     end
     context "PATH_INFO is not /" do
       let(:path) { "/some_foo" }
       let(:expected_headers) { {"Content-Type" => "text/plain", "X-Cascade" => "pass"} }
       it "should return a 404" do
-        subject.should == [404, expected_headers, ["File not found: #{path}\n"]]
+        expect(subject).to eq [404, expected_headers, ["File not found: #{path}\n"]]
       end
     end
   end

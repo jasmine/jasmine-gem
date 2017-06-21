@@ -5,8 +5,8 @@ describe Jasmine::Formatters::Console do
   let(:outputter_output) { '' }
   let(:outputter) do
     double(:outputter).tap do |o|
-      o.stub(:print) { |str| outputter_output << str }
-      o.stub(:puts) { |str| outputter_output << "#{str}\n" }
+      allow(o).to receive(:print) { |str| outputter_output << str }
+      allow(o).to receive(:puts) { |str| outputter_output << "#{str}\n" }
     end
   end
   let(:run_details) { { 'order' => { 'random' => false } } }
@@ -47,9 +47,9 @@ describe Jasmine::Formatters::Console do
       formatter = Jasmine::Formatters::Console.new(outputter)
       formatter.format(results)
       formatter.done(run_details)
-      outputter_output.should match(/a suite with a failing spec/)
-      outputter_output.should match(/a failure message/)
-      outputter_output.should match(/a stack trace/)
+      expect(outputter_output).to match(/a suite with a failing spec/)
+      expect(outputter_output).to match(/a failure message/)
+      expect(outputter_output).to match(/a stack trace/)
     end
 
     describe 'when the full suite passes' do
@@ -59,8 +59,8 @@ describe Jasmine::Formatters::Console do
         console.format(results)
         console.done(run_details)
 
-        outputter_output.should match(/1 spec/)
-        outputter_output.should match(/0 failures/)
+        expect(outputter_output).to match(/1 spec/)
+        expect(outputter_output).to match(/0 failures/)
       end
 
       it 'shows the spec counts (pluralized)' do
@@ -69,8 +69,8 @@ describe Jasmine::Formatters::Console do
         console.format(results)
         console.done(run_details)
 
-        outputter_output.should match(/2 specs/)
-        outputter_output.should match(/0 failures/)
+        expect(outputter_output).to match(/2 specs/)
+        expect(outputter_output).to match(/0 failures/)
       end
     end
 
@@ -81,8 +81,8 @@ describe Jasmine::Formatters::Console do
         console.format(results)
         console.done(run_details)
 
-        outputter_output.should match(/2 specs/)
-        outputter_output.should match(/1 failure/)
+        expect(outputter_output).to match(/2 specs/)
+        expect(outputter_output).to match(/1 failure/)
       end
 
       it 'shows the spec counts (pluralized)' do
@@ -91,8 +91,8 @@ describe Jasmine::Formatters::Console do
         console.format(results)
         console.done(run_details)
 
-        outputter_output.should match(/2 specs/)
-        outputter_output.should match(/2 failures/)
+        expect(outputter_output).to match(/2 specs/)
+        expect(outputter_output).to match(/2 failures/)
       end
 
       it 'shows the failure message' do
@@ -101,7 +101,7 @@ describe Jasmine::Formatters::Console do
         console.format(results)
         console.done(run_details)
 
-        outputter_output.should match(/a failure message/)
+        expect(outputter_output).to match(/a failure message/)
       end
     end
 
@@ -112,7 +112,7 @@ describe Jasmine::Formatters::Console do
         console.format(results)
         console.done(run_details)
 
-        outputter_output.should match(/1 pending spec/)
+        expect(outputter_output).to match(/1 pending spec/)
       end
 
       it 'shows the spec counts (pluralized)' do
@@ -121,7 +121,7 @@ describe Jasmine::Formatters::Console do
         console.format(results)
         console.done(run_details)
 
-        outputter_output.should match(/2 pending specs/)
+        expect(outputter_output).to match(/2 pending specs/)
       end
 
       it 'shows the pending reason' do
@@ -130,7 +130,7 @@ describe Jasmine::Formatters::Console do
         console.format(results)
         console.done(run_details)
 
-        outputter_output.should match(/I pend because/)
+        expect(outputter_output).to match(/I pend because/)
       end
 
       it 'shows the default pending reason' do
@@ -139,7 +139,7 @@ describe Jasmine::Formatters::Console do
         console.format(results)
         console.done(run_details)
 
-        outputter_output.should match(/No reason given/)
+        expect(outputter_output).to match(/No reason given/)
       end
     end
 
@@ -151,7 +151,7 @@ describe Jasmine::Formatters::Console do
         console.format(results)
         console.done(run_details)
 
-        outputter_output.should_not match(/pending spec[s]/)
+        expect(outputter_output).to_not match(/pending spec[s]/)
       end
     end
 
@@ -162,7 +162,7 @@ describe Jasmine::Formatters::Console do
         console.format(results)
         console.done({ 'order' => { 'random' => true, 'seed' => '4325' } })
 
-        outputter_output.should match(/Randomized with seed 4325/)
+        expect(outputter_output).to match(/Randomized with seed 4325/)
       end
     end
 

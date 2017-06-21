@@ -5,8 +5,8 @@ describe Jasmine::Result do
     it "exposes failed expectations" do
       result = Jasmine::Result.new(failing_raw_result)
       expectation = result.failed_expectations[0]
-      expectation.message.should == "a failure message"
-      expectation.stack.should == "a stack trace"
+      expect(expectation.message).to eq "a failure message"
+      expect(expectation.stack).to eq "a stack trace"
     end
 
     it "exposes only the last 7 lines of the stack trace" do
@@ -15,10 +15,10 @@ describe Jasmine::Result do
 
       result = Jasmine::Result.new(raw_result)
       expectation = result.failed_expectations[0].stack
-      expectation.should match(/1/)
-      expectation.should match(/7/)
-      expectation.should_not match(/8/)
-      expectation.should_not match(/9/)
+      expect(expectation).to match(/1/)
+      expect(expectation).to match(/7/)
+      expect(expectation).to_not match(/8/)
+      expect(expectation).to_not match(/9/)
     end
 
     it "exposes the full stack trace when configured" do
@@ -28,7 +28,7 @@ describe Jasmine::Result do
 
       result = Jasmine::Result.new(raw_result.merge!("show_full_stack_trace" => true))
       expectation = result.failed_expectations[0].stack
-      expectation.should == stack_trace
+      expect(expectation).to eq stack_trace
     end
 
     it "handles failed specs with no stack trace" do
@@ -36,7 +36,7 @@ describe Jasmine::Result do
 
       result = Jasmine::Result.new(raw_result)
       expectation = result.failed_expectations[0].stack
-      expectation.should match(/No stack/)
+      expect(expectation).to match(/No stack/)
     end
 
   end

@@ -108,9 +108,8 @@ module Jasmine
         config.css_files = lambda { yaml_config.css_files }
 
         config.spec_dir = yaml_config.spec_dir
-        config.helper_files = yaml_config.helpers
-        config.spec_files =  yaml_config.spec_files
-        config.testing_files = lambda { config.helper_files + config.spec_files }
+        config.helper_files = lambda { yaml_config.helpers }
+        config.spec_files = lambda { yaml_config.spec_files }
 
         config.show_console_log = yaml_config.show_console_log
         config.stop_spec_on_expectation_failure = yaml_config.stop_spec_on_expectation_failure
@@ -127,8 +126,8 @@ module Jasmine
 
   def self.load_spec(spec_path)
     return if spec_path.nil?
-    Jasmine.configure do |c|  
-      c.spec_files = [spec_path]
+    Jasmine.configure do |c|
+      c.spec_files = lambda { [spec_path] }
     end
   end
 end

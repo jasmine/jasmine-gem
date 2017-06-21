@@ -19,7 +19,7 @@ describe Jasmine::PathExpander do
       dir_glob
     )
 
-    expanded_files.should == [
+    expect(expanded_files).to eq [
       File.join('some_base', 'src1.js'),
       File.join('some_base', 'src15.js'),
       File.join('some_base', 'src2.js')
@@ -44,7 +44,7 @@ describe Jasmine::PathExpander do
       dir_glob
     )
 
-    expanded_files.should == [
+    expect(expanded_files).to eq [
       File.join('some_base', 'src1.js'),
       File.join('some_base', 'src15.js'),
       File.join('some_base', 'src2.js')
@@ -69,7 +69,7 @@ describe Jasmine::PathExpander do
       dir_glob
     )
 
-    expanded_files.should == [
+    expect(expanded_files).to eq [
       File.join('some_base', 'src1.js'),
       File.join('some_base', 'src1zzz.js'),
       File.join('some_base', 'src0.js')
@@ -96,7 +96,7 @@ describe Jasmine::PathExpander do
       dir_glob
     )
 
-    expanded_files.should == [
+    expect(expanded_files).to eq [
       File.join('some_base', 'src15.js'),
       File.join('some_base', 'src2.js')
     ]
@@ -114,7 +114,7 @@ describe Jasmine::PathExpander do
       dir_glob
     )
 
-    expanded_files.should == [
+    expect(expanded_files).to eq [
       File.join('some_base', 'src2.js')
     ]
   end
@@ -131,7 +131,7 @@ describe Jasmine::PathExpander do
         dir_glob
     )
 
-    expanded_files.should == [
+    expect(expanded_files).to eq [
         'http://www.google.com'
     ]
   end

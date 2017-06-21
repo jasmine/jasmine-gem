@@ -11,20 +11,20 @@ describe 'Jasmine::Application' do
     builder = double('Rack::Builder.new')
     #Rack::Builder instance evals, so builder.run is invalid syntax,
     #this is the only way to stub out the 'run' dsl it gives to the block.
-    Jasmine::Application.stub(:run).with(handler1).and_return(app1)
-    Jasmine::Application.stub(:run).with(handler2).and_return(app2)
+    allow(Jasmine::Application).to receive(:run).with(handler1).and_return(app1)
+    allow(Jasmine::Application).to receive(:run).with(handler2).and_return(app2)
 
-    builder.should_receive(:map).twice do |path, &app|
+    expect(builder).to receive(:map).twice do |path, &app|
       if path == '/foo'
-        app.call.should == app1
+        expect(app.call).to eq app1
       elsif path == '/bar'
-        app.call.should == app2
+        expect(app.call).to eq app2
       else
         raise 'Unexpected path passed'
       end
     end
 
-    Jasmine::Application.app(config, builder).should == builder
+    expect(Jasmine::Application.app(config, builder)).to eq builder
   end
 
   it 'should run rack apps provided by the config' do
@@ -40,16 +40,16 @@ describe 'Jasmine::Application' do
         { :app => app4, :args => [:bar] }
     ])
     builder = double('Rack::Builder.new')
-    builder.should_receive(:use).with(app1)
-    builder.should_receive(:use) do |*args, &arg_block|
-      args.should == [app2]
-      arg_block.should == block
+    expect(builder).to receive(:use).with(app1)
+    expect(builder).to receive(:use) do |*args, &arg_block|
+      expect(args).to eq [app2]
+      expect(arg_block).to eq block
     end
-    builder.should_receive(:use) do |*args, &arg_block|
-      args.should == [app3, :foo, :bar]
-      arg_block.should == block
+    expect(builder).to receive(:use) do |*args, &arg_block|
+      expect(args).to eq [app3, :foo, :bar]
+      expect(arg_block).to eq block
     end
-    builder.should_receive(:use).with(app4, :bar)
-    Jasmine::Application.app(config, builder).should == builder
+    expect(builder).to receive(:use).with(app4, :bar)
+    expect(Jasmine::Application.app(config, builder)).to eq builder
   end
 end

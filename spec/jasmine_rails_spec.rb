@@ -43,13 +43,13 @@ if rails_available?
       Bundler.with_clean_env do
         bundle_install
         `bundle exec rails g jasmine:install`
-        File.exists?('spec/javascripts/helpers/.gitkeep').should == true
-        File.exists?('spec/javascripts/support/jasmine.yml').should == true
+        expect(File.exists?('spec/javascripts/helpers/.gitkeep')).to eq true
+        expect(File.exists?('spec/javascripts/support/jasmine.yml')).to eq true
         `bundle exec rails g jasmine:examples`
-        File.exists?('app/assets/javascripts/jasmine_examples/Player.js').should == true
-        File.exists?('app/assets/javascripts/jasmine_examples/Song.js').should == true
-        File.exists?('spec/javascripts/jasmine_examples/PlayerSpec.js').should == true
-        File.exists?('spec/javascripts/helpers/jasmine_examples/SpecHelper.js').should == true
+        expect(File.exists?('app/assets/javascripts/jasmine_examples/Player.js')).to eq true
+        expect(File.exists?('app/assets/javascripts/jasmine_examples/Song.js')).to eq true
+        expect(File.exists?('spec/javascripts/jasmine_examples/PlayerSpec.js')).to eq true
+        expect(File.exists?('spec/javascripts/helpers/jasmine_examples/SpecHelper.js')).to eq true
       end
     end
 
@@ -62,15 +62,15 @@ if rails_available?
       #There's a workaround, but requires setting env vars & jruby opts (non-trivial when inside of a jruby process), so skip for now.
       Bundler.with_clean_env do
         output = `bundle exec rake -T`
-        output.should include('jasmine ')
-        output.should include('jasmine:ci')
+        expect(output).to include('jasmine ')
+        expect(output).to include('jasmine:ci')
       end
     end
 
     it "rake jasmine:ci runs and returns expected results" do
       Bundler.with_clean_env do
         output = `bundle exec rake jasmine:ci`
-        output.should include('5 specs, 0 failures')
+        expect(output).to include('5 specs, 0 failures')
       end
     end
 
@@ -81,8 +81,8 @@ if rails_available?
           jasmine_config['spec_files'] << 'failing_test.js'
         end
         output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{failing_yaml}`
-        $?.should_not be_success
-        output.should include('6 specs, 1 failure')
+        expect($?).to_not be_success
+        expect(output).to include('6 specs, 1 failure')
       end
     end
 
@@ -93,8 +93,8 @@ if rails_available?
           jasmine_config['spec_files'] << 'exception_test.js'
         end
         output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{exception_yaml}`
-        $?.should be_success
-        output.should include('5 specs, 0 failures')
+        expect($?).to be_success
+        expect(output).to include('5 specs, 0 failures')
       end
     end
 
@@ -106,7 +106,7 @@ if rails_available?
 
       Bundler.with_clean_env do
         output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{coffee_yaml}`
-        output.should include('6 specs, 0 failures')
+        expect(output).to include('6 specs, 0 failures')
       end
     end
 
@@ -128,14 +128,14 @@ if rails_available?
 
       run_jasmine_server("JASMINE_CONFIG_PATH=#{css_yaml}") do
         output = Net::HTTP.get(URI.parse('http://localhost:8888/'))
-        output.should match(%r{script src.*/assets/jasmine_examples/Player\.js})
-        output.should match(%r{script src=['"]http://ajax\.googleapis\.com/ajax/libs/jquery/1\.11\.0/jquery\.min\.js})
-        output.should match(%r{script src.*/assets/jasmine_examples/Song\.js})
-        output.should match(%r{script src.*angular_helper\.js})
-        output.should match(%r{<link rel=.stylesheet.*?href=./assets/foo\.css\?.*?>})
+        expect(output).to match(%r{script src.*/assets/jasmine_examples/Player\.js})
+        expect(output).to match(%r{script src=['"]http://ajax\.googleapis\.com/ajax/libs/jquery/1\.11\.0/jquery\.min\.js})
+        expect(output).to match(%r{script src.*/assets/jasmine_examples/Song\.js})
+        expect(output).to match(%r{script src.*angular_helper\.js})
+        expect(output).to match(%r{<link rel=.stylesheet.*?href=./assets/foo\.css\?.*?>})
 
         output = Net::HTTP.get(URI.parse('http://localhost:8888/__spec__/helpers/angular_helper.js'))
-        output.should match(/angular\.mock/)
+        expect(output).to match(/angular\.mock/)
       end
     end
 
@@ -147,7 +147,7 @@ if rails_available?
 
       run_jasmine_server do
         output = Net::HTTP.get(URI.parse('http://localhost:8888/assets/assets_prefix.js'))
-        output.should match("/assets")
+        expect(output).to match("/assets")
       end
     end
 
@@ -162,7 +162,7 @@ if rails_available?
 
       Bundler.with_clean_env do
         output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{yaml}`
-        output.should include('1 spec, 0 failures')
+        expect(output).to include('1 spec, 0 failures')
       end
     end
 
@@ -175,13 +175,13 @@ if rails_available?
       Bundler.with_clean_env do
         default_output = `bundle exec rake jasmine:ci`
         if ENV['RAILS_VERSION'] == 'rails5' || ENV['RAILS_VERSION'].nil?
-          default_output.should include('Puma starting')
+          expect(default_output).to include('Puma starting')
         else
-          default_output.should include('Thin web server')
+          expect(default_output).to include('Thin web server')
         end
 
         custom_output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{rack_yaml} 2>&1`
-        custom_output.should include("WEBrick")
+        expect(custom_output).to include("WEBrick")
       end
     end
 
@@ -198,7 +198,7 @@ if rails_available?
           `kill -0 #{pid}`
           unless $?.success?
             puts "someone else is running a server on port 8888"
-            $?.should be_success
+            expect($?).to be_success
           end
         ensure
           Process.kill(:SIGINT, pid)

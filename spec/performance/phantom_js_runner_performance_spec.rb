@@ -18,6 +18,6 @@ describe "Phantom JS Runner performance/integration suite", :performance => true
     FileUtils.cp(File.join(@root, 'spec', 'fixture', 'large_test_suite_spec.js'), File.join(@tmp, 'spec', 'javascripts'))
 
     ci_output = `rake --trace jasmine:ci`
-    ci_output.should =~ (/40000 specs, 20000 failures/)
+    expect(ci_output).to match (/40000 specs, 20000 failures/)
   end
 end

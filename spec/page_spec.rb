@@ -12,12 +12,12 @@ describe Jasmine::Page do
     let(:page) { Jasmine::Page.new(context) }
     it "should render javascript files in the correct order" do
       js_files = subject.css("script")
-      js_files.map { |file| file["src"] }.compact.should == ["file1.js", "file2.js"]
+      expect(js_files.map { |file| file["src"] }.compact).to eq ["file1.js", "file2.js"]
     end
 
     it "should render css files in the correct order" do
       css_files = subject.css("link[type='text/css']")
-      css_files.map { |file| file["href"] }.compact.should == ["file1.css", "file2.css"]
+      expect(css_files.map { |file| file["href"] }.compact).to eq ["file1.css", "file2.css"]
     end
   end
 end

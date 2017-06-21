@@ -8,7 +8,7 @@ describe Jasmine::YamlConfigParser do
       end
     end
     parser = Jasmine::YamlConfigParser.new('some_path', 'some_project_root', nil, yaml_loader)
-    parser.src_dir.should == 'some_project_root'
+    expect(parser.src_dir).to eq 'some_project_root'
   end
 
   it "src_dir returns src_dir if set" do
@@ -18,7 +18,7 @@ describe Jasmine::YamlConfigParser do
       end
     end
     parser = Jasmine::YamlConfigParser.new('some_path', 'some_project_root', nil, yaml_loader)
-    parser.src_dir.should == File.join('some_project_root', 'some_src_dir')
+    expect(parser.src_dir).to eq File.join('some_project_root', 'some_src_dir')
   end
 
   it "jasmine_dir returns nil when jasmine dir is blank" do
@@ -28,7 +28,7 @@ describe Jasmine::YamlConfigParser do
       end
     end
     parser = Jasmine::YamlConfigParser.new('some_path', 'some_project_root', nil, yaml_loader)
-    parser.jasmine_dir.should be_nil
+    expect(parser.jasmine_dir).to be_nil
   end
 
   it "jasmine_dir returns jasmine_dir if set" do
@@ -38,7 +38,7 @@ describe Jasmine::YamlConfigParser do
       end
     end
     parser = Jasmine::YamlConfigParser.new('some_path', 'some_project_root', nil, yaml_loader)
-    parser.jasmine_dir.should == File.join('some_project_root', 'some_jasmine_dir')
+    expect(parser.jasmine_dir).to eq File.join('some_project_root', 'some_jasmine_dir')
   end
 
   it "spec_helper returns default helper path when spec_helper is blank" do
@@ -48,7 +48,7 @@ describe Jasmine::YamlConfigParser do
       end
     end
     parser = Jasmine::YamlConfigParser.new('some_path', 'some_project_root', nil, yaml_loader)
-    parser.spec_helper.should == 'some_project_root/spec/javascripts/support/jasmine_helper.rb'
+    expect(parser.spec_helper).to eq 'some_project_root/spec/javascripts/support/jasmine_helper.rb'
   end
 
   it "spec_helper returns spec_helper if set" do
@@ -58,7 +58,7 @@ describe Jasmine::YamlConfigParser do
       end
     end
     parser = Jasmine::YamlConfigParser.new('some_path', 'some_project_root', nil, yaml_loader)
-    parser.spec_helper.should == 'some_project_root/some_spec_helper.rb'
+    expect(parser.spec_helper).to eq 'some_project_root/some_spec_helper.rb'
   end
 
   it "boot_dir returns nil when boot dir is blank" do
@@ -68,7 +68,7 @@ describe Jasmine::YamlConfigParser do
       end
     end
     parser = Jasmine::YamlConfigParser.new('some_path', 'some_project_root', nil, yaml_loader)
-    parser.boot_dir.should be_nil
+    expect(parser.boot_dir).to be_nil
   end
 
   it "boot_dir returns boot_dir if set" do
@@ -78,7 +78,7 @@ describe Jasmine::YamlConfigParser do
       end
     end
     parser = Jasmine::YamlConfigParser.new('some_path', 'some_project_root', nil, yaml_loader)
-    parser.boot_dir.should == File.join('some_project_root', 'some_boot_dir')
+    expect(parser.boot_dir).to eq File.join('some_project_root', 'some_boot_dir')
   end
 
   it "spec_dir uses default path when spec dir is blank" do
@@ -88,7 +88,7 @@ describe Jasmine::YamlConfigParser do
       end
     end
     parser = Jasmine::YamlConfigParser.new('some_path', 'some_project_root', nil, yaml_loader)
-    parser.spec_dir.should == File.join('some_project_root', 'spec', 'javascripts')
+    expect(parser.spec_dir).to eq File.join('some_project_root', 'spec', 'javascripts')
   end
 
   it "spec_dir returns spec_dir if set" do
@@ -98,7 +98,7 @@ describe Jasmine::YamlConfigParser do
       end
     end
     parser = Jasmine::YamlConfigParser.new('some_path', 'some_project_root', nil, yaml_loader)
-    parser.spec_dir.should == File.join('some_project_root', 'some_spec_dir')
+    expect(parser.spec_dir).to eq File.join('some_project_root', 'some_spec_dir')
   end
 
   it "expands src_file paths" do
@@ -115,7 +115,7 @@ describe Jasmine::YamlConfigParser do
 
     parser = Jasmine::YamlConfigParser.new('some_path', 'some_project_root', expander, yaml_loader)
 
-    parser.src_files.should == ['expected_results']
+    expect(parser.src_files).to eq ['expected_results']
   end
 
   it "expands stylesheets paths" do
@@ -132,7 +132,7 @@ describe Jasmine::YamlConfigParser do
 
     parser = Jasmine::YamlConfigParser.new('some_path', 'some_project_root', expander, yaml_loader)
 
-    parser.css_files.should == ['expected_results']
+    expect(parser.css_files).to eq ['expected_results']
   end
 
   it "expands spec_file paths" do
@@ -149,7 +149,7 @@ describe Jasmine::YamlConfigParser do
 
     parser = Jasmine::YamlConfigParser.new('some_path', 'some_project_root', expander, yaml_loader)
 
-    parser.spec_files.should == ['expected_results']
+    expect(parser.spec_files).to eq ['expected_results']
   end
 
   it "expands jasmine_file paths" do
@@ -166,7 +166,7 @@ describe Jasmine::YamlConfigParser do
 
     parser = Jasmine::YamlConfigParser.new('some_path', 'some_project_root', expander, yaml_loader)
 
-    parser.jasmine_files.should == ['expected_results']
+    expect(parser.jasmine_files).to eq ['expected_results']
   end
 
   it "expands boot_file paths" do
@@ -183,7 +183,7 @@ describe Jasmine::YamlConfigParser do
 
     parser = Jasmine::YamlConfigParser.new('some_path', 'some_project_root', expander, yaml_loader)
 
-    parser.boot_files.should == ['expected_results']
+    expect(parser.boot_files).to eq ['expected_results']
   end
 
   it "expands jasmine css file paths" do
@@ -200,7 +200,7 @@ describe Jasmine::YamlConfigParser do
 
     parser = Jasmine::YamlConfigParser.new('some_path', 'some_project_root', expander, yaml_loader)
 
-    parser.jasmine_css_files.should == ['expected_results']
+    expect(parser.jasmine_css_files).to eq ['expected_results']
   end
 
   it "expands helper paths" do
@@ -217,7 +217,7 @@ describe Jasmine::YamlConfigParser do
 
     parser = Jasmine::YamlConfigParser.new('some_path', 'some_project_root', expander, yaml_loader)
 
-    parser.helpers.should == ['expected_results']
+    expect(parser.helpers).to eq ['expected_results']
   end
 
   it "doesn't blow up when blank values are passed" do
@@ -230,10 +230,10 @@ describe Jasmine::YamlConfigParser do
     end
 
     parser = Jasmine::YamlConfigParser.new({}, 'some_project_root', expander, yaml_loader)
-    parser.src_files.should == []
-    parser.spec_files.should == []
-    parser.css_files.should == []
-    parser.helpers.should == []
+    expect(parser.src_files).to eq []
+    expect(parser.spec_files).to eq []
+    expect(parser.css_files).to eq []
+    expect(parser.helpers).to eq []
   end
 
 end

@@ -2,8 +2,8 @@ module Jasmine
   class Configuration
     attr_writer :jasmine_css_files, :css_files
     attr_writer :jasmine_files, :boot_files, :src_files, :runner_boot_files
-    attr_accessor :helper_files, :spec_files, :testing_files
-    attr_accessor :jasmine_path, :spec_path, :boot_path, :src_path, :image_path, :runner_boot_path, :helper_files
+    attr_accessor :helper_files, :spec_files
+    attr_accessor :jasmine_path, :spec_path, :boot_path, :src_path, :image_path, :runner_boot_path
     attr_accessor :jasmine_dir, :spec_dir, :boot_dir, :src_dir, :images_dir, :runner_boot_dir
     attr_accessor :formatters
     attr_accessor :host
@@ -28,7 +28,9 @@ module Jasmine
       @boot_files = lambda { [] }
       @runner_boot_files = lambda { [] }
       @src_files = lambda { [] }
-      @testing_files = lambda { [] }
+      @helper_files = lambda { [] }
+      @spec_files = lambda { [] }
+      @testing_files = lambda { helper_files.call + spec_files.call}
       @runner = lambda { |config| }
       @rack_options = {}
       @show_console_log = false
