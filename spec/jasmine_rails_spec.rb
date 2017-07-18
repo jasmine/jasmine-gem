@@ -1,6 +1,7 @@
 require 'spec_helper'
 require 'net/http'
 require 'yaml'
+require 'jasmine/ruby_versions'
 
 if rails_available?
   describe 'A Rails app' do
@@ -37,6 +38,9 @@ if rails_available?
         end
         f.puts "gem 'angularjs-rails'"
         f.puts "gem 'execjs', '2.0.2'"
+        if ruby_version_less_than([2,0,0])
+          f.puts "gem 'sass', '3.4.25'"
+        end
         f.flush
       }
 

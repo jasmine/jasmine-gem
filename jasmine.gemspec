@@ -1,17 +1,7 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
 require "jasmine/version"
-
-def ruby_version_less_than(target_version)
-  version_parts = RUBY_VERSION.split('.').map(&:to_i).zip(target_version)
-
-  version_parts.each do |(current_part, target_part)|
-    if current_part < target_part
-      return true
-    end
-  end
-  false
-end
+require "jasmine/ruby_versions"
 
 Gem::Specification.new do |s|
   s.name               = %q{jasmine}
