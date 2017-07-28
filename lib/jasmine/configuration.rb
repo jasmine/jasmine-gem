@@ -6,6 +6,7 @@ module Jasmine
     attr_accessor :jasmine_path, :spec_path, :boot_path, :src_path, :image_path, :runner_boot_path
     attr_accessor :jasmine_dir, :spec_dir, :boot_dir, :src_dir, :images_dir, :runner_boot_dir
     attr_accessor :formatters
+    attr_accessor :hostname
     attr_accessor :host
     attr_accessor :spec_format
     attr_accessor :runner
@@ -94,6 +95,10 @@ module Jasmine
 
     def host
       @host || 'http://localhost'
+    end
+
+    def hostname
+      @hostname || 'localhost'
     end
 
     private

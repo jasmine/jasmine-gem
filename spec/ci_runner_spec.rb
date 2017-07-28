@@ -9,6 +9,7 @@ describe Jasmine::CiRunner do
            :runner => runner_factory,
            :formatters => [],
            :host => 'foo.bar.com',
+           :hostname => 'foo.bar.com',
            :port => '1234',
            :rack_options => 'rack options',
            :stop_spec_on_expectation_failure => false,
@@ -54,7 +55,7 @@ describe Jasmine::CiRunner do
     @thread_block.call
     expect(fake_server).to have_received(:start)
 
-    expect(Jasmine).to have_received(:wait_for_listener).with('1234', 'jasmine server')
+    expect(Jasmine).to have_received(:wait_for_listener).with('1234', 'jasmine server', 20, 'foo.bar.com')
 
     expect(runner).to have_received(:run)
   end
