@@ -23,7 +23,7 @@ module Jasmine
     require 'socket'
     begin
       socket = TCPSocket.open(hostname, port)
-    rescue Errno::ECONNREFUSED, Errno::ENETUNREACH, Errno::EAFNOSUPPORT, Errno::EADDRNOTAVAIL
+    rescue Errno::ECONNREFUSED, Errno::ENETUNREACH, Errno::EAFNOSUPPORT, Errno::EADDRNOTAVAIL, Errno::EHOSTUNREACH
       return false
     end
     socket.close
