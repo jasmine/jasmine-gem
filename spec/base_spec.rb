@@ -32,4 +32,13 @@ describe Jasmine do
       expect(Jasmine.config.helper_files.call).to eq ["aaa"]
     end
   end
+  describe '#config=' do
+    let(:config) { Jasmine.config }
+
+    it 'sets config instance variable' do
+      expect { Jasmine.config = nil }
+        .to change { Jasmine.instance_variable_get(:@config) }
+        .from(config).to(nil)
+    end
+  end
 end
