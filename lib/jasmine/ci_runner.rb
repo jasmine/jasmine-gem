@@ -31,7 +31,7 @@ module Jasmine
       end
       t.abort_on_exception = true
 
-      Jasmine::wait_for_listener(config.port(:ci), 'jasmine server')
+      Jasmine::wait_for_listener(config.port(:ci), config.host.sub(/\Ahttps?:\/\//, ''))
       @outputter.puts 'jasmine server started'
 
       runner.run

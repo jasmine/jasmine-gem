@@ -193,7 +193,7 @@ if rails_available?
       Bundler.with_clean_env do
         begin
           pid = IO.popen("bundle exec rake jasmine #{options}").pid
-          Jasmine::wait_for_listener(8888, 'jasmine server', 60)
+          Jasmine::wait_for_listener(8888, 'localhost', 60)
 
           # if the process we started is not still running, it's very likely this test
           # will fail because another server is already running on port 8888
