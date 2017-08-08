@@ -87,9 +87,10 @@ In your jasmine_helper.rb:
 
 ## Support
 
+Documentation: [jasmine.github.io](https://jasmine.github.io)
 Jasmine Mailing list: [jasmine-js@googlegroups.com](mailto:jasmine-js@googlegroups.com)
 Twitter: [@jasminebdd](http://twitter.com/jasminebdd)
 
 Please file issues here at Github
 
-Copyright (c) 2008-2013 Pivotal Labs. This software is licensed under the MIT License.
+Copyright (c) 2008-2017 Pivotal Labs. This software is licensed under the MIT License.
