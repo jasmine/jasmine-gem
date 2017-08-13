@@ -76,6 +76,10 @@ module Jasmine
       File.join @pwd, loaded_yaml['phantom_config_script']
     end
 
+    def phantom_cli_options
+      loaded_yaml['phantom_cli_options'] || {}
+    end
+
     def rack_options
       loaded_yaml.fetch('rack_options', {}).inject({}) do |memo, (key, value)|
         memo[key.to_sym] = value

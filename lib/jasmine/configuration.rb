@@ -15,6 +15,7 @@ module Jasmine
     attr_accessor :stop_spec_on_expectation_failure
     attr_accessor :random
     attr_accessor :phantom_config_script
+    attr_accessor :phantom_cli_options
     attr_accessor :show_full_stack_trace
     attr_reader :rack_apps
 
@@ -37,6 +38,7 @@ module Jasmine
       @stop_spec_on_expectation_failure = false
       @random = false
       @phantom_config_script = nil
+      @phantom_cli_options = {}
 
       @formatters = [Jasmine::Formatters::Console]
 
