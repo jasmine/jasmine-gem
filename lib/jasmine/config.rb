@@ -80,7 +80,8 @@ module Jasmine
                                       @config.prevent_phantom_js_auto_install,
                                       @config.show_console_log,
                                       @config.phantom_config_script,
-                                      @config.show_full_stack_trace)
+                                      @config.show_full_stack_trace,
+                                      @config.phantom_cli_options)
     end
   end
 
@@ -115,6 +116,7 @@ module Jasmine
         config.stop_spec_on_expectation_failure = yaml_config.stop_spec_on_expectation_failure
         config.random = yaml_config.random
         config.phantom_config_script = yaml_config.phantom_config_script
+        config.phantom_cli_options = yaml_config.phantom_cli_options
 
         config.rack_options = yaml_config.rack_options
       end
