@@ -47,6 +47,7 @@ if rails_available?
       Bundler.with_clean_env do
         bundle_install
         `bundle exec rails g jasmine:install`
+        expect($?).to eq 0
         expect(File.exists?('spec/javascripts/helpers/.gitkeep')).to eq true
         expect(File.exists?('spec/javascripts/support/jasmine.yml')).to eq true
         `bundle exec rails g jasmine:examples`
