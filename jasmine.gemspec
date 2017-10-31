@@ -34,12 +34,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rack-test'
   s.add_development_dependency 'multi_json'
   s.add_development_dependency 'rspec', '>= 2.5.0'
-
-  if ruby_version_less_than([2,1,0])
-    s.add_development_dependency 'nokogiri', '< 1.7.0'
-  else
-    s.add_development_dependency 'nokogiri'
-  end
+  s.add_development_dependency 'nokogiri'
 
   s.add_dependency 'jasmine-core', '>= 2.8.0', '< 3.0.0'
   s.add_dependency 'rack', '>= 1.2.1'

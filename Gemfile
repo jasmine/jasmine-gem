@@ -21,7 +21,7 @@ else
   gem 'rack', '>= 2.0'
 end
 
-gem 'mime-types', '< 3.0', platform: [:mri_19, :jruby]
+gem 'mime-types', '< 3.0', platform: [:jruby]
 
 platform :rbx do
   gem 'json'
