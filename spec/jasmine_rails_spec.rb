@@ -7,13 +7,18 @@ if rails_available?
   describe 'A Rails app' do
     def bundle_install
       tries_remaining = 3
-      while tries_remaining > 0
+      while true
         puts `NOKOGIRI_USE_SYSTEM_LIBRARIES=true bundle install --path vendor;`
         if $?.success?
-          tries_remaining = 0
+          return
         else
           tries_remaining -= 1
-          puts "\n\nBundle failed, trying #{tries_remaining} more times\n\n"
+
+          if tries_remaining > 0
+            puts "\n\nBundle failed, trying #{tries_remaining} more times\n\n"
+          else
+            raise "Bundle failed 3 times. Giving up."
+          end
         end
       end
     end
