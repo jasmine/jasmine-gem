@@ -26,6 +26,9 @@ matrix:
         - "RAILS_VERSION=rails5"
     - rvm: "2.3.4"
       env: "RAILS_VERSION=rails5"
+  exclude:
+    - rvm: "2.4.1"
+      env: "RAILS_VERSION=rails4"
   allow_failures:
     - rvm: "jruby-9.1.5.0"
       env:
