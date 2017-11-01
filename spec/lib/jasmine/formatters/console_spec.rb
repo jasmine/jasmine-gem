@@ -166,14 +166,47 @@ describe Jasmine::Formatters::Console do
       end
     end
 
+    describe 'with loading errors' do
+      it 'should show the errors' do
+        console = Jasmine::Formatters::Console.new(outputter)
+        console.done({ 'failedExpectations' => [
+          {
+            'globalErrorType' => 'load',
+            'message' => 'Load Error',
+            'stack' => 'more info'
+          },
+          {
+            'globalErrorType' => 'load',
+            'message' => 'Another Load Error',
+            'stack' => 'even more info'
+          },
+        ] })
+
+        expect(outputter_output).to match(/Error during loading/)
+        expect(outputter_output).to match(/Load Error\n\s*more info/)
+        expect(outputter_output).to match(/Another Load Error\n\s*even more info/)
+      end
+    end
+
     describe 'with errors in a global afterAll' do
       it 'should show the errors' do
         console = Jasmine::Formatters::Console.new(outputter)
-        console.done({ 'failedExpectations' => [{ 'message' => 'Global Failure', 'stack' => 'more info' }] })
+        console.done({ 'failedExpectations' => [
+          {
+            'globalErrorType' => 'afterAll',
+            'message' => 'Global Failure',
+            'stack' => 'more info'
+          },
+          {
+            'globalErrorType' => 'afterAll',
+            'message' => 'Another Failure',
+            'stack' => 'even more info'
+          },
+        ] })
 
         expect(outputter_output).to match(/Error occurred in afterAll/)
-        expect(outputter_output).to match(/Global Failure/)
-        expect(outputter_output).to match(/more info/)
+        expect(outputter_output).to match(/Global Failure\n\s*more info/)
+        expect(outputter_output).to match(/Another Failure\n\s*even more info/)
       end
     end
   end

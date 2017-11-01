@@ -54,8 +54,14 @@ module Jasmine
 
       def global_failure_details(run_details)
         fails = run_details.fetch('failedExpectations', [])
+        (loadFails, afterAllFails) = fails.partition {|e| e['globalErrorType'] == 'load' }
+        report_global_failures('Error during loading', loadFails)
+        report_global_failures('Error occurred in afterAll', afterAllFails)
+      end
+
+      def report_global_failures(prefix, fails)
         if fails.size > 0
-          fail_result = Jasmine::Result.new('fullName' => 'Error occurred in afterAll', 'description' => '', 'failedExpectations' => fails)
+          fail_result = Jasmine::Result.new('fullName' => prefix, 'description' => '', 'failedExpectations' => fails)
           outputter.puts(failure_message(fail_result))
           outputter.puts
         end
