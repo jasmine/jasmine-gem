@@ -36,6 +36,10 @@ module Jasmine
 
         outputter.puts(summary)
 
+        if run_details['overallStatus'] == 'incomplete'
+          outputter.puts("Incomplete: #{run_details['incompleteReason']}")
+        end
+
         if run_details['order'] && run_details['order']['random']
           outputter.puts("Randomized with seed #{run_details['order']['seed']}")
         end

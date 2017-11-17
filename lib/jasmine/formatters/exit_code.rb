@@ -2,20 +2,18 @@ module Jasmine
   module Formatters
     class ExitCode
       def initialize
-        @results = []
-        @global_failure = false
+        @result = nil
       end
 
       def format(results)
-        @results += results
       end
 
-      def done(details)
-        @global_failure = details.fetch('failedExpectations', []).size > 0
+      def done(result)
+        @result = result
       end
 
       def succeeded?
-        !@results.detect(&:failed?) && !@global_failure
+        @result && @result['overallStatus'] == 'passed'
       end
     end
   end

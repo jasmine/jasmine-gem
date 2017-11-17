@@ -209,6 +209,18 @@ describe Jasmine::Formatters::Console do
         expect(outputter_output).to match(/Another Failure\n\s*even more info/)
       end
     end
+
+    describe 'when the overall status is incomplete' do
+      it 'shows the reason' do
+        console = Jasmine::Formatters::Console.new(outputter)
+        console.done({
+          'overallStatus' => 'incomplete',
+          'incompleteReason' => 'not all bars were frobnicated'
+        })
+
+        expect(outputter_output).to match(/Incomplete: not all bars were frobnicated/)
+      end
+    end
   end
 
   def failing_result
