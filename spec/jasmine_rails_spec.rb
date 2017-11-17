@@ -37,7 +37,7 @@ if rails_available?
 
       open('Gemfile', 'a') { |f|
         f.puts "gem 'jasmine', :path => '#{base}'"
-        f.puts "gem 'jasmine-core', :github => 'pivotal/jasmine'"
+        f.puts "gem 'jasmine-core', :git => 'http://github.com/jasmine/jasmine.git', :branch => '3.0-features'"
         if RUBY_PLATFORM != 'java' && ENV['RAILS_VERSION'] != 'rails5'
           f.puts "gem 'thin'"
         end
@@ -103,7 +103,7 @@ if rails_available?
           jasmine_config['spec_files'] << 'exception_test.js'
         end
         output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{exception_yaml}`
-        expect($?).to be_success
+        expect($?).to_not be_success
         expect(output).to include('5 specs, 0 failures')
       end
     end
