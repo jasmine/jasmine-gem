@@ -40,7 +40,7 @@ describe "POJS jasmine install" do
   it "should successfully run rake jasmine:ci" do
     output = `rake jasmine:ci`
     expect(output).to match (/[1-9]\d* specs, 0 failures/)
-    expect(output).to_not match /Randomized with seed/
+    expect(output).to match /Randomized with seed/
   end
 
   it "should raise an error when jasmine.yml cannot be found" do
