@@ -135,11 +135,11 @@ boot_files:
 # random
 #
 # Run specs in semi-random order.
-# Default: false
+# Default: true
 #
 # EXAMPLE:
 #
-# random: true
+# random: false
 #
 random:
 

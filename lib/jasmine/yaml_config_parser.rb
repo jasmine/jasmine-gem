@@ -68,7 +68,11 @@ module Jasmine
     end
 
     def random
-      loaded_yaml['random'] || false
+      if loaded_yaml['random'].nil?
+        true
+      else
+        loaded_yaml['random']
+      end
     end
 
     def phantom_config_script

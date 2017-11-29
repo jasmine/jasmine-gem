@@ -101,6 +101,26 @@ describe Jasmine::YamlConfigParser do
     expect(parser.spec_dir).to eq File.join('some_project_root', 'some_spec_dir')
   end
 
+  it "random returns random if set" do
+    yaml_loader = lambda do |path|
+      if path == "some_path"
+        {"random" => true}
+      end
+    end
+    parser = Jasmine::YamlConfigParser.new('some_path', 'some_project_root', nil, yaml_loader)
+    expect(parser.random).to eq true
+  end
+
+  it "random defaults to true" do
+    yaml_loader = lambda do |path|
+      if path == "some_path"
+        {"random" => nil}
+      end
+    end
+    parser = Jasmine::YamlConfigParser.new('some_path', 'some_project_root', nil, yaml_loader)
+    expect(parser.random).to eq true
+  end
+
   it "expands src_file paths" do
     expander = lambda do |dir, patterns|
       if (dir == File.join('some_project_root', 'some_src') && patterns == ['some_patterns'])

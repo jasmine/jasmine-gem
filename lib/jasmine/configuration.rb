@@ -36,7 +36,7 @@ module Jasmine
       @rack_options = {}
       @show_console_log = false
       @stop_spec_on_expectation_failure = false
-      @random = false
+      @random = true
       @phantom_config_script = nil
       @phantom_cli_options = {}
 
