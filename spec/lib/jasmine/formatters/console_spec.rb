@@ -162,7 +162,7 @@ describe Jasmine::Formatters::Console do
         console.format(results)
         console.done({ 'order' => { 'random' => true, 'seed' => '4325' } })
 
-        expect(outputter_output).to match(/Randomized with seed 4325/)
+        expect(outputter_output).to match(/Randomized with seed 4325 \(rake jasmine:ci\[true,4325\]\)/)
       end
     end
 

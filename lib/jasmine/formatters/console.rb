@@ -41,7 +41,8 @@ module Jasmine
         end
 
         if run_details['order'] && run_details['order']['random']
-          outputter.puts("Randomized with seed #{run_details['order']['seed']}")
+          seed = run_details['order']['seed']
+          outputter.puts("Randomized with seed #{seed} \(rake jasmine:ci\[true,#{seed}])")
         end
       end
 
