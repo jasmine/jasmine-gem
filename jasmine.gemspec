@@ -7,6 +7,7 @@ Gem::Specification.new do |s|
   s.name               = %q{jasmine}
   s.version            = Jasmine::VERSION
   s.platform           = Gem::Platform::RUBY
+  s.required_ruby_version = '>= 2.0'
 
   s.authors            = ["Gregg Van Hove"]
   s.summary            = %q{JavaScript BDD framework}
@@ -26,7 +27,7 @@ Gem::Specification.new do |s|
     s.add_development_dependency 'rails', '>= 3.0.0', '< 4.0.0'
   when 'pojs'
   when 'rails4'
-    s.add_development_dependency 'rails', '>= 4', '< 5.0.0'
+    s.add_development_dependency 'rails', '>= 4.2', '< 5.0.0'
   else #default to rails 5
     s.add_development_dependency 'rails', '>= 5'
   end
