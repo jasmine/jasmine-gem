@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.name               = %q{jasmine}
   s.version            = Jasmine::VERSION
   s.platform           = Gem::Platform::RUBY
-  s.required_ruby_version = '>= 2.0'
+  s.required_ruby_version = '>= 2.3'
 
   s.authors            = ["Gregg Van Hove"]
   s.summary            = %q{JavaScript BDD framework}
