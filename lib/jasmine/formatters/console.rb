@@ -99,18 +99,20 @@ module Jasmine
       end
 
       def failure_message(failure)
-        template = <<-FM
-          #{failure.full_name}\n
-        FM
-
-        template += failure.failed_expectations.map { |fe| expectation_message(fe) }.join("\n")
+        failure.full_name + "\n" + failure.failed_expectations.map { |fe| expectation_message(fe) }.join("\n")
       end
 
       def expectation_message(expectation)
         <<-FE
-          #{expectation.message}
-          #{expectation.stack}
+  Message:
+      \e[31m#{expectation.message}\e[0m
+  Stack:
+      #{stack(expectation.stack)}
         FE
+      end
+
+      def stack(stack)
+        stack.split("\n").map(&:strip).join("\n      ")
       end
     end
   end

@@ -183,8 +183,8 @@ describe Jasmine::Formatters::Console do
         ] })
 
         expect(outputter_output).to match(/Error during loading/)
-        expect(outputter_output).to match(/Load Error\n\s*more info/)
-        expect(outputter_output).to match(/Another Load Error\n\s*even more info/)
+        expect(outputter_output).to match(/\e\[31mLoad Error\e\[0m\n\s*Stack:\n\s*more info/)
+        expect(outputter_output).to match(/\e\[31mAnother Load Error\e\[0m\n\s*Stack:\n\s*even more info/)
       end
     end
 
@@ -205,8 +205,8 @@ describe Jasmine::Formatters::Console do
         ] })
 
         expect(outputter_output).to match(/Error occurred in afterAll/)
-        expect(outputter_output).to match(/Global Failure\n\s*more info/)
-        expect(outputter_output).to match(/Another Failure\n\s*even more info/)
+        expect(outputter_output).to match(/\e\[31mGlobal Failure\e\[0m\n\s*Stack:\n\s*more info/)
+        expect(outputter_output).to match(/\e\[31mAnother Failure\e\[0m\n\s*Stack:\n\s*even more info/)
       end
     end
 
