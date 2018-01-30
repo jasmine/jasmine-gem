@@ -114,6 +114,7 @@ module Jasmine
 
         config.show_console_log = yaml_config.show_console_log
         config.stop_spec_on_expectation_failure = yaml_config.stop_spec_on_expectation_failure
+        config.stop_on_spec_failure = yaml_config.stop_on_spec_failure
         config.random = yaml_config.random
         config.phantom_config_script = yaml_config.phantom_config_script
         config.phantom_cli_options = yaml_config.phantom_cli_options

@@ -13,6 +13,7 @@ module Jasmine
     attr_accessor :prevent_phantom_js_auto_install
     attr_accessor :show_console_log
     attr_accessor :stop_spec_on_expectation_failure
+    attr_accessor :stop_on_spec_failure
     attr_accessor :random
     attr_accessor :phantom_config_script
     attr_accessor :phantom_cli_options
@@ -36,6 +37,7 @@ module Jasmine
       @rack_options = {}
       @show_console_log = false
       @stop_spec_on_expectation_failure = false
+      @stop_on_spec_failure = false
       @random = true
       @phantom_config_script = nil
       @phantom_cli_options = {}

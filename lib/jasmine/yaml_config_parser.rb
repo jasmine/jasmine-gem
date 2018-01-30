@@ -67,6 +67,10 @@ module Jasmine
       loaded_yaml['stop_spec_on_expectation_failure'] || false
     end
 
+    def stop_on_spec_failure
+      loaded_yaml['stop_on_spec_failure'] || false
+    end
+
     def random
       if loaded_yaml['random'].nil?
         true

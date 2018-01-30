@@ -12,6 +12,7 @@ describe Jasmine::CiRunner do
            :port => '1234',
            :rack_options => 'rack options',
            :stop_spec_on_expectation_failure => false,
+           :stop_on_spec_failure => false,
            :random => false
           )
   end
@@ -43,6 +44,7 @@ describe Jasmine::CiRunner do
     expect(config).not_to have_received(:port).with(:server)
 
     expect(runner_factory).to have_received(:call).with(instance_of(Jasmine::Formatters::Multi), /\bthrowFailures=false\b/)
+    expect(runner_factory).to have_received(:call).with(instance_of(Jasmine::Formatters::Multi), /\bfailFast=false\b/)
     expect(runner_factory).to have_received(:call).with(instance_of(Jasmine::Formatters::Multi), /\brandom=false\b/)
 
     expect(application_factory).to have_received(:app).with(config)
@@ -95,6 +97,16 @@ describe Jasmine::CiRunner do
     ci_runner.run
 
     expect(runner_factory).to have_received(:call).with(instance_of(Jasmine::Formatters::Multi), /\bthrowFailures=true\b/)
+  end
+
+  it 'can tell the jasmine page to fail fast' do
+    allow(config).to receive(:stop_on_spec_failure) { true }
+
+    ci_runner = Jasmine::CiRunner.new(config, thread: fake_thread, application_factory: application_factory, server_factory: server_factory, outputter: outputter)
+
+    ci_runner.run
+
+    expect(runner_factory).to have_received(:call).with(instance_of(Jasmine::Formatters::Multi), /\bfailFast=true\b/)
   end
 
   it 'can tell the jasmine page to randomize' do

@@ -16,7 +16,7 @@ module Jasmine
       exit_code_formatter = Jasmine::Formatters::ExitCode.new
       formatters << exit_code_formatter
 
-      url = "#{config.host}:#{config.port(:ci)}/?throwFailures=#{config.stop_spec_on_expectation_failure}&random=#{@random}#{@seed}"
+      url = "#{config.host}:#{config.port(:ci)}/?throwFailures=#{config.stop_spec_on_expectation_failure}&failFast=#{config.stop_on_spec_failure}&random=#{@random}#{@seed}"
       runner = config.runner.call(Jasmine::Formatters::Multi.new(formatters), url)
 
       if runner.respond_to?(:boot_js)
