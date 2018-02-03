@@ -124,11 +124,11 @@ if rails_available?
 
       run_jasmine_server("JASMINE_CONFIG_PATH=#{css_yaml}") do
         output = Net::HTTP.get(URI.parse('http://localhost:8888/'))
-        expect(output).to match(%r{script src.*/assets/jasmine_examples/Player\.js})
+        expect(output).to match(%r{script src.*/assets/jasmine_examples/Player(\.self-[^\.]+)?\.js})
         expect(output).to match(%r{script src=['"]http://ajax\.googleapis\.com/ajax/libs/jquery/1\.11\.0/jquery\.min\.js})
-        expect(output).to match(%r{script src.*/assets/jasmine_examples/Song\.js})
+        expect(output).to match(%r{script src.*/assets/jasmine_examples/Song(\.self-[^\.]+)?\.js})
         expect(output).to match(%r{script src.*angular_helper\.js})
-        expect(output).to match(%r{<link rel=.stylesheet.*?href=./assets/foo\.css\?.*?>})
+        expect(output).to match(%r{<link rel=.stylesheet.*?href=./assets/foo(\.self-[^\.]+)?\.css\?.*?>})
 
         output = Net::HTTP.get(URI.parse('http://localhost:8888/__spec__/helpers/angular_helper.js'))
         expect(output).to match(/angular\.mock/)
@@ -196,6 +196,7 @@ if rails_available?
             puts "someone else is running a server on port 8888"
             expect($?).to be_success
           end
+          yield
         ensure
           Process.kill(:SIGINT, pid)
           begin
