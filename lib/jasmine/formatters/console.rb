@@ -14,7 +14,7 @@ module Jasmine
       def done(run_details)
         outputter.puts
 
-        global_failure_details(run_details)
+        run_result = global_failure_details(run_details)
 
         failure_count = results.count(&:failed?)
         if failure_count > 0
@@ -29,6 +29,14 @@ module Jasmine
           outputter.puts(pending(@results))
           outputter.puts
         end
+
+        deprecationWarnings = (@results + [run_result]).map(&:deprecation_warnings).flatten
+        if deprecationWarnings.size > 0
+          outputter.puts('Deprecations:')
+          outputter.puts(deprecations(deprecationWarnings))
+          outputter.puts
+        end
+
         summary = "#{pluralize(results.size, 'spec')}, " +
           "#{pluralize(failure_count, 'failure')}"
 
@@ -52,13 +60,17 @@ module Jasmine
         results.select(&:pending?).map { |spec| pending_message(spec) }.join("\n\n")
       end
 
+      def deprecations(warnings)
+        warnings.map { |w| expectation_message(w) }.join("\n\n")
+      end
+
       def global_failure_details(run_details)
-        fails = run_details.fetch('failedExpectations', [])
-        if fails.size > 0
-          fail_result = Jasmine::Result.new('fullName' => 'Error occurred in afterAll', 'description' => '', 'failedExpectations' => fails)
-          outputter.puts(failure_message(fail_result))
+        result = Jasmine::Result.new(run_details.merge('fullName' => 'Error occurred in afterAll', 'description' => ''))
+        if (result.failed_expectations.size > 0)
+          outputter.puts(failure_message(result))
           outputter.puts
         end
+        result
       end
 
       def chars(results)

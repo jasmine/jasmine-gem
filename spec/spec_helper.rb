@@ -64,15 +64,37 @@ module Kernel
 end
 
 def passing_raw_result
-  {'id' => 123, 'status' => 'passed', 'fullName' => 'Passing test', 'description' => 'Passing', 'failedExpectations' => []}
+  {
+    'id' => 123,
+    'status' => 'passed',
+    'fullName' => 'Passing test',
+    'description' => 'Passing',
+    'failedExpectations' => [],
+    'deprecationWarnings' => []
+  }
 end
 
 def pending_raw_result
-  {'id' => 123, 'status' => 'pending', 'fullName' => 'Passing test', 'description' => 'Pending', 'failedExpectations' => [], 'pendingReason' => 'I pend because'}
+  {
+    'id' => 123,
+    'status' => 'pending',
+    'fullName' => 'Passing test',
+    'description' => 'Pending',
+    'failedExpectations' => [],
+    'pendingReason' => 'I pend because',
+    'deprecationWarnings' => []
+  }
 end
 
 def disabled_raw_result
-  {'id' => 123, 'status' => 'disabled', 'fullName' => 'Disabled test', 'description' => 'Disabled', 'failedExpectations' => []}
+  {
+    'id' => 123,
+    'status' => 'disabled',
+    'fullName' => 'Disabled test',
+    'description' => 'Disabled',
+    'failedExpectations' => [],
+    'deprecationWarnings' => []
+  }
 end
 
 def failing_raw_result
@@ -86,7 +108,8 @@ def failing_raw_result
         'message' => 'a failure message',
         'stack' => 'a stack trace'
       }
-    ]
+    ],
+    'deprecationWarnings' => []
   }
 end
 
@@ -101,7 +124,22 @@ def failing_result_no_stack_trace
         'message' => 'a failure message, but no stack',
         'stack' => nil
       }
-    ]
+    ],
+    'deprecationWarnings' => []
+  }
+end
+
+def deprecation_raw_result
+  {
+    'id' => 123,
+    'status' => 'passed',
+    'fullName' => 'test with deprecated calls',
+    'description' => 'Deprecations',
+    'failedExpectations' => [],
+    'deprecationWarnings' => [{
+      'message' => 'deprecated call',
+
+    }]
   }
 end
 
