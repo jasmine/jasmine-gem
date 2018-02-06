@@ -221,6 +221,15 @@ describe Jasmine::Formatters::Console do
         expect(outputter_output).to match(/Incomplete: not all bars were frobnicated/)
       end
     end
+
+    it 'shows deprecation warnings' do
+      console = Jasmine::Formatters::Console.new(outputter)
+      console.format([Jasmine::Result.new(deprecation_raw_result)])
+      console.done({ 'deprecationWarnings' => [{ 'message' => 'globally deprecated', 'stack' => nil }] })
+
+      expect(outputter_output).to match(/deprecated call/)
+      expect(outputter_output).to match(/globally deprecated/)
+    end
   end
 
   def failing_result

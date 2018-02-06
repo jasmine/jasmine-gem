@@ -10,7 +10,8 @@ module Jasmine
       @status = attrs["status"]
       @full_name = attrs["fullName"]
       @description = attrs["description"]
-      @failed_expectations = map_failures(attrs["failedExpectations"])
+      @failed_expectations = map_failures(attrs.fetch("failedExpectations", []))
+      @deprecation_warnings = map_failures(attrs.fetch("deprecationWarnings", []))
       @suite_name = full_name.slice(0, full_name.size - description.size - 1)
       @pending_reason = attrs["pendingReason"]
     end
@@ -31,7 +32,7 @@ module Jasmine
       status == 'disabled'
     end
 
-    attr_reader :full_name, :description, :failed_expectations, :suite_name, :pending_reason
+    attr_reader :full_name, :description, :failed_expectations, :deprecation_warnings, :suite_name, :pending_reason
 
     private
     attr_reader :status, :show_full_stack_trace
@@ -48,10 +49,10 @@ module Jasmine
           stack = "No stack trace present."
         end
 
-        Failure.new(e["message"], stack)
+        Failure.new(e["message"], stack, e["globalErrorType"])
       end
     end
 
-    class Failure < Struct.new(:message, :stack); end
+    class Failure < Struct.new(:message, :stack, :globalErrorType); end
   end
 end

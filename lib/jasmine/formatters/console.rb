@@ -14,7 +14,7 @@ module Jasmine
       def done(run_details)
         outputter.puts
 
-        global_failure_details(run_details)
+        run_result = global_failure_details(run_details)
 
         failure_count = results.count(&:failed?)
         if failure_count > 0
@@ -29,6 +29,14 @@ module Jasmine
           outputter.puts(pending(@results))
           outputter.puts
         end
+
+        deprecationWarnings = (@results + [run_result]).map(&:deprecation_warnings).flatten
+        if deprecationWarnings.size > 0
+          outputter.puts('Deprecations:')
+          outputter.puts(deprecations(deprecationWarnings))
+          outputter.puts
+        end
+
         summary = "#{pluralize(results.size, 'spec')}, " +
           "#{pluralize(failure_count, 'failure')}"
 
@@ -57,11 +65,19 @@ module Jasmine
         results.select(&:pending?).map { |spec| pending_message(spec) }.join("\n\n")
       end
 
+      def deprecations(warnings)
+        warnings.map { |w| expectation_message(w) }.join("\n\n")
+      end
+
       def global_failure_details(run_details)
-        fails = run_details.fetch('failedExpectations', [])
-        (loadFails, afterAllFails) = fails.partition {|e| e['globalErrorType'] == 'load' }
-        report_global_failures('Error during loading', loadFails)
-        report_global_failures('Error occurred in afterAll', afterAllFails)
+        result = Jasmine::Result.new(run_details.merge('fullName' => 'Error occurred in afterAll', 'description' => ''))
+        if (result.failed_expectations.size > 0)
+          (loadFails, afterAllFails) = result.failed_expectations.partition {|e| e.globalErrorType == 'load' }
+          report_global_failures('Error during loading', loadFails)
+          report_global_failures('Error occurred in afterAll', afterAllFails)
+        end
+
+        result
       end
 
       def report_global_failures(prefix, fails)
