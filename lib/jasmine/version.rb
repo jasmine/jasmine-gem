@@ -1,3 +1,3 @@
 module Jasmine
-  VERSION = "2.9.0"
+  VERSION = "2.99.0"
 end
