@@ -11,9 +11,7 @@ else
   gem 'jasmine-core', :path => '../jasmine'
 end
 
-if ENV['RAILS_VERSION'] == "rails3"
-  gem 'rack', '1.4.5'
-elsif ENV['RAILS_VERSION'] == "rails4"
+if ENV['RAILS_VERSION'] == "rails4"
   gem 'rack', '~> 1.6.0'
 elsif ENV['RAILS_VERSION'] == "pojs"
   gem 'rack', '< 2.0'

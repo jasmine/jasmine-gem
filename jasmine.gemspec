@@ -23,8 +23,6 @@ Gem::Specification.new do |s|
   s.rdoc_options       = ["--charset=UTF-8"]
 
   case ENV['RAILS_VERSION']
-  when 'rails3'
-    s.add_development_dependency 'rails', '>= 3.0.0', '< 4.0.0'
   when 'pojs'
   when 'rails4'
     s.add_development_dependency 'rails', '>= 4.2', '< 5.0.0'

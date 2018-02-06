@@ -32,9 +32,6 @@ if rails_available?
         end
         f.puts "gem 'angularjs-rails'"
         f.puts "gem 'execjs', '2.0.2'"
-        if ruby_version_less_than([2,0,0]) && ENV['RAILS_VERSION'] == 'rails3'
-          f.puts "gem 'sass', '3.4.25'"
-        end
         f.flush
       }
 

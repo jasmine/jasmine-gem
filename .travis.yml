@@ -7,7 +7,6 @@ rvm:
   - "2.5.0"
 
 env:
-  - "RAILS_VERSION=rails3"
   - "RAILS_VERSION=rails4"
   - "RAILS_VERSION=pojs"
 

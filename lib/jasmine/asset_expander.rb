@@ -13,29 +13,8 @@ module Jasmine
     UnsupportedRailsVersion = Class.new(StandardError)
 
     def asset_bundle
-      return Rails3AssetBundle.new if Jasmine::Dependencies.rails3?
       return Rails4Or5AssetBundle.new if Jasmine::Dependencies.rails4? || Jasmine::Dependencies.rails5?
-      raise UnsupportedRailsVersion, "Jasmine only supports the asset pipeline for Rails 3 - 5"
-    end
-
-    class Rails3AssetBundle
-      def assets(pathname)
-        context.asset_paths.asset_for(pathname, nil).to_a.map do |path|
-          context.asset_path(path)
-        end
-      end
-
-      private
-
-      def context
-        @context ||= get_asset_context
-      end
-
-      def get_asset_context
-        context = ::Rails.application.assets.context_class
-        context.extend(::Sprockets::Helpers::IsolatedHelper)
-        context.extend(::Sprockets::Helpers::RailsHelper)
-      end
+      raise UnsupportedRailsVersion, "Jasmine only supports the asset pipeline for Rails 4 - 5"
     end
 
     class Rails4Or5AssetBundle
