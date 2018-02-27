@@ -124,11 +124,11 @@ if rails_available?
 
       run_jasmine_server("JASMINE_CONFIG_PATH=#{css_yaml}") do
         output = Net::HTTP.get(URI.parse('http://localhost:8888/'))
-        expect(output).to match(%r{script src.*/assets/jasmine_examples/Player\.js})
+        expect(output).to match(%r{script src.*/assets/jasmine_examples/Player(\.self-[^\.]+)?\.js})
         expect(output).to match(%r{script src=['"]http://ajax\.googleapis\.com/ajax/libs/jquery/1\.11\.0/jquery\.min\.js})
-        expect(output).to match(%r{script src.*/assets/jasmine_examples/Song\.js})
+        expect(output).to match(%r{script src.*/assets/jasmine_examples/Song(\.self-[^\.]+)?\.js})
         expect(output).to match(%r{script src.*angular_helper\.js})
-        expect(output).to match(%r{<link rel=.stylesheet.*?href=./assets/foo\.css\?.*?>})
+        expect(output).to match(%r{<link rel=.stylesheet.*?href=./assets/foo(\.self-[^\.]+)?\.css\?.*?>})
 
         output = Net::HTTP.get(URI.parse('http://localhost:8888/__spec__/helpers/angular_helper.js'))
         expect(output).to match(/angular\.mock/)
@@ -181,6 +181,53 @@ if rails_available?
       end
     end
 
+    describe 'using sprockets 4' do
+      before :all do
+        FileUtils.cp('Gemfile', 'Gemfile-old')
+        FileUtils.rm 'Gemfile.lock'
+        
+        open('Gemfile', 'a') { |f|
+          f.puts "gem 'sprockets', '~> 4.0.0.beta6'"
+          f.flush
+        }
+        Bundler.with_clean_env do
+          bundle_install
+        end
+
+        FileUtils.mkdir_p('app/assets/config')
+
+        open('app/assets/config/manifest.js', 'w') { |f| 
+          f.puts "//= link application.js"
+          f.puts "//= link application.css"
+          f.flush
+        }
+      end
+
+      after :all do
+        FileUtils.mv 'Gemfile-old', 'Gemfile'
+        FileUtils.rm 'Gemfile.lock'
+        FileUtils.rm 'app/assets/config/manifest.js'
+        Bundler.with_clean_env do
+          bundle_install
+        end
+      end
+
+      it "serves source mapped assets" do
+        run_jasmine_server do
+          output = Net::HTTP.get(URI.parse('http://localhost:8888/'))
+
+          js_match = output.match %r{script src.*/(assets/application.debug-[^\.]+\.js)}
+
+          expect(js_match).to_not be_nil
+          expect(output).to match(%r{<link rel=.stylesheet.*?href=.*/assets/application.debug-[^\.]+\.css})
+
+          js_path = js_match[1]
+          output = Net::HTTP.get(URI.parse("http://localhost:8888/#{js_path}"))
+          expect(output).to match(%r{//# sourceMappingURL=.*\.map})
+        end
+      end
+    end
+
     def run_jasmine_server(options = "")
       Bundler.with_clean_env do
         begin
@@ -196,6 +243,7 @@ if rails_available?
             puts "someone else is running a server on port 8888"
             expect($?).to be_success
           end
+          yield
         ensure
           Process.kill(:SIGINT, pid)
           begin
