@@ -26,7 +26,7 @@ if rails_available?
 
       open('Gemfile', 'a') { |f|
         f.puts "gem 'jasmine', :path => '#{base}'"
-        f.puts "gem 'jasmine-core', :git => 'http://github.com/jasmine/jasmine.git', :branch => '3.0-features'"
+        f.puts "gem 'jasmine-core', :git => 'http://github.com/jasmine/jasmine.git'"
         if RUBY_PLATFORM != 'java' && ENV['RAILS_VERSION'] != 'rails5'
           f.puts "gem 'thin'"
         end
@@ -185,7 +185,7 @@ if rails_available?
       before :all do
         FileUtils.cp('Gemfile', 'Gemfile-old')
         FileUtils.rm 'Gemfile.lock'
-        
+
         open('Gemfile', 'a') { |f|
           f.puts "gem 'sprockets', '~> 4.0.0.beta6'"
           f.flush
@@ -196,7 +196,7 @@ if rails_available?
 
         FileUtils.mkdir_p('app/assets/config')
 
-        open('app/assets/config/manifest.js', 'w') { |f| 
+        open('app/assets/config/manifest.js', 'w') { |f|
           f.puts "//= link application.js"
           f.puts "//= link application.css"
           f.flush
