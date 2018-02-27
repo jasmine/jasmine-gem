@@ -6,7 +6,7 @@ gem 'anchorman', :platform => :mri
 
 # during development, do not release
 if ENV['TRAVIS']
-  gem 'jasmine-core', :git => 'http://github.com/jasmine/jasmine.git', :branch => '3.0-features'
+  gem 'jasmine-core', :git => 'http://github.com/jasmine/jasmine.git'
 else
   gem 'jasmine-core', :path => '../jasmine'
 end
