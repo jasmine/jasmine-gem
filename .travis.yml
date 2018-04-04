@@ -14,9 +14,6 @@ env:
 
 script: "if [ $PERFORMANCE_SPECS ];then bundle exec rake performance_specs --trace; else bundle exec rake --trace; fi"
 
-install:
-  - bundle install --retry=3
-
 matrix:
   fast_finish: true
   include:
@@ -26,4 +23,3 @@ matrix:
 
 before_install:
   - gem update --system
-  - gem install bundler -v "= 1.15.4"
