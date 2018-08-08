@@ -1,4 +1,5 @@
 # The Jasmine Gem [![Build Status](https://travis-ci.org/jasmine/jasmine-gem.png?branch=master)](https://travis-ci.org/jasmine/jasmine-gem)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjasmine%2Fjasmine-gem.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjasmine%2Fjasmine-gem?ref=badge_shield)
 
 The [Jasmine](http://github.com/jasmine/jasmine) Ruby Gem is a package of helper code for developing Jasmine projects for Ruby-based web projects (Rails, Sinatra, etc.) or for JavaScript projects where Ruby is a welcome partner. It serves up a project's Jasmine suite in a browser so you can focus on your code instead of manually editing script tags in the Jasmine runner HTML file.
 
@@ -94,3 +95,7 @@ Twitter: [@jasminebdd](http://twitter.com/jasminebdd)
 Please file issues here at Github
 
 Copyright (c) 2008-2017 Pivotal Labs. This software is licensed under the MIT License.
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjasmine%2Fjasmine-gem.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjasmine%2Fjasmine-gem?ref=badge_large)
