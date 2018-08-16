@@ -8,7 +8,7 @@ This gem contains:
 
 * A small server that builds and executes a Jasmine suite for a project
 * A script that sets up a project to use the Jasmine gem's server
-* Generators for Ruby on Rails projects (Rails 3, 4, and 5)
+* Generators for Ruby on Rails projects (Rails 4 and 5)
 
 You can get all of this by: `gem install jasmine` or by adding Jasmine to your `Gemfile`.
 
