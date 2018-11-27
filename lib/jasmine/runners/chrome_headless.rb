@@ -1,0 +1,82 @@
+# require 'phantomjs'
+
+module Jasmine
+  module Runners
+    class ChromeHeadless
+      def initialize(formatter, jasmine_server_url, show_console_log, show_full_stack_trace, cli_options = nil)
+        @formatter = formatter
+        @jasmine_server_url = jasmine_server_url
+        @show_console_log = show_console_log
+        @show_full_stack_trace = show_full_stack_trace
+        @cli_options = cli_options || {}
+      end
+
+      def run
+        chrome_server = IO.popen("\"#{find_chrome_binary}\" --no-sandbox --headless --remote-debugging-port=9222 #{cli_options_string}")
+
+        begin
+          require "chrome_remote"
+        rescue LoadError => e
+          raise 'Add "chrome_remote" you your Gemfile. To use chromeheadless we require this gem.'
+        end
+
+        chrome = ChromeRemote.client
+        chrome.send_cmd "Runtime.enable"
+        chrome.send_cmd "Page.navigate", url: jasmine_server_url
+        result_recived = false
+        run_details = { 'random' => false }
+        chrome.on "Runtime.consoleAPICalled" do |params|
+          if params["type"] == "log"
+            if params["args"][0] && params["args"][0]["value"] == "jasmine_spec_result"
+              results = JSON.parse(params["args"][1]["value"], :max_nesting => false)
+                            .map { |r| Result.new(r.merge!("show_full_stack_trace" => @show_full_stack_trace)) }
+              formatter.format(results)
+            elsif params["args"][0] && params["args"][0]["value"] == "jasmine_suite_result"
+              results = JSON.parse(params["args"][1]["value"], :max_nesting => false)
+                            .map { |r| Result.new(r.merge!("show_full_stack_trace" => @show_full_stack_trace)) }
+              failures = results.select(&:failed?)
+              if failures.any?
+                formatter.format(failures)
+              end
+            elsif params["args"][0] && params["args"][0]["value"] == "jasmine_done"
+              result_recived = true
+              run_details = JSON.parse(params["args"][1]["value"], :max_nesting => false)
+            elsif show_console_log
+              puts params["args"].map { |e| e["value"] }.join(' ')
+            end
+          end
+        end
+
+        chrome.listen_until {|msg| result_recived }
+        formatter.done(run_details)
+        chrome.send_cmd "Browser.close"
+        Process.kill("INT", chrome_server.pid)
+      end
+
+      def find_chrome_binary
+        path = [
+          "/usr/bin/google-chrome",
+          "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+        ].detect { |path|
+          File.file?(path)
+        }
+        raise "No Chrome binary found" if path.nil?
+        path
+      end
+
+      def cli_options_string
+        @cli_options.
+            map {|(k, v)| "--#{k}=#{v}"}.
+            join(' ')
+      end
+
+      def boot_js
+        File.expand_path('chromeheadless_boot.js', File.dirname(__FILE__))
+      end
+
+      private
+      attr_reader :formatter, :jasmine_server_url, :show_console_log
+    end
+  end
+end
+

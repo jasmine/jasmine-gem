@@ -71,13 +71,25 @@ module Jasmine
     end
 
     @config.runner = lambda do |formatter, jasmine_server_url|
-      Jasmine::Runners::PhantomJs.new(formatter,
-                                      jasmine_server_url,
-                                      @config.prevent_phantom_js_auto_install,
-                                      @config.show_console_log,
-                                      @config.phantom_config_script,
-                                      @config.show_full_stack_trace,
-                                      @config.phantom_cli_options)
+      case @config.runner_browser
+      when :phantomjs
+        Jasmine::Runners::PhantomJs.new(formatter,
+                                        jasmine_server_url,
+                                        @config.prevent_phantom_js_auto_install,
+                                        @config.show_console_log,
+                                        @config.phantom_config_script,
+                                        @config.show_full_stack_trace,
+                                        @config.phantom_cli_options)
+      when :chromeheadless
+        Jasmine::Runners::ChromeHeadless.new(formatter,
+                                          jasmine_server_url,
+                                          @config.show_console_log,
+                                          @config.show_full_stack_trace,
+                                          @config.chrome_cli_options)
+      else
+        raise "Jasmine.config.runner_browser should be either phantomjs or chromeheadless"
+      end
+
     end
   end
 
