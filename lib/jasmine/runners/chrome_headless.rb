@@ -14,7 +14,7 @@ module Jasmine
       end
 
       def run
-        chrome_server = IO.popen("\"#{chrome_binary}\" --no-sandbox --headless --remote-debugging-port=9222 #{cli_options_string}")
+        chrome_server = IO.popen("\"#{chrome_binary}\" #{cli_options_string}")
         wait_for_chrome_to_start_debug_socket
 
         begin
@@ -73,7 +73,7 @@ module Jasmine
 
       def cli_options_string
         @cli_options.
-            map {|(k, v)| "--#{k}=#{v}"}.
+            map {|(k, v)| if v then "--#{k}=#{v}" else "--#{k}" end }.
             join(' ')
       end
 

@@ -45,7 +45,7 @@ module Jasmine
       @random = true
       @phantom_config_script = nil
       @phantom_cli_options = {}
-      @chrome_cli_options = {}
+      @chrome_cli_options = {"no-sandbox" => nil, "headless" => nil, "remote-debugging-port" => 9222}
       @chrome_startup_timeout = 3
       @chrome_binary = nil
       @runner_browser = :phantomjs
