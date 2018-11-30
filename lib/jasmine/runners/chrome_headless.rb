@@ -14,7 +14,7 @@ module Jasmine
       end
 
       def run
-        chrome_server = IO.popen("\"#{find_chrome_binary}\" --no-sandbox --headless --remote-debugging-port=9222 #{cli_options_string}")
+        chrome_server = IO.popen("\"#{chrome_binary}\" --no-sandbox --headless --remote-debugging-port=9222 #{cli_options_string}")
         wait_for_chrome_to_start_debug_socket
 
         begin
@@ -54,6 +54,10 @@ module Jasmine
         formatter.done(run_details)
         chrome.send_cmd "Browser.close"
         Process.kill("INT", chrome_server.pid)
+      end
+
+      def chrome_binary
+        config.chrome_binary || find_chrome_binary
       end
 
       def find_chrome_binary
