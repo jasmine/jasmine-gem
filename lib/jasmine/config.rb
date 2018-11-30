@@ -83,9 +83,7 @@ module Jasmine
       when :chromeheadless
         Jasmine::Runners::ChromeHeadless.new(formatter,
                                           jasmine_server_url,
-                                          @config.show_console_log,
-                                          @config.show_full_stack_trace,
-                                          @config.chrome_cli_options)
+                                          @config)
       else
         raise "Jasmine.config.runner_browser should be either phantomjs or chromeheadless"
       end

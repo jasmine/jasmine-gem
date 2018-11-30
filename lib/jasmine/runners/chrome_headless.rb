@@ -1,18 +1,21 @@
 # require 'phantomjs'
+require "socket"
 
 module Jasmine
   module Runners
     class ChromeHeadless
-      def initialize(formatter, jasmine_server_url, show_console_log, show_full_stack_trace, cli_options = nil)
+      def initialize(formatter, jasmine_server_url, config)
         @formatter = formatter
         @jasmine_server_url = jasmine_server_url
-        @show_console_log = show_console_log
-        @show_full_stack_trace = show_full_stack_trace
-        @cli_options = cli_options || {}
+        @config = config
+        @show_console_log = @config.show_console_log
+        @show_full_stack_trace = @config.show_full_stack_trace
+        @cli_options = @config.chrome_cli_options || {}
       end
 
       def run
         chrome_server = IO.popen("\"#{find_chrome_binary}\" --no-sandbox --headless --remote-debugging-port=9222 #{cli_options_string}")
+        wait_for_chrome_to_start_debug_socket
 
         begin
           require "chrome_remote"
@@ -70,12 +73,31 @@ module Jasmine
             join(' ')
       end
 
+      def wait_for_chrome_to_start_debug_socket
+        time = Time.now
+        while Time.now - time < config.chrome_startup_timeout
+          begin;
+            conn = TCPSocket.new('localhost', 9222);
+          rescue SocketError;
+            sleep 0.1
+            next
+          rescue Errno::EADDRNOTAVAIL;
+            sleep 0.1
+            next
+          else;
+            conn.close;
+            return
+          end
+        end
+        raise "Chrome did't seam to start the webSocketDebugger at port: 9222, timeout #{config.chrome_startup_timeout}sec"
+      end
+
       def boot_js
         File.expand_path('chromeheadless_boot.js', File.dirname(__FILE__))
       end
 
       private
-      attr_reader :formatter, :jasmine_server_url, :show_console_log
+      attr_reader :formatter, :jasmine_server_url, :show_console_log, :config
     end
   end
 end

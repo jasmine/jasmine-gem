@@ -18,6 +18,7 @@ module Jasmine
     attr_accessor :phantom_config_script
     attr_accessor :phantom_cli_options
     attr_accessor :chrome_cli_options
+    attr_accessor :chrome_startup_timeout
     attr_accessor :show_full_stack_trace
     attr_accessor :runner_browser
     attr_reader :rack_apps
@@ -44,6 +45,7 @@ module Jasmine
       @phantom_config_script = nil
       @phantom_cli_options = {}
       @chrome_cli_options = {}
+      @chrome_startup_timeout = 3
       @runner_browser = :phantomjs
 
       @formatters = [Jasmine::Formatters::Console]
