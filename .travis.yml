@@ -1,6 +1,7 @@
 language: ruby
 sudo: false
 cache: bundler
+
 addons:
   chrome: stable
 
@@ -25,4 +26,11 @@ matrix:
 
 before_install:
   - gem update --system
-  - gem install bundler
+  - if [ "$RAILS_VERSION" == rails4 ];
+    then
+      find /home/travis/.rvm/rubies -wholename '*default/bundler-*.gemspec' -delete;
+      find /home/travis/.rvm/rubies -wholename '*bundler*.gemspec' -delete;
+      gem install bundler --version '<  2.0.0';
+    else
+      gem install bundler;
+    fi
