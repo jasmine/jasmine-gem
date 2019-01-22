@@ -63,167 +63,231 @@ if rails_available?
       end
     end
 
-    it "rake jasmine:ci runs and returns expected results" do
-      Bundler.with_clean_env do
-        output = `bundle exec rake jasmine:ci`
-        expect(output).to include('5 specs, 0 failures')
-      end
-    end
-
-    it "rake jasmine:ci returns proper exit code when specs fail" do
-      Bundler.with_clean_env do
-        FileUtils.cp(File.join(@root, 'spec', 'fixture', 'failing_test.js'), File.join('spec', 'javascripts'))
-        failing_yaml = custom_jasmine_config('failing') do |jasmine_config|
-          jasmine_config['spec_files'] << 'failing_test.js'
+    describe "with phantomJS" do
+      it "rake jasmine:ci runs and returns expected results" do
+        Bundler.with_clean_env do
+          output = `bundle exec rake jasmine:ci`
+          expect(output).to include('5 specs, 0 failures')
         end
-        output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{failing_yaml}`
-        expect($?).to_not be_success
-        expect(output).to include('6 specs, 1 failure')
       end
-    end
 
-    it "rake jasmine:ci runs specs when an error occurs in the javascript" do
-      Bundler.with_clean_env do
-        FileUtils.cp(File.join(@root, 'spec', 'fixture', 'exception_test.js'), File.join('spec', 'javascripts'))
-        exception_yaml = custom_jasmine_config('exception') do |jasmine_config|
-          jasmine_config['spec_files'] << 'exception_test.js'
+      it "rake jasmine:ci returns proper exit code when specs fail" do
+        Bundler.with_clean_env do
+          FileUtils.cp(File.join(@root, 'spec', 'fixture', 'failing_test.js'), File.join('spec', 'javascripts'))
+          failing_yaml = custom_jasmine_config('failing') do |jasmine_config|
+            jasmine_config['spec_files'] << 'failing_test.js'
+          end
+          output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{failing_yaml}`
+          expect($?).to_not be_success
+          expect(output).to include('6 specs, 1 failure')
         end
-        output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{exception_yaml}`
-        expect($?).to_not be_success
-        expect(output).to include('5 specs, 0 failures')
-      end
-    end
-
-    it "runs specs written in coffeescript" do
-      coffee_yaml = custom_jasmine_config('coffee') do |jasmine_config|
-        jasmine_config['spec_files'] << 'coffee_spec.coffee'
-      end
-      FileUtils.cp(File.join(@root, 'spec', 'fixture', 'coffee_spec.coffee'), File.join('spec', 'javascripts'))
-
-      Bundler.with_clean_env do
-        output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{coffee_yaml}`
-        expect(output).to include('6 specs, 0 failures')
-      end
-    end
-
-    it "rake jasmine runs and serves the expected webpage when using asset pipeline" do
-      open('app/assets/stylesheets/foo.css', 'w') { |f|
-        f.puts "/* hi dere */"
-        f.flush
-      }
-
-      open('spec/javascripts/helpers/angular_helper.js', 'w') { |f|
-        f.puts "//= require angular-mocks"
-        f.flush
-      }
-
-      css_yaml = custom_jasmine_config('css') do |jasmine_config|
-        jasmine_config['src_files'] = %w[assets/application.js http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js]
-        jasmine_config['stylesheets'] = ['assets/application.css']
       end
 
-      run_jasmine_server("JASMINE_CONFIG_PATH=#{css_yaml}") do
-        output = Net::HTTP.get(URI.parse('http://localhost:8888/'))
-        expect(output).to match(%r{script src.*/assets/jasmine_examples/Player(\.self-[^\.]+)?\.js})
-        expect(output).to match(%r{script src=['"]http://ajax\.googleapis\.com/ajax/libs/jquery/1\.11\.0/jquery\.min\.js})
-        expect(output).to match(%r{script src.*/assets/jasmine_examples/Song(\.self-[^\.]+)?\.js})
-        expect(output).to match(%r{script src.*angular_helper\.js})
-        expect(output).to match(%r{<link rel=.stylesheet.*?href=./assets/foo(\.self-[^\.]+)?\.css\?.*?>})
-
-        output = Net::HTTP.get(URI.parse('http://localhost:8888/__spec__/helpers/angular_helper.js'))
-        expect(output).to match(/angular\.mock/)
-      end
-    end
-
-    it "sets assets_prefix when using sprockets" do
-      open('app/assets/stylesheets/assets_prefix.js.erb', 'w') { |f|
-        f.puts "<%= assets_prefix %>"
-        f.flush
-      }
-
-      run_jasmine_server do
-        output = Net::HTTP.get(URI.parse('http://localhost:8888/assets/assets_prefix.js'))
-        expect(output).to match("/assets")
-      end
-    end
-
-    it "should load js files outside of the assets path too" do
-      yaml = custom_jasmine_config('public-assets') do |jasmine_config|
-        jasmine_config['src_files'] << 'public/javascripts/**/*.js'
-        jasmine_config['spec_files'] = ['non_asset_pipeline_test.js']
-      end
-      FileUtils.mkdir_p(File.join('public', 'javascripts'))
-      FileUtils.cp(File.join(@root, 'spec', 'fixture', 'non_asset_pipeline.js'), File.join('public', 'javascripts'))
-      FileUtils.cp(File.join(@root, 'spec', 'fixture', 'non_asset_pipeline_test.js'), File.join('spec', 'javascripts'))
-
-      Bundler.with_clean_env do
-        output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{yaml}`
-        expect(output).to include('1 spec, 0 failures')
-      end
-    end
-
-    it "should pass custom rack options from jasmine.yml" do
-      pending "we're testing this with thin, which doesn't work in jruby" if RUBY_PLATFORM == 'java'
-      rack_yaml = custom_jasmine_config('custom_rack') do |jasmine_config|
-        jasmine_config['rack_options'] = { 'server' => 'webrick' }
-      end
-
-      Bundler.with_clean_env do
-        default_output = `bundle exec rake jasmine:ci`
-        if ENV['RAILS_VERSION'] == 'rails5' || ENV['RAILS_VERSION'].nil?
-          expect(default_output).to include('Puma starting')
-        else
-          expect(default_output).to include('Thin web server')
+      it "rake jasmine:ci runs specs when an error occurs in the javascript" do
+        Bundler.with_clean_env do
+          FileUtils.cp(File.join(@root, 'spec', 'fixture', 'exception_test.js'), File.join('spec', 'javascripts'))
+          exception_yaml = custom_jasmine_config('exception') do |jasmine_config|
+            jasmine_config['spec_files'] << 'exception_test.js'
+          end
+          output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{exception_yaml}`
+          expect($?).to_not be_success
+          expect(output).to include('5 specs, 0 failures')
         end
-
-        custom_output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{rack_yaml} 2>&1`
-        expect(custom_output).to include("WEBrick")
       end
-    end
 
-    describe 'using sprockets 4' do
-      before :all do
-        FileUtils.cp('Gemfile', 'Gemfile-old')
-        FileUtils.rm 'Gemfile.lock'
+      it "runs specs written in coffeescript" do
+        coffee_yaml = custom_jasmine_config('coffee') do |jasmine_config|
+          jasmine_config['spec_files'] << 'coffee_spec.coffee'
+        end
+        FileUtils.cp(File.join(@root, 'spec', 'fixture', 'coffee_spec.coffee'), File.join('spec', 'javascripts'))
 
-        open('Gemfile', 'a') { |f|
-          f.puts "gem 'sprockets', '~> 4.0.0.beta6'"
+        Bundler.with_clean_env do
+          output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{coffee_yaml}`
+          expect(output).to include('6 specs, 0 failures')
+        end
+      end
+
+      it "rake jasmine runs and serves the expected webpage when using asset pipeline" do
+        open('app/assets/stylesheets/foo.css', 'w') { |f|
+          f.puts "/* hi dere */"
           f.flush
         }
-        Bundler.with_clean_env do
-          bundle_install
-        end
 
-        FileUtils.mkdir_p('app/assets/config')
-
-        open('app/assets/config/manifest.js', 'w') { |f|
-          f.puts "//= link application.js"
-          f.puts "//= link application.css"
+        open('spec/javascripts/helpers/angular_helper.js', 'w') { |f|
+          f.puts "//= require angular-mocks"
           f.flush
         }
-      end
 
-      after :all do
-        FileUtils.mv 'Gemfile-old', 'Gemfile'
-        FileUtils.rm 'Gemfile.lock'
-        FileUtils.rm 'app/assets/config/manifest.js'
-        Bundler.with_clean_env do
-          bundle_install
+        css_yaml = custom_jasmine_config('css') do |jasmine_config|
+          jasmine_config['src_files'] = %w[assets/application.js http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js]
+          jasmine_config['stylesheets'] = ['assets/application.css']
         end
-      end
 
-      it "serves source mapped assets" do
-        run_jasmine_server do
+        run_jasmine_server("JASMINE_CONFIG_PATH=#{css_yaml}") do
           output = Net::HTTP.get(URI.parse('http://localhost:8888/'))
+          expect(output).to match(%r{script src.*/assets/jasmine_examples/Player(\.self-[^\.]+)?\.js})
+          expect(output).to match(%r{script src=['"]http://ajax\.googleapis\.com/ajax/libs/jquery/1\.11\.0/jquery\.min\.js})
+          expect(output).to match(%r{script src.*/assets/jasmine_examples/Song(\.self-[^\.]+)?\.js})
+          expect(output).to match(%r{script src.*angular_helper\.js})
+          expect(output).to match(%r{<link rel=.stylesheet.*?href=./assets/foo(\.self-[^\.]+)?\.css\?.*?>})
 
-          js_match = output.match %r{script src.*/(assets/application.debug-[^\.]+\.js)}
+          output = Net::HTTP.get(URI.parse('http://localhost:8888/__spec__/helpers/angular_helper.js'))
+          expect(output).to match(/angular\.mock/)
+        end
+      end
 
-          expect(js_match).to_not be_nil
-          expect(output).to match(%r{<link rel=.stylesheet.*?href=.*/assets/application.debug-[^\.]+\.css})
+      it "sets assets_prefix when using sprockets" do
+        open('app/assets/stylesheets/assets_prefix.js.erb', 'w') { |f|
+          f.puts "<%= assets_prefix %>"
+          f.flush
+        }
 
-          js_path = js_match[1]
-          output = Net::HTTP.get(URI.parse("http://localhost:8888/#{js_path}"))
-          expect(output).to match(%r{//# sourceMappingURL=.*\.map})
+        run_jasmine_server do
+          output = Net::HTTP.get(URI.parse('http://localhost:8888/assets/assets_prefix.js'))
+          expect(output).to match("/assets")
+        end
+      end
+
+      it "should load js files outside of the assets path too" do
+        yaml = custom_jasmine_config('public-assets') do |jasmine_config|
+          jasmine_config['src_files'] << 'public/javascripts/**/*.js'
+          jasmine_config['spec_files'] = ['non_asset_pipeline_test.js']
+        end
+        FileUtils.mkdir_p(File.join('public', 'javascripts'))
+        FileUtils.cp(File.join(@root, 'spec', 'fixture', 'non_asset_pipeline.js'), File.join('public', 'javascripts'))
+        FileUtils.cp(File.join(@root, 'spec', 'fixture', 'non_asset_pipeline_test.js'), File.join('spec', 'javascripts'))
+
+        Bundler.with_clean_env do
+          output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{yaml}`
+          expect(output).to include('1 spec, 0 failures')
+        end
+      end
+
+      it "should pass custom rack options from jasmine.yml" do
+        pending "we're testing this with thin, which doesn't work in jruby" if RUBY_PLATFORM == 'java'
+        rack_yaml = custom_jasmine_config('custom_rack') do |jasmine_config|
+          jasmine_config['rack_options'] = { 'server' => 'webrick' }
+        end
+
+        Bundler.with_clean_env do
+          default_output = `bundle exec rake jasmine:ci`
+          if ENV['RAILS_VERSION'] == 'rails5' || ENV['RAILS_VERSION'].nil?
+            expect(default_output).to include('Puma starting')
+          else
+            expect(default_output).to include('Thin web server')
+          end
+
+          custom_output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{rack_yaml} 2>&1`
+          expect(custom_output).to include("WEBrick")
+        end
+      end
+
+      describe 'using sprockets 4' do
+        before :all do
+          FileUtils.cp('Gemfile', 'Gemfile-old')
+          FileUtils.rm 'Gemfile.lock'
+
+          open('Gemfile', 'a') { |f|
+            f.puts "gem 'sprockets', '~> 4.0.0.beta6'"
+            f.flush
+          }
+          Bundler.with_clean_env do
+            bundle_install
+          end
+
+          FileUtils.mkdir_p('app/assets/config')
+
+          open('app/assets/config/manifest.js', 'w') { |f|
+            f.puts "//= link application.js"
+            f.puts "//= link application.css"
+            f.flush
+          }
+        end
+
+        after :all do
+          FileUtils.mv 'Gemfile-old', 'Gemfile'
+          FileUtils.rm 'Gemfile.lock'
+          FileUtils.rm 'app/assets/config/manifest.js'
+          Bundler.with_clean_env do
+            bundle_install
+          end
+        end
+
+        it "serves source mapped assets" do
+          run_jasmine_server do
+            output = Net::HTTP.get(URI.parse('http://localhost:8888/'))
+
+            js_match = output.match %r{script src.*/(assets/application.debug-[^\.]+\.js)}
+
+            expect(js_match).to_not be_nil
+            expect(output).to match(%r{<link rel=.stylesheet.*?href=.*/assets/application.debug-[^\.]+\.css})
+
+            js_path = js_match[1]
+            output = Net::HTTP.get(URI.parse("http://localhost:8888/#{js_path}"))
+            expect(output).to match(%r{//# sourceMappingURL=.*\.map})
+          end
+        end
+      end
+    end
+
+    describe "with Chrome headless" do
+      before :all do
+        open('spec/javascripts/support/jasmine_helper.rb', 'w') { |f|
+          f.puts "Jasmine.configure do |config|\n  config.runner_browser = :chromeheadless\nend\n"
+          f.flush
+        }
+      end
+
+
+      it "rake jasmine:ci runs and returns expected results", :focus do
+        Bundler.with_clean_env do
+          `bundle add chrome_remote`
+          output = `bundle exec rake jasmine:ci`
+          expect(output).to include('5 specs, 0 failures')
+          `bundle remove chrome_remote`
+        end
+      end
+
+      it "rake jasmine:ci returns proper exit code when specs fail" do
+        Bundler.with_clean_env do
+          `bundle add chrome_remote`
+
+          FileUtils.cp(File.join(@root, 'spec', 'fixture', 'failing_test.js'), File.join('spec', 'javascripts'))
+          failing_yaml = custom_jasmine_config('failing') do |jasmine_config|
+            jasmine_config['spec_files'] << 'failing_test.js'
+          end
+          output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{failing_yaml}`
+          expect($?).to_not be_success
+          expect(output).to include('6 specs, 1 failure')
+          `bundle remove chrome_remote`
+        end
+      end
+
+      it "rake jasmine:ci runs specs when an error occurs in the javascript" do
+        Bundler.with_clean_env do
+          `bundle add chrome_remote`
+          FileUtils.cp(File.join(@root, 'spec', 'fixture', 'exception_test.js'), File.join('spec', 'javascripts'))
+          exception_yaml = custom_jasmine_config('exception') do |jasmine_config|
+            jasmine_config['spec_files'] << 'exception_test.js'
+          end
+          output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{exception_yaml}`
+          expect($?).to_not be_success
+          expect(output).to include('5 specs, 0 failures')
+          `bundle remove chrome_remote`
+        end
+      end
+
+      it "runs specs written in coffeescript" do
+        coffee_yaml = custom_jasmine_config('coffee') do |jasmine_config|
+          jasmine_config['spec_files'] << 'coffee_spec.coffee'
+        end
+        FileUtils.cp(File.join(@root, 'spec', 'fixture', 'coffee_spec.coffee'), File.join('spec', 'javascripts'))
+
+        Bundler.with_clean_env do
+          `bundle add chrome_remote`
+          output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{coffee_yaml}`
+          expect(output).to include('6 specs, 0 failures')
+          `bundle remove chrome_remote`
         end
       end
     end

@@ -85,6 +85,9 @@ module Jasmine
           rescue SocketError;
             sleep 0.1
             next
+          rescue Errno::ECONNREFUSED;
+            sleep 0.1
+            next
           rescue Errno::EADDRNOTAVAIL;
             sleep 0.1
             next
