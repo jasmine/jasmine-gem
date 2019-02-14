@@ -23,4 +23,4 @@ matrix:
 
 before_install:
   - gem update --system
-  - "if [ $RAILS_VERSION = rails4 ];then gem install bundler -v '< 2.0'; else gem install bundler; fi"
+  - "if [ $RAILS_VERSION = rails4 ];then gem install bundler -v '< 2.0'; gem uninstall bundler -v '>= 2.0' -a; else gem install bundler; fi"
