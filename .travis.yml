@@ -4,13 +4,13 @@ cache: bundler
 
 rvm:
   - "2.3"
-  - "2.4"
-  - "2.5"
+  # - "2.4"
+  # - "2.5"
 
 env:
-  - "RAILS_VERSION=rails5"
+  # - "RAILS_VERSION=rails5"
   - "RAILS_VERSION=rails4"
-  - "RAILS_VERSION=pojs"
+  # - "RAILS_VERSION=pojs"
 
 script: "if [ $PERFORMANCE_SPECS ];then bundle exec rake performance_specs --trace; else bundle exec rake --trace; fi"
 
@@ -23,4 +23,4 @@ matrix:
 
 before_install:
   - gem update --system
-  - "if [ $RAILS_VERSION = rails4 ];then gem uninstall bundler -v '>= 2.0' -a && gem install bundler -v '< 2.0' ; else gem install bundler; fi"
+  - "if [ $RAILS_VERSION = rails4 ];then gem uninstall bundler -v '>= 2.0' --force -a && gem install bundler -v '< 2.0' ; else gem install bundler; fi"
