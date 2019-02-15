@@ -14,12 +14,12 @@ env:
 
 script: "if [ $PERFORMANCE_SPECS ];then bundle exec rake performance_specs --trace; else bundle exec rake --trace; fi"
 
-matrix:
-  fast_finish: true
-  include:
-    - env:
-        - "PERFORMANCE_SPECS=true"
-        - "RAILS_VERSION=rails5"
+# matrix:
+  # fast_finish: true
+  # include:
+    # - env:
+        # - "PERFORMANCE_SPECS=true"
+        # - "RAILS_VERSION=rails5"
 
 before_install:
   - gem update --system
