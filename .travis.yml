@@ -23,8 +23,8 @@ script: "if [ $PERFORMANCE_SPECS ];then bundle exec rake performance_specs --tra
 
 before_install:
   - gem update --system
+  - gem uninstall bundler --force -a
   - "if [ $RAILS_VERSION = rails4 ];then gem install bundler -v '< 2.0' ; else gem install bundler; fi"
-  - gem uninstall bundler -v '>= 2.0' --force -a
   - hash -r
   - bundle --version
   - type bundle
