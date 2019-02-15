@@ -22,7 +22,7 @@ script: "if [ $PERFORMANCE_SPECS ];then bundle exec rake performance_specs --tra
         # - "RAILS_VERSION=rails5"
 
 before_install:
-  - gem update --system
-  - gem uninstall -v '>= 2' -i $(rvm gemdir)@global -ax bundler || true
+  # - gem update --system
+  - gem uninstall -v '>= 2' -i $(rvm gemdir)@global -ax bundler
   - "if [ $RAILS_VERSION = rails4 ];then gem install bundler -v '< 2.0' ; else gem install bundler; fi"
   - bundle --version
