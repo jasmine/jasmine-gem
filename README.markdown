@@ -86,6 +86,31 @@ In your jasmine_helper.rb:
        config.ci_port = 1234
     end
 
+## Using headless Chrome
+
+* Add `chrome_remote` as a dependency
+* In your jasmine_helper.rb:
+```ruby
+Jasmine.configure do |config|
+  config.runner_browser = :chromeheadless
+end
+```
+
+### Additional configuration options
+
+* `config.chrome_binary` - to customize which binary to execute
+* `config.chrome_cli_options` - if you know what you're doing you can customize the CLI
+* `config.chrome_startup_timeout` - change the amount of time to wait for chrome to start
+
+### On Travis-CI
+
+Add this to your `.travis.yml`
+
+```yaml
+addons:
+  chrome: stable
+```
+
 ## Support
 
 Documentation: [jasmine.github.io](https://jasmine.github.io)
