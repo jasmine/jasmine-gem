@@ -13,11 +13,11 @@ module Jasmine
     UnsupportedRailsVersion = Class.new(StandardError)
 
     def asset_bundle
-      return Rails4Or5AssetBundle.new if Jasmine::Dependencies.rails4? || Jasmine::Dependencies.rails5?
-      raise UnsupportedRailsVersion, "Jasmine only supports the asset pipeline for Rails 4. - 5"
+      return Rails4Or5Or6AssetBundle.new if Jasmine::Dependencies.rails4? || Jasmine::Dependencies.rails5? || Jasmine::Dependencies.rails6?
+      raise UnsupportedRailsVersion, "Jasmine only supports the asset pipeline for Rails 4. - 6"
     end
 
-    class Rails4Or5AssetBundle
+    class Rails4Or5Or6AssetBundle
       def assets(pathname)
         if pathname =~ /\.css$/
           context.get_stylesheet_assets(pathname.gsub(/\.css$/, ''))
