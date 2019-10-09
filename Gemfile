@@ -20,9 +20,3 @@ else
 end
 
 gem 'mime-types', '< 3.0', platform: [:jruby]
-
-platform :rbx do
-  gem 'json'
-  gem 'rubysl'
-  gem 'racc'
-end

@@ -6,8 +6,9 @@ require 'jasmine/ruby_versions'
 if rails_available?
   describe 'A Rails app' do
     def bundle_install
-      puts `NOKOGIRI_USE_SYSTEM_LIBRARIES=true bundle install --path vendor --retry 3;`
+      bundle_output = `NOKOGIRI_USE_SYSTEM_LIBRARIES=true bundle install --path vendor --retry 3;`
       unless $?.success?
+        puts bundle_output
         raise "Bundle failed to install."
       end
     end
@@ -21,9 +22,6 @@ if rails_available?
 
       base = File.absolute_path(File.join(__FILE__, '../..'))
 
-      # execjs v2.2.0 is broken in rbx, locking the version to 2.0.2 for now
-      # see https://github.com/sstephenson/execjs/issues/148
-
       open('Gemfile', 'a') { |f|
         f.puts "gem 'jasmine', :path => '#{base}'"
         f.puts "gem 'jasmine-core', :git => 'http://github.com/jasmine/jasmine.git'"
@@ -31,7 +29,6 @@ if rails_available?
           f.puts "gem 'thin'"
         end
         f.puts "gem 'angularjs-rails'"
-        f.puts "gem 'execjs', '2.0.2'"
         f.flush
       }
 
