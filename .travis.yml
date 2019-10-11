@@ -7,11 +7,11 @@ addons:
 
 rvm:
   - "2.3"
-  - "2.4"
   - "2.5"
   - "2.6"
 
 env:
+  - "RAILS_VERSION=rails6"
   - "RAILS_VERSION=rails5"
   - "RAILS_VERSION=rails4"
   - "RAILS_VERSION=pojs"

@@ -29,7 +29,7 @@ Gem::Specification.new do |s|
   when 'rails5'
     s.add_development_dependency 'rails', '>= 5', '< 6.0.0'
   else #default to rails 6
-    s.add_development_dependency 'rails', '>= 6'
+    s.add_development_dependency 'rails', '>= 6', '< 7.0.0'
   end
 
   s.add_development_dependency 'rack-test'

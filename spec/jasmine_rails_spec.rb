@@ -17,7 +17,11 @@ if rails_available?
       temp_dir_before
       Dir::chdir @tmp
 
-      `rails new rails-example --skip-bundle  --skip-active-record`
+      if ENV['RAILS_VERSION'] == 'rails6'
+        `rails new rails-example --skip-bundle  --skip-active-record --skip-bootsnap --skip-webpack-install`
+      else
+        `rails new rails-example --skip-bundle  --skip-active-record`
+      end
       Dir::chdir File.join(@tmp, 'rails-example')
 
       base = File.absolute_path(File.join(__FILE__, '../..'))
@@ -43,6 +47,13 @@ if rails_available?
         expect(File.exists?('app/assets/javascripts/jasmine_examples/Song.js')).to eq true
         expect(File.exists?('spec/javascripts/jasmine_examples/PlayerSpec.js')).to eq true
         expect(File.exists?('spec/javascripts/helpers/jasmine_examples/SpecHelper.js')).to eq true
+      end
+
+      if ENV['RAILS_VERSION'] == 'rails6'
+        open('app/assets/javascripts/application.js', 'a') { |f|
+          f.puts '//= require_tree .'
+          f.flush
+        }
       end
     end
 
