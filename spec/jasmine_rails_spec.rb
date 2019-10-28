@@ -29,10 +29,9 @@ if rails_available?
       open('Gemfile', 'a') { |f|
         f.puts "gem 'jasmine', :path => '#{base}'"
         f.puts "gem 'jasmine-core', :git => 'http://github.com/jasmine/jasmine.git'"
-        if RUBY_PLATFORM != 'java' && ENV['RAILS_VERSION'] != 'rails5'
+        if RUBY_PLATFORM != 'java' && ENV['RAILS_VERSION'] == 'rails4'
           f.puts "gem 'thin'"
         end
-        f.puts "gem 'angularjs-rails'"
         f.flush
       }
 
@@ -50,6 +49,9 @@ if rails_available?
       end
 
       if ENV['RAILS_VERSION'] == 'rails6'
+        Bundler.with_clean_env do
+          `bundle remove webpacker`
+        end
         open('app/assets/javascripts/application.js', 'a') { |f|
           f.puts '//= require_tree .'
           f.flush
@@ -131,6 +133,9 @@ if rails_available?
           jasmine_config['stylesheets'] = ['assets/application.css']
         end
 
+        Bundler.with_clean_env do
+          `bundle add angularjs-rails`
+        end
         run_jasmine_server("JASMINE_CONFIG_PATH=#{css_yaml}") do
           output = Net::HTTP.get(URI.parse('http://localhost:8888/'))
           expect(output).to match(%r{script src.*/assets/jasmine_examples/Player(\.self-[^\.]+)?\.js})
@@ -244,22 +249,27 @@ if rails_available?
           f.puts "Jasmine.configure do |config|\n  config.runner_browser = :chromeheadless\nend\n"
           f.flush
         }
+        Bundler.with_clean_env do
+          `bundle add chrome_remote`
+        end
+      end
+
+      after :all do
+        Bundler.with_clean_env do
+          `bundle remove chrome_remote`
+        end
       end
 
 
       it "rake jasmine:ci runs and returns expected results", :focus do
         Bundler.with_clean_env do
-          `bundle add chrome_remote`
           output = `bundle exec rake jasmine:ci`
           expect(output).to include('5 specs, 0 failures')
-          `bundle remove chrome_remote`
         end
       end
 
       it "rake jasmine:ci returns proper exit code when specs fail" do
         Bundler.with_clean_env do
-          `bundle add chrome_remote`
-
           FileUtils.cp(File.join(@root, 'spec', 'fixture', 'failing_test.js'), File.join('spec', 'javascripts'))
           failing_yaml = custom_jasmine_config('failing') do |jasmine_config|
             jasmine_config['spec_files'] << 'failing_test.js'
@@ -267,13 +277,11 @@ if rails_available?
           output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{failing_yaml}`
           expect($?).to_not be_success
           expect(output).to include('6 specs, 1 failure')
-          `bundle remove chrome_remote`
         end
       end
 
       it "rake jasmine:ci runs specs when an error occurs in the javascript" do
         Bundler.with_clean_env do
-          `bundle add chrome_remote`
           FileUtils.cp(File.join(@root, 'spec', 'fixture', 'exception_test.js'), File.join('spec', 'javascripts'))
           exception_yaml = custom_jasmine_config('exception') do |jasmine_config|
             jasmine_config['spec_files'] << 'exception_test.js'
@@ -281,7 +289,6 @@ if rails_available?
           output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{exception_yaml}`
           expect($?).to_not be_success
           expect(output).to include('5 specs, 0 failures')
-          `bundle remove chrome_remote`
         end
       end
 
@@ -292,10 +299,8 @@ if rails_available?
         FileUtils.cp(File.join(@root, 'spec', 'fixture', 'coffee_spec.coffee'), File.join('spec', 'javascripts'))
 
         Bundler.with_clean_env do
-          `bundle add chrome_remote`
           output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{coffee_yaml}`
           expect(output).to include('6 specs, 0 failures')
-          `bundle remove chrome_remote`
         end
       end
     end
