@@ -18,7 +18,7 @@ env:
 
 script: "if [ $PERFORMANCE_SPECS ];then bundle exec rake performance_specs --trace; else bundle exec rake --trace; fi"
 
-matrix:
+jobs:
   fast_finish: true
   include:
     - env:
