@@ -25,7 +25,7 @@ jobs:
         - "PERFORMANCE_SPECS=true"
         - "RAILS_VERSION=rails5"
   exclude:
-    - rvm: 2.3
+    - rvm: "2.3"
       env: "RAILS_VERSION=rails6"
 
 before_install:
