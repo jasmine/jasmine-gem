@@ -24,6 +24,9 @@ matrix:
     - env:
         - "PERFORMANCE_SPECS=true"
         - "RAILS_VERSION=rails5"
+  exclude:
+    - rvm: 2.3
+      env: "RAILS_VERSION=rails6"
 
 before_install:
   - "if [$RAILS_VERSION != rails4 ];then gem update --system; fi"
