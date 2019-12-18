@@ -1,5 +1,6 @@
 # The Jasmine Gem [![Build Status](https://travis-ci.org/jasmine/jasmine-gem.png?branch=master)](https://travis-ci.org/jasmine/jasmine-gem)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjasmine%2Fjasmine-gem.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjasmine%2Fjasmine-gem?ref=badge_shield)
+[![Gem Version](https://badge.fury.io/rb/jasmine.svg)](https://badge.fury.io/rb/jasmine)
 
 The [Jasmine](http://github.com/jasmine/jasmine) Ruby Gem is a package of helper code for developing Jasmine projects for Ruby-based web projects (Rails, Sinatra, etc.) or for JavaScript projects where Ruby is a welcome partner. It serves up a project's Jasmine suite in a browser so you can focus on your code instead of manually editing script tags in the Jasmine runner HTML file.
 
@@ -48,9 +49,11 @@ This uses PhantomJS to load and run the Jasmine suite.
 
 Please note that PhantomJS will be auto-installed by the [phantomjs-gem][phantomjs-gem] at the first `rake jasmine:ci` run. If you have a matching PhantomJS version somewhere on your path, it won't install. You can disable automatic installation altogether (and use the PhantomJS on your path) via the config helper in your jasmine_helper.rb:
 
-    Jasmine.configure do |config|
-      config.prevent_phantom_js_auto_install = true
-    end
+```ruby
+Jasmine.configure do |config|
+  config.prevent_phantom_js_auto_install = true
+end
+```
 
 [phantomjs-gem]: https://github.com/colszowka/phantomjs-gem#phantomjs-as-a-rubygem
 
@@ -74,17 +77,21 @@ To change the port that `rake jasmine` uses:
 
 In your jasmine_helper.rb:
 
-    Jasmine.configure do |config|
-       config.server_port = 5555
-    end
+```ruby
+Jasmine.configure do |config|
+  config.server_port = 5555
+end
+```
 
 By default `rake jasmine:ci` will attempt to find a random open port, to set the port that `rake jasmine:ci` uses:
 
 In your jasmine_helper.rb:
 
-    Jasmine.configure do |config|
-       config.ci_port = 1234
-    end
+```ruby
+Jasmine.configure do |config|
+  config.ci_port = 1234
+end
+```
 
 ## Using headless Chrome
 
