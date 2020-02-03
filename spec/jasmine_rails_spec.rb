@@ -18,7 +18,7 @@ if rails_available?
       Dir::chdir @tmp
 
       if ENV['RAILS_VERSION'] == 'rails6'
-        `rails new rails-example --skip-bundle  --skip-active-record --skip-bootsnap --skip-webpack-install`
+        `rails new rails-example --skip-bundle  --skip-active-record --skip-bootsnap --skip-webpack-install --skip-javascript`
       else
         `rails new rails-example --skip-bundle  --skip-active-record`
       end
@@ -49,11 +49,14 @@ if rails_available?
       end
 
       if ENV['RAILS_VERSION'] == 'rails6'
-        Bundler.with_clean_env do
-          `bundle remove webpacker`
-        end
+        FileUtils.mkdir_p('app/assets/javascripts')
         open('app/assets/javascripts/application.js', 'a') { |f|
           f.puts '//= require_tree .'
+          f.flush
+        }
+        FileUtils.mkdir_p('app/assets/config')
+        open('app/assets/config/manifest.js', 'a') { |f|
+          f.puts '//= link_directory ../javascripts .js'
           f.flush
         }
       end
