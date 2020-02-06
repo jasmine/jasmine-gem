@@ -29,6 +29,19 @@ def rails_version
   end
 end
 
+def ruby_at_least?(version_str)
+  desired = version_str.split('.').map(&:to_i)
+  actual = RUBY_VERSION.split('.').map(&:to_i)
+
+  desired.zip(actual).each do |(d, a)|
+    if d != a
+      return d <= a
+    end
+  end
+
+  true
+end
+
 def create_temp_dir
   tmp = File.join(Dir.tmpdir, "jasmine-gem-test_#{Time.now.to_f}")
   FileUtils.rm_r(tmp, :force => true)

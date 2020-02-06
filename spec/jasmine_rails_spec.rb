@@ -4,17 +4,16 @@ require 'yaml'
 require 'jasmine/ruby_versions'
 
 if rails_available?
+  if !Bundler.respond_to?(:with_unbundled_env)
+    module Bundler
+      class << self
+        alias_method :with_clean_env, :with_unbundled_env
+      end
+    end
+  end
+
   describe 'A Rails app' do
     def bundle_install
-      FileUtils.mkdir_p('.bundle')
-      open('.bundle/config', 'a') do |f|
-        f.puts(<<~YAML)
-               ---
-               BUNDLE_PATH: "vendor"
-               BUNDLE_RETRY: "3"
-               YAML
-        f.flush
-      end
       bundle_output = `NOKOGIRI_USE_SYSTEM_LIBRARIES=true bundle install`
       unless $?.success?
         puts bundle_output
@@ -43,6 +42,16 @@ if rails_available?
         end
         f.flush
       }
+
+      FileUtils.mkdir_p('.bundle')
+      open('.bundle/config', 'a') do |f|
+        f.puts(<<~YAML)
+               ---
+               BUNDLE_PATH: "vendor"
+               BUNDLE_RETRY: "3"
+               YAML
+        f.flush
+      end
 
       Bundler.with_unbundled_env do
         bundle_install
@@ -227,55 +236,57 @@ if rails_available?
         end
       end
 
-      describe 'using sprockets 4' do
-        before :all do
-          FileUtils.cp('Gemfile', 'Gemfile-old')
-          FileUtils.rm 'Gemfile.lock'
+      if ruby_at_least?('2.5')
+        describe 'using sprockets 4' do
+          before :all do
+            FileUtils.cp('Gemfile', 'Gemfile-old')
+            FileUtils.rm 'Gemfile.lock'
 
-          open('Gemfile', 'a') { |f|
-            f.puts "gem 'sprockets', '~> 4.0.0'"
-            f.flush
-          }
-          Bundler.with_unbundled_env do
-            bundle_install
+            open('Gemfile', 'a') { |f|
+              f.puts "gem 'sprockets', '~> 4.0.0'"
+              f.flush
+            }
+            Bundler.with_unbundled_env do
+              bundle_install
+            end
+
+            FileUtils.mkdir_p('app/assets/config')
+
+            if File.exists?('app/assets/config/manifest.js')
+              FileUtils.move('app/assets/config/manifest.js', 'app/assets/config/manifest_orig.js')
+            end
+            open('app/assets/config/manifest.js', 'w') { |f|
+              f.puts "//= link application.js"
+              f.puts "//= link application.css"
+              f.flush
+            }
           end
 
-          FileUtils.mkdir_p('app/assets/config')
-
-          if File.exists?('app/assets/config/manifest.js')
-            FileUtils.move('app/assets/config/manifest.js', 'app/assets/config/manifest_orig.js')
+          after :all do
+            FileUtils.mv 'Gemfile-old', 'Gemfile'
+            FileUtils.rm 'Gemfile.lock'
+            FileUtils.rm 'app/assets/config/manifest.js'
+            if File.exists?('app/assets/config/manifest_orig.js')
+              FileUtils.move('app/assets/config/manifest_orig.js', 'app/assets/config/manifest.js')
+            end
+            Bundler.with_unbundled_env do
+              bundle_install
+            end
           end
-          open('app/assets/config/manifest.js', 'w') { |f|
-            f.puts "//= link application.js"
-            f.puts "//= link application.css"
-            f.flush
-          }
-        end
 
-        after :all do
-          FileUtils.mv 'Gemfile-old', 'Gemfile'
-          FileUtils.rm 'Gemfile.lock'
-          FileUtils.rm 'app/assets/config/manifest.js'
-          if File.exists?('app/assets/config/manifest_orig.js')
-            FileUtils.move('app/assets/config/manifest_orig.js', 'app/assets/config/manifest.js')
-          end
-          Bundler.with_unbundled_env do
-            bundle_install
-          end
-        end
+          it "serves source mapped assets" do
+            run_jasmine_server do
+              output = Net::HTTP.get(URI.parse('http://localhost:8888/'))
 
-        it "serves source mapped assets" do
-          run_jasmine_server do
-            output = Net::HTTP.get(URI.parse('http://localhost:8888/'))
+              js_match = output.match %r{script src.*/(assets/application.debug-[^\.]+\.js)}
 
-            js_match = output.match %r{script src.*/(assets/application.debug-[^\.]+\.js)}
+              expect(js_match).to_not be_nil
+              expect(output).to match(%r{<link rel=.stylesheet.*?href=.*/assets/application.debug-[^\.]+\.css})
 
-            expect(js_match).to_not be_nil
-            expect(output).to match(%r{<link rel=.stylesheet.*?href=.*/assets/application.debug-[^\.]+\.css})
-
-            js_path = js_match[1]
-            output = Net::HTTP.get(URI.parse("http://localhost:8888/#{js_path}"))
-            expect(output).to match(%r{//# sourceMappingURL=.*\.map})
+              js_path = js_match[1]
+              output = Net::HTTP.get(URI.parse("http://localhost:8888/#{js_path}"))
+              expect(output).to match(%r{//# sourceMappingURL=.*\.map})
+            end
           end
         end
       end
