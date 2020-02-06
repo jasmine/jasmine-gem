@@ -210,71 +210,7 @@ if rails_available?
       end
     end
 
-    describe "with phantomJS" do
-      it "rake jasmine:ci runs and returns expected results" do
-        Bundler.with_unbundled_env do
-          output = `bundle exec rake jasmine:ci`
-          expect(output).to include('5 specs, 0 failures')
-        end
-      end
-
-      it "rake jasmine:ci returns proper exit code when specs fail" do
-        Bundler.with_unbundled_env do
-          FileUtils.cp(File.join(@root, 'spec', 'fixture', 'failing_test.js'), File.join('spec', 'javascripts'))
-          failing_yaml = custom_jasmine_config('failing') do |jasmine_config|
-            jasmine_config['spec_files'] << 'failing_test.js'
-          end
-          output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{failing_yaml}`
-          expect($?).to_not be_success
-          expect(output).to include('6 specs, 1 failure')
-        end
-      end
-
-      it "rake jasmine:ci runs specs when an error occurs in the javascript" do
-        Bundler.with_unbundled_env do
-          FileUtils.cp(File.join(@root, 'spec', 'fixture', 'exception_test.js'), File.join('spec', 'javascripts'))
-          exception_yaml = custom_jasmine_config('exception') do |jasmine_config|
-            jasmine_config['spec_files'] << 'exception_test.js'
-          end
-          output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{exception_yaml}`
-          expect($?).to_not be_success
-          expect(output).to include('5 specs, 0 failures')
-        end
-      end
-
-      unless rails_version == 'rails6'
-        it "runs specs written in coffeescript" do
-          coffee_yaml = custom_jasmine_config('coffee') do |jasmine_config|
-            jasmine_config['spec_files'] << 'coffee_spec.coffee'
-          end
-          FileUtils.cp(File.join(@root, 'spec', 'fixture', 'coffee_spec.coffee'), File.join('spec', 'javascripts'))
-
-          Bundler.with_unbundled_env do
-            output = `bundle exec rake jasmine:ci JASMINE_CONFIG_PATH=#{coffee_yaml}`
-            expect(output).to include('6 specs, 0 failures')
-          end
-        end
-      end
-    end
-
-    describe "with Chrome headless" do
-      before :all do
-        open('spec/javascripts/support/jasmine_helper.rb', 'w') { |f|
-          f.puts "Jasmine.configure do |config|\n  config.runner_browser = :chromeheadless\nend\n"
-          f.flush
-        }
-        Bundler.with_unbundled_env do
-          `bundle add chrome_remote`
-        end
-      end
-
-      after :all do
-        Bundler.with_unbundled_env do
-          `bundle remove chrome_remote`
-        end
-      end
-
-
+    shared_examples_for 'a working jasmine:ci' do
       it "rake jasmine:ci runs and returns expected results" do
         Bundler.with_unbundled_env do
           output = `bundle exec rake jasmine:ci`
@@ -321,6 +257,30 @@ if rails_available?
           end
         end
       end
+    end
+
+    describe "with phantomJS" do
+      it_behaves_like 'a working jasmine:ci'
+    end
+
+    describe "with Chrome headless" do
+      before :all do
+        open('spec/javascripts/support/jasmine_helper.rb', 'w') { |f|
+          f.puts "Jasmine.configure do |config|\n  config.runner_browser = :chromeheadless\nend\n"
+          f.flush
+        }
+        Bundler.with_unbundled_env do
+          `bundle add chrome_remote`
+        end
+      end
+
+      after :all do
+        Bundler.with_unbundled_env do
+          `bundle remove chrome_remote`
+        end
+      end
+
+      it_behaves_like 'a working jasmine:ci'
     end
 
     def run_jasmine_server(options = "")
