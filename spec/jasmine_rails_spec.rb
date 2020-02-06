@@ -7,7 +7,7 @@ if rails_available?
   if !Bundler.respond_to?(:with_unbundled_env)
     module Bundler
       class << self
-        alias_method :with_clean_env, :with_unbundled_env
+        alias_method :with_unbundled_env, :with_clean_env
       end
     end
   end
