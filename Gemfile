@@ -20,3 +20,5 @@ else
 end
 
 gem 'mime-types', '< 3.0', platform: [:jruby]
+
+gem "bundler", "~> 2.1"

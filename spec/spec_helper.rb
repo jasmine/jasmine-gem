@@ -21,6 +21,14 @@ rescue Gem::LoadError
   false
 end
 
+def rails_version
+  if ENV['RAILS_VERSION']
+    ENV['RAILS_VERSION']
+  else
+    'rails6' # keep in sync with default in gemspec
+  end
+end
+
 def create_temp_dir
   tmp = File.join(Dir.tmpdir, "jasmine-gem-test_#{Time.now.to_f}")
   FileUtils.rm_r(tmp, :force => true)
