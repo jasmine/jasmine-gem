@@ -232,6 +232,85 @@ describe Jasmine::Formatters::Console do
     end
   end
 
+  describe '.color_enabled' do
+    context '.color_enabled controls whether it outputs with color or not' do
+      around do |block|
+        begin
+          old = if Jasmine::Formatters::Console.instance_variable_defined?(:@color_enabled)
+                  Jasmine::Formatters::Console.color_enabled
+                else
+                  :undef
+                end
+
+          block.call
+        ensure
+          if old == :undef
+            Jasmine::Formatters::Console.instance_eval do
+              remove_instance_variable :@color_enabled
+            end
+          else
+            Jasmine::Formatters::Console.color_enabled = old
+          end
+        end
+      end
+
+      it 'prints colored outputs' do
+        Jasmine::Formatters::Console.color_enabled = true
+
+        formatter = Jasmine::Formatters::Console.new(outputter)
+        formatter.format([passing_result])
+        formatter.format([failing_result])
+        formatter.format([pending_result])
+        formatter.done(run_details)
+
+        expect(outputter_output).to include("\e[31m")
+        expect(outputter_output).to include("\e[32m")
+        expect(outputter_output).to include("\e[33m")
+        expect(outputter_output).to include("\e[0m")
+      end
+
+      it "doesn't print colored outputs" do
+        Jasmine::Formatters::Console.color_enabled = false
+
+        formatter = Jasmine::Formatters::Console.new(outputter)
+        formatter.format([passing_result])
+        formatter.format([failing_result])
+        formatter.format([pending_result])
+        formatter.done(run_details)
+
+        expect(outputter_output).not_to include("\e[31m")
+        expect(outputter_output).not_to include("\e[32m")
+        expect(outputter_output).not_to include("\e[33m")
+        expect(outputter_output).not_to include("\e[0m")
+      end
+    end
+
+    context 'NO_COLOR environment variable present' do
+      around do |block|
+        begin
+          old = ENV['NO_COLOR']
+          ENV['NO_COLOR'] = 'true'
+          block.call
+        ensure
+          ENV['NO_COLOR'] = old
+        end
+      end
+
+      it "doesn't print colored outputs" do
+        formatter = Jasmine::Formatters::Console.new(outputter)
+        formatter.format([passing_result])
+        formatter.format([failing_result])
+        formatter.format([pending_result])
+        formatter.done(run_details)
+
+        expect(outputter_output).not_to include("\e[31m")
+        expect(outputter_output).not_to include("\e[32m")
+        expect(outputter_output).not_to include("\e[33m")
+        expect(outputter_output).not_to include("\e[0m")
+      end
+    end
+  end
+
   def failing_result
     Jasmine::Result.new(failing_raw_result)
   end
