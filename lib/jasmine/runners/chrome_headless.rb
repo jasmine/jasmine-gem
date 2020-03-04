@@ -63,6 +63,7 @@ module Jasmine
       def find_chrome_binary
         path = [
           "/usr/bin/google-chrome",
+          "/usr/bin/google-chrome-stable",
           "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
         ].detect { |path|
           File.file?(path)
@@ -108,4 +109,3 @@ module Jasmine
     end
   end
 end
-
