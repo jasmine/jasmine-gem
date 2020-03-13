@@ -1,19 +1,8 @@
 module Jasmine
   module Formatters
     class Console
-      def self.color_enabled=(value)
-        @color_enabled = value
-      end
-
-      def self.color_enabled
-        if instance_variable_defined?(:@color_enabled)
-          @color_enabled
-        else
-          !ENV["NO_COLOR"]
-        end
-      end
-
-      def initialize(outputter = Kernel)
+      def initialize(config, outputter = Kernel)
+        @config = config
         @results = []
         @outputter = outputter
       end
@@ -155,7 +144,7 @@ module Jasmine
               "\e[0m"
             end
 
-        if self.class.color_enabled
+        if @config.color
           "#{s}#{message}\e[0m"
         else
           message

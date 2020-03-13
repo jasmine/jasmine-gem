@@ -6,6 +6,7 @@ module Jasmine
     attr_accessor :jasmine_path, :spec_path, :boot_path, :src_path, :image_path, :runner_boot_path
     attr_accessor :jasmine_dir, :spec_dir, :boot_dir, :src_dir, :images_dir, :runner_boot_dir
     attr_accessor :formatters
+    attr_accessor :color
     attr_accessor :host
     attr_accessor :spec_format
     attr_accessor :runner
@@ -51,6 +52,7 @@ module Jasmine
       @runner_browser = :phantomjs
 
       @formatters = [Jasmine::Formatters::Console]
+      @color = true
 
       @server_port = 8888
     end

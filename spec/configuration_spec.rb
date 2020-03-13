@@ -215,5 +215,18 @@ describe Jasmine::Configuration do
       config.runner.call('hi')
     end
   end
+
+  describe 'colorization settings' do
+    it 'defaults to color' do
+      config = Jasmine::Configuration.new
+      expect(config.color).to eq(true)
+    end
+
+    it 'can be set to false' do
+      config = Jasmine::Configuration.new
+      config.color = false
+      expect(config.color).to eq(false)
+    end
+  end
 end
 
