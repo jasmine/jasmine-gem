@@ -93,6 +93,16 @@ Jasmine.configure do |config|
 end
 ```
 
+By default `rake jasmine:ci` will print results in color, to change this configuration:
+
+In your jasmine_helper.rb:
+
+```ruby
+Jasmine.configure do |config|
+  config.color = false
+end
+```
+
 ## Using headless Chrome
 
 * Add `chrome_remote` as a dependency

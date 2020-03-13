@@ -1,7 +1,8 @@
 module Jasmine
   module Formatters
     class Console
-      def initialize(outputter = Kernel)
+      def initialize(config, outputter = Kernel)
+        @config = config
         @results = []
         @outputter = outputter
       end
@@ -91,13 +92,13 @@ module Jasmine
       def chars(results)
         results.map do |result|
           if result.succeeded?
-            "\e[32m.\e[0m"
+            colored(:green, '.')
           elsif result.pending?
-            "\e[33m*\e[0m"
+            colored(:yellow, '*')
           elsif result.disabled?
             ""
           else
-            "\e[31mF\e[0m"
+            colored(:red, 'F')
           end
         end.join('')
       end
@@ -111,7 +112,7 @@ module Jasmine
         reason = 'No reason given'
         reason = spec.pending_reason if spec.pending_reason && spec.pending_reason != ''
 
-        "\t#{spec.full_name}\n\t  \e[33m#{reason}\e[0m"
+        "\t#{spec.full_name}\n\t  #{colored(:yellow, reason)}"
       end
 
       def failure_message(failure)
@@ -121,7 +122,7 @@ module Jasmine
       def expectation_message(expectation)
         <<-FE
   Message:
-      \e[31m#{expectation.message}\e[0m
+      #{colored(:red, expectation.message)}
   Stack:
       #{stack(expectation.stack)}
         FE
@@ -129,6 +130,25 @@ module Jasmine
 
       def stack(stack)
         stack.split("\n").map(&:strip).join("\n      ")
+      end
+
+      def colored(color, message)
+        s = case color
+            when :green
+              "\e[32m"
+            when :yellow
+              "\e[33m"
+            when :red
+              "\e[31m"
+            else
+              "\e[0m"
+            end
+
+        if @config.color
+          "#{s}#{message}\e[0m"
+        else
+          message
+        end
       end
     end
   end

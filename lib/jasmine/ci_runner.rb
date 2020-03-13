@@ -11,8 +11,7 @@ module Jasmine
     end
 
     def run
-      formatters = config.formatters.map { |formatter_class| formatter_class.new }
-
+      formatters = build_formatters
       exit_code_formatter = Jasmine::Formatters::ExitCode.new
       formatters << exit_code_formatter
 
@@ -45,6 +44,22 @@ module Jasmine
 
     def app
       @application_factory.app(@config)
+    end
+
+    def build_formatters
+      config.formatters.map do |formatter_class|
+        meta_method = if formatter_class.class == Class
+                        formatter_class.instance_method(:initialize)
+                      else
+                        formatter_class.method(:new)
+                      end
+
+        if meta_method.arity == 0 || meta_method.parameters[0][0] != :req
+          formatter_class.new
+        else
+          formatter_class.new(config)
+        end
+      end
     end
   end
 end

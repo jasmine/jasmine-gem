@@ -13,28 +13,28 @@ describe Jasmine::Formatters::Console do
 
   describe '#format' do
     it 'prints a dot for a successful spec' do
-      formatter = Jasmine::Formatters::Console.new(outputter)
+      formatter = Jasmine::Formatters::Console.new(double(:config, color: true), outputter)
       formatter.format([passing_result])
 
       expect(outputter_output).to include('.')
     end
 
     it 'prints a star for a pending spec' do
-      formatter = Jasmine::Formatters::Console.new(outputter)
+      formatter = Jasmine::Formatters::Console.new(double(:config, color: true), outputter)
       formatter.format([pending_result])
 
       expect(outputter_output).to include('*')
     end
 
     it 'prints an F for a failing spec' do
-      formatter = Jasmine::Formatters::Console.new(outputter)
+      formatter = Jasmine::Formatters::Console.new(double(:config, color: true), outputter)
       formatter.format([failing_result])
 
       expect(outputter_output).to include('F')
     end
 
     it 'prints a dot for a disabled spec' do
-      formatter = Jasmine::Formatters::Console.new(outputter)
+      formatter = Jasmine::Formatters::Console.new(double(:config, color: true), outputter)
       formatter.format([disabled_result])
 
       expect(outputter_output).to eq('')
@@ -44,7 +44,7 @@ describe Jasmine::Formatters::Console do
   describe '#summary' do
     it 'shows the failure messages' do
       results = [failing_result, failing_result]
-      formatter = Jasmine::Formatters::Console.new(outputter)
+      formatter = Jasmine::Formatters::Console.new(double(:config, color: true), outputter)
       formatter.format(results)
       formatter.done(run_details)
       expect(outputter_output).to match(/a suite with a failing spec/)
@@ -55,7 +55,7 @@ describe Jasmine::Formatters::Console do
     describe 'when the full suite passes' do
       it 'shows the spec counts' do
         results = [passing_result]
-        console = Jasmine::Formatters::Console.new(outputter)
+        console = Jasmine::Formatters::Console.new(double(:config, color: true), outputter)
         console.format(results)
         console.done(run_details)
 
@@ -65,7 +65,7 @@ describe Jasmine::Formatters::Console do
 
       it 'shows the spec counts (pluralized)' do
         results = [passing_result, passing_result]
-        console = Jasmine::Formatters::Console.new(outputter)
+        console = Jasmine::Formatters::Console.new(double(:config, color: true), outputter)
         console.format(results)
         console.done(run_details)
 
@@ -77,7 +77,7 @@ describe Jasmine::Formatters::Console do
     describe 'when there are failures' do
       it 'shows the spec counts' do
         results = [passing_result, failing_result]
-        console = Jasmine::Formatters::Console.new(outputter)
+        console = Jasmine::Formatters::Console.new(double(:config, color: true), outputter)
         console.format(results)
         console.done(run_details)
 
@@ -87,7 +87,7 @@ describe Jasmine::Formatters::Console do
 
       it 'shows the spec counts (pluralized)' do
         results = [failing_result, failing_result]
-        console = Jasmine::Formatters::Console.new(outputter)
+        console = Jasmine::Formatters::Console.new(double(:config, color: true), outputter)
         console.format(results)
         console.done(run_details)
 
@@ -97,7 +97,7 @@ describe Jasmine::Formatters::Console do
 
       it 'shows the failure message' do
         results = [failing_result]
-        console = Jasmine::Formatters::Console.new(outputter)
+        console = Jasmine::Formatters::Console.new(double(:config, color: true), outputter)
         console.format(results)
         console.done(run_details)
 
@@ -108,7 +108,7 @@ describe Jasmine::Formatters::Console do
     describe 'when there are pending specs' do
       it 'shows the spec counts' do
         results = [passing_result, pending_result]
-        console = Jasmine::Formatters::Console.new(outputter)
+        console = Jasmine::Formatters::Console.new(double(:config, color: true), outputter)
         console.format(results)
         console.done(run_details)
 
@@ -117,7 +117,7 @@ describe Jasmine::Formatters::Console do
 
       it 'shows the spec counts (pluralized)' do
         results = [pending_result, pending_result]
-        console = Jasmine::Formatters::Console.new(outputter)
+        console = Jasmine::Formatters::Console.new(double(:config, color: true), outputter)
         console.format(results)
         console.done(run_details)
 
@@ -126,7 +126,7 @@ describe Jasmine::Formatters::Console do
 
       it 'shows the pending reason' do
         results = [pending_result]
-        console = Jasmine::Formatters::Console.new(outputter)
+        console = Jasmine::Formatters::Console.new(double(:config, color: true), outputter)
         console.format(results)
         console.done(run_details)
 
@@ -135,7 +135,7 @@ describe Jasmine::Formatters::Console do
 
       it 'shows the default pending reason' do
         results = [Jasmine::Result.new(pending_raw_result.merge('pendingReason' => ''))]
-        console = Jasmine::Formatters::Console.new(outputter)
+        console = Jasmine::Formatters::Console.new(double(:config, color: true), outputter)
         console.format(results)
         console.done(run_details)
 
@@ -147,7 +147,7 @@ describe Jasmine::Formatters::Console do
 
       it 'should not mention pending specs' do
         results = [passing_result]
-        console = Jasmine::Formatters::Console.new(outputter)
+        console = Jasmine::Formatters::Console.new(double(:config, color: true), outputter)
         console.format(results)
         console.done(run_details)
 
@@ -158,7 +158,7 @@ describe Jasmine::Formatters::Console do
     describe 'when the tests were randomized' do
       it 'should print a message with the seed' do
         results = [passing_result]
-        console = Jasmine::Formatters::Console.new(outputter)
+        console = Jasmine::Formatters::Console.new(double(:config, color: true), outputter)
         console.format(results)
         console.done({ 'order' => { 'random' => true, 'seed' => '4325' } })
 
@@ -168,7 +168,7 @@ describe Jasmine::Formatters::Console do
 
     describe 'with loading errors' do
       it 'should show the errors' do
-        console = Jasmine::Formatters::Console.new(outputter)
+        console = Jasmine::Formatters::Console.new(double(:config, color: true), outputter)
         console.done({ 'failedExpectations' => [
           {
             'globalErrorType' => 'load',
@@ -190,7 +190,7 @@ describe Jasmine::Formatters::Console do
 
     describe 'with errors in a global afterAll' do
       it 'should show the errors' do
-        console = Jasmine::Formatters::Console.new(outputter)
+        console = Jasmine::Formatters::Console.new(double(:config, color: true), outputter)
         console.done({ 'failedExpectations' => [
           {
             'globalErrorType' => 'afterAll',
@@ -212,7 +212,7 @@ describe Jasmine::Formatters::Console do
 
     describe 'when the overall status is incomplete' do
       it 'shows the reason' do
-        console = Jasmine::Formatters::Console.new(outputter)
+        console = Jasmine::Formatters::Console.new(double(:config, color: true), outputter)
         console.done({
           'overallStatus' => 'incomplete',
           'incompleteReason' => 'not all bars were frobnicated'
@@ -223,12 +223,46 @@ describe Jasmine::Formatters::Console do
     end
 
     it 'shows deprecation warnings' do
-      console = Jasmine::Formatters::Console.new(outputter)
+      console = Jasmine::Formatters::Console.new(double(:config, color: true), outputter)
       console.format([Jasmine::Result.new(deprecation_raw_result)])
       console.done({ 'deprecationWarnings' => [{ 'message' => 'globally deprecated', 'stack' => nil }] })
 
       expect(outputter_output).to match(/deprecated call/)
       expect(outputter_output).to match(/globally deprecated/)
+    end
+  end
+
+  describe 'enabling and disabling colorized output' do
+    context '.color_enabled controls whether it outputs with color or not' do
+      it 'prints colored outputs' do
+        config = double(:config, color: true)
+
+        formatter = Jasmine::Formatters::Console.new(config, outputter)
+        formatter.format([passing_result])
+        formatter.format([failing_result])
+        formatter.format([pending_result])
+        formatter.done(run_details)
+
+        expect(outputter_output).to include("\e[31m")
+        expect(outputter_output).to include("\e[32m")
+        expect(outputter_output).to include("\e[33m")
+        expect(outputter_output).to include("\e[0m")
+      end
+
+      it "doesn't print colored outputs" do
+        config = double(:config, color: false)
+
+        formatter = Jasmine::Formatters::Console.new(config, outputter)
+        formatter.format([passing_result])
+        formatter.format([failing_result])
+        formatter.format([pending_result])
+        formatter.done(run_details)
+
+        expect(outputter_output).not_to include("\e[31m")
+        expect(outputter_output).not_to include("\e[32m")
+        expect(outputter_output).not_to include("\e[33m")
+        expect(outputter_output).not_to include("\e[0m")
+      end
     end
   end
 
