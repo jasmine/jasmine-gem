@@ -23,7 +23,7 @@ module Jasmine
           raise 'Add "chrome_remote" you your Gemfile. To use chromeheadless we require this gem.'
         end
 
-        chrome = ChromeRemote.client
+        chrome = wait_for { ChromeRemote.client }
         chrome.send_cmd "Runtime.enable"
         chrome.send_cmd "Page.navigate", url: jasmine_server_url
         result_recived = false
@@ -78,26 +78,41 @@ module Jasmine
             join(' ')
       end
 
+      def wait_for
+
+
+        puts "new logic"
+
+
+        time = Time.now.to_i
+        result = try_to { yield }
+
+        while !result && Time.now.to_i - time < config.chrome_startup_timeout
+          sleep(0.1)
+          result = try_to { yield }
+        end
+        result
+      end
+
+      def try_to
+        yield
+      rescue
+        nil
+      end
+
       def wait_for_chrome_to_start_debug_socket
-        time = Time.now
-        while Time.now - time < config.chrome_startup_timeout
-          begin;
-            conn = TCPSocket.new('localhost', 9222);
-          rescue SocketError;
-            sleep 0.1
-            next
-          rescue Errno::ECONNREFUSED;
-            sleep 0.1
-            next
-          rescue Errno::EADDRNOTAVAIL;
-            sleep 0.1
-            next
-          else;
-            conn.close;
-            return
+        open_socket = -> do
+          begin
+            conn = TCPSocket.new('localhost', 9222)
+            conn.close
+            true
+          rescue
+            nil
           end
         end
-        raise "Chrome did't seam to start the webSocketDebugger at port: 9222, timeout #{config.chrome_startup_timeout}sec"
+
+        message = "Chrome didn't seem to start the webSocketDebugger at port: 9222, timeout #{config.chrome_startup_timeout}sec"
+        raise message unless wait_for(&open_socket)
       end
 
       def boot_js
