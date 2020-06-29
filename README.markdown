@@ -1,4 +1,4 @@
-# The Jasmine Gem [![Build Status](https://travis-ci.org/jasmine/jasmine-gem.png?branch=master)](https://travis-ci.org/jasmine/jasmine-gem)
+# The Jasmine Gem [![Build Status](https://travis-ci.org/jasmine/jasmine-gem.png?branch=main)](https://travis-ci.org/jasmine/jasmine-gem)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjasmine%2Fjasmine-gem.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjasmine%2Fjasmine-gem?ref=badge_shield)
 [![Gem Version](https://badge.fury.io/rb/jasmine.svg)](https://badge.fury.io/rb/jasmine)
 
