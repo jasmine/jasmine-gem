@@ -36,7 +36,7 @@ if rails_available?
 
       open('Gemfile', 'a') { |f|
         f.puts "gem 'jasmine', :path => '#{base}'"
-        f.puts "gem 'jasmine-core', :git => 'http://github.com/jasmine/jasmine.git'"
+        f.puts "gem 'jasmine-core', :git => 'http://github.com/jasmine/jasmine.git', ref: 'main'"
         if RUBY_PLATFORM != 'java' && rails_version == 'rails4'
           f.puts "gem 'thin'"
         end
