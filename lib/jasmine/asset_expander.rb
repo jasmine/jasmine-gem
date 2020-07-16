@@ -29,7 +29,23 @@ module Jasmine
       private
 
       def context
-        @context ||= ActionView::Base.new.extend(GetOriginalAssetsHelper)
+        @context ||= template.extend(GetOriginalAssetsHelper)
+      end
+
+      def controller_class
+        Class.new(ActionController::Base)
+      end
+
+      def controller
+        controller_class.new
+      end
+
+      def lookup_context
+        ActionView::LookupContext.new([])
+      end
+
+      def template
+        ActionView::Base.new(lookup_context, {}, controller)
       end
 
       module GetOriginalAssetsHelper
