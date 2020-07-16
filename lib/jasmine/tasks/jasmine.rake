@@ -59,7 +59,11 @@ namespace :jasmine do
     config = Jasmine.config
     port = config.port(:server)
     server = Jasmine::Server.new(port, Jasmine::Application.app(Jasmine.config), config.rack_options)
-    puts "your server is running here: http://localhost:#{port}/"
+    if config.random
+      puts "your server is running here: http://localhost:#{port}/"
+    else
+      puts "your server is running here: http://localhost:#{port}/?random=false"
+    end
     puts "your tests are here:         #{config.spec_dir}"
     puts "your source files are here:  #{config.src_dir}"
     puts ''
