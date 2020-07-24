@@ -5,9 +5,9 @@ bin
 .bundle
 .DS_Store
 .rvmrc
+.ruby-version
 .pairs
 *.swp
 tags
 Gemfile.lock
 spec/reports
-.rvmrc
