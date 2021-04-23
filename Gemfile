@@ -5,7 +5,7 @@ gemspec
 gem 'anchorman', :platform => :mri
 
 # during development, do not release
-if ENV['TRAVIS']
+if ENV['CIRCLECI']
   gem 'jasmine-core', :git => 'http://github.com/jasmine/jasmine.git', ref: 'main'
 else
   gem 'jasmine-core', :path => '../jasmine'
