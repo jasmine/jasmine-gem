@@ -12,6 +12,9 @@ executors:
   ruby_2_5:
     docker:
       - image: circleci/ruby:2.5-browsers-legacy
+  ruby_2_3:
+    docker:
+      - image: circleci/ruby:2.3-browsers-legacy
 
 jobs:
   test:
@@ -50,7 +53,7 @@ workflows:
           matrix:
             parameters:
               rails_version: ["pojs", "rails6", "rails5", "rails4"]
-              executor: ["ruby_2_7", "ruby_2_6", "ruby_2_5"]
+              executor: ["ruby_2_7", "ruby_2_6", "ruby_2_5", "ruby_2_3"]
             exclude:
               # Don't run Rails 4 on newer Rubies that lack an old enough
               # bundler.
@@ -58,6 +61,9 @@ workflows:
                 executor: "ruby_3_0"
               - rails_version: "rails4"
                 executor: "ruby_2_7"
+              # Rails 6 requires at least Ruby 2.5.
+              - rails_version: "rails6"
+                executor: "ruby_2_3"
   cron:
     <<: *push_workflow
     triggers:
