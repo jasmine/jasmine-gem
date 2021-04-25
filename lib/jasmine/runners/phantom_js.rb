@@ -1,4 +1,5 @@
 require 'phantomjs'
+require 'json'
 
 module Jasmine
   module Runners

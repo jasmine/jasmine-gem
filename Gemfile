@@ -2,7 +2,6 @@ source 'https://rubygems.org'
 
 gemspec
 
-gem 'anchorman', :platform => :mri
 
 # during development, do not release
 if ENV['CIRCLECI']
