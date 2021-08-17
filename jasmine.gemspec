@@ -38,7 +38,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'nokogiri'
 
   s.add_dependency 'jasmine-core', '~> 3.8.0'
-  s.add_dependency 'rack', '>= 1.2.1'
+  s.add_dependency 'rack', '>= 2.1.4'
   s.add_dependency 'webrick'
   s.add_dependency 'rake'
   s.add_dependency 'phantomjs'
