@@ -5,6 +5,11 @@
 
 The [Jasmine](http://github.com/jasmine/jasmine) Ruby Gem is a package of helper code for developing Jasmine projects for Ruby-based web projects (Rails, Sinatra, etc.) or for JavaScript projects where Ruby is a welcome partner. It serves up a project's Jasmine suite in a browser so you can focus on your code instead of manually editing script tags in the Jasmine runner HTML file.
 
+Webpacker support is provided via the 
+[jasmine-browser-runner](https://jasmine.github.io/setup/browser.html#use-with-rails)
+NPM package, not this gem. `jasmine-browser-runner` can also be used to test
+JavaScript in Rails applications that use the Asset Pipeline.
+
 ## Contents
 This gem contains:
 
