@@ -10,6 +10,23 @@ Webpacker support is provided via the
 NPM package, not this gem. `jasmine-browser-runner` can also be used to test
 JavaScript in Rails applications that use the Asset Pipeline.
 
+## Deprecated
+
+The `jasmine` and `jasmine-core` Ruby gems are deprecated. There will be no
+further releases after the end of the Jasmine 3.x series. We recommend that most
+users migrate to the [jasmine-browser-runner](https://github.com/jasmine/jasmine-browser)
+npm package, which is the direct replacement for the `jasmine` gem.
+
+If `jasmine-browser-runner` doesn't meet your needs, one of these might:
+
+* The [jasmine](https://github.com/jasmine/jasmine-npm) npm package to run
+  specs in Node.js.
+* The [standalone distribution](https://github.com/jasmine/jasmine#installation)
+  to run specs in browsers with no additional tools.
+* The [jasmine-core](https://github.com/jasmine/jasmine) npm package if all
+  you need is the Jasmine assets. This is the direct equivalent of the
+  `jasmine-core` Ruby gem.
+
 ## Contents
 This gem contains:
 
