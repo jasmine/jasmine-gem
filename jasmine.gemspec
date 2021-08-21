@@ -18,8 +18,8 @@ Gem::Specification.new do |s|
     Jasmine for Ruby is deprecated. We recommend using the
     jasmine-browser-runner NPM package instead. It supports all the same
     scenarios as this gem plus Webpacker. See
-    <https://jasmine.github.io/setup/browser.html> for setup instructions, and
-    <https://github.com/jasmine/jasmine-gem/blob/main/release_notes/3.9.0.md>
+    https://jasmine.github.io/setup/browser.html for setup instructions, and
+    https://github.com/jasmine/jasmine-gem/blob/main/release_notes/3.9.0.md
     for other options.
   DESC
   s.email              = %q{jasmine-js@googlegroups.com}
