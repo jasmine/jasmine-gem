@@ -47,7 +47,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec', '>= 2.5.0'
   s.add_development_dependency 'nokogiri'
 
-  s.add_dependency 'jasmine-core', '~> 3.9.0'
+  s.add_dependency 'jasmine-core', '~> 3.10.0'
   s.add_dependency 'rack', '>= 2.1.4'
   s.add_dependency 'webrick'
   s.add_dependency 'rake'
