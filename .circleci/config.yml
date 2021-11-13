@@ -34,7 +34,7 @@ jobs:
          path: jasmine-gem
       - run:
           name: Install Node
-          command: sudo apt-get install nodejs
+          command: sudo apt update && sudo apt-get install nodejs
       - run:
           name: Install bundler
           command: "if [ $RAILS_VERSION = rails4 ];then gem install bundler -v '< 2.0' ; else gem install bundler; fi"
