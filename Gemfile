@@ -5,7 +5,7 @@ gemspec
 
 # during development, do not release
 if ENV['CIRCLECI']
-  gem 'jasmine-core', :git => 'http://github.com/jasmine/jasmine.git', ref: '3.99'
+  gem 'jasmine-core', :git => 'http://github.com/jasmine/jasmine.git', ref: 'main'
 else
   gem 'jasmine-core', :path => '../jasmine'
 end
