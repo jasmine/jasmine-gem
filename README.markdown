@@ -1,5 +1,4 @@
 # The Jasmine Gem
-[![Build Status](https://circleci.com/gh/jasmine/jasmine-gem.svg?style=shield)](https://circleci.com/gh/jasmine/jasmine-gem)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjasmine%2Fjasmine-gem.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjasmine%2Fjasmine-gem?ref=badge_shield)
 [![Gem Version](https://badge.fury.io/rb/jasmine.svg)](https://badge.fury.io/rb/jasmine)
 
@@ -10,10 +9,10 @@ Webpacker support is provided via the
 NPM package, not this gem. `jasmine-browser-runner` can also be used to test
 JavaScript in Rails applications that use the Asset Pipeline.
 
-## Deprecated
+## Discontinued
 
-The `jasmine` and `jasmine-core` Ruby gems are deprecated. There will be no
-further releases after the end of the Jasmine 3.x series. We recommend that most
+The `jasmine` and `jasmine-core` Ruby gems are discontinued. There will be no
+further releases. We recommend that most
 users migrate to the [jasmine-browser-runner](https://github.com/jasmine/jasmine-browser)
 npm package, which is the direct replacement for the `jasmine` gem.
 
